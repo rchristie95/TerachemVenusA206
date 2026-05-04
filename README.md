@@ -4,7 +4,7 @@ QM/MM computational pipeline for studying Davydov (excitonic) coupling in Venus 
 
 ## Paper
 
-> **Preprint:** [arXiv:XXXX.XXXXX](https://arxiv.org/abs/XXXX.XXXXX)
+> **Preprint:** [arXiv:2605.00027](https://arxiv.org/abs/2605.00027)
 
 ## Overview
 
@@ -89,14 +89,15 @@ The script auto-detects the most recent TDDFT output directory and loads transit
 If you use this code, please cite:
 
 ```
-@misc{christie2025venus,
-  title  = {<title>},
-  author = {Christie, R. and others},
-  year   = {2025},
-  eprint = {XXXX.XXXXX},
+@misc{christie2026nonequilibrium,
+  title         = {{Non-Equilibrium Dynamics of the Time-Dependent Excitonic Coupling in Fluorescent Protein Dimers}},
+  author        = {Christie, Robson and Murray, Cerys and Kim, Youngchan and Joo, Jaewoo},
+  year          = {2026},
+  eprint        = {2605.00027},
   archivePrefix = {arXiv},
   primaryClass  = {physics.chem-ph},
-  url    = {https://arxiv.org/abs/XXXX.XXXXX}
+  doi           = {10.48550/arXiv.2605.00027},
+  url           = {https://arxiv.org/abs/2605.00027}
 }
 ```
 
