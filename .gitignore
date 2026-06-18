@@ -1,0 +1,8 @@
+# LaTeX paper folder
+UoP_Surrey_Venus_Collaboration/
+
+# Caches
+.ccd_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
