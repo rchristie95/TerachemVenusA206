@@ -6,3 +6,18 @@ UoP_Surrey_Venus_Collaboration/
 .ruff_cache/
 __pycache__/
 *.pyc
+
+# MATLAB OQS sources (ported to oqs_dynamics.py)
+LindbladCodes/
+
+# Analysis output directories (generated figures/data)
+coupling_sampling_out/
+lineshape_out/
+multipole_out/
+oqs_out/
+
+# Pipeline working directories
+tc_simple_old/
+tc_tddft_old_current*/
+tc_dimer_nvt/
+tc_dimer_minimise/

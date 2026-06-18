@@ -25,6 +25,11 @@ This repository contains scripts to:
 | `run_dimer_minimise.py` | OpenMM classical minimisation of the dimer with trajectory rendering |
 | `run_dimer_nvt.py` | OpenMM NVT MD simulation of the dimer with trajectory rendering |
 | `terachem_full_pipeline.py` | Full standalone QM/MM pipeline: protonation → solvation → QM boundary → TDDFT → Davydov coupling |
+| `coupling_core.py` | Reusable, OpenMM-free core: transition-density I/O (`read_dx`), the GPU Coulomb coupling routine (`calculate_coupling`), PyMOL site transforms, and excited-state selection. Imported by the pipeline and all analysis scripts below |
+| `sample_coupling_md.py` | Conformational sampling of the coupling: `J` over an MD ensemble → mean ± std + histogram |
+| `lineshape_cd.py` | Excitonic absorption + circular-dichroism (CD) lineshapes from `J` + dephasing, overlaid on the experimental Davydov splitting |
+| `multipole_decomposition.py` | Decomposes the TDC-over-PDA enhancement into dipole–dipole / dipole–quadrupole / quadrupole–quadrupole contributions |
+| `oqs_dynamics.py` | Open-quantum-system dynamics (Lindblad ME + stochastic Schrödinger equation, Debye-screened `J(t)`); regenerates the dynamics figures and runs T₂*/dielectric sensitivity sweeps. Python port of the MATLAB in `LindbladCodes/` |
 | `visualise_dimer.pml` | PyMOL script for visualising TDDFT transition/difference densities on the dimer |
 
 ## Dependencies
@@ -83,6 +88,34 @@ pymol visualise_dimer.pml
 ```
 
 The script auto-detects the most recent TDDFT output directory and loads transition/difference density isosurfaces onto the dimer.
+
+## Ensemble & spectroscopic analysis
+
+These scripts build on the single-point pipeline to characterise the coupling distribution, its spectroscopic signature, its multipole origin, and the dimer's open-system dynamics. They share `coupling_core.py`, and all but the MD sampler run without OpenMM/TeraChem (they need only NumPy, SciPy, and Matplotlib; `sample_coupling_md.py` additionally needs PyMOL, and its `--mode full` needs TeraChem).
+
+```bash
+# 1. Coupling distribution over an MD trajectory (mean ± std + histogram)
+python sample_coupling_md.py --traj tc_dimer_nvt/dimer_nvt_trajectory.pdb \
+    --workdir tc_tddft_old_current --monomer tc_simple_old/classical_relaxed.pdb \
+    --n-frames 100 --mode rigid
+#    -> coupling_sampling_out/{coupling_samples.csv, coupling_distribution.json, Fig_Coupling_Histogram.pdf}
+
+# 2. Absorption + CD lineshape (inhomogeneous width taken from step 1's distribution)
+python lineshape_cd.py --distribution coupling_sampling_out/coupling_distribution.json
+#    -> lineshape_out/{Fig_Absorption_Spectrum.pdf, Fig_CD_Spectrum.pdf, lineshape_data.csv}
+
+# 3. Multipole decomposition of the TDC-over-PDA enhancement (validate first)
+python multipole_decomposition.py --self-test
+python multipole_decomposition.py --workdir tc_tddft_old_current \
+    --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb
+#    -> multipole_out/{multipole_decomposition.csv, Fig_Multipole_Decomposition.pdf}
+
+# 4. Open-system dynamics: regenerate figures + sensitivity sweeps
+python oqs_dynamics.py --all
+#    -> oqs_out/{Fig_Coupling, Fig_SSE_*, Fig_ME_*, Fig_Bloch_Grid, Fig_T2_Sweep, Fig_Dielectric_Sweep}.pdf
+```
+
+Extra dependencies for these scripts: [SciPy](https://scipy.org/) and [Matplotlib](https://matplotlib.org/) (`conda install -c conda-forge scipy matplotlib`).
 
 ## Citation
 
