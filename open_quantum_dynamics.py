@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 r"""
-oqs_dynamics.py  --  Open-quantum-system dynamics of the Venus dimer exciton.
+open_quantum_dynamics.py  --  Open-quantum-system dynamics of the Venus dimer exciton.
 
 Python port of the MATLAB open-quantum-systems code in LindbladCodes/
 (Combined.m / Lindblad.m / NonAdiabatic.m), which the authors can no longer run

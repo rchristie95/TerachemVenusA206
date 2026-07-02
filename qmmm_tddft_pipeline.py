@@ -2473,8 +2473,8 @@ Usage:
 
 # ===== Pure TDC / coupling building blocks (moved to coupling_core.py) =====
 # These functions were extracted verbatim into coupling_core.py so that
-# lightweight analysis scripts (sample_coupling_md.py, multipole_decomposition.py,
-# lineshape_cd.py) can reuse them without importing OpenMM. Behaviour is unchanged.
+# lightweight analysis scripts (coupling_ensemble.py, multipole_analysis.py,
+# absorption_cd_spectra.py) can reuse them without importing OpenMM. Behaviour is unchanged.
 import time  # retained: used by re-exported GPU coupling routines' timing
 from coupling_core import (
     BOHR_TO_ANGSTROM, ANGSTROM_TO_BOHR, HARTREE_TO_EV, HARTREE_TO_CM,

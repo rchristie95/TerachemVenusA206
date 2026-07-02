@@ -52,7 +52,7 @@ UoP_Surrey_Venus_Collaboration/
 arXiv-*/
 *.tex
 
-# ---- MATLAB sources (ported to oqs_dynamics.py) ----
+# ---- MATLAB sources (ported to open_quantum_dynamics.py) ----
 LindbladCodes/
 
 # ---- Bulk data: trajectories, volumetric densities, QM I/O ----
@@ -95,14 +95,14 @@ TeraChem_UserGuide*.txt
 # guard against an accidental `git add`. To publish another script, add a
 # matching `!name.py` line.
 *.py
-!BuildDimer.py
-!run_dimer_minimise.py
-!run_dimer_nvt.py
-!terachem_full_pipeline.py
+!build_dimer.py
+!minimise_dimer.py
+!run_nvt.py
+!qmmm_tddft_pipeline.py
 !coupling_core.py
-!sample_coupling_md.py
-!lineshape_cd.py
-!multipole_decomposition.py
-!oqs_dynamics.py
-!run_paper_pipeline.py
-!make_steom_matched_density.py
+!coupling_ensemble.py
+!absorption_cd_spectra.py
+!multipole_analysis.py
+!open_quantum_dynamics.py
+!reproduce_paper.py
+!align_steom_density.py

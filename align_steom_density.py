@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-make_steom_matched_density.py
+align_steom_density.py
 
 Place the STEOM-CCSD spec-normalised transition density into the SAME coordinate
 frame the TeraChem/TDDFT coupling pipeline uses, so the Davydov coupling J can be
@@ -14,7 +14,7 @@ anionic monomer (the frame the STEOM density was built in) and the "old" monomer
 A pure rotation+translation preserves |mu|.
 
 Usage:
-    python make_steom_matched_density.py \
+    python align_steom_density.py \
         --density   neo_model/orca_steom/steom_transdens_specnorm.npz \
         --anion-pdb tc_simple_anionic/monomer_relaxed.pdb \
         --old-pdb   tc_simple_old/classical_relaxed.pdb \

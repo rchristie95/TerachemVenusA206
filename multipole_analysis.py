@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 r"""
-multipole_decomposition.py  --  Multipole decomposition of the excitonic coupling.
+multipole_analysis.py  --  Multipole decomposition of the excitonic coupling.
 
 Reviewer item 3 (R4 explicit, R1 conceptual): decompose the factor-of-~5.6
 enhancement of the full Transition Density Coupling (J_TDC = 74.38 cm^-1) over
@@ -25,16 +25,16 @@ Method (primitive Cartesian multipole expansion of the Coulomb interaction):
 
 Reuses coupling_core.py (read_dx, get_super_matrices_with_pymol,
 apply_pymol_matrix, calculate_coupling, ...) for the real-data path, identical
-to terachem_full_pipeline.py Stage 3.
+to qmmm_tddft_pipeline.py Stage 3.
 
 Run the built-in self-test (no PyMOL / GPU needed):
-    python multipole_decomposition.py --self-test
+    python multipole_analysis.py --self-test
 
 Real data:
-    python multipole_decomposition.py --workdir tc_tddft_old_current \
+    python multipole_analysis.py --workdir tc_tddft_old_current \
         --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb
 
-Outputs (in --out): multipole_decomposition.csv, Fig_Multipole_Decomposition.pdf
+Outputs (in --out): multipole_analysis.csv, Fig_Multipole_Decomposition.pdf
 """
 
 import argparse
@@ -338,7 +338,7 @@ def main(argv=None):
     print(f"  PDA reference   = {pda: .3f}")
     print(f"  TDC / PDA       = {enhancement: .2f}x")
 
-    csv_path = args.out / "multipole_decomposition.csv"
+    csv_path = args.out / "multipole_analysis.csv"
     fig_path = args.out / "Fig_Multipole_Decomposition.pdf"
     write_csv(terms, cumulative, tdc, pda, enhancement, csv_path)
     try:

@@ -20,18 +20,18 @@ This repository contains scripts to:
 | File | Description |
 |------|-------------|
 | `1MYW.pdb` | Input crystal structure of Venus YFP (monomer) |
-| `BuildDimer.py` | Constructs the closest crystallographic dimer from SMTRY symmetry records |
+| `build_dimer.py` | Constructs the closest crystallographic dimer from SMTRY symmetry records |
 | `venus_dimer.pdb` | Pre-built dimer output (chains A and B) |
-| `run_dimer_minimise.py` | OpenMM classical minimisation of the dimer with trajectory rendering |
-| `run_dimer_nvt.py` | OpenMM NVT MD simulation of the dimer with trajectory rendering |
-| `terachem_full_pipeline.py` | Full standalone QM/MM pipeline: protonation → solvation → QM boundary → TDDFT → Davydov coupling |
-| `run_paper_pipeline.py` | **One-shot orchestrator** reproducing all numerical paper data: TDDFT (TeraChem, GPU) + STEOM-CCSD (ORCA, CPU) + EOM-CCSD(fT)/ADC(2) doubles/triples (Q-Chem) + static and thermal-NVT Davydov coupling. Config block at the top (seed, ε, frames, per-stage cache reuse); writes `paper_data_summary.json` |
-| `make_steom_matched_density.py` | Places the STEOM transition density into the dimer-chain coordinate frame (rigid CR2 Kabsch fit) so the STEOM and TDDFT couplings are evaluated at identical geometry |
+| `minimise_dimer.py` | OpenMM classical minimisation of the dimer with trajectory rendering |
+| `run_nvt.py` | OpenMM NVT MD simulation of the dimer with trajectory rendering |
+| `qmmm_tddft_pipeline.py` | Full standalone QM/MM pipeline: protonation → solvation → QM boundary → TDDFT → Davydov coupling |
+| `reproduce_paper.py` | **One-shot orchestrator** reproducing all numerical paper data: TDDFT (TeraChem, GPU) + STEOM-CCSD (ORCA, CPU) + EOM-CCSD(fT)/ADC(2) doubles/triples (Q-Chem) + static and thermal-NVT Davydov coupling. Config block at the top (seed, ε, frames, per-stage cache reuse); writes `paper_data_summary.json` |
+| `align_steom_density.py` | Places the STEOM transition density into the dimer-chain coordinate frame (rigid CR2 Kabsch fit) so the STEOM and TDDFT couplings are evaluated at identical geometry |
 | `coupling_core.py` | Reusable, OpenMM-free core: transition-density I/O (`read_dx`), the GPU Coulomb coupling routine (`calculate_coupling`), PyMOL site transforms, and excited-state selection. Imported by the pipeline and all analysis scripts below |
-| `sample_coupling_md.py` | Conformational sampling of the coupling: `J` over an MD ensemble → mean ± std + histogram |
-| `lineshape_cd.py` | Excitonic absorption + circular-dichroism (CD) lineshapes from `J` + dephasing, overlaid on the experimental Davydov splitting |
-| `multipole_decomposition.py` | Decomposes the TDC-over-PDA enhancement into dipole–dipole / dipole–quadrupole / quadrupole–quadrupole contributions |
-| `oqs_dynamics.py` | Open-quantum-system dynamics (Lindblad ME + stochastic Schrödinger equation, Debye-screened `J(t)`); regenerates the dynamics figures and runs T₂*/dielectric sensitivity sweeps. Python port of the MATLAB in `LindbladCodes/` |
+| `coupling_ensemble.py` | Conformational sampling of the coupling: `J` over an MD ensemble → mean ± std + histogram |
+| `absorption_cd_spectra.py` | Excitonic absorption + circular-dichroism (CD) lineshapes from `J` + dephasing, overlaid on the experimental Davydov splitting |
+| `multipole_analysis.py` | Decomposes the TDC-over-PDA enhancement into dipole–dipole / dipole–quadrupole / quadrupole–quadrupole contributions |
+| `open_quantum_dynamics.py` | Open-quantum-system dynamics (Lindblad ME + stochastic Schrödinger equation, Debye-screened `J(t)`); regenerates the dynamics figures and runs T₂*/dielectric sensitivity sweeps. Python port of the MATLAB in `LindbladCodes/` |
 | `visualise_dimer.pml` | PyMOL script for visualising TDDFT transition/difference densities on the dimer |
 
 ## Dependencies
@@ -63,7 +63,7 @@ To regenerate all of the paper's **numerical** data (site energies, doubles/trip
 character, and the static + thermal Davydov couplings) in a single command:
 
 ```bash
-python run_paper_pipeline.py            # all stages reuse cached heavy outputs by default
+python reproduce_paper.py            # all stages reuse cached heavy outputs by default
 ```
 
 Controls live in a config block at the top of the script (and mirror to CLI flags):
@@ -88,7 +88,7 @@ PyMOL + the OpenCL coupling backend); STEOM recompute additionally needs ORCA + 
 ### 1. Build the dimer
 
 ```bash
-python BuildDimer.py
+python build_dimer.py
 # Outputs: venus_dimer.pdb
 ```
 
@@ -96,19 +96,19 @@ python BuildDimer.py
 
 ```bash
 # Energy minimisation
-python run_dimer_minimise.py
+python minimise_dimer.py
 
 # NVT MD (production run)
-python run_dimer_nvt.py
+python run_nvt.py
 ```
 
 ### 3. Run the full QM/MM pipeline
 
 ```bash
-python terachem_full_pipeline.py --pdb venus_dimer.pdb
+python qmmm_tddft_pipeline.py --pdb venus_dimer.pdb
 ```
 
-Key toggles at the top of `terachem_full_pipeline.py`:
+Key toggles at the top of `qmmm_tddft_pipeline.py`:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -125,27 +125,27 @@ The script auto-detects the most recent TDDFT output directory and loads transit
 
 ## Ensemble & spectroscopic analysis
 
-These scripts build on the single-point pipeline to characterise the coupling distribution, its spectroscopic signature, its multipole origin, and the dimer's open-system dynamics. They share `coupling_core.py`, and all but the MD sampler run without OpenMM/TeraChem (they need only NumPy, SciPy, and Matplotlib; `sample_coupling_md.py` additionally needs PyMOL, and its `--mode full` needs TeraChem).
+These scripts build on the single-point pipeline to characterise the coupling distribution, its spectroscopic signature, its multipole origin, and the dimer's open-system dynamics. They share `coupling_core.py`, and all but the MD sampler run without OpenMM/TeraChem (they need only NumPy, SciPy, and Matplotlib; `coupling_ensemble.py` additionally needs PyMOL, and its `--mode full` needs TeraChem).
 
 ```bash
 # 1. Coupling distribution over an MD trajectory (mean ± std + histogram)
-python sample_coupling_md.py --traj tc_dimer_nvt/dimer_nvt_trajectory.pdb \
+python coupling_ensemble.py --traj tc_dimer_nvt/dimer_nvt_trajectory.pdb \
     --workdir tc_tddft_old_current --monomer tc_simple_old/classical_relaxed.pdb \
     --n-frames 100 --mode rigid
 #    -> coupling_sampling_out/{coupling_samples.csv, coupling_distribution.json, Fig_Coupling_Histogram.pdf}
 
 # 2. Absorption + CD lineshape (inhomogeneous width taken from step 1's distribution)
-python lineshape_cd.py --distribution coupling_sampling_out/coupling_distribution.json
+python absorption_cd_spectra.py --distribution coupling_sampling_out/coupling_distribution.json
 #    -> lineshape_out/{Fig_Absorption_Spectrum.pdf, Fig_CD_Spectrum.pdf, lineshape_data.csv}
 
 # 3. Multipole decomposition of the TDC-over-PDA enhancement (validate first)
-python multipole_decomposition.py --self-test
-python multipole_decomposition.py --workdir tc_tddft_old_current \
+python multipole_analysis.py --self-test
+python multipole_analysis.py --workdir tc_tddft_old_current \
     --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb
-#    -> multipole_out/{multipole_decomposition.csv, Fig_Multipole_Decomposition.pdf}
+#    -> multipole_out/{multipole_analysis.csv, Fig_Multipole_Decomposition.pdf}
 
 # 4. Open-system dynamics: regenerate figures + sensitivity sweeps
-python oqs_dynamics.py --all
+python open_quantum_dynamics.py --all
 #    -> oqs_out/{Fig_Coupling, Fig_SSE_*, Fig_ME_*, Fig_Bloch_Grid, Fig_T2_Sweep, Fig_Dielectric_Sweep}.pdf
 ```
 

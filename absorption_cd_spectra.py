@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 r"""
-lineshape_cd.py  --  Excitonic absorption + circular-dichroism (CD) lineshapes.
+absorption_cd_spectra.py  --  Excitonic absorption + circular-dichroism (CD) lineshapes.
 
 Reviewer item 2 (raised by three referees): the open-quantum-systems section is
 "illustrative" and disconnected from the quantum chemistry, and no spectroscopic
@@ -18,7 +18,7 @@ Physics (degenerate excitonic dimer, |1> = |e1 g2>, |2> = |g1 e2>):
   - Broadening:
         * homogeneous  (Lorentzian HWHM)  gamma_cm = 1 / (2 pi c T2*)   from dephasing
         * inhomogeneous (Gaussian sigma)   sigma_cm = std(J)             from the MD
-          coupling distribution (sample_coupling_md.py -> coupling_distribution.json)
+          coupling distribution (coupling_ensemble.py -> coupling_distribution.json)
     combined as a Voigt profile per band. The two reviewer additions reinforce
     each other: the spread in J from item 1 IS the inhomogeneous broadening here.
 
@@ -133,7 +133,7 @@ def main(argv=None):
     p.add_argument("--E0", type=float, default=18437.0, help="Monomer site energy (cm^-1).")
     p.add_argument("--t2-star-fs", type=float, default=60.0, help="Pure-dephasing time T2* (fs).")
     p.add_argument("--distribution", type=Path, default=None,
-                   help="coupling_distribution.json from sample_coupling_md.py "
+                   help="coupling_distribution.json from coupling_ensemble.py "
                         "(sets J = mean and the inhomogeneous Gaussian width = std).")
     p.add_argument("--sigma-cm", type=float, default=None,
                    help="Override inhomogeneous Gaussian std (cm^-1).")

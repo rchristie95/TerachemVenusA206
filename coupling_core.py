@@ -3,15 +3,15 @@
 coupling_core.py
 
 Pure (numpy / numba / pyopencl / pymol) building blocks for the Transition
-Density Coupling (TDC) analysis, factored out of terachem_full_pipeline.py so
+Density Coupling (TDC) analysis, factored out of qmmm_tddft_pipeline.py so
 that lightweight analysis scripts can reuse them WITHOUT importing OpenMM /
-PDBFixer (which terachem_full_pipeline.py loads at module import time).
+PDBFixer (which qmmm_tddft_pipeline.py loads at module import time).
 
 Nothing in this module imports openmm. The numba/pyopencl/pymol dependencies are
 all imported lazily or behind try/except, so importing this module is cheap and
 safe on machines without a GPU.
 
-terachem_full_pipeline.py imports every public name defined here, so the
+qmmm_tddft_pipeline.py imports every public name defined here, so the
 Davydov-coupling pipeline behaviour is unchanged by this extraction.
 """
 

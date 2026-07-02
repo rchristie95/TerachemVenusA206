@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-sample_coupling_md.py  --  Conformational sampling of the Davydov coupling J.
+coupling_ensemble.py  --  Conformational sampling of the Davydov coupling J.
 
 Reviewer item 1 (the criticism that sank the JPCL submission): the reported
 J = 74.38 cm^-1 comes from a single minimised geometry. A protein environment
 makes a single frame indefensible. This script samples J over an ensemble of
 MD snapshots and reports J as mean +/- std with a histogram, converting the
 weakness into a result (the spread is the static + dynamic disorder that feeds
-the dephasing / lineshape analysis in lineshape_cd.py).
+the dephasing / lineshape analysis in absorption_cd_spectra.py).
 
 Two modes (configurable via --mode):
 
@@ -21,21 +21,21 @@ Two modes (configurable via --mode):
 
   full   (rigorous, GPU + TeraChem heavy):
         For a --subset of frames, re-run the whole QM/MM TDDFT->TDC pipeline
-        (terachem_full_pipeline.py) on the frame geometry. Used to validate the
+        (qmmm_tddft_pipeline.py) on the frame geometry. Used to validate the
         rigid approximation on a handful of frames. Requires TeraChem + OpenMM.
 
 All heavy numerics reuse coupling_core.py (read_dx, calculate_coupling,
 get_super_matrices_with_pymol, apply_pymol_matrix, transition_dipole_au, ...),
-identical to terachem_full_pipeline.py Stage 3, so a single-frame run of this
+identical to qmmm_tddft_pipeline.py Stage 3, so a single-frame run of this
 script reproduces the pipeline's J.
 
 Outputs (in --out, default `coupling_sampling_out/`):
   - coupling_samples.csv         per-frame J, J_PDA, dipole angle, separation
-  - coupling_distribution.json   {mean, std, n, samples, ...}  (read by lineshape_cd.py)
+  - coupling_distribution.json   {mean, std, n, samples, ...}  (read by absorption_cd_spectra.py)
   - Fig_Coupling_Histogram.pdf   histogram of J with mean +/- std
 
 Example:
-  python sample_coupling_md.py --traj tc_dimer_nvt/dimer_nvt_trajectory.pdb \\
+  python coupling_ensemble.py --traj tc_dimer_nvt/dimer_nvt_trajectory.pdb \\
       --workdir tc_tddft_old_current --monomer tc_simple_old/classical_relaxed.pdb \\
       --n-frames 100 --mode rigid
 """
@@ -133,7 +133,7 @@ def coupling_for_frame(frame_dimer_pdb, monomer_pdb, pts_opt, q_opt, epsilon, ba
     Compute J (TDC) and the point-dipole estimate J_PDA for one dimer frame,
     re-using the fixed monomer transition density (rigid-density approximation).
 
-    Mirrors terachem_full_pipeline.stage3_main lines ~3275-3331.
+    Mirrors qmmm_tddft_pipeline.stage3_main lines ~3275-3331.
 
     Returns a dict of per-frame observables, or None if the PyMOL alignment failed.
     """
@@ -186,12 +186,12 @@ J_LINE_RE = re.compile(r"J:\s*[-\d.eE+]+\s*Hartree\s*\(\s*([-\d.eE+]+)\s*cm")
 def coupling_for_frame_full(frame_dimer_pdb, out_dir, pipeline_args, python_exe):
     """
     Run the complete QM/MM TDDFT->TDC pipeline on a single dimer frame by
-    invoking terachem_full_pipeline.py as a subprocess in its own working dir,
+    invoking qmmm_tddft_pipeline.py as a subprocess in its own working dir,
     then parse the printed `J: ... cm^-1` line. Returns J in cm^-1 or None.
     """
     cmd = [
         python_exe,
-        str(Path(__file__).with_name("terachem_full_pipeline.py")),
+        str(Path(__file__).with_name("qmmm_tddft_pipeline.py")),
         "--cwd", str(out_dir),
     ]
     cmd += pipeline_args
@@ -267,7 +267,7 @@ def write_csv(rows, path):
 def parse_args(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--traj", type=Path, required=True,
-                   help="Multi-MODEL dimer trajectory PDB (from run_dimer_nvt.py).")
+                   help="Multi-MODEL dimer trajectory PDB (from run_nvt.py).")
     p.add_argument("--monomer", type=Path, default=Path("tc_simple_old/classical_relaxed.pdb"),
                    help="Monomer reference PDB (chain A) for the super alignment.")
     p.add_argument("--workdir", type=Path, default=Path("tc_tddft_old_current"),

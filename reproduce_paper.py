@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-run_paper_pipeline.py — one-shot reproduction of the numerical data in the
+reproduce_paper.py — one-shot reproduction of the numerical data in the
 Venus_A206 excitonic-coupling paper.
 
 Chains the existing tools into a single, reproducible, reuse-aware orchestrator:
@@ -198,7 +198,7 @@ def parse_terachem_all(dirs):
 
 
 def coupling_summary(out_dir):
-    """Read a sample_coupling_md.py output distribution.json."""
+    """Read a coupling_ensemble.py output distribution.json."""
     j = REPO / out_dir / "coupling_distribution.json"
     if not j.exists():
         return None
@@ -232,8 +232,8 @@ def preflight(args):
 
 def stage_tddft(args):
     if not args.reuse["tddft"]:
-        log("  TDDFT recompute requested — invoking terachem_full_pipeline stage2 (GPU).")
-        run([PY, "terachem_full_pipeline.py", "--skip-simple", "--skip-coupling",
+        log("  TDDFT recompute requested — invoking qmmm_tddft_pipeline stage2 (GPU).")
+        run([PY, "qmmm_tddft_pipeline.py", "--skip-simple", "--skip-coupling",
              "--skip-visualize"], "tddft_stage2.log", cwd=REPO)
     return {"site_energies": parse_terachem_all(TDDFT_DIRS),
             "note": "single-excitation reference; misses the doubles/triples character"}
@@ -300,7 +300,7 @@ def stage_density(args):
         log(f"  reusing matched STEOM density {STEOM_MATCHED.name}")
         return {"matched_density": str(STEOM_MATCHED.relative_to(REPO)), "rebuilt": False}
     log("  building matched STEOM density (Kabsch into the dimer-chain frame)")
-    rc, tail = run([PY, "make_steom_matched_density.py",
+    rc, tail = run([PY, "align_steom_density.py",
                     "--density", str(STEOM_SPECNORM),
                     "--anion-pdb", ANION_MONOMER, "--old-pdb", OLD_MONOMER,
                     "--out", str(STEOM_MATCHED)], "match_density.log", cwd=REPO)
@@ -309,7 +309,7 @@ def stage_density(args):
 
 
 def _sample_coupling(out_dir, traj, monomer, density, n_frames, args, random=False):
-    cmd = [PY, "sample_coupling_md.py", "--traj", traj, "--monomer", monomer,
+    cmd = [PY, "coupling_ensemble.py", "--traj", traj, "--monomer", monomer,
            "--density", str(density), "--mode", "rigid",
            "--backend", args.backend, "--epsilon", str(args.eps),
            "--n-frames", str(n_frames), "--out", out_dir]
