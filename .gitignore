@@ -106,3 +106,7 @@ TeraChem_UserGuide*.txt
 !open_quantum_dynamics.py
 !reproduce_paper.py
 !align_steom_density.py
+
+# ---- Sonification videos for the openquantumsonification channel ----
+!sonification/
+!sonification/**
