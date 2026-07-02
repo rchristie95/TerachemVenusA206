@@ -1,0 +1,25 @@
+# Conda environment for the open-source dependencies of the Venus A206
+# excitonic-coupling pipeline.  Create with:
+#
+#     conda env create -f environment.yml
+#     conda activate venus_qmmm
+#
+# The QM back-ends are separate, externally licensed packages and are NOT
+# installed here: TeraChem (TDDFT, GPU), ORCA 6.1 (DLPNO-STEOM-CCSD, CPU) and
+# Q-Chem (EOM-CCSD(fT)/ADC(2)).  Install and license them separately and make
+# their executables available on PATH before running the STEOM/EOM stages.
+name: venus_qmmm
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - openmm>=8.0
+  - pdbfixer
+  - numpy
+  - scipy
+  - matplotlib
+  - numba          # GPU (CUDA) Coulomb kernel; falls back to CPU/PyOpenCL
+  - pyopencl       # GPU (OpenCL) Coulomb kernel used on this project's RTX 4080
+  - pymol-open-source
+  - ffmpeg         # optional: trajectory video rendering
+  - pip

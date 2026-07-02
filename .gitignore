@@ -1,8 +1,108 @@
-# LaTeX paper folder
-UoP_Surrey_Venus_Collaboration/
+# ============================================================
+#  Venus_A206 excitonic-coupling pipeline — .gitignore
+#  Tracked (published): the curated pipeline/analysis code, the two
+#  input structures (1MYW.pdb, venus_dimer.pdb), Structure.png,
+#  visualise_dimer.pml, README. Everything below is excluded — the
+#  generated QM/MM data alone exceeds 150 GB and regenerates from the
+#  pipeline; manuscript sources, private notes and third-party/
+#  proprietary material are not redistributed.
+# ============================================================
 
-# Caches
-.ccd_cache/
-.ruff_cache/
+# ---- Python / caches ----
 __pycache__/
 *.pyc
+.ipynb_checkpoints/
+.ruff_cache/
+.ccd_cache/
+
+# ---- Large external installs & archives (keep local, never upload) ----
+orca_*/
+*.tar.xz
+*.tar.gz
+
+# ---- ORCA / Q-Chem QM scratch & outputs (100+ GB) ----
+neo_model/
+qchem_validation/
+resp_cr2/
+*.tmp
+*.tmp.*
+
+# ---- TeraChem / OpenMM working & output directories ----
+tc_*/
+anionic_build/
+
+# ---- Generated analysis output ----
+coupling_sampling*/
+coupling_paper_*/
+pipeline_logs/
+paper_data_summary.json
+lineshape_out/
+multipole_out/
+oqs_out/
+plots/
+plots_steom/
+videos/
+*.mp4
+
+# ---- Logs ----
+*.log
+
+# ---- Manuscript / paper sources (not part of the code release) ----
+UoP_Surrey_Venus_Collaboration/
+arXiv-*/
+*.tex
+
+# ---- MATLAB sources (ported to oqs_dynamics.py) ----
+LindbladCodes/
+
+# ---- Bulk data: trajectories, volumetric densities, QM I/O ----
+# Keep only the two canonical input structures; ignore all other PDBs.
+*.pdb
+!1MYW.pdb
+!venus_dimer.pdb
+*.xyz
+*.dx
+*.cube
+*.npz
+*.pse
+*.gbw
+*.molden
+*.chk
+
+# ---- Proprietary / third-party docs & PDFs (do not redistribute) ----
+*.pdf
+TeraChem_UserGuide*.txt
+
+# ---- Working text notes (LLM handoffs, findings) and stray text ----
+*.txt
+!requirements.txt
+
+# ---- Shell runner scripts (exploratory) ----
+*.sh
+
+# ---- PyMOL scripts (keep only the published one) ----
+*.pml
+!visualise_dimer.pml
+
+# ---- Images (keep only the published figure) ----
+*.png
+!Structure.png
+
+# ---- Python: publish only the curated pipeline/analysis scripts. ----
+# Exploratory/working scripts (build_steom_*, make_*, compute_*, the
+# render/prepare helpers, tests/, etc.) stay local. Already-tracked files
+# are unaffected by these patterns; the rules keep `git status` clean and
+# guard against an accidental `git add`. To publish another script, add a
+# matching `!name.py` line.
+*.py
+!BuildDimer.py
+!run_dimer_minimise.py
+!run_dimer_nvt.py
+!terachem_full_pipeline.py
+!coupling_core.py
+!sample_coupling_md.py
+!lineshape_cd.py
+!multipole_decomposition.py
+!oqs_dynamics.py
+!run_paper_pipeline.py
+!make_steom_matched_density.py

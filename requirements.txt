@@ -1,0 +1,11 @@
+# Pip dependencies for the Venus A206 excitonic-coupling pipeline.
+#   pip install -r requirements.txt
+#
+# NOTE: OpenMM, PDBFixer and PyMOL are most reliably installed via conda
+# (see environment.yml).  The QM back-ends (TeraChem, ORCA 6.1, Q-Chem) are
+# separate, externally licensed packages and are not installable via pip.
+numpy
+scipy
+matplotlib
+numba
+pyopencl

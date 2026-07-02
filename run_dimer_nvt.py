@@ -1060,10 +1060,22 @@ def parse_args(argv=None):
         help="Enable addSolvent step (periodic box + ions) (default: enabled)",
     )
     parser.add_argument("--ionic-strength-m", type=float, default=0.15, help="Ionic strength (M)")
+    parser.add_argument("--seed", type=int, default=20260618,
+                        help="Random seed for the Langevin integrator (reproducible NVT)")
     parser.add_argument("--temperature-k", type=float, default=300, help="NVT temperature (K)")
     parser.add_argument("--friction-ps", type=float, default=1.0, help="Langevin friction (1/ps)")
     parser.add_argument("--timestep-fs", type=float, default=2.0, help="NVT timestep (fs)")
     parser.add_argument("--nvt-steps", type=int, default=100000, help="NVT MD steps")
+    parser.add_argument(
+        "--restrain-interface",
+        action="store_true",
+        help="Tether the two CR2 chromophore centroids with a flat-bottom restraint "
+             "to sample fluctuations about the (weak A206) dimer interface without dissociation",
+    )
+    parser.add_argument("--restrain-tol-nm", type=float, default=0.25,
+                        help="Half-width of the flat-bottom CR2-CR2 restraint (nm; default 0.25 = 2.5 A)")
+    parser.add_argument("--restrain-k", type=float, default=5000.0,
+                        help="Force constant beyond the flat bottom (kJ/mol/nm^2)")
     parser.add_argument("--minimize-iters", type=int, default=10000, help="Max minimization iterations")
     parser.add_argument("--platform", default="CUDA", help="OpenMM platform (default: CUDA)")
     parser.add_argument("--cuda-device", default="0", help="CUDA device index")
@@ -1293,6 +1305,39 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         ignoreExternalBonds=args.ignore_external_bonds,
     )
 
+    # Optional flat-bottom restraint on the CR2-CR2 chromophore-centroid distance.
+    # The Venus A206 dimer interface is weak; in unrestrained bulk solvent the
+    # crystal-contact dimer drifts apart, so to sample thermal fluctuations
+    # *about the bound interface* we tether the two chromophore centroids within
+    # +/- tol of their initial separation (no penalty inside the window).
+    if getattr(args, "restrain_interface", False):
+        cr2_groups = []
+        for residue in modeller.topology.residues():
+            if residue.name == "CR2":
+                cr2_groups.append([atom.index for atom in residue.atoms()])
+        if len(cr2_groups) != 2:
+            raise RuntimeError(
+                f"Interface restraint needs exactly 2 CR2 residues; found {len(cr2_groups)}.")
+        pos_nm = np.array(modeller.positions.value_in_unit(unit.nanometer))
+        c0 = pos_nm[cr2_groups[0]].mean(axis=0)
+        c1 = pos_nm[cr2_groups[1]].mean(axis=0)
+        d0 = float(np.linalg.norm(c0 - c1))
+        tol = float(args.restrain_tol_nm)
+        k = float(args.restrain_k)
+        restraint = openmm.CustomCentroidBondForce(
+            2, "0.5*k*dr^2; dr=max(0, abs(distance(g1,g2)-d0)-tol)")
+        restraint.addPerBondParameter("d0")
+        restraint.addPerBondParameter("tol")
+        restraint.addPerBondParameter("k")
+        restraint.addGroup(cr2_groups[0])
+        restraint.addGroup(cr2_groups[1])
+        restraint.addBond([0, 1], [d0, tol, k])
+        if has_periodic_box:
+            restraint.setUsesPeriodicBoundaryConditions(True)
+        system.addForce(restraint)
+        print(f"    - Interface restraint: CR2-CR2 flat-bottom at d0={d0*10:.2f} A "
+              f"+/- {tol*10:.2f} A, k={k:.0f} kJ/mol/nm^2")
+
     platform = pick_platform(args.platform, strict=args.strict_gpu)
     properties: Dict[str, str] = {}
     if platform.getName() == "CUDA":
@@ -1306,6 +1351,9 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         args.friction_ps / unit.picosecond,
         args.timestep_fs * unit.femtoseconds,
     )
+    if getattr(args, "seed", None) is not None:
+        integrator.setRandomNumberSeed(int(args.seed))
+        print(f"    - Langevin integrator seed: {int(args.seed)}")
     try:
         simulation = Simulation(modeller.topology, system, integrator, platform, properties)
     except Exception as exc:

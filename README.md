@@ -25,6 +25,13 @@ This repository contains scripts to:
 | `run_dimer_minimise.py` | OpenMM classical minimisation of the dimer with trajectory rendering |
 | `run_dimer_nvt.py` | OpenMM NVT MD simulation of the dimer with trajectory rendering |
 | `terachem_full_pipeline.py` | Full standalone QM/MM pipeline: protonation → solvation → QM boundary → TDDFT → Davydov coupling |
+| `run_paper_pipeline.py` | **One-shot orchestrator** reproducing all numerical paper data: TDDFT (TeraChem, GPU) + STEOM-CCSD (ORCA, CPU) + EOM-CCSD(fT)/ADC(2) doubles/triples (Q-Chem) + static and thermal-NVT Davydov coupling. Config block at the top (seed, ε, frames, per-stage cache reuse); writes `paper_data_summary.json` |
+| `make_steom_matched_density.py` | Places the STEOM transition density into the dimer-chain coordinate frame (rigid CR2 Kabsch fit) so the STEOM and TDDFT couplings are evaluated at identical geometry |
+| `coupling_core.py` | Reusable, OpenMM-free core: transition-density I/O (`read_dx`), the GPU Coulomb coupling routine (`calculate_coupling`), PyMOL site transforms, and excited-state selection. Imported by the pipeline and all analysis scripts below |
+| `sample_coupling_md.py` | Conformational sampling of the coupling: `J` over an MD ensemble → mean ± std + histogram |
+| `lineshape_cd.py` | Excitonic absorption + circular-dichroism (CD) lineshapes from `J` + dephasing, overlaid on the experimental Davydov splitting |
+| `multipole_decomposition.py` | Decomposes the TDC-over-PDA enhancement into dipole–dipole / dipole–quadrupole / quadrupole–quadrupole contributions |
+| `oqs_dynamics.py` | Open-quantum-system dynamics (Lindblad ME + stochastic Schrödinger equation, Debye-screened `J(t)`); regenerates the dynamics figures and runs T₂*/dielectric sensitivity sweeps. Python port of the MATLAB in `LindbladCodes/` |
 | `visualise_dimer.pml` | PyMOL script for visualising TDDFT transition/difference densities on the dimer |
 
 ## Dependencies
@@ -32,17 +39,49 @@ This repository contains scripts to:
 - Python ≥ 3.9
 - [OpenMM](https://openmm.org/) ≥ 8.0
 - [PDBFixer](https://github.com/openmm/pdbfixer)
-- [NumPy](https://numpy.org/)
-- [TeraChem](https://www.petachem.com/) (licence required; used for QM/MM)
+- [NumPy](https://numpy.org/), [SciPy](https://scipy.org/), [Matplotlib](https://matplotlib.org/)
+- [Numba](https://numba.pydata.org/) and/or [PyOpenCL](https://documen.tician.de/pyopencl/) (GPU Coulomb kernel for the coupling)
 - [PyMOL](https://pymol.org/) (for visualisation)
 - FFmpeg (optional; for trajectory video rendering)
+
+External, separately licensed QM back-ends (each needed only for its stage):
+
+- [TeraChem](https://www.petachem.com/) — TDDFT reference (GPU)
+- [ORCA](https://www.faccts.de/orca/) 6.1 — DLPNO-STEOM-CCSD site energy and transition density (CPU)
+- [Q-Chem](https://www.q-chem.com/) — EOM-CCSD(fT)/ADC(2) doubles/triples validation (CPU)
 
 A conda environment covering the open-source dependencies can be created with:
 
 ```bash
-conda create -n venus_qmmm -c conda-forge python=3.11 openmm pdbfixer numpy
+conda env create -f environment.yml   # or: pip install -r requirements.txt
 conda activate venus_qmmm
 ```
+
+## One-shot reproduction
+
+To regenerate all of the paper's **numerical** data (site energies, doubles/triples
+character, and the static + thermal Davydov couplings) in a single command:
+
+```bash
+python run_paper_pipeline.py            # all stages reuse cached heavy outputs by default
+```
+
+Controls live in a config block at the top of the script (and mirror to CLI flags):
+
+| Setting | Default | Purpose |
+|---------|---------|---------|
+| `SEED` | `20260618` | reproducible NVT integrator + random frame selection |
+| `EPS` | `1.77` | optical dielectric screening for the coupling |
+| `N_FRAMES` | `200` | NVT frames in the thermal-coupling ensemble (`--n-frames`) |
+| `COUPLING_BACKEND` | `opencl` | GPU backend for the TDC kernel |
+| `REUSE[...]` | `True` | per-stage cache reuse; flip a stage off with `--run-nvt`, `--run-tddft`, `--run-steom`, `--run-eomft`, `--run-density` |
+
+By default every heavy stage (TeraChem TDDFT, the multi-hour ORCA STEOM-CCSD, the Q-Chem
+EOM-CCSD(fT)/ADC(2), and the NVT MD) **reuses cached output**; pass the matching `--run-*`
+flag to recompute one from scratch. Results are aggregated to `paper_data_summary.json`
+and printed as a table. Requires the `TeraChem` conda environment (OpenMM + TeraChem +
+PyMOL + the OpenCL coupling backend); STEOM recompute additionally needs ORCA + the
+`openmpi416` MPI environment, and EOM/ADC recompute needs Q-Chem.
 
 ## Quick start
 
@@ -84,6 +123,34 @@ pymol visualise_dimer.pml
 
 The script auto-detects the most recent TDDFT output directory and loads transition/difference density isosurfaces onto the dimer.
 
+## Ensemble & spectroscopic analysis
+
+These scripts build on the single-point pipeline to characterise the coupling distribution, its spectroscopic signature, its multipole origin, and the dimer's open-system dynamics. They share `coupling_core.py`, and all but the MD sampler run without OpenMM/TeraChem (they need only NumPy, SciPy, and Matplotlib; `sample_coupling_md.py` additionally needs PyMOL, and its `--mode full` needs TeraChem).
+
+```bash
+# 1. Coupling distribution over an MD trajectory (mean ± std + histogram)
+python sample_coupling_md.py --traj tc_dimer_nvt/dimer_nvt_trajectory.pdb \
+    --workdir tc_tddft_old_current --monomer tc_simple_old/classical_relaxed.pdb \
+    --n-frames 100 --mode rigid
+#    -> coupling_sampling_out/{coupling_samples.csv, coupling_distribution.json, Fig_Coupling_Histogram.pdf}
+
+# 2. Absorption + CD lineshape (inhomogeneous width taken from step 1's distribution)
+python lineshape_cd.py --distribution coupling_sampling_out/coupling_distribution.json
+#    -> lineshape_out/{Fig_Absorption_Spectrum.pdf, Fig_CD_Spectrum.pdf, lineshape_data.csv}
+
+# 3. Multipole decomposition of the TDC-over-PDA enhancement (validate first)
+python multipole_decomposition.py --self-test
+python multipole_decomposition.py --workdir tc_tddft_old_current \
+    --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb
+#    -> multipole_out/{multipole_decomposition.csv, Fig_Multipole_Decomposition.pdf}
+
+# 4. Open-system dynamics: regenerate figures + sensitivity sweeps
+python oqs_dynamics.py --all
+#    -> oqs_out/{Fig_Coupling, Fig_SSE_*, Fig_ME_*, Fig_Bloch_Grid, Fig_T2_Sweep, Fig_Dielectric_Sweep}.pdf
+```
+
+Extra dependencies for these scripts: [SciPy](https://scipy.org/) and [Matplotlib](https://matplotlib.org/) (`conda install -c conda-forge scipy matplotlib`).
+
 ## Citation
 
 If you use this code, please cite:
@@ -101,6 +168,18 @@ If you use this code, please cite:
 }
 ```
 
+## Data availability
+
+This repository ships the **code** plus the two input structures needed to start a
+run (`1MYW.pdb` and the pre-built `venus_dimer.pdb`). The large generated artefacts —
+TeraChem/ORCA working directories, MD trajectories, transition-density volumetric
+files (`.dx`/`.cube`/`.npz`), figures and videos — are **not** tracked (they exceed
+150 GB) and are excluded via `.gitignore`; they regenerate deterministically from the
+pipeline commands above. TeraChem and ORCA are third-party packages and are not
+redistributed here. The working directory names used in the example commands
+(`tc_dimer_nvt/`, `tc_tddft_old_current/`, `tc_simple_old/`, …) are created locally
+when you run the pipeline.
+
 ## License
 
-See [LICENSE](LICENSE) for details.
+No license file is currently included. Add a `LICENSE` (e.g. MIT) before publishing.
