@@ -17,14 +17,14 @@ figures, AND adds the reviewer-requested sensitivity sweeps (item 4):
                          -> Fig_T2_Sweep.pdf.
   * --sweep-eps        : vary the static (protein) dielectric (R3/R4 note eps=78
                          is wrong inside a beta-barrel) and show the central
-                         t=0 optical-limit coupling J(0)=74.38 cm^-1 is invariant
+                         t=0 optical-limit coupling J(0)=100 cm^-1 is invariant
                          to it -> Fig_Dielectric_Sweep.pdf.
   * --all              : everything.
 
 Model (energies in cm^-1, time in ps), from Combined.m:
   hbar = 5.308837 cm^-1*ps ; E1=E2=18437 ; eps_inf=1.77, eps_s=78, tau_D=8.3 ps
   1/eps(t) = 1/eps_s + (1/eps_inf - 1/eps_s) exp(-t/tau_D)
-  J(t)     = J_pref / eps factors  with  J_pref = J_opt * eps_inf,  J_opt=74.38
+  J(t)     = J_pref / eps factors  with  J_pref = J_opt * eps_inf,  J_opt=100
   H(t)     = [[E1, J(t)], [J(t), E2]] ;  U=(1/sqrt2)[[1,1],[1,-1]]
   ME (Lindblad pure dephasing, rate gamma=1/T2*):
       drho/dt = -(i/hbar)[H,rho] + dephasing(off-diagonals * -gamma)
@@ -47,7 +47,11 @@ E1 = E2 = 18437.0    # cm^-1
 EPS_INF = 1.77
 EPS_S = 78.0
 TAU_D = 8.3          # ps
-J_OPT = 74.38        # cm^-1 (optical-limit coupling at t=0)
+# Energy-minimised (single-geometry) STEOM transition-density coupling J_TDC(0), the actual
+# computed value from coupling_paper_steom_static/. The SSE/ME dynamics are DELIBERATELY driven
+# by this energy-minimised J(0) (not the thermal-ensemble mean of 96.4 cm^-1): the dynamics start
+# from the vertical excitation at the minimised t=0 geometry, before conformational sampling.
+J_OPT = 100.2018964942497   # cm^-1  (= 100.2 cm^-1; paper rounds to "100")
 T2_STAR = 0.060      # ps
 TF = 1.0             # ps
 DT = 1e-4            # ps
