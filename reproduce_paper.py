@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -46,6 +47,9 @@ SEED = 20260618                 # global reproducibility seed (NVT integrator, f
 EPS = 1.77                      # optical screening (matches the published TDDFT ensemble)
 N_FRAMES = 200                  # NVT frames for the thermal coupling ensemble
 COUPLING_BACKEND = "opencl"     # GPU backend for the TDC kernel (numba-CUDA is PTX-blocked here)
+ENGINE = "terachem"             # site-energy DFT engine: "terachem" (GPU) or "orca" (CPU).
+                                # "orca" runs ORCA TDDFT at the STEOM geometry AND skips Q-Chem,
+                                # giving a TeraChem-free, ORCA-only path (DFT + STEOM in one engine).
 
 REUSE = {                       # True = reuse cached outputs if present; False = recompute
     "nvt":     True,            # reuse dimer_nvt_restrained_clean.pdb
@@ -71,6 +75,16 @@ STEOM_OUT      = STEOM_DIR / "steom_phenol_svpd.out"
 STEOM_INP      = "steom_phenol_svpd.inp"             # arg to go_par.sh (run from STEOM_DIR)
 GO_PAR         = STEOM_DIR / "go_par.sh"
 
+# ORCA TDDFT (engine=orca): reuses the *identical* 44-atom STEOM geometry + point-charge
+# field, so the DFT and STEOM site energies are computed on exactly the same structure.
+ORCA_TDDFT_DIR = REPO / "neo_model/orca_dft"
+ORCA_TDDFT_INP = "tddft_wb97xd3.inp"
+ORCA_TDDFT_OUT = "tddft_wb97xd3.out"
+ORCA_BIN       = REPO / "orca_6_1_1_linux_x86-64_shared_openmpi418_nodmrg"
+OPENMPI_DIR    = Path("/home/robson/anaconda3/envs/openmpi416")  # openmpi4.1.6 for parallel ORCA
+STEOM_GEOM     = "geom_cthrp.xyz"                    # 44-atom CR2+Tyr203 phenol (shared with STEOM)
+STEOM_FIELD    = "field.pc"                          # ORCA point-charge embedding (shared with STEOM)
+
 TDDFT_DIRS = ["tc_tddft_old_current_current", "tc_tddft_prod_current",
               "tc_tddft_anionic_current", "tc_tddft_44"]
 TDDFT_THERMAL_JSON = "coupling_sampling_out/coupling_distribution.json"  # cached 65.3
@@ -88,6 +102,26 @@ LOG_DIR = REPO / "pipeline_logs"
 
 # Reference numbers (for provenance/labels only; never overwrite a freshly parsed value)
 PUBLISHED_TDDFT_STATIC_J = 74.38      # paper, single minimised geometry
+REFERENCE_TERACHEM_44_NM = 361.0      # tc_tddft_44 bright state (wb97xd3/6-311g**, TDA) — the
+                                      # like-for-like TeraChem number the ORCA TDDFT reproduces
+
+STAGES = ["tddft", "steom", "eom", "density", "static", "thermal"]  # ordered; for --stop-after
+
+# ORCA TDDFT reference input (engine=orca). Matches the TeraChem reference method
+# (wb97xd3 / 6-311G** / TDA) so the two engines are directly comparable, evaluated on the
+# identical 44-atom STEOM geometry + field. The reference TeraChem 44-atom run (tc_tddft_44)
+# used bare point-charge embedding with NO COSMO/PCM, so we match that (no %cpcm here). To add
+# a dielectric, insert e.g.  %cpcm  epsilon 78.39  refrac 1.33  end  and recompute.
+ORCA_TDDFT_INPUT = f"""! wB97X-D3 6-311G** RIJCOSX def2/J TightSCF
+%maxcore 2000
+%pal nprocs 8 end
+%tddft
+  tda true
+  nroots 5
+end
+%pointcharges "{STEOM_FIELD}"
+* xyzfile -1 1 {STEOM_GEOM}
+"""
 
 
 # ============================================================
@@ -112,8 +146,10 @@ def run(cmd, log_name, cwd=None, env=None):
 # ============================================================
 #  parsers (reuse path)
 # ============================================================
-def parse_orca_steom_spectrum(out_path):
-    """Bright (max-fosc) row of the ORCA STEOM absorption spectrum -> dict or None."""
+def _orca_abs_bright(out_path):
+    """Bright (max-fosc) row of an ORCA 'ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC
+    DIPOLE MOMENTS' block -> dict(ev, cm, nm, fosc, mu_au) or None. The table layout is
+    identical for STEOM and TDDFT in ORCA 6.1, so both parsers share this."""
     p = Path(out_path)
     if not p.exists():
         return None
@@ -121,11 +157,11 @@ def parse_orca_steom_spectrum(out_path):
     start = None
     for i, ln in enumerate(lines):
         if "ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE" in ln:
-            start = i
+            start = i  # take the last such block
     if start is None:
         return None
     rows = []
-    for ln in lines[start + 4: start + 30]:
+    for ln in lines[start + 4: start + 80]:
         m = re.match(r"\s*\d+-\d+\w+\s+->\s+\d+-\d+\w+\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+"
                      r"([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)", ln)
         if not m:
@@ -137,14 +173,32 @@ def parse_orca_steom_spectrum(out_path):
                      "mu_au": (dx**2 + dy**2 + dz**2) ** 0.5})
     if not rows:
         return None
-    bright = max(rows, key=lambda r: r["fosc"])
-    txt = "\n".join(lines)
+    return max(rows, key=lambda r: r["fosc"])
+
+
+def parse_orca_steom_spectrum(out_path):
+    """Bright (max-fosc) row of the ORCA STEOM absorption spectrum -> dict or None."""
+    bright = _orca_abs_bright(out_path)
+    if bright is None:
+        return None
+    txt = Path(out_path).read_text(errors="replace")
     # Success criterion for STEOM here is "the converged spectrum printed", NOT clean
     # termination: this calc reliably error-terminates in MDCI (the DoSTEOMNatTransOrb
     # post-step) *after* emitting the valid spectrum. Treat that as a converged result.
     bright["terminated_normally"] = "TERMINATED NORMALLY" in txt
     bright["mdci_error_after_spectrum"] = "error termination in MDCI" in txt
     bright["spectrum_converged"] = True  # we parsed a STEOM absorption block
+    return bright
+
+
+def parse_orca_tddft_spectrum(out_path):
+    """Bright (max-fosc) row of an ORCA TDDFT absorption spectrum -> dict or None.
+    Unlike STEOM, a TDDFT job is expected to terminate cleanly."""
+    bright = _orca_abs_bright(out_path)
+    if bright is None:
+        return None
+    txt = Path(out_path).read_text(errors="replace")
+    bright["terminated_normally"] = "ORCA TERMINATED NORMALLY" in txt
     return bright
 
 
@@ -235,8 +289,64 @@ def stage_tddft(args):
         log("  TDDFT recompute requested — invoking qmmm_tddft_pipeline stage2 (GPU).")
         run([PY, "qmmm_tddft_pipeline.py", "--skip-simple", "--skip-coupling",
              "--skip-visualize"], "tddft_stage2.log", cwd=REPO)
-    return {"site_energies": parse_terachem_all(TDDFT_DIRS),
+    return {"engine": "terachem",
+            "site_energies": parse_terachem_all(TDDFT_DIRS),
             "note": "single-excitation reference; misses the doubles/triples character"}
+
+
+def _orca_env():
+    """Environment for the shared/parallel ORCA build (mirrors go_par.sh)."""
+    env = os.environ.copy()
+    env["PATH"] = f"{OPENMPI_DIR}/bin:{ORCA_BIN}:" + env.get("PATH", "")
+    env["LD_LIBRARY_PATH"] = f"{OPENMPI_DIR}/lib:{ORCA_BIN}:" + env.get("LD_LIBRARY_PATH", "")
+    return env
+
+
+def _run_orca(inp_name, out_name, cwd, log_name):
+    """Run ORCA on inp_name in cwd, writing the ORCA output to cwd/out_name (ORCA prints
+    to stdout) and mirroring the tail into pipeline_logs/log_name. Returns (rc, tail)."""
+    LOG_DIR.mkdir(exist_ok=True)
+    out_path = Path(cwd) / out_name
+    log(f"  $ orca {inp_name}   (-> {out_name})")
+    with open(out_path, "w") as fh:
+        proc = subprocess.run([str(ORCA_BIN / "orca"), inp_name],
+                              cwd=str(cwd), env=_orca_env(),
+                              stdout=fh, stderr=subprocess.STDOUT, text=True)
+    tail = "\n".join(out_path.read_text(errors="replace").splitlines()[-15:])
+    (LOG_DIR / log_name).write_text(tail)
+    return proc.returncode, tail
+
+
+def stage_tddft_orca(args):
+    """ORCA TDDFT site energy (engine=orca): wB97X-D3/6-311G** (TDA) on the identical
+    44-atom STEOM geometry + point-charge field (geom_cthrp.xyz + field.pc). Directly
+    comparable to the cached TeraChem 44-atom run (tc_tddft_44 ~ 361 nm) and to the STEOM
+    site energy on the same structure — a TeraChem-free, ORCA-only DFT reference."""
+    ORCA_TDDFT_DIR.mkdir(parents=True, exist_ok=True)
+    staged = []
+    for f in (STEOM_GEOM, STEOM_FIELD):
+        src = STEOM_DIR / f
+        if src.exists():
+            shutil.copy2(src, ORCA_TDDFT_DIR / f)
+            staged.append(f)
+    (ORCA_TDDFT_DIR / ORCA_TDDFT_INP).write_text(ORCA_TDDFT_INPUT)
+    out = ORCA_TDDFT_DIR / ORCA_TDDFT_OUT
+    if args.reuse["tddft"] and out.exists():
+        log(f"  reusing cached ORCA TDDFT {out.name}")
+    else:
+        missing = [f for f in (STEOM_GEOM, STEOM_FIELD) if f not in staged]
+        if missing:
+            log(f"  [!] missing STEOM inputs to stage for ORCA TDDFT: {missing}")
+        log("  ORCA TDDFT — wB97X-D3/6-311G** (TDA) at the 44-atom STEOM geometry+field (CPU).")
+        _run_orca(ORCA_TDDFT_INP, ORCA_TDDFT_OUT, ORCA_TDDFT_DIR, "orca_tddft.log")
+    bright = parse_orca_tddft_spectrum(out)
+    return {"engine": "orca", "bright": bright,
+            "source": str(out.relative_to(REPO)) if out.exists() else None,
+            "reference_terachem_44_nm": REFERENCE_TERACHEM_44_NM,
+            "note": ("single-excitation ORCA TDDFT at the identical STEOM geometry/embedding; "
+                     "reproduces the TeraChem wb97xd3/6-311g** reference (tc_tddft_44) for a "
+                     "like-for-like DFT number and misses the doubles/triples character that "
+                     "STEOM captures.")}
 
 
 def stage_steom(args):
@@ -356,6 +466,10 @@ def parse_args(argv=None):
     p.add_argument("--eps", type=float, default=EPS)
     p.add_argument("--n-frames", type=int, default=N_FRAMES)
     p.add_argument("--backend", default=COUPLING_BACKEND, choices=["opencl", "gpu", "auto"])
+    p.add_argument("--engine", default=ENGINE, choices=["terachem", "orca"],
+                   help="site-energy DFT engine; 'orca' runs ORCA TDDFT and skips the Q-Chem stage")
+    p.add_argument("--stop-after", default=None, choices=STAGES,
+                   help="stop after this stage (quick checks; e.g. --stop-after steom)")
     # --run-X flips REUSE[X] to False (force recompute of that stage)
     for k in REUSE:
         p.add_argument(f"--run-{k}", action="store_true", help=f"recompute the {k} stage")
@@ -365,32 +479,67 @@ def parse_args(argv=None):
     return a
 
 
+def _finish(results, args):
+    """Write the summary + print the table (shared by normal end and --stop-after)."""
+    log("aggregate")
+    (REPO / args.out).write_text(json.dumps(results, indent=2))
+    _print_table(results)
+    log(f"wrote {args.out}")
+    return 0
+
+
+def _stopping(args, stage):
+    if args.stop_after == stage:
+        log(f"  --stop-after {stage}: stopping here (remaining stages unchanged from a full run).")
+        return True
+    return False
+
+
 def main(argv=None):
     args = parse_args(argv)
     log("=" * 60)
     log("Venus_A206 paper-data pipeline")
     log(f"  seed={args.seed} eps={args.eps} n_frames={args.n_frames} backend={args.backend}")
+    log(f"  engine={args.engine}  stop_after={args.stop_after}")
     log(f"  reuse={args.reuse}")
     log("=" * 60)
 
     results = {"config": {"seed": args.seed, "eps": args.eps, "n_frames": args.n_frames,
-                          "backend": args.backend, "reuse": args.reuse},
+                          "backend": args.backend, "engine": args.engine,
+                          "stop_after": args.stop_after, "reuse": args.reuse},
                "timestamp": datetime.now().isoformat()}
 
-    log("[0/7] preflight");                results["preflight"] = preflight(args)
-    log("[1/7] TDDFT site energy (GPU)");  results["tddft"] = stage_tddft(args)
-    log("[2/7] STEOM-CCSD (CPU)");         results["steom"] = stage_steom(args)
-    log("[3/7] EOM-CCSD(fT)/ADC(2) doubles+triples (Q-Chem)"); \
-        results["doubles_triples"] = stage_eom_triples(args)
-    log("[4/7] STEOM coupling density");   results["density"] = stage_density(args)
-    log("[5/7] static Davydov J (TDC)");   results["static_J"] = stage_static_J(args)
-    log("[6/7] thermal NVT J ensemble");   results["thermal_J"] = stage_thermal_J(args)
+    log("[preflight]"); results["preflight"] = preflight(args)
 
-    log("[7/7] aggregate")
-    (REPO / args.out).write_text(json.dumps(results, indent=2))
-    _print_table(results)
-    log(f"wrote {args.out}")
-    return 0
+    # --- TDDFT site energy (engine-dependent) ---
+    if args.engine == "orca":
+        log("[TDDFT] ORCA wB97X-D3/6-311G** (CPU)"); results["tddft"] = stage_tddft_orca(args)
+    else:
+        log("[TDDFT] TeraChem (GPU)");               results["tddft"] = stage_tddft(args)
+    if _stopping(args, "tddft"): return _finish(results, args)
+
+    log("[STEOM] DLPNO-STEOM-CCSD (CPU)");           results["steom"] = stage_steom(args)
+    if _stopping(args, "steom"): return _finish(results, args)
+
+    # --- EOM-CCSD(fT)/ADC(2) triples (Q-Chem) — skipped in the ORCA-only path ---
+    if args.engine == "orca":
+        log("[EOM] skipped (engine=orca): Q-Chem EOM-CCSD(fT)/ADC(2) omitted")
+        results["doubles_triples"] = {"skipped": True, "reason": "engine=orca",
+            "note": ("Q-Chem triples/doubles validation intentionally skipped in the ORCA-only "
+                     "path; see the terachem-engine run (or the paper) for the validated ladder.")}
+    else:
+        log("[EOM] EOM-CCSD(fT)/ADC(2) doubles+triples (Q-Chem)")
+        results["doubles_triples"] = stage_eom_triples(args)
+    if _stopping(args, "eom"): return _finish(results, args)
+
+    log("[density] STEOM coupling density");         results["density"] = stage_density(args)
+    if _stopping(args, "density"): return _finish(results, args)
+
+    log("[static J] static Davydov J (TDC)");        results["static_J"] = stage_static_J(args)
+    if _stopping(args, "static"): return _finish(results, args)
+
+    log("[thermal J] thermal NVT J ensemble");       results["thermal_J"] = stage_thermal_J(args)
+    return _finish(results, args)
 
 
 def _g(d, *keys, default=None):
@@ -403,31 +552,54 @@ def _g(d, *keys, default=None):
 
 def _print_table(r):
     print("\n" + "=" * 64)
-    print("  VENUS_A206 PAPER DATA — SUMMARY")
+    engine = _g(r, "config", "engine", default="terachem")
+    print(f"  VENUS_A206 PAPER DATA — SUMMARY   (engine={engine})")
     print("=" * 64)
-    for td in (_g(r, "tddft", "site_energies", default=[]) or []):
-        if "error" in td:
-            print(f"  TDDFT  S1 (GPU)        : {td['error']}")
-        else:
-            print(f"  TDDFT  S1 (GPU)        : {td['nm']} nm  f={td['fosc']}   [{td['dir']}]")
+
+    # --- TDDFT site energy: shape differs by engine ---
+    tdd = _g(r, "tddft", default={})
+    if "site_energies" in tdd:                         # TeraChem engine (per-geometry list)
+        for td in tdd["site_energies"] or []:
+            if "error" in td:
+                print(f"  TDDFT  S1 (TeraChem)   : {td['error']}")
+            else:
+                print(f"  TDDFT  S1 (TeraChem)   : {td['nm']} nm  f={td['fosc']}   [{td['dir']}]")
+    elif "bright" in tdd:                               # ORCA engine (single bright state)
+        b = tdd["bright"] or {}
+        ref = tdd.get("reference_terachem_44_nm")
+        refstr = f"   [TeraChem tc_tddft_44 ref: {ref} nm]" if ref else ""
+        print(f"  TDDFT  S1 (ORCA)       : {b.get('nm','?')} nm  f={b.get('fosc','?')}"
+              f"  |mu|={b.get('mu_au','?')} au{refstr}")
+
     st = _g(r, "steom", "bright")
-    print(f"  STEOM-CCSD S1 (CPU)    : {_g(st,'nm',default='?')} nm  f={_g(st,'fosc',default='?')}"
-          f"  |mu|={_g(st,'mu_au',default='?')} au")
-    lad = _g(r, "doubles_triples", "validated_ladder_eV", default={})
-    print(f"  Doubles/triples ladder : bare EOM-CCSD {lad.get('EOM_CCSD_bare','?')} -> "
-          f"EOM-CCSD(fT) {lad.get('EOM_CCSD_fT','?')} ~ STEOM {lad.get('STEOM_CCSD','?')} eV "
-          f"(ADC(2) {lad.get('ADC2_2p2h_doubles_pct','?')}% 2p2h)")
-    ftraw = _g(r, "doubles_triples", "raw_qchem", "eom_ccsd_fT", "excitation_eV")
-    print(f"  (cached Q-Chem fT roots: {ftraw}  — heterogeneous basis; reference ladder above)")
-    sj = _g(r, "static_J", "STEOM")
-    print(f"  Static J  STEOM        : {_g(sj,'J_mean',default='?')} cm^-1  (2|J|={_g(sj,'two_J',default='?')})")
-    print(f"  Static J  TDDFT (pub)  : {_g(r,'static_J','TDDFT_published','J')} cm^-1")
-    tj = _g(r, "thermal_J", "STEOM")
-    tjt = _g(r, "thermal_J", "TDDFT_cached")
-    print(f"  Thermal J STEOM (NVT)  : {_g(tj,'J_mean',default='?')} +/- {_g(tj,'J_std',default='?')}"
-          f"  (2|J|={_g(tj,'two_J',default='?')}, n={_g(tj,'n',default='?')})")
-    print(f"  Thermal J TDDFT (cache): {_g(tjt,'J_mean',default='?')} +/- {_g(tjt,'J_std',default='?')}"
-          f"  (2|J|={_g(tjt,'two_J',default='?')})")
+    if st is not None or "steom" in r:
+        print(f"  STEOM-CCSD S1 (CPU)    : {_g(st,'nm',default='?')} nm  f={_g(st,'fosc',default='?')}"
+              f"  |mu|={_g(st,'mu_au',default='?')} au")
+
+    # --- doubles/triples (may be skipped in the ORCA-only path, or absent if stopped early) ---
+    dt = _g(r, "doubles_triples", default=None)
+    if dt is not None:
+        if dt.get("skipped"):
+            print("  Doubles/triples        : skipped (engine=orca)")
+        else:
+            lad = dt.get("validated_ladder_eV", {})
+            print(f"  Doubles/triples ladder : bare EOM-CCSD {lad.get('EOM_CCSD_bare','?')} -> "
+                  f"EOM-CCSD(fT) {lad.get('EOM_CCSD_fT','?')} ~ STEOM {lad.get('STEOM_CCSD','?')} eV "
+                  f"(ADC(2) {lad.get('ADC2_2p2h_doubles_pct','?')}% 2p2h)")
+            ftraw = _g(dt, "raw_qchem", "eom_ccsd_fT", "excitation_eV")
+            print(f"  (cached Q-Chem fT roots: {ftraw}  — heterogeneous basis; reference ladder above)")
+
+    if "static_J" in r:
+        sj = _g(r, "static_J", "STEOM")
+        print(f"  Static J  STEOM        : {_g(sj,'J_mean',default='?')} cm^-1  (2|J|={_g(sj,'two_J',default='?')})")
+        print(f"  Static J  TDDFT (pub)  : {_g(r,'static_J','TDDFT_published','J')} cm^-1")
+    if "thermal_J" in r:
+        tj = _g(r, "thermal_J", "STEOM")
+        tjt = _g(r, "thermal_J", "TDDFT_cached")
+        print(f"  Thermal J STEOM (NVT)  : {_g(tj,'J_mean',default='?')} +/- {_g(tj,'J_std',default='?')}"
+              f"  (2|J|={_g(tj,'two_J',default='?')}, n={_g(tj,'n',default='?')})")
+        print(f"  Thermal J TDDFT (cache): {_g(tjt,'J_mean',default='?')} +/- {_g(tjt,'J_std',default='?')}"
+              f"  (2|J|={_g(tjt,'two_J',default='?')})")
     print("=" * 64 + "\n")
 
 
