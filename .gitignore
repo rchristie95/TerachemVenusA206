@@ -110,3 +110,7 @@ TeraChem_UserGuide*.txt
 # ---- Sonification videos for the openquantumsonification channel ----
 !sonification/
 !sonification/**
+
+# ---- Public manuscript source (original JPCL submission; revision/diff kept in a private repo) ----
+!manuscript/
+!manuscript/**
