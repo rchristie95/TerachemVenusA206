@@ -158,8 +158,94 @@ def solve_sse(p, tf=TF, dt=DT, psi0=None, seed=20260618):
 def _mpl():
     import matplotlib
     matplotlib.use("Agg")
+    import matplotlib as mpl
     import matplotlib.pyplot as plt
+    # LaTeX (Computer Modern) look without a usetex toolchain: cmr10 is the actual
+    # LaTeX body font and mathtext=cm is Computer Modern math.
+    mpl.rcParams.update({
+        "font.family": "serif",
+        "font.serif": ["cmr10", "STIXGeneral", "DejaVu Serif"],
+        "mathtext.fontset": "cm",
+        "mathtext.rm": "serif",
+        "axes.formatter.use_mathtext": True,
+        "axes.unicode_minus": False,
+        "font.size": 11, "axes.labelsize": 12, "axes.titlesize": 12,
+        "legend.fontsize": 11, "xtick.labelsize": 10, "ytick.labelsize": 10,
+        "axes.linewidth": 0.8, "lines.antialiased": True,
+    })
     return plt
+
+
+# Semantic palette (softened for print; site red/blue, adiabatic green/purple)
+_C_RHO11 = "#c0392b"    # site 1  rho_11
+_C_RHO22 = "#1f6aa5"    # site 2  rho_22
+_C_COH   = "#555555"    # coherence |rho_12|
+_C_BRIGHT = "#3a7d44"   # P_+  (bright)
+_C_DARK   = "#7b4397"   # P_-  (dark)
+_C_SSE = _C_RHO11       # SSE trajectory (red)
+_C_ME  = _C_RHO22       # ME curve (blue)
+
+
+def _style_2d(ax, xlabel, ylabel, tf):
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    for s in ("left", "bottom"):
+        ax.spines[s].set_color("0.35")
+    ax.tick_params(colors="0.35", length=3, width=0.8)
+    ax.grid(True, color="0.9", lw=0.6)
+    ax.set_axisbelow(True)
+    ax.set_xlim(0, tf); ax.set_ylim(-0.02, 1.02)
+    ax.set_xlabel(xlabel); ax.set_ylabel(ylabel)
+
+
+def _bloch_figure(plt, np, sse, me, out):
+    """Clean floating Bloch sphere: no 3D box/panes/ticks, faint sphere + great
+    circles, u/v/w axes with labels, SSE (red, on surface) and ME (blue, inward)."""
+    fig = plt.figure(figsize=(4.2, 3.4))          # same footprint as the 2D panels
+    ax = fig.add_subplot(111, projection="3d")
+    fig.subplots_adjust(left=0.0, right=1.0, bottom=0.0, top=1.0)
+    ax.set_axis_off()
+    try:
+        ax.set_box_aspect((1, 1, 1), zoom=1.18)   # enlarge sphere but leave room for labels
+    except TypeError:
+        ax.set_box_aspect((1, 1, 1))
+
+    uu, vv = np.mgrid[0:2 * np.pi:60j, 0:np.pi:30j]
+    xs, ys, zs = np.cos(uu) * np.sin(vv), np.sin(uu) * np.sin(vv), np.cos(vv)
+    ax.plot_surface(xs, ys, zs, color="#eaf0f6", alpha=0.25, linewidth=0,
+                    shade=False, zorder=0, antialiased=True)
+
+    th = np.linspace(0, 2 * np.pi, 240); z0 = np.zeros_like(th)
+    ax.plot(np.cos(th), np.sin(th), z0, color="0.70", lw=0.8, zorder=1)   # equator
+    ax.plot(np.cos(th), z0, np.sin(th), color="0.85", lw=0.5, zorder=1)   # meridians
+    ax.plot(z0, np.cos(th), np.sin(th), color="0.85", lw=0.5, zorder=1)
+
+    for (vx, vy, vz), lab in [((1, 0, 0), r"\langle\hat{\sigma}_x\rangle"),
+                              ((0, 1, 0), r"\langle\hat{\sigma}_y\rangle"),
+                              ((0, 0, 1), r"\langle\hat{\sigma}_z\rangle")]:
+        ax.plot([-1.1 * vx, 1.1 * vx], [-1.1 * vy, 1.1 * vy], [-1.1 * vz, 1.1 * vz],
+                color="0.55", lw=0.9, zorder=2)
+        ax.text(1.22 * vx, 1.22 * vy, 1.22 * vz, f"${lab}$", fontsize=12,
+                ha="center", va="center", color="0.15")
+
+    ax.plot(sse["bloch"][:, 0], sse["bloch"][:, 1], sse["bloch"][:, 2],
+            color=_C_SSE, lw=0.6, alpha=0.45, label="SSE", zorder=4)
+    ax.plot(me["bloch"][:, 0], me["bloch"][:, 1], me["bloch"][:, 2],
+            color=_C_ME, lw=2.4, label="ME", zorder=5)
+
+    s = me["bloch"][0]
+    ax.scatter([s[0]], [s[1]], [s[2]], color="k", s=22, depthshade=False, zorder=6)
+    # small label sitting just OUTSIDE the sphere at the +x pole, so it does not
+    # occlude the surface (no background box needed there).
+    ax.text(1.12, 0.0, 0.30, r"$|+\rangle$", fontsize=10,
+            ha="center", va="center", color="0.1", zorder=7)
+
+    ax.set_xlim(-1, 1); ax.set_ylim(-1, 1); ax.set_zlim(-1, 1)
+    ax.view_init(elev=22, azim=130)
+    ax.legend(frameon=True, framealpha=0.95, edgecolor="0.75", fancybox=False,
+              loc="upper right", handlelength=1.4, bbox_to_anchor=(0.99, 0.99))
+    fig.savefig(out / "Fig_Bloch_Grid.pdf")       # no tight crop -> full 4.2x3.4 footprint
+    plt.close(fig)
 
 
 def regenerate_base_figures(p, out, tf, dt, seed):
@@ -167,88 +253,55 @@ def regenerate_base_figures(p, out, tf, dt, seed):
     me = solve_me(p, tf, dt)
     sse = solve_sse(p, tf, dt, seed=seed)
     t = me["t"]
+    leg = dict(frameon=True, framealpha=0.95, edgecolor="0.75", fancybox=False,
+               loc="lower center", bbox_to_anchor=(0.5, 1.0),
+               handlelength=1.4, columnspacing=1.4, borderaxespad=0.4)
 
     # Fig_Coupling: J(t)
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(t, J_of_t(t, p), "r", lw=2)
-    ax.set_xlabel("Time (ps)"); ax.set_ylabel(r"$J(t)$ (cm$^{-1}$)")
-    ax.grid(True); fig.tight_layout()
-    fig.savefig(out / "Fig_Coupling.pdf"); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(4.2, 3.4))
+    ax.plot(t, J_of_t(t, p), color=_C_ME, lw=2)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(True, color="0.9", lw=0.6); ax.set_axisbelow(True); ax.set_xlim(0, tf)
+    ax.set_xlabel(r"Time (ps)"); ax.set_ylabel(r"$J(t)\ \ (\mathrm{cm^{-1}})$")
+    fig.tight_layout(); fig.savefig(out / "Fig_Coupling.pdf"); plt.close(fig)
 
     # Fig_SSE_Site
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(sse["t"], sse["P1"], color=(1, 0, 0, 0.6), lw=0.7, label=r"$\rho_{11}$")
-    ax.plot(sse["t"], sse["P2"], color=(0, 0, 1, 0.6), lw=0.7, label=r"$\rho_{22}$")
-    ax.plot(sse["t"], sse["coh"], color=(0, 0, 0, 0.6), lw=0.7, label=r"$|\rho_{12}|$")
-    ax.set_xlabel("Time (ps)"); ax.set_ylabel("Magnitude"); ax.set_ylim(0, 1)
-    ax.legend(); ax.grid(True); fig.tight_layout()
-    fig.savefig(out / "Fig_SSE_Site.pdf"); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(4.2, 3.4))
+    ax.plot(sse["t"], sse["P1"], color=_C_RHO11, lw=0.7, alpha=0.9, label=r"$\rho_{11}$")
+    ax.plot(sse["t"], sse["P2"], color=_C_RHO22, lw=0.7, alpha=0.9, label=r"$\rho_{22}$")
+    ax.plot(sse["t"], sse["coh"], color=_C_COH, lw=0.8, alpha=0.85, label=r"$|\rho_{12}|$")
+    _style_2d(ax, r"Time (ps)", r"Population", tf)
+    ax.legend(ncol=3, **leg)
+    fig.tight_layout(); fig.savefig(out / "Fig_SSE_Site.pdf"); plt.close(fig)
 
     # Fig_ME_Site
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(t, me["P1"], "r", lw=2, label=r"$\rho_{11}$")
-    ax.plot(t, me["P2"], "b--", lw=2, label=r"$\rho_{22}$")
-    ax.plot(t, me["coh"], "k", lw=2, label=r"$|\rho_{12}|$")
-    ax.set_xlabel("Time (ps)"); ax.set_ylabel("Magnitude"); ax.set_ylim(0, 1)
-    ax.legend(); ax.grid(True); fig.tight_layout()
-    fig.savefig(out / "Fig_ME_Site.pdf"); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(4.2, 3.4))
+    ax.plot(t, me["P1"], color=_C_RHO11, lw=2, label=r"$\rho_{11}$")
+    ax.plot(t, me["P2"], color=_C_RHO22, lw=2, ls="--", label=r"$\rho_{22}$")
+    ax.plot(t, me["coh"], color=_C_COH, lw=2, label=r"$|\rho_{12}|$")
+    _style_2d(ax, r"Time (ps)", r"Population", tf)
+    ax.legend(ncol=3, **leg)
+    fig.tight_layout(); fig.savefig(out / "Fig_ME_Site.pdf"); plt.close(fig)
 
     # Fig_SSE_Adiabatic
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(sse["t"], sse["PB"], color=(0.466, 0.674, 0.188, 0.7), lw=0.7, label=r"$P_+$")
-    ax.plot(sse["t"], sse["PD"], color=(0.494, 0.184, 0.556, 0.7), lw=0.7, label=r"$P_-$")
-    ax.set_xlabel("Time (ps)"); ax.set_ylabel("Population"); ax.set_ylim(0, 1)
-    ax.legend(); ax.grid(True); fig.tight_layout()
-    fig.savefig(out / "Fig_SSE_Adiabatic.pdf"); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(4.2, 3.4))
+    ax.plot(sse["t"], sse["PB"], color=_C_BRIGHT, lw=0.9, alpha=0.95, label=r"$P_{+}$")
+    ax.plot(sse["t"], sse["PD"], color=_C_DARK, lw=0.9, alpha=0.95, label=r"$P_{-}$")
+    _style_2d(ax, r"Time (ps)", r"Population", tf)
+    ax.legend(ncol=2, **leg)
+    fig.tight_layout(); fig.savefig(out / "Fig_SSE_Adiabatic.pdf"); plt.close(fig)
 
     # Fig_ME_Adiabatic
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(t, me["PB"], color=(0.466, 0.674, 0.188), lw=2, label=r"$P_+$")
-    ax.plot(t, me["PD"], color=(0.494, 0.184, 0.556), lw=2, label=r"$P_-$")
-    ax.set_xlabel("Time (ps)"); ax.set_ylabel("Population"); ax.set_ylim(0, 1)
-    ax.legend(); ax.grid(True); fig.tight_layout()
-    fig.savefig(out / "Fig_ME_Adiabatic.pdf"); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(4.2, 3.4))
+    ax.plot(t, me["PB"], color=_C_BRIGHT, lw=2, label=r"$P_{+}$")
+    ax.plot(t, me["PD"], color=_C_DARK, lw=2, label=r"$P_{-}$")
+    _style_2d(ax, r"Time (ps)", r"Population", tf)
+    ax.legend(ncol=2, **leg)
+    fig.tight_layout(); fig.savefig(out / "Fig_ME_Adiabatic.pdf"); plt.close(fig)
 
-    # Fig_Bloch_Grid: unified Bloch sphere (SSE trajectory + ME curve)
-    fig = plt.figure(figsize=(5, 4.5))
-    ax = fig.add_subplot(111, projection="3d")
-    su, sv = np.mgrid[0:2*np.pi:40j, 0:np.pi:20j]
-    ax.plot_wireframe(np.cos(su)*np.sin(sv), np.sin(su)*np.sin(sv), np.cos(sv),
-                      color="0.8", alpha=0.3, linewidth=0.4)
-    ax.plot(sse["bloch"][:, 0], sse["bloch"][:, 1], sse["bloch"][:, 2],
-            color=(1, 0, 0, 0.6), lw=0.7, label="SSE")
-    ax.plot(me["bloch"][:, 0], me["bloch"][:, 1], me["bloch"][:, 2],
-            "b", lw=2.0, label="ME")
-
-    # Time-progression arrows (R2): mark the direction of increasing time along
-    # both paths, and the initial bright state |+> on the equator.
-    def _time_arrows(curve, color, n_arrows):
-        curve = np.asarray(curve)
-        if len(curve) < 3:
-            return
-        idx = np.linspace(1, len(curve) - 2, n_arrows).astype(int)
-        for i in idx:
-            base = curve[i]
-            step = curve[i + 1] - curve[i]
-            norm = np.linalg.norm(step)
-            if norm < 1e-9:
-                continue
-            step = step / norm * 0.28  # fixed visual arrow length
-            ax.quiver(base[0], base[1], base[2], step[0], step[1], step[2],
-                      color=color, arrow_length_ratio=0.5, lw=1.6)
-
-    _time_arrows(me["bloch"], "b", 3)
-    _time_arrows(sse["bloch"], (0.7, 0, 0, 0.9), 4)
-    start = me["bloch"][0]
-    ax.scatter([start[0]], [start[1]], [start[2]], color="k", s=28, depthshade=False)
-    ax.text(start[0], start[1], start[2] + 0.12, r"$|+\rangle$, $t=0$", fontsize=8)
-
-    ax.set_xlabel("u"); ax.set_ylabel("v"); ax.set_zlabel("w")
-    ax.set_xlim(-1, 1); ax.set_ylim(-1, 1); ax.set_zlim(-1, 1)
-    ax.legend(loc="upper right", fontsize=9)
-    ax.view_init(elev=25, azim=135)
-    fig.tight_layout()
-    fig.savefig(out / "Fig_Bloch_Grid.pdf"); plt.close(fig)
+    # Fig_Bloch_Grid: clean floating Bloch sphere
+    _bloch_figure(plt, np, sse, me, out)
 
     print("    - wrote 6 base figures.")
     return me, sse
