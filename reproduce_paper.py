@@ -57,6 +57,7 @@ REUSE = {                       # True = reuse cached outputs if present; False 
     "steom":   True,            # reuse neo_model/orca_steom/steom_phenol_svpd.out
     "eomft":   True,            # reuse qchem_validation/eomcc_ft_*.out + eomccsd_bare/adc2
     "density": True,            # reuse the built/spec-normalised/matched STEOM density npz
+    "spectra": True,            # reuse lineshape_out/ absorption+CD figure panels
 }
 
 # ----- paths (relative to this file) -----
@@ -96,6 +97,11 @@ QCHEM_ADC2  = "adc2_bare.out"
 
 OUT_DIR_STEOM_STATIC  = "coupling_paper_steom_static"
 OUT_DIR_STEOM_THERMAL = "coupling_paper_steom_thermal"
+OUT_DIR_SPECTRA       = "lineshape_out"                          # absorption/CD figure panels
+DIPOLE_GEOM_JSON      = f"{OUT_DIR_STEOM_THERMAL}/dipole_geometry.json"
+THERMAL_DIST_JSON     = f"{OUT_DIR_STEOM_THERMAL}/coupling_distribution.json"
+T2_STAR_FS   = 60.0                   # pure-dephasing time feeding the homogeneous Voigt width
+EXP_SPLITTING = (262.0, 372.0)        # Nguyen U=131-186 cm^-1 -> Davydov splitting 2U (cm^-1)
 SUMMARY = "paper_data_summary.json"
 
 LOG_DIR = REPO / "pipeline_logs"
@@ -105,7 +111,7 @@ PUBLISHED_TDDFT_STATIC_J = 74.38      # paper, single minimised geometry
 REFERENCE_TERACHEM_44_NM = 361.0      # tc_tddft_44 bright state (wb97xd3/6-311g**, TDA) — the
                                       # like-for-like TeraChem number the ORCA TDDFT reproduces
 
-STAGES = ["tddft", "steom", "eom", "density", "static", "thermal"]  # ordered; for --stop-after
+STAGES = ["tddft", "steom", "eom", "density", "static", "thermal", "spectra"]  # ordered; for --stop-after
 
 # ORCA TDDFT reference input (engine=orca). Matches the TeraChem reference method
 # (wb97xd3 / 6-311G** / TDA) so the two engines are directly comparable, evaluated on the
@@ -456,6 +462,53 @@ def stage_thermal_J(args):
     }
 
 
+def stage_spectra(args):
+    """Excitonic absorption + CD lineshape figure (Fig. spectra) from the thermal
+    coupling distribution and the STEOM two-dipole geometry.
+
+    Two sub-steps, cached like the others:
+      1. export_dipole_geometry.py -> mu_A, mu_B, r_A, r_B at both chromophore sites
+         (same Kabsch/`super` placement as the coupling ensemble).
+      2. absorption_cd_spectra.py  -> Fig_Spectra_{Coupling,Absorption,CD}.pdf, driven
+         by the thermal distribution (J, sigma) + that geometry + T2* + exp. splitting.
+    """
+    geom_path = REPO / DIPOLE_GEOM_JSON
+    if args.reuse["spectra"] and geom_path.exists():
+        log(f"  reusing dipole geometry {DIPOLE_GEOM_JSON}")
+    else:
+        log("  exporting STEOM two-dipole geometry (Kabsch placement at both sites)")
+        run([PY, "export_dipole_geometry.py",
+             "--density", str(STEOM_MATCHED),
+             "--monomer", OLD_MONOMER, "--dimer", DIMER,
+             "--out", str(geom_path)], "dipole_geometry.log", cwd=REPO)
+
+    geom = json.loads(geom_path.read_text()) if geom_path.exists() else {}
+
+    rc, tail = run([PY, "absorption_cd_spectra.py",
+                    "--distribution", THERMAL_DIST_JSON,
+                    "--geometry-json", DIPOLE_GEOM_JSON,
+                    "--t2-star-fs", str(T2_STAR_FS),
+                    "--exp-splitting", str(EXP_SPLITTING[0]), str(EXP_SPLITTING[1]),
+                    "--out", OUT_DIR_SPECTRA], "absorption_cd_spectra.log", cwd=REPO)
+
+    dist = json.loads((REPO / THERMAL_DIST_JSON).read_text()) if (REPO / THERMAL_DIST_JSON).exists() else {}
+    J = float(dist.get("mean", float("nan")))
+    panels = [f"{OUT_DIR_SPECTRA}/Fig_Spectra_Coupling.pdf",
+              f"{OUT_DIR_SPECTRA}/Fig_Spectra_Absorption.pdf",
+              f"{OUT_DIR_SPECTRA}/Fig_Spectra_CD.pdf"]
+    return {
+        "J_mean_cm": J,
+        "two_J_cm": 2 * abs(J),
+        "separation_A": geom.get("separation_A"),
+        "angle_deg": geom.get("angle_deg"),
+        "mu_debye": geom.get("mu_debye"),
+        "t2_star_fs": T2_STAR_FS,
+        "exp_splitting_cm": list(EXP_SPLITTING),
+        "panels": panels,
+        "rc": rc,
+    }
+
+
 # ============================================================
 #  main
 # ============================================================
@@ -539,6 +592,9 @@ def main(argv=None):
     if _stopping(args, "static"): return _finish(results, args)
 
     log("[thermal J] thermal NVT J ensemble");       results["thermal_J"] = stage_thermal_J(args)
+    if _stopping(args, "thermal"): return _finish(results, args)
+
+    log("[spectra] absorption + CD lineshape figure"); results["spectra"] = stage_spectra(args)
     return _finish(results, args)
 
 
@@ -600,6 +656,14 @@ def _print_table(r):
               f"  (2|J|={_g(tj,'two_J',default='?')}, n={_g(tj,'n',default='?')})")
         print(f"  Thermal J TDDFT (cache): {_g(tjt,'J_mean',default='?')} +/- {_g(tjt,'J_std',default='?')}"
               f"  (2|J|={_g(tjt,'two_J',default='?')})")
+    if "spectra" in r:
+        sp = _g(r, "spectra", default={})
+        lo, hi = (sp.get("exp_splitting_cm") or ["?", "?"])
+        print(f"  Spectra 2|J| (CD/abs)  : {sp.get('two_J_cm','?'):.1f} cm^-1  vs exp {lo}-{hi}"
+              if isinstance(sp.get('two_J_cm'), (int, float)) else
+              f"  Spectra 2|J| (CD/abs)  : {sp.get('two_J_cm','?')} cm^-1  vs exp {lo}-{hi}")
+        print(f"  Spectra geometry       : sep={sp.get('separation_A','?')} A  "
+              f"angle={sp.get('angle_deg','?')} deg  |mu|={sp.get('mu_debye','?')} D")
     print("=" * 64 + "\n")
 
 

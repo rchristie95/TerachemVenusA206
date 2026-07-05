@@ -6,8 +6,13 @@ Reviewer item 2 (raised by three referees): the open-quantum-systems section is
 "illustrative" and disconnected from the quantum chemistry, and no spectroscopic
 signature is ever computed. This script closes that gap by turning the computed
 Davydov coupling J (and its fluctuations) plus the dephasing into an absorption
-and a CD lineshape, and overlaying the experimental Davydov splitting window
-(Nguyen et al.: 131-186 cm^-1 from the dVenus tandem-dimer CD spectrum).
+and a CD lineshape, and overlaying the experimental Davydov splitting window.
+
+Experimental window: Nguyen et al. infer an apparent excitonic COUPLING
+U = 131-186 cm^-1 from the dVenus tandem-dimer CD spectrum. Under their
+Delta E = 2U convention this is a Davydov SPLITTING of 262-372 cm^-1, which is
+the like-for-like comparison for our splitting 2|J|. (The earlier default that
+shaded 131-186 as a splitting compared U against 2|J| and is fixed here.)
 
 Physics (degenerate excitonic dimer, |1> = |e1 g2>, |2> = |g1 e2>):
   - Eigenstates  |+-> = (|1> +- |2>)/sqrt(2)  at energies  nu_+- = E0 +- J.
@@ -23,15 +28,21 @@ Physics (degenerate excitonic dimer, |1> = |e1 g2>, |2> = |g1 e2>):
     each other: the spread in J from item 1 IS the inhomogeneous broadening here.
 
 Geometry of the two transition dipoles:
-  - Best: pass --geometry-json with explicit mu_A, mu_B (3-vectors) and r_A, r_B
-    (positions, Angstrom), e.g. exported from the QM transition density.
-  - Default (schematic, clearly labelled): built from --separation, --angle
-    (inter-dipole angle, default 92.85 deg from the paper), --skew (out-of-plane
-    chirality angle) and --dipole-debye. Use this for a quick look; quote the
-    geometry-json result in the manuscript.
+  - Best (used for the manuscript figure): pass --geometry-json with explicit
+    mu_A, mu_B (3-vectors) and r_A, r_B (positions, Angstrom), exported from the
+    STEOM transition density placed at both chromophore sites by
+    export_dipole_geometry.py (same Kabsch/`super` placement as the coupling
+    pipeline; gives |r_A - r_B| ~ 25.5 A, inter-dipole angle ~ 104 deg).
+  - Default (schematic, clearly labelled): built from --separation, --angle,
+    --skew (out-of-plane chirality angle) and --dipole-debye, seeded with the
+    STEOM values (25.5 A, 104 deg). Use this only for a quick look.
 
-Outputs (in --out, default `lineshape_out/`):
-  Fig_Absorption_Spectrum.pdf, Fig_CD_Spectrum.pdf, lineshape_data.csv
+Outputs (in --out, default `lineshape_out/`), styled to match the paper figures:
+  Fig_Spectra_Coupling.pdf    panel (a): J distribution over the NVT ensemble
+  Fig_Spectra_Absorption.pdf  panel (b): Davydov doublet, bands at +/- J, 2|J|
+  Fig_Spectra_CD.pdf          panel (c): bisignate CD couplet + exp. window
+  Fig_Spectra.pdf             the three panels composed (preview)
+  lineshape_data.csv          the raw absorption/CD grid
 """
 
 import argparse
@@ -129,7 +140,9 @@ def build_spectra(grid_cm, bands, sigma_cm, gamma_cm):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--J", type=float, default=74.38, help="Davydov coupling J (cm^-1).")
+    p.add_argument("--J", type=float, default=96.38,
+                   help="Davydov coupling J (cm^-1); STEOM thermal mean. "
+                        "Overridden by --distribution mean when given.")
     p.add_argument("--E0", type=float, default=18437.0, help="Monomer site energy (cm^-1).")
     p.add_argument("--t2-star-fs", type=float, default=60.0, help="Pure-dephasing time T2* (fs).")
     p.add_argument("--distribution", type=Path, default=None,
@@ -139,12 +152,16 @@ def main(argv=None):
                    help="Override inhomogeneous Gaussian std (cm^-1).")
     p.add_argument("--geometry-json", type=Path, default=None,
                    help="JSON with mu_A, mu_B, r_A, r_B (preferred; from the QM density).")
-    p.add_argument("--separation", type=float, default=27.6, help="Centroid separation (Angstrom).")
-    p.add_argument("--angle", type=float, default=92.85, help="Inter-dipole angle (deg).")
+    p.add_argument("--separation", type=float, default=25.5,
+                   help="Centroid separation (Angstrom); STEOM value (schematic geometry only).")
+    p.add_argument("--angle", type=float, default=104.0,
+                   help="Inter-dipole angle (deg); STEOM value (schematic geometry only).")
     p.add_argument("--skew", type=float, default=45.0, help="Out-of-plane chirality angle (deg).")
-    p.add_argument("--dipole-debye", type=float, default=10.0, help="Monomer transition-dipole magnitude.")
-    p.add_argument("--exp-splitting", type=float, nargs=2, default=[131.0, 186.0],
-                   metavar=("LO", "HI"), help="Experimental Davydov splitting window (cm^-1).")
+    p.add_argument("--dipole-debye", type=float, default=9.6,
+                   help="Monomer transition-dipole magnitude (D); STEOM |mu| (schematic geometry only).")
+    p.add_argument("--exp-splitting", type=float, nargs=2, default=[262.0, 372.0],
+                   metavar=("LO", "HI"),
+                   help="Experimental Davydov splitting window (cm^-1); Nguyen U=131-186 -> 2U=262-372.")
     p.add_argument("--window", type=float, default=900.0, help="Half-width of the energy axis (cm^-1).")
     p.add_argument("--npts", type=int, default=4000, help="Energy-grid resolution.")
     p.add_argument("--out", type=Path, default=Path("lineshape_out"))
@@ -153,13 +170,16 @@ def main(argv=None):
 
     J = args.J
     sigma_cm = args.sigma_cm if args.sigma_cm is not None else 0.0
+    samples = None
     if args.distribution is not None and args.distribution.exists():
         with open(args.distribution) as f:
             dist = json.load(f)
         J = float(dist.get("mean", J))
         if args.sigma_cm is None:
             sigma_cm = float(dist.get("std", 0.0))
-        print(f"[*] From {args.distribution}: J(mean)={J:.2f} cm^-1, std={sigma_cm:.2f} cm^-1")
+        samples = np.asarray(dist.get("samples", []), float)
+        print(f"[*] From {args.distribution}: J(mean)={J:.2f} cm^-1, std={sigma_cm:.2f} cm^-1, "
+              f"n={samples.size} samples")
 
     gamma_cm = homogeneous_hwhm_cm(args.t2_star_fs)
     print(f"[*] Homogeneous HWHM from T2*={args.t2_star_fs:.1f} fs: {gamma_cm:.2f} cm^-1")
@@ -190,58 +210,188 @@ def main(argv=None):
             f.write(f"{x:.4f},{a:.8e},{c:.8e}\n")
 
     # ----- plots -----
-    abs_pdf, cd_pdf = _plot(args, grid, absorption, cd, J, gamma_cm, sigma_cm)
+    paths = _plot(args, grid, absorption, cd, J, sigma_cm, samples)
 
-    print("\n" + "=" * 52)
-    print(f"  computed 2|J| = {2*abs(J):.1f} cm^-1   "
-          f"experiment = {args.exp_splitting[0]:.0f}-{args.exp_splitting[1]:.0f} cm^-1")
-    print("=" * 52)
+    two_j = 2 * abs(J)
+    lo, hi = args.exp_splitting
+    within = lo <= two_j <= hi
+    rel = "within" if within else ("below" if two_j < lo else "above")
+    print("\n" + "=" * 60)
+    print(f"  computed 2|J| = {two_j:.1f} cm^-1   "
+          f"experiment = {lo:.0f}-{hi:.0f} cm^-1  ({rel} the window)")
+    print("=" * 60)
     print(f"  data        : {csv_path}")
-    print(f"  absorption  : {abs_pdf}")
-    print(f"  CD          : {cd_pdf}")
+    for k, v in paths.items():
+        print(f"  {k:11s} : {v}")
 
 
-def _plot(args, grid, absorption, cd, J, gamma_cm, sigma_cm):
+# --------------------------------------------------------------------------- #
+# Plotting (styled to match the paper's other matplotlib figures)
+# --------------------------------------------------------------------------- #
+# Palette shared with open_quantum_dynamics.py.
+_C_ABS = "#1f6aa5"   # absorption / distribution (blue)
+_C_POS = "#c0392b"   # CD positive lobe (red)
+_C_NEG = "#1f6aa5"   # CD negative lobe (blue)
+_C_EXP = "#3a7d44"   # experimental window (green)
+_C_MEAN = "#222222"
+
+
+def _mpl():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    plt.rcParams.update({
+        "font.family": "serif",
+        "font.serif": ["cmr10", "STIXGeneral", "DejaVu Serif"],
+        "mathtext.fontset": "cm",
+        "axes.unicode_minus": False,
+        "axes.labelsize": 12,
+        "axes.titlesize": 12,
+        "legend.fontsize": 9,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
+        "axes.formatter.use_mathtext": True,
+    })
+    return plt
 
-    rel = grid - args.E0
-    lo, hi = args.exp_splitting
 
-    # Absorption
-    fig, ax = plt.subplots(figsize=(6, 4.2))
-    ax.plot(rel, absorption / (absorption.max() + 1e-30), color="#4C72B0", lw=2)
-    ax.axvline(-J, color="0.5", ls=":", lw=1)
-    ax.axvline(+J, color="0.5", ls=":", lw=1)
-    ax.set_xlabel(r"$\nu - E_0$ (cm$^{-1}$)")
-    ax.set_ylabel("Absorption (norm.)")
-    ax.set_title(fr"Excitonic absorption ($2|J|={2*abs(J):.0f}$ cm$^{{-1}}$)")
-    ax.grid(alpha=0.25)
+def _style(ax):
+    ax.grid(alpha=0.25, lw=0.6)
+    for s in ax.spines.values():
+        s.set_linewidth(0.8)
+
+
+def _leg(ax, **kw):
+    ax.legend(frameon=True, framealpha=0.95, edgecolor="0.75", fancybox=False, **kw)
+
+
+FIGSIZE = (4.2, 3.4)
+
+
+def _panel_coupling(plt, out, samples, J, sigma_cm):
+    """Panel (a): J distribution over the NVT ensemble."""
+    fig, ax = plt.subplots(figsize=FIGSIZE)
+    if samples is not None and samples.size:
+        nb = max(8, min(40, int(np.sqrt(samples.size)) * 2))
+        ax.hist(samples, bins=nb, color=_C_ABS, alpha=0.80, edgecolor="white", lw=0.5)
+        ax.set_ylabel("MD snapshots")
+    else:
+        # Fall back to the implied Gaussian if no per-frame samples are present.
+        xs = np.linspace(J - 4 * sigma_cm, J + 4 * sigma_cm, 400)
+        g = np.exp(-0.5 * ((xs - J) / max(sigma_cm, 1e-6)) ** 2)
+        ax.plot(xs, g, color=_C_ABS, lw=2)
+        ax.set_ylabel("density (arb.)")
+    ax.axvline(J, color=_C_MEAN, lw=1.8, label=fr"$\bar J = {J:.0f}\,\mathrm{{cm^{{-1}}}}$")
+    ax.axvspan(J - sigma_cm, J + sigma_cm, color=_C_MEAN, alpha=0.10,
+               label=fr"$\pm\sigma = {sigma_cm:.0f}\,\mathrm{{cm^{{-1}}}}$")
+    ax.set_xlabel(r"Davydov coupling $J$ (cm$^{-1}$)")
+    _style(ax)
+    _leg(ax, loc="upper right")
     fig.tight_layout()
-    abs_pdf = args.out / "Fig_Absorption_Spectrum.pdf"
-    fig.savefig(abs_pdf)
+    path = out / "Fig_Spectra_Coupling.pdf"
+    fig.savefig(path)
     plt.close(fig)
+    return path
 
-    # CD with experimental splitting overlay
-    fig, ax = plt.subplots(figsize=(6, 4.2))
-    norm = np.max(np.abs(cd)) + 1e-30
-    ax.plot(rel, cd / norm, color="#C44E52", lw=2, label="computed CD")
+
+def _panel_absorption(plt, out, rel, absorption, J):
+    """Panel (b): excitonic absorption Davydov doublet."""
+    fig, ax = plt.subplots(figsize=FIGSIZE)
+    y = absorption / (absorption.max() + 1e-30)
+    ax.plot(rel, y, color=_C_ABS, lw=2)
+    for x in (-J, +J):
+        ax.axvline(x, color="0.55", ls=":", lw=1.1)
+    # 2|J| splitting annotation between the two bands.
+    ax.annotate("", xy=(-J, 1.04), xytext=(+J, 1.04),
+                arrowprops=dict(arrowstyle="<->", color=_C_MEAN, lw=1.2))
+    ax.text(0.0, 1.09, fr"$2|J| = {2*abs(J):.0f}\,\mathrm{{cm^{{-1}}}}$",
+            ha="center", va="bottom", fontsize=10)
+    ax.set_ylim(top=1.20)
+    ax.set_xlabel(r"$\nu - E_0$ (cm$^{-1}$)")
+    ax.set_ylabel("absorption (norm.)")
+    _style(ax)
+    fig.tight_layout()
+    path = out / "Fig_Spectra_Absorption.pdf"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def _panel_cd(plt, out, rel, cd, exp_splitting):
+    """Panel (c): bisignate CD couplet with the experimental splitting window."""
+    lo, hi = exp_splitting
+    fig, ax = plt.subplots(figsize=FIGSIZE)
+    y = cd / (np.max(np.abs(cd)) + 1e-30)
+    # Colour the two lobes of the conservative couplet.
+    ax.fill_between(rel, y, 0, where=(y >= 0), color=_C_POS, alpha=0.30, lw=0)
+    ax.fill_between(rel, y, 0, where=(y < 0), color=_C_NEG, alpha=0.30, lw=0)
+    ax.plot(rel, y, color=_C_MEAN, lw=1.6, label="computed CD")
     ax.axhline(0, color="k", lw=0.8)
-    # Experimental Davydov splitting window: shade |nu-E0| in [lo/2, hi/2] on both sides.
+    # Experimental Davydov splitting: bands sit at +/- (splitting/2); shade that window.
     for sgn in (-1, +1):
-        ax.axvspan(sgn * lo / 2, sgn * hi / 2, color="#55A868", alpha=0.18,
-                   label="exp. splitting/2" if sgn == 1 else None)
+        ax.axvspan(sgn * lo / 2, sgn * hi / 2, color=_C_EXP, alpha=0.20,
+                   label=fr"exp. $\Delta E/2$" if sgn == 1 else None)
     ax.set_xlabel(r"$\nu - E_0$ (cm$^{-1}$)")
     ax.set_ylabel(r"$\Delta\varepsilon$ (norm.)")
-    ax.set_title(r"Excitonic CD couplet vs experimental splitting")
-    ax.legend(fontsize=9, frameon=True, loc="best")
-    ax.grid(alpha=0.25)
+    _style(ax)
+    _leg(ax, loc="upper right")
     fig.tight_layout()
-    cd_pdf = args.out / "Fig_CD_Spectrum.pdf"
-    fig.savefig(cd_pdf)
+    path = out / "Fig_Spectra_CD.pdf"
+    fig.savefig(path)
     plt.close(fig)
-    return abs_pdf, cd_pdf
+    return path
+
+
+def _plot(args, grid, absorption, cd, J, sigma_cm, samples):
+    plt = _mpl()
+    rel = grid - args.E0
+    p_a = _panel_coupling(plt, args.out, samples, J, sigma_cm)
+    p_b = _panel_absorption(plt, args.out, rel, absorption, J)
+    p_c = _panel_cd(plt, args.out, rel, cd, args.exp_splitting)
+
+    # Composed 3-panel preview (the manuscript uses the three PDFs as subfigures).
+    fig, axes = plt.subplots(1, 3, figsize=(11.4, 3.4))
+    for ax, sub in zip(axes, ("a", "b", "c")):
+        ax.set_title(f"({sub})", loc="left", fontsize=12)
+    # (a)
+    if samples is not None and samples.size:
+        nb = max(8, min(40, int(np.sqrt(samples.size)) * 2))
+        axes[0].hist(samples, bins=nb, color=_C_ABS, alpha=0.80, edgecolor="white", lw=0.5)
+        axes[0].set_ylabel("MD snapshots")
+    axes[0].axvline(J, color=_C_MEAN, lw=1.8, label=fr"$\bar J = {J:.0f}$")
+    axes[0].axvspan(J - sigma_cm, J + sigma_cm, color=_C_MEAN, alpha=0.10,
+                    label=fr"$\pm\sigma = {sigma_cm:.0f}$")
+    axes[0].set_xlabel(r"$J$ (cm$^{-1}$)")
+    _style(axes[0]); _leg(axes[0], loc="upper right")
+    # (b)
+    yb = absorption / (absorption.max() + 1e-30)
+    axes[1].plot(rel, yb, color=_C_ABS, lw=2)
+    for x in (-J, +J):
+        axes[1].axvline(x, color="0.55", ls=":", lw=1.1)
+    axes[1].annotate("", xy=(-J, 1.04), xytext=(+J, 1.04),
+                     arrowprops=dict(arrowstyle="<->", color=_C_MEAN, lw=1.2))
+    axes[1].text(0.0, 1.09, fr"$2|J|={2*abs(J):.0f}$", ha="center", va="bottom", fontsize=10)
+    axes[1].set_ylim(top=1.20)
+    axes[1].set_xlabel(r"$\nu - E_0$ (cm$^{-1}$)"); axes[1].set_ylabel("abs. (norm.)")
+    _style(axes[1])
+    # (c)
+    lo, hi = args.exp_splitting
+    yc = cd / (np.max(np.abs(cd)) + 1e-30)
+    axes[2].fill_between(rel, yc, 0, where=(yc >= 0), color=_C_POS, alpha=0.30, lw=0)
+    axes[2].fill_between(rel, yc, 0, where=(yc < 0), color=_C_NEG, alpha=0.30, lw=0)
+    axes[2].plot(rel, yc, color=_C_MEAN, lw=1.6)
+    axes[2].axhline(0, color="k", lw=0.8)
+    for sgn in (-1, +1):
+        axes[2].axvspan(sgn * lo / 2, sgn * hi / 2, color=_C_EXP, alpha=0.20,
+                        label=fr"exp. $\Delta E/2$" if sgn == 1 else None)
+    axes[2].set_xlabel(r"$\nu - E_0$ (cm$^{-1}$)"); axes[2].set_ylabel(r"$\Delta\varepsilon$ (norm.)")
+    _style(axes[2]); _leg(axes[2], loc="upper right")
+    fig.tight_layout()
+    composed = args.out / "Fig_Spectra.pdf"
+    fig.savefig(composed)
+    plt.close(fig)
+
+    return {"coupling(a)": p_a, "absorption(b)": p_b, "CD(c)": p_c, "composed": composed}
 
 
 if __name__ == "__main__":
