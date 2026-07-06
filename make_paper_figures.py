@@ -30,8 +30,8 @@ cmd.matrix_copy("siteB", "siteB")
 
 cmd.hide("everything")
 cmd.show("lines", "dimer_ref")
-cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240 and name CA")
-cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500 and name CA")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500")
 
 for s in ("siteA","siteB"):                                       # QM chromophore sticks+spheres
     cmd.show("sticks",  f"{s} and {QM}")

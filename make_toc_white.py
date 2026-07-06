@@ -36,8 +36,8 @@ cmd.disable("mt")
 
 cmd.hide("everything")
 cmd.show("lines", "dimer_ref")
-cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240 and name CA")
-cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500 and name CA")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500")
 for q in ("qmA", "qmB"):
     cmd.show("sticks", q); cmd.show("spheres", q)
 util.cbaw("qmA or qmB")
