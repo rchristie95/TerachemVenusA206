@@ -23,12 +23,15 @@ for k, v in [("ray_opaque_background",0),("ray_shadows",0),("antialias",2),("amb
 # dimer scaffold + a monomer aligned onto each site
 cmd.load(DIMER, "dimer_ref")
 cmd.load(MONO, "siteA"); cmd.load(MONO, "siteB")
-cmd.super("siteA", "dimer_ref and resi 1-229")
-cmd.super("siteB", "dimer_ref and resi 263-491")
+cmd.align("siteA and name CA", "dimer_ref and resi 1-229 and name CA")
+cmd.align("siteB and name CA", "dimer_ref and resi 263-491 and name CA")
+cmd.matrix_copy("siteA", "siteA")  # ensure matrix is applied
+cmd.matrix_copy("siteB", "siteB")
 
 cmd.hide("everything")
 cmd.show("cartoon", "dimer_ref")
-cmd.spectrum("count", "rainbow", "dimer_ref and name CA")        # MM backbone, depth cue
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240 and name CA")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500 and name CA")
 
 for s in ("siteA","siteB"):                                       # QM chromophore sticks+spheres
     cmd.show("sticks",  f"{s} and {QM}")

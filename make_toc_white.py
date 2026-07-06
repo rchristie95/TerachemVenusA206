@@ -23,8 +23,8 @@ cmd.bg_color("white")
 
 cmd.load(DIMER, "dimer_ref")
 cmd.load(MONO, "siteA"); cmd.load(MONO, "siteB")
-cmd.super("siteA", "dimer_ref and resi 1-229")
-cmd.super("siteB", "dimer_ref and resi 263-491")
+cmd.align("siteA and name CA", "dimer_ref and resi 1-229 and name CA")
+cmd.align("siteB and name CA", "dimer_ref and resi 263-491 and name CA")
 
 cmd.load(QMXYZ, "qmA"); cmd.load(QMXYZ, "qmB")
 cmd.matrix_copy("siteA", "qmA"); cmd.matrix_copy("siteB", "qmB")
@@ -35,7 +35,9 @@ for dst, site in [("mt_A", "siteA"), ("mt_B", "siteB")]:
 cmd.disable("mt")
 
 cmd.hide("everything")
-cmd.show("lines", "dimer_ref"); cmd.spectrum("count", "rainbow", "dimer_ref")  # rainbow skeleton (matches Figs 2,3)
+cmd.show("lines", "dimer_ref")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240 and name CA")
+cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500 and name CA")
 for q in ("qmA", "qmB"):
     cmd.show("sticks", q); cmd.show("spheres", q)
 util.cbaw("qmA or qmB")

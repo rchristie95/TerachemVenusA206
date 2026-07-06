@@ -23,8 +23,8 @@ cmd.bg_color("black")
 
 cmd.load(DIMER, "dimer_ref")
 cmd.load(MONO, "siteA"); cmd.load(MONO, "siteB")
-cmd.super("siteA", "dimer_ref and resi 1-229")
-cmd.super("siteB", "dimer_ref and resi 263-491")
+cmd.align("siteA and name CA", "dimer_ref and resi 1-229 and name CA")
+cmd.align("siteB and name CA", "dimer_ref and resi 263-491 and name CA")
 
 cmd.load(QMXYZ, "qmA"); cmd.load(QMXYZ, "qmB")
 cmd.matrix_copy("siteA", "qmA"); cmd.matrix_copy("siteB", "qmB")
