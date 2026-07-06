@@ -11,7 +11,7 @@ MONO  = "/home/robson/PetaChem/tc_simple_anionic/monomer_relaxed.pdb"
 TRANS = "/home/robson/PetaChem/neo_model/orca_steom/steom_transdens.cube"
 DIFF  = "/home/robson/PetaChem/neo_model/orca_steom/steom_diffdens.cube"
 OUT   = "/home/robson/PetaChem/plots_steom"; os.makedirs(OUT, exist_ok=True)
-ISO, W, H, QM = 0.04, 1600, 1200, "resi 66"     # CR2 chromophore
+ISO, W, H, QM = 0.04, 1600, 1200, "(resi 66 or resi 202)"     # CR2 + Tyr203 phenol (202 in PDB)
 
 cmd.reinitialize()
 cmd.bg_color("white")
@@ -31,7 +31,7 @@ cmd.matrix_copy("siteB", "siteB")
 cmd.hide("everything")
 cmd.show("sticks", "dimer_ref and backbone")
 cmd.set("stick_radius", 0.05, "dimer_ref")
-cmd.set("stick_transparency", 0.65, "dimer_ref")
+cmd.set("stick_transparency", 0.45, "dimer_ref")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500")
 
