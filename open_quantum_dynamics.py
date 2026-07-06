@@ -273,13 +273,17 @@ def regenerate_base_figures(p, out, tf, dt, seed):
     ax2.set_ylabel(r"Coupling $|J(t)|\ \ (\mathrm{cm^{-1}})$", color=c_coup)
     ax2.tick_params(axis="y", labelcolor=c_coup)
     
-    for s in ("top", "bottom"):
-        ax1.spines[s].set_color("0.35")
-        ax2.spines[s].set_color("0.35")
-    ax1.spines["left"].set_color(c_pur)
-    ax2.spines["right"].set_color(c_coup)
+    # Hide top spine on both axes
     ax1.spines["top"].set_visible(False)
     ax2.spines["top"].set_visible(False)
+    
+    # Reset spines to standard publication style (black, thin) instead of colored
+    for s in ("bottom", "left", "right"):
+        ax1.spines[s].set_color("black")
+        ax1.spines[s].set_linewidth(0.8)
+        ax2.spines[s].set_color("black")
+        ax2.spines[s].set_linewidth(0.8)
+
     ax1.grid(True, color="0.9", lw=0.6)
     ax1.set_axisbelow(True)
     ax1.set_xlim(0, tf)
@@ -300,7 +304,7 @@ def regenerate_base_figures(p, out, tf, dt, seed):
     # Fig_ME_Site
     fig, ax = plt.subplots(figsize=(4.2, 3.4))
     ax.plot(t, me["P1"], color=_C_RHO11, lw=2, label=r"$\rho_{11}$")
-    ax.plot(t, me["P2"], color=_C_RHO22, lw=2, ls="--", label=r"$\rho_{22}$")
+    ax.plot(t, me["P2"], color=_C_RHO22, lw=2, label=r"$\rho_{22}$")
     ax.plot(t, me["coh"], color=_C_COH, lw=2, label=r"$|\rho_{12}|$")
     _style_2d(ax, r"Time (ps)", r"Population", tf)
     ax.legend(ncol=3, **leg)
