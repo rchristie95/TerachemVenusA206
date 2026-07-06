@@ -35,7 +35,8 @@ for dst, site in [("mt_A", "siteA"), ("mt_B", "siteB")]:
 cmd.disable("mt")
 
 cmd.hide("everything")
-cmd.show("lines", "dimer_ref")
+cmd.dss("dimer_ref")
+cmd.show("cartoon", "dimer_ref")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500")
 for q in ("qmA", "qmB"):

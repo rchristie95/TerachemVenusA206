@@ -29,7 +29,9 @@ cmd.matrix_copy("siteA", "siteA")  # ensure matrix is applied
 cmd.matrix_copy("siteB", "siteB")
 
 cmd.hide("everything")
-cmd.show("lines", "dimer_ref")
+cmd.show("sticks", "dimer_ref and backbone")
+cmd.set("stick_radius", 0.05, "dimer_ref")
+cmd.set("stick_transparency", 0.65, "dimer_ref")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500")
 
@@ -59,11 +61,11 @@ def render(fn, kind, view):
     cmd.disable("Transition_Density"); cmd.disable("Difference_Density")
     cmd.enable("Transition_Density" if kind=="tr" else "Difference_Density")
     if view == "dimer":
-        cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("lines","dimer_ref")
+        cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("sticks","dimer_ref and backbone")
         cmd.enable(f"{kind}_A_p"); cmd.enable(f"{kind}_A_n")
         cmd.orient("dimer_ref")
     else:                                                        # site-B QM close-up
-        cmd.hide("lines"); cmd.disable("siteA")
+        cmd.hide("sticks", "dimer_ref"); cmd.disable("siteA")
         cmd.disable(f"{kind}_A_p"); cmd.disable(f"{kind}_A_n")
         cmd.orient(f"siteB and {QM}"); cmd.zoom(f"siteB and {QM}", 3)
     cmd.ray(W, H); cmd.png(f"{OUT}/{fn}", dpi=300); print("wrote", fn)
@@ -74,6 +76,6 @@ render("03_difference_dimer.png", "df", "dimer")
 render("04_difference_qm.png",    "df", "qm")
 
 # clean state for interactive viewing
-cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("lines","dimer_ref")
+cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("sticks","dimer_ref and backbone")
 cmd.enable("Transition_Density"); cmd.disable("Difference_Density"); cmd.orient("dimer_ref")
 print("DONE — 4 paper-format figures in", OUT)
