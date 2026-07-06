@@ -38,10 +38,13 @@ Geometry of the two transition dipoles:
     STEOM values (25.5 A, 104 deg). Use this only for a quick look.
 
 Outputs (in --out, default `lineshape_out/`), styled to match the paper figures:
-  Fig_Spectra_Coupling.pdf    panel (a): J distribution over the NVT ensemble
-  Fig_Spectra_Absorption.pdf  panel (b): Davydov doublet, bands at +/- J, 2|J|
-  Fig_Spectra_CD.pdf          panel (c): bisignate CD couplet + exp. window
-  Fig_Spectra.pdf             the three panels composed (preview)
+  Fig_Spectra_Resolvability.pdf  manuscript panel (a): the homogeneous linewidth
+                              1/(pi c T2*) vs the Davydov splitting 2|J| vs T2*
+  Fig_Spectra_Absorption.pdf  manuscript panel (b): Davydov doublet, bands +/- J, 2|J|
+  Fig_Spectra_CD.pdf          manuscript panel (c): bisignate CD couplet + exp. window
+  Fig_Spectra_Coupling.pdf    J distribution over the NVT ensemble (NOT used in the
+                              manuscript, which uses the tandem histogram Fig 4c)
+  Fig_Spectra.pdf             the coupling/absorption/CD panels composed (preview)
   lineshape_data.csv          the raw absorption/CD grid
 """
 
@@ -414,10 +417,50 @@ def _panel_cd(plt, out, rel, cd, exp_splitting):
     return path
 
 
+def _panel_resolvability(plt, out, J, t2_star_fs):
+    """Panel (a): spectroscopic resolvability of the Davydov splitting.
+
+    Analytic (needs only the run's real J and T2*, no volumetric data). The
+    homogeneous Lorentzian FWHM 1/(pi c T2*) falls below the fixed splitting
+    2|J| once T2* exceeds t_cross = 1/(pi c 2|J|), so the exciton doublet is
+    spectrally resolvable for T2* >= t_cross; the adopted T2* is marked.
+    """
+    splitting = 2.0 * abs(J)                                      # cm^-1
+    t2 = np.linspace(20.0, 250.0, 500)                           # fs
+    fwhm = 1.0 / (np.pi * C_CM_PER_S * t2 * 1e-15)              # homogeneous FWHM, cm^-1
+    t_cross = 1.0 / (np.pi * C_CM_PER_S * splitting) * 1e15      # fs where FWHM = 2|J|
+    f_star = 1.0 / (np.pi * C_CM_PER_S * t2_star_fs * 1e-15)     # FWHM at the adopted T2*
+    print(f"[*] resolvability: FWHM = 2|J| = {splitting:.0f} cm^-1 at T2* = {t_cross:.1f} fs; "
+          f"FWHM(T2*={t2_star_fs:.0f} fs) = {f_star:.0f} cm^-1")
+    fig, ax = plt.subplots(figsize=FIGSIZE)
+    ax.axvspan(t_cross, 250.0, color=_C_EXP, alpha=0.12)
+    ax.text(0.97, 0.06, "splitting\nresolved", transform=ax.transAxes, ha="right",
+            va="bottom", fontsize=9, color="#2f6b39")
+    ax.plot(t2, fwhm, color=_C_ABS, lw=2.2, label=r"homog. FWHM $1/(\pi c T_2^{*})$")
+    ax.axhline(splitting, color=_C_POS, lw=1.8, ls="--",
+               label=fr"$2|J| = {splitting:.0f}\,\mathrm{{cm^{{-1}}}}$")
+    ax.axvline(t2_star_fs, color=_C_MEAN, lw=1.0, ls=":")
+    ax.plot([t2_star_fs], [f_star], marker="o", ms=6, color=_C_MEAN, zorder=5)
+    ax.annotate(fr"$T_2^{{*}}={t2_star_fs:.0f}$ fs", xy=(t2_star_fs, f_star),
+                xytext=(t2_star_fs + 10, f_star + 55), fontsize=9, color=_C_MEAN)
+    ax.set_xlim(20, 250)
+    ax.set_ylim(0, 400)
+    ax.set_xlabel(r"$T_2^{*}$ (fs)")
+    ax.set_ylabel(r"linewidth, splitting (cm$^{-1}$)")
+    _style(ax)
+    _leg(ax, loc="upper right")
+    fig.tight_layout()
+    path = out / "Fig_Spectra_Resolvability.pdf"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
 def _plot(args, grid, absorption, cd, J, sigma_cm, samples):
     plt = _mpl()
     rel = grid - args.E0
     bw = args.hist_binwidth
+    p_r = _panel_resolvability(plt, args.out, J, args.t2_star_fs)
     p_a = _panel_coupling(plt, args.out, samples, J, sigma_cm, binwidth=bw)
     p_b = _panel_absorption(plt, args.out, rel, absorption, J)
     p_c = _panel_cd(plt, args.out, rel, cd, args.exp_splitting)
@@ -464,7 +507,8 @@ def _plot(args, grid, absorption, cd, J, sigma_cm, samples):
     fig.savefig(composed)
     plt.close(fig)
 
-    return {"coupling(a)": p_a, "absorption(b)": p_b, "CD(c)": p_c, "composed": composed}
+    return {"resolvability(a)": p_r, "absorption(b)": p_b, "CD(c)": p_c,
+            "coupling": p_a, "composed": composed}
 
 
 if __name__ == "__main__":
