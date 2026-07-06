@@ -174,6 +174,11 @@ def coupling_for_frame(frame_dimer_pdb, monomer_pdb, pts_opt, q_opt, epsilon, ba
         "separation_A": separation,
         "aln_A_rms": float(aln_A[0]) if aln_A else float("nan"),
         "aln_B_rms": float(aln_B[0]) if aln_B else float("nan"),
+        # Per-frame two-dipole geometry (a.u. dipoles, Angstrom centroids) so the
+        # absorption/CD lineshape can be summed over the real sampled ensemble
+        # rather than a single geometry + assumed Gaussian width.
+        "mu_A": muA.tolist(), "mu_B": muB.tolist(),
+        "r_A": origin_A.tolist(), "r_B": origin_B.tolist(),
     }
 
 
@@ -423,6 +428,23 @@ def main(argv=None):
     write_csv(rows, csv_path)
     with open(json_path, "w") as f:
         json.dump(stats, f, indent=2)
+
+    # Per-frame two-dipole geometry (rigid mode) for the ensemble-summed
+    # absorption/CD lineshape (absorption_cd_spectra.py --ensemble-geometry).
+    geo_rows = [r for r in rows if "mu_A" in r]
+    geo_path = None
+    if geo_rows:
+        geo_path = args.out / "coupling_geometry.npz"
+        np.savez(
+            geo_path,
+            frame=np.array([r["frame"] for r in geo_rows], dtype=int),
+            J_cm=np.array([r["J_cm"] for r in geo_rows], dtype=float),
+            mu_A=np.array([r["mu_A"] for r in geo_rows], dtype=float),
+            mu_B=np.array([r["mu_B"] for r in geo_rows], dtype=float),
+            r_A=np.array([r["r_A"] for r in geo_rows], dtype=float),
+            r_B=np.array([r["r_B"] for r in geo_rows], dtype=float),
+            epsilon=float(args.epsilon),
+        )
     try:
         plot_histogram(j_values, stats, fig_path)
     except Exception as exc:  # plotting is non-fatal
@@ -436,6 +458,8 @@ def main(argv=None):
     print("=" * 52)
     print(f"  samples : {csv_path}")
     print(f"  summary : {json_path}")
+    if geo_path:
+        print(f"  geometry: {geo_path}")
     if fig_path:
         print(f"  figure  : {fig_path}")
 

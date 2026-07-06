@@ -99,6 +99,7 @@ OUT_DIR_STEOM_STATIC  = "coupling_paper_steom_static"
 OUT_DIR_STEOM_THERMAL = "coupling_paper_steom_thermal"
 OUT_DIR_SPECTRA       = "lineshape_out"                          # absorption/CD figure panels
 DIPOLE_GEOM_JSON      = f"{OUT_DIR_STEOM_THERMAL}/dipole_geometry.json"
+ENSEMBLE_GEOM_NPZ     = f"{OUT_DIR_STEOM_THERMAL}/coupling_geometry.npz"  # per-frame mu/r/J
 THERMAL_DIST_JSON     = f"{OUT_DIR_STEOM_THERMAL}/coupling_distribution.json"
 T2_STAR_FS   = 60.0                   # pure-dephasing time feeding the homogeneous Voigt width
 EXP_SPLITTING = (262.0, 372.0)        # Nguyen U=131-186 cm^-1 -> Davydov splitting 2U (cm^-1)
@@ -469,8 +470,10 @@ def stage_spectra(args):
     Two sub-steps, cached like the others:
       1. export_dipole_geometry.py -> mu_A, mu_B, r_A, r_B at both chromophore sites
          (same Kabsch/`super` placement as the coupling ensemble).
-      2. absorption_cd_spectra.py  -> Fig_Spectra_{Coupling,Absorption,CD}.pdf, driven
-         by the thermal distribution (J, sigma) + that geometry + T2* + exp. splitting.
+      2. absorption_cd_spectra.py  -> Fig_Spectra_{Coupling,Absorption,CD}.pdf. Panels
+         (b)/(c) are summed over the per-frame ensemble geometry (coupling_geometry.npz
+         from the thermal stage) so the lineshape is grounded in the real sampled
+         disorder; the single-geometry dipole JSON is exported as a cross-check.
     """
     geom_path = REPO / DIPOLE_GEOM_JSON
     if args.reuse["spectra"] and geom_path.exists():
@@ -484,12 +487,19 @@ def stage_spectra(args):
 
     geom = json.loads(geom_path.read_text()) if geom_path.exists() else {}
 
-    rc, tail = run([PY, "absorption_cd_spectra.py",
-                    "--distribution", THERMAL_DIST_JSON,
-                    "--geometry-json", DIPOLE_GEOM_JSON,
-                    "--t2-star-fs", str(T2_STAR_FS),
-                    "--exp-splitting", str(EXP_SPLITTING[0]), str(EXP_SPLITTING[1]),
-                    "--out", OUT_DIR_SPECTRA], "absorption_cd_spectra.log", cwd=REPO)
+    cmd = [PY, "absorption_cd_spectra.py",
+           "--distribution", THERMAL_DIST_JSON,
+           "--geometry-json", DIPOLE_GEOM_JSON,
+           "--t2-star-fs", str(T2_STAR_FS),
+           "--exp-splitting", str(EXP_SPLITTING[0]), str(EXP_SPLITTING[1]),
+           "--out", OUT_DIR_SPECTRA]
+    ensemble = REPO / ENSEMBLE_GEOM_NPZ
+    if ensemble.exists():
+        log(f"  ensemble lineshape from {ENSEMBLE_GEOM_NPZ} (hard-data 4b/4c)")
+        cmd += ["--ensemble-geometry", ENSEMBLE_GEOM_NPZ]
+    else:
+        log(f"  [warn] {ENSEMBLE_GEOM_NPZ} absent; single-geometry lineshape (rerun thermal stage)")
+    rc, tail = run(cmd, "absorption_cd_spectra.log", cwd=REPO)
 
     dist = json.loads((REPO / THERMAL_DIST_JSON).read_text()) if (REPO / THERMAL_DIST_JSON).exists() else {}
     J = float(dist.get("mean", float("nan")))

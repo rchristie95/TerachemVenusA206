@@ -138,6 +138,50 @@ def build_spectra(grid_cm, bands, sigma_cm, gamma_cm):
     return absorption, cd
 
 
+def load_ensemble_geometry(path):
+    """Per-frame geometry npz from coupling_ensemble.py: mu_A, mu_B, r_A, r_B, J_cm."""
+    d = np.load(path)
+    return {k: np.asarray(d[k], float) for k in ("mu_A", "mu_B", "r_A", "r_B", "J_cm")}
+
+
+def build_spectra_ensemble(grid_cm, geo, E0, gamma_cm, sigma_h_cm=0.0):
+    """
+    Absorption + CD as an explicit sum over the MD ensemble (hard data): for every
+    frame, place the two Davydov bands at E0 +/- J(frame) with dipole strengths and
+    rotational strengths from THAT frame's actual STEOM dipoles/centroids, then
+    broaden each band by the HOMOGENEOUS width only (Lorentzian gamma from T2*,
+    plus an optional small Gaussian sigma_h). The inhomogeneous envelope and the
+    CD couplet amplitude/sign then emerge from the real sampled disorder rather
+    than an assumed Gaussian applied to a single geometry.
+
+    Returns (absorption, cd, diag) with per-ensemble mean band diagnostics.
+    """
+    mu_A, mu_B, r_A, r_B, J = geo["mu_A"], geo["mu_B"], geo["r_A"], geo["r_B"], geo["J_cm"]
+    n = len(J)
+    absorption = np.zeros_like(grid_cm)
+    cd = np.zeros_like(grid_cm)
+    sig = max(sigma_h_cm, 1e-6)
+    D_plus = D_minus = R_couplet = 0.0
+    for i in range(n):
+        mp = (mu_A[i] + mu_B[i]) / np.sqrt(2.0)
+        mm = (mu_A[i] - mu_B[i]) / np.sqrt(2.0)
+        dP = float(np.dot(mp, mp))
+        dM = float(np.dot(mm, mm))
+        base = (np.pi * E0 / 2.0) * float(np.dot(r_B[i] - r_A[i], np.cross(mu_A[i], mu_B[i])))
+        nu_p, nu_m = E0 + J[i], E0 - J[i]
+        sh_p = voigt_profile(grid_cm - nu_p, sig, gamma_cm)
+        sh_m = voigt_profile(grid_cm - nu_m, sig, gamma_cm)
+        absorption += dP * sh_p + dM * sh_m
+        cd += (-base) * sh_p + (+base) * sh_m
+        D_plus += dP; D_minus += dM; R_couplet += base
+    absorption /= n
+    cd /= n
+    diag = {"n": n, "D_plus": D_plus / n, "D_minus": D_minus / n,
+            "R_couplet": R_couplet / n, "J_mean": float(np.mean(J)),
+            "J_std": float(np.std(J, ddof=1)) if n > 1 else 0.0}
+    return absorption, cd, diag
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--J", type=float, default=96.38,
@@ -151,7 +195,14 @@ def main(argv=None):
     p.add_argument("--sigma-cm", type=float, default=None,
                    help="Override inhomogeneous Gaussian std (cm^-1).")
     p.add_argument("--geometry-json", type=Path, default=None,
-                   help="JSON with mu_A, mu_B, r_A, r_B (preferred; from the QM density).")
+                   help="JSON with mu_A, mu_B, r_A, r_B for a SINGLE geometry (from the QM density).")
+    p.add_argument("--ensemble-geometry", type=Path, default=None,
+                   help="coupling_geometry.npz (per-frame mu/r/J from coupling_ensemble.py): "
+                        "build absorption+CD as an explicit sum over the MD ensemble, so the "
+                        "broadening and CD couplet are grounded in the real sampled disorder.")
+    p.add_argument("--hist-binwidth", type=float, default=0.4,
+                   help="Fixed histogram bin width for panel (a) (cm^-1); keeps the bin width "
+                        "constant as the sample count grows so the histogram just converges.")
     p.add_argument("--separation", type=float, default=25.5,
                    help="Centroid separation (Angstrom); STEOM value (schematic geometry only).")
     p.add_argument("--angle", type=float, default=104.0,
@@ -185,22 +236,36 @@ def main(argv=None):
     print(f"[*] Homogeneous HWHM from T2*={args.t2_star_fs:.1f} fs: {gamma_cm:.2f} cm^-1")
     print(f"[*] Inhomogeneous Gaussian sigma: {sigma_cm:.2f} cm^-1")
 
-    if args.geometry_json is not None:
-        mu_A, mu_B, r_A, r_B = load_geometry_json(args.geometry_json)
-        geom_note = f"geometry-json ({args.geometry_json.name})"
-    else:
-        mu_A, mu_B, r_A, r_B = build_default_geometry(
-            args.separation, args.angle, args.skew, args.dipole_debye)
-        geom_note = "schematic default geometry"
-    print(f"[*] Using {geom_note}")
-
-    bands = exciton_bands(args.E0, J, mu_A, mu_B, r_A, r_B)
-    print(f"    - band(+): nu={bands['plus']['nu']:.1f}  D={bands['plus']['D']:.3f}  R={bands['plus']['R']:.3e}")
-    print(f"    - band(-): nu={bands['minus']['nu']:.1f}  D={bands['minus']['D']:.3f}  R={bands['minus']['R']:.3e}")
-    print(f"    - computed Davydov splitting 2|J| = {2*abs(J):.2f} cm^-1")
-
     grid = np.linspace(args.E0 - args.window, args.E0 + args.window, args.npts)
-    absorption, cd = build_spectra(grid, bands, sigma_cm, gamma_cm)
+
+    if args.ensemble_geometry is not None and args.ensemble_geometry.exists():
+        # HARD-DATA path: absorption/CD summed over the real MD ensemble.
+        geo = load_ensemble_geometry(args.ensemble_geometry)
+        absorption, cd, diag = build_spectra_ensemble(grid, geo, args.E0, gamma_cm)
+        J = diag["J_mean"]
+        if samples is None:
+            samples = geo["J_cm"]
+        print(f"[*] Ensemble lineshape over {diag['n']} MD frames "
+              f"({args.ensemble_geometry.name}):")
+        print(f"    - <D(+)>={diag['D_plus']:.3f}  <D(-)>={diag['D_minus']:.3f}  "
+              f"<R couplet>={diag['R_couplet']:.3e}")
+        print(f"    - J = {diag['J_mean']:.2f} +/- {diag['J_std']:.2f} cm^-1, "
+              f"2|J| = {2*abs(J):.2f} cm^-1  (inhomogeneous width from real disorder)")
+    else:
+        if args.geometry_json is not None:
+            mu_A, mu_B, r_A, r_B = load_geometry_json(args.geometry_json)
+            geom_note = f"geometry-json ({args.geometry_json.name})"
+        else:
+            mu_A, mu_B, r_A, r_B = build_default_geometry(
+                args.separation, args.angle, args.skew, args.dipole_debye)
+            geom_note = "schematic default geometry"
+        print(f"[*] Using {geom_note} (single geometry + Gaussian inhomogeneous width)")
+
+        bands = exciton_bands(args.E0, J, mu_A, mu_B, r_A, r_B)
+        print(f"    - band(+): nu={bands['plus']['nu']:.1f}  D={bands['plus']['D']:.3f}  R={bands['plus']['R']:.3e}")
+        print(f"    - band(-): nu={bands['minus']['nu']:.1f}  D={bands['minus']['D']:.3f}  R={bands['minus']['R']:.3e}")
+        print(f"    - computed Davydov splitting 2|J| = {2*abs(J):.2f} cm^-1")
+        absorption, cd = build_spectra(grid, bands, sigma_cm, gamma_cm)
 
     # ----- write data -----
     csv_path = args.out / "lineshape_data.csv"
@@ -268,12 +333,19 @@ def _leg(ax, **kw):
 FIGSIZE = (4.2, 3.4)
 
 
-def _panel_coupling(plt, out, samples, J, sigma_cm):
+def _hist_bins(samples, binwidth):
+    """Fixed-width bin edges spanning the samples (constant bin width as n grows)."""
+    lo = np.floor(samples.min() / binwidth) * binwidth
+    hi = np.ceil(samples.max() / binwidth) * binwidth + binwidth
+    return np.arange(lo, hi, binwidth)
+
+
+def _panel_coupling(plt, out, samples, J, sigma_cm, binwidth=0.4):
     """Panel (a): J distribution over the NVT ensemble."""
     fig, ax = plt.subplots(figsize=FIGSIZE)
     if samples is not None and samples.size:
-        nb = max(8, min(40, int(np.sqrt(samples.size)) * 2))
-        ax.hist(samples, bins=nb, color=_C_ABS, alpha=0.80, edgecolor="white", lw=0.5)
+        ax.hist(samples, bins=_hist_bins(samples, binwidth), color=_C_ABS,
+                alpha=0.80, edgecolor="white", lw=0.4)
         ax.set_ylabel("MD snapshots")
     else:
         # Fall back to the implied Gaussian if no per-frame samples are present.
@@ -345,7 +417,8 @@ def _panel_cd(plt, out, rel, cd, exp_splitting):
 def _plot(args, grid, absorption, cd, J, sigma_cm, samples):
     plt = _mpl()
     rel = grid - args.E0
-    p_a = _panel_coupling(plt, args.out, samples, J, sigma_cm)
+    bw = args.hist_binwidth
+    p_a = _panel_coupling(plt, args.out, samples, J, sigma_cm, binwidth=bw)
     p_b = _panel_absorption(plt, args.out, rel, absorption, J)
     p_c = _panel_cd(plt, args.out, rel, cd, args.exp_splitting)
 
@@ -355,8 +428,8 @@ def _plot(args, grid, absorption, cd, J, sigma_cm, samples):
         ax.set_title(f"({sub})", loc="left", fontsize=12)
     # (a)
     if samples is not None and samples.size:
-        nb = max(8, min(40, int(np.sqrt(samples.size)) * 2))
-        axes[0].hist(samples, bins=nb, color=_C_ABS, alpha=0.80, edgecolor="white", lw=0.5)
+        axes[0].hist(samples, bins=_hist_bins(samples, bw), color=_C_ABS,
+                     alpha=0.80, edgecolor="white", lw=0.4)
         axes[0].set_ylabel("MD snapshots")
     axes[0].axvline(J, color=_C_MEAN, lw=1.8, label=fr"$\bar J = {J:.0f}$")
     axes[0].axvspan(J - sigma_cm, J + sigma_cm, color=_C_MEAN, alpha=0.10,
