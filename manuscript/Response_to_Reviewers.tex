@@ -53,7 +53,7 @@ substantially in response to the reports. The principal changes are:
   against an explicit triples correction [EOM-CCSD(fT)] and ADC(2).
   \item \textbf{Conformational sampling.} The coupling is now characterised not at a
   single minimised geometry but as a room-temperature thermal distribution over a
-  200-frame restrained NVT ensemble.
+  1000-frame unrestrained NVT ensemble of the actual VenusA206 tandem dimer.
   \item \textbf{Multipole origin of the PDA breakdown.} We add an explicit Cartesian
   multipole decomposition (dipole through octupole) quantifying which terms contribute
   and demonstrating that the enhancement resides in the short-range density overlap.
@@ -176,8 +176,8 @@ the environment is often modelled more accurately, for instance by including its
 polarizability (e.g., DOI: 10.3389/fmolb.2023.1268278).}
 
 \response{We have adopted the ensemble approach the reviewer highlights. The coupling
-is now averaged over a 200-frame restrained NVT trajectory, giving
-$J = 96 \pm 2~\mathrm{cm^{-1}}$ (a $\sim3\%$ spread) rather than a single-structure
+is now averaged over a 1000-frame unrestrained NVT trajectory of the tandem dimer, giving
+$J = 111 \pm 3~\mathrm{cm^{-1}}$ (a $\sim3\%$ spread) rather than a single-structure
 value. On accuracy, the transition density itself is now taken from a correlated
 wavefunction method (DLPNO-STEOM-CCSD) rather than TDDFT. We agree that an explicitly
 polarisable environment would further refine the screening at this separation; we now
@@ -228,9 +228,9 @@ specific, actionable concerns, which we have addressed.
 minimized geometry. No conformational sampling, molecular dynamics averaging, or
 analysis of coupling fluctuations is performed.}
 
-\response{We have added conformational sampling. The coupling is now evaluated on 200
-snapshots from a restrained NVT trajectory about the physiological interface, giving
-$J = 96 \pm 2~\mathrm{cm^{-1}}$ with the inter-dipole angle and centroid separation
+\response{We have added conformational sampling. The coupling is now evaluated on 1000
+snapshots from an unrestrained NVT trajectory of the physiological tandem dimer, giving
+$J = 111 \pm 3~\mathrm{cm^{-1}}$ with the inter-dipole angle and centroid separation
 tightly clustered. The coupling varies by only $\sim3\%$, so the reported value is
 representative of the thermal ensemble rather than one configuration among many.}
 
@@ -338,8 +338,8 @@ frame\ldots\ the authors should perform constant-temperature simulations to coll
 set of system configurations, and analyze the couplings for those configurations.}
 
 \response{We agree and have implemented this. The coupling is now analysed over a
-200-frame restrained NVT ensemble rather than a single minimised structure, yielding
-$J = 96 \pm 2~\mathrm{cm^{-1}}$ and demonstrating that the value is stable
+1000-frame unrestrained NVT ensemble of the fully tethered tandem dimer construct rather than a single minimised structure, yielding
+$J = 111 \pm 3~\mathrm{cm^{-1}}$ and demonstrating that the value is stable
 ($\sim3\%$ variation) with respect to thermal and protonation-independent geometric
 disorder about the bound interface.}
 
