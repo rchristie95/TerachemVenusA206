@@ -15,7 +15,7 @@ ISO, W, H, QM = 0.04, 1600, 1200, "resi 66"     # CR2 chromophore
 
 cmd.reinitialize()
 cmd.bg_color("white")
-for k, v in [("ray_opaque_background",0),("ray_shadows",0),("antialias",2),("ambient",0.45),
+for k, v in [("ray_opaque_background",1),("ray_shadows",0),("antialias",2),("ambient",0.45),
              ("transparency",0.35),("cartoon_transparency",0.65),("cartoon_fancy_helices",1),
              ("depth_cue",0),("valence",0),("sphere_scale",0.22)]:
     cmd.set(k, v)
@@ -29,7 +29,7 @@ cmd.matrix_copy("siteA", "siteA")  # ensure matrix is applied
 cmd.matrix_copy("siteB", "siteB")
 
 cmd.hide("everything")
-cmd.show("cartoon", "dimer_ref")
+cmd.show("lines", "dimer_ref")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 1-240 and name CA")
 cmd.spectrum("count", "rainbow", "dimer_ref and resi 250-500 and name CA")
 
@@ -59,11 +59,11 @@ def render(fn, kind, view):
     cmd.disable("Transition_Density"); cmd.disable("Difference_Density")
     cmd.enable("Transition_Density" if kind=="tr" else "Difference_Density")
     if view == "dimer":
-        cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("cartoon","dimer_ref")
+        cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("lines","dimer_ref")
         cmd.enable(f"{kind}_A_p"); cmd.enable(f"{kind}_A_n")
         cmd.orient("dimer_ref")
     else:                                                        # site-B QM close-up
-        cmd.hide("cartoon"); cmd.disable("siteA")
+        cmd.hide("lines"); cmd.disable("siteA")
         cmd.disable(f"{kind}_A_p"); cmd.disable(f"{kind}_A_n")
         cmd.orient(f"siteB and {QM}"); cmd.zoom(f"siteB and {QM}", 3)
     cmd.ray(W, H); cmd.png(f"{OUT}/{fn}", dpi=300); print("wrote", fn)
@@ -74,6 +74,6 @@ render("03_difference_dimer.png", "df", "dimer")
 render("04_difference_qm.png",    "df", "qm")
 
 # clean state for interactive viewing
-cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("cartoon","dimer_ref")
+cmd.enable("siteA"); cmd.enable("siteB"); cmd.show("lines","dimer_ref")
 cmd.enable("Transition_Density"); cmd.disable("Difference_Density"); cmd.orient("dimer_ref")
 print("DONE — 4 paper-format figures in", OUT)
