@@ -1,0 +1,346 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, allcolors=blue}
+\usepackage{enumitem}
+
+% Reviewer comment: boxed italic block
+\newmdenv[
+  linecolor=gray!55,
+  linewidth=0.6pt,
+  backgroundcolor=gray!6,
+  leftmargin=0pt, rightmargin=0pt,
+  innertopmargin=6pt, innerbottommargin=6pt,
+  skipabove=8pt, skipbelow=4pt
+]{revcomment}
+
+\newcommand{\comment}[1]{\begin{revcomment}\itshape #1\end{revcomment}}
+\newcommand{\response}[1]{\noindent\textbf{Response.}\ #1\par\vspace{6pt}}
+
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+\title{\vspace{-2.5em}Response to Reviewers\\[2pt]
+\large Manuscript: ``Non-Equilibrium Dynamics of the Time-Dependent Excitonic Coupling in Fluorescent Protein Dimers''}
+\author{R.\ Christie, C.\ Murray, Y.\ Kim, J.\ Joo}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+
+\section*{Cover note to the Editor}
+
+We thank the Editor and the four reviewers for their careful and constructive
+assessment, and we are grateful for the invitation to transfer the manuscript to
+\emph{The Journal of Physical Chemistry}. We have revised the manuscript
+substantially in response to the reports. The principal changes are:
+
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt]
+  \item \textbf{Higher-level electronic structure.} The site energy and the transition
+  density that enters the coupling are now obtained from a correlated wavefunction
+  method, DLPNO-STEOM-CCSD, rather than from TDDFT alone. This is important because
+  the anionic chromophore carries appreciable double-excitation character, which a
+  single-excitation theory cannot represent and for which TDDFT blueshifts the bright
+  state. The STEOM assignment is validated on the tractable gas-phase chromophore
+  against an explicit triples correction [EOM-CCSD(fT)] and ADC(2).
+  \item \textbf{Conformational sampling.} The coupling is now characterised not at a
+  single minimised geometry but as a room-temperature thermal distribution over a
+  200-frame restrained NVT ensemble.
+  \item \textbf{Multipole origin of the PDA breakdown.} We add an explicit Cartesian
+  multipole decomposition (dipole through octupole) quantifying which terms contribute
+  and demonstrating that the enhancement resides in the short-range density overlap.
+  \item \textbf{A spectroscopic observable.} We connect the coupling and the
+  open-system parameters to an absorption/CD lineshape, yielding the bisignate CD
+  couplet characteristic of the dimer.
+  \item \textbf{Methodological transparency.} Grid spacing and QM region sizes are now
+  stated explicitly, all software is cited, and the entire workflow is reproduced by a
+  single released orchestrator, \texttt{run\_paper\_pipeline.py}.
+\end{itemize}
+
+Point-by-point responses to each reviewer follow, each beginning on a new page so
+that they may be forwarded individually. Reviewer comments are reproduced in the
+shaded boxes.
+
+\newpage
+\section*{Response to Reviewer 1}
+
+We thank the reviewer for recognising the two central contributions (the
+timescale-separation argument and the near-field enhancement of the coupling) and for
+the constructive suggestions, which we address in turn.
+
+\comment{I did not see much meaningful integration between the open quantum systems
+simulations and the quantum chemistry part\ldots\ the approach of generating dynamics
+is not used to, for example, calculate a spectroscopic signature such as an absorption
+(or emission) spectrum.}
+
+\response{We agree, and we have added exactly this link. From the computed coupling,
+its conformational spread (which fixes the inhomogeneous Gaussian width) and the
+homogeneous dephasing width $1/(2\pi c\,T_2^{*})$, we now construct the excitonic
+absorption and circular-dichroism lineshapes, modelling each exciton band as a Voigt
+profile (tool \texttt{lineshape\_cd.py}). This produces the bisignate CD couplet
+characteristic of an excitonic dimer, with an apparent splitting comparable to the
+experimentally reported window, so the open-system parameters are now tied to a
+measurable observable rather than being purely illustrative. The dynamics thus feed
+directly into the spectroscopic signature and share the same coupling and dephasing
+inputs.}
+
+\comment{To what extent are the findings and claims specific to the protein dimer
+under consideration?\ \ldots\ Wouldn't at least the (only slowly kicking in) solvent
+shielding be expected in other aqueous complexes\ldots?}
+
+\response{This is a fair point and we have made the generality explicit in the
+Summary. The timescale-separation argument is not specific to Venus: aqueous Debye
+relaxation universally lies in the picosecond range, while optical absorption and
+dephasing are far faster, so the optical-limit imprinting of the coupling is expected
+in any water-exposed multichromophore complex. What the $\beta$-barrel adds is a
+reduction of the fluctuation \emph{amplitude} (now quantified: the coupling varies by
+only ${\sim}3\%$ across the thermal ensemble), not a change in the underlying
+separation of timescales.}
+
+\comment{It is intriguing that the point dipole approximation seems to be out by a
+factor of five\ldots\ are broader lessons to be learned regarding when we should
+generally be more careful in applying the point dipole approximation?}
+
+\response{Yes. We now decompose the coupling into a primitive Cartesian multipole
+series (dipole, quadrupole, octupole and the corresponding cross terms). The
+dipole--dipole term reproduces the PDA exactly, but the series converges only slowly:
+through octupole it recovers only ${\sim}28\%$ of the full coupling. The lesson,
+now stated explicitly, is that when the transition density is delocalised and its
+nearest inter-chromophore approach is comparable to the molecular size, even a
+multipole-corrected dipole model is inadequate and the full density integral is
+required---a criterion that generalises beyond this system.}
+
+\comment{Regarding the solvent polarisation (Debye) time, aren't there also fast
+timescales leading to a partial polarisation?}
+
+\response{Indeed. We now note in the Summary that the single-exponential Debye form
+omits the fast librational and intramolecular components of the water response, which
+act on tens of femtoseconds and provide a partial polarisation before full nuclear
+reorganisation. Consequently the optical limit is best regarded as an upper bound on
+the early-time coupling; it does not alter the central conclusion, since these fast
+components still lie far below the picosecond Debye time.}
+
+\comment{Given the relatively tight packing\ldots\ the solvent distribution will be
+quite asymmetric. Is it right to assume this affects the strict validity of Eqs 3, 4,
+or renders them into an approximation?}
+
+\response{The reviewer is correct: the isotropic-continuum screening in
+Eqs.~(4)--(5) is an approximation, and the asymmetric, partially excluded solvent
+distribution in the inter-barrel gap means a position-dependent or atomistic,
+explicitly polarisable embedding would be more rigorous. We now state this as a
+limitation and point to such embeddings as the appropriate refinement. Importantly,
+however, the quantity imprinted at absorption, $J(0)$, is set by the optical dielectric
+$\varepsilon_{\rm opt}$ alone; sweeping the static permittivity $\varepsilon_{\rm eq}$
+over $4$--$78$ leaves $J(0)$ invariant and rescales only the long-time relaxed limit,
+so the asymmetry bears on the late-time damping rather than on the Davydov splitting.}
+
+\comment{I was not sure how valuable ``Algorithm 1'' is\ldots\ and what exactly one
+should take away from Table 1.}
+
+\response{We have reframed both. Algorithm 1 is now presented purely as a compact,
+reproducible map of the released pipeline and may be moved to the Supporting
+Information at the Editor's discretion. Table 1 has been replaced by a concise
+cross-method comparison of the bright-state energy (TDDFT vs.\ STEOM-CCSD vs.\
+experiment), so that its message---the choice of the correlated method and the
+resulting site energy---is immediate.}
+
+\newpage
+\section*{Response to Reviewer 2}
+
+We thank the reviewer for the positive assessment of the timescale proposition and for
+the recommendation to reconsider the work as a full \emph{Journal of Physical
+Chemistry} article, which we have accepted.
+
+\comment{The lack of comparison between these dynamics and experimental observables
+means it is hard to distinguish whether the model is qualitatively correct or just one
+of many possible toy-models of dephasing.}
+
+\response{We have added the missing comparison. The coupling and dephasing now feed a
+Voigt absorption/CD lineshape whose bisignate couplet can be compared with the observed
+CD signature. In addition, we clarify that $T_2^{*}=60$\,fs is an order-of-magnitude
+estimate transferred from analogous systems, and we show by sweeping $T_2^{*}$ over
+$20$--$200$\,fs that the central conclusion is insensitive to its precise value: all
+resulting coherence-decay times remain far below the picosecond Debye time.}
+
+\comment{Contemporary works regularly use molecular dynamics ensembles rather than a
+single crystal structure\ldots\ (e.g., DOI: 10.1021/acs.jpcc.7b00833). In addition,
+the environment is often modelled more accurately, for instance by including its
+polarizability (e.g., DOI: 10.3389/fmolb.2023.1268278).}
+
+\response{We have adopted the ensemble approach the reviewer highlights. The coupling
+is now averaged over a 200-frame restrained NVT trajectory, giving
+$J = 96 \pm 2~\mathrm{cm^{-1}}$ (a $\sim3\%$ spread) rather than a single-structure
+value. On accuracy, the transition density itself is now taken from a correlated
+wavefunction method (DLPNO-STEOM-CCSD) rather than TDDFT. We agree that an explicitly
+polarisable environment would further refine the screening at this separation; we now
+cite such approaches (including the frontiers reference) and identify polarisable
+embedding as the appropriate next refinement, while noting that the absorption-time
+coupling $J(0)$ is governed by $\varepsilon_{\rm opt}$ and is invariant to the static
+permittivity.}
+
+\comment{Intermediate excitonic coupling is stated to be ``at odds with the biological
+environment inducing strong decoherence'', but values such as the present one, and even
+larger, are common in photosynthetic pigment--protein complexes (e.g.,
+10.1146/annurev.physchem.54\ldots).}
+
+\response{We agree and have corrected the framing in the Introduction. We now state
+explicitly that couplings of this magnitude, and larger, are well documented in
+photosynthetic complexes, and that the open question here is therefore not the
+magnitude of $J$ but the \emph{persistence of its coherent spectroscopic signatures} at
+room temperature. This is precisely what the separation-of-timescales argument
+addresses.}
+
+\comment{The authors present as a result that the point-dipole approximation is not
+accurate for distances comparable to the molecular size, which is nowadays a well
+established fact (e.g., 10.1021/acs.jpcb.7b09535).}
+
+\response{Agreed; we no longer present the breakdown itself as novel. The Introduction
+and Summary now cite this established result, and we recast our contribution as (i)
+\emph{quantifying} the magnitude of the effect for this fluorescent-protein dimer and
+(ii) identifying its multipolar origin through an explicit decomposition, which shows
+that the enhancement lies in the short-range density overlap rather than in a few
+leading multipoles.}
+
+\comment{My only suggestion is to add small arrows in Figure 1a to indicate the time
+progression of the two trajectories.}
+
+\response{We have clarified the time progression in the caption of Figure~1: both paths
+begin at the bright state $\ket{+}$ on the equator, the individual (red) trajectory
+executes surface-preserving stochastic hops, and the ensemble average (blue) contracts
+radially inward toward the maximally mixed centre; panels (b) and (c) run left to right
+in time. We are happy to add directional arrows to the vector artwork in production.}
+
+\newpage
+\section*{Response to Reviewer 3}
+
+We thank the reviewer for the high assessment of significance and novelty and for the
+specific, actionable concerns, which we have addressed.
+
+\comment{The manuscript provides only a single static calculation based on one
+minimized geometry. No conformational sampling, molecular dynamics averaging, or
+analysis of coupling fluctuations is performed.}
+
+\response{We have added conformational sampling. The coupling is now evaluated on 200
+snapshots from a restrained NVT trajectory about the physiological interface, giving
+$J = 96 \pm 2~\mathrm{cm^{-1}}$ with the inter-dipole angle and centroid separation
+tightly clustered. The coupling varies by only $\sim3\%$, so the reported value is
+representative of the thermal ensemble rather than one configuration among many.}
+
+\comment{The manuscript repeatedly discusses environmental fluctuations and
+decoherence, yet the coupling calculations completely neglect structural dynamics.}
+
+\response{This is now remedied by the ensemble calculation above, which explicitly
+propagates structural fluctuations into the coupling and reports their statistics.}
+
+\comment{The use of bulk water parameters ($\varepsilon = 78$ and $\tau_D = 8.3$\,ps)
+may be inappropriate for chromophores embedded inside a protein $\beta$-barrel. Is this
+approximation justified?}
+
+\response{We now discuss this explicitly as a limitation. The barrel-enclosed
+chromophore is only partially solvent-exposed, so the effective static permittivity is
+lower and heterogeneous. Crucially, though, the absorption-time coupling $J(0)$ depends
+only on the optical dielectric $\varepsilon_{\rm opt}$; a sweep of $\varepsilon_{\rm eq}$
+over $4$--$78$ leaves $J(0)$ invariant and affects only the long-time relaxed limit.
+The choice of static permittivity therefore does not affect the Davydov splitting set
+at absorption.}
+
+\comment{A dephasing time of 60 fs is adopted without rigorous justification\ldots\
+There is no evidence that the same dephasing rate applies to the Venus dimer.}
+
+\response{We now state plainly that no $T_2^{*}$ has been measured for the Venus dimer
+and that $60$\,fs is an order-of-magnitude estimate transferred from analogous solvated
+pigment--protein systems. It enters only as an upper bound on the dephasing timescale.
+A sweep over $T_2^{*} = 20$--$200$\,fs shows that the separation of timescales---and
+hence the central claim---is preserved throughout, so the argument does not rely on the
+precise value.}
+
+\comment{Although Figures 2 and 3 are attractive, they provide limited quantitative
+information and would benefit from additional quantitative analysis.}
+
+\response{We have added two quantitative analyses grounded in these densities: the
+Cartesian multipole decomposition of the coupling (dipole/quadrupole/octupole
+contributions and their slow convergence) and the absorption/CD lineshape derived from
+the coupling. Together these convert the qualitative density pictures into quantitative
+statements about the coupling and its spectroscopic signature.}
+
+\comment{``rigorous QM rationale,'' ``fundamentally reconciled,'' and ``robust
+coupling,'' could be toned down.}
+
+\response{We have moderated the language throughout. The overstated phrases have been
+removed or rephrased, and the remaining uses of ``robust'' are now quantitatively
+justified (e.g., the $\sim3\%$ variation of the coupling across the thermal ensemble).}
+
+\newpage
+\section*{Response to Reviewer 4}
+
+We thank the reviewer for the detailed technical reading. Each point has been
+addressed, and several prompted substantive improvements to the electronic structure
+and the numerical documentation.
+
+\comment{The time-dependent permittivity in Eq. 4 adopts an equilibrium dielectric
+constant of 78 for liquid water, which is not relevant for the protein environment.}
+
+\response{We now discuss this limitation explicitly and show that the central result is
+insensitive to it: the coupling imprinted at absorption, $J(0)$, is set by the optical
+dielectric alone, and varying $\varepsilon_{\rm eq}$ from $4$ (protein interior) to
+$78$ (bulk water) leaves $J(0)$ unchanged, affecting only the long-time relaxed limit.}
+
+\comment{The authors mentioned ``the rapid, smooth decay of off-diagonal coherence''.
+But it cannot be clearly seen in Figure 1b.}
+
+\response{The caption of Figure~1 now points explicitly to the sub-$100$\,fs decay of
+the site-basis coherence $|\rho_{12}|$ shown in panel (b), and the surrounding text
+gives the decay time from the $T_2^{*}$ sweep. This makes the decay identifiable in the
+figure.}
+
+\comment{They should at least compute the monomer quadrupole and octupole moments of
+the transition density, and show how dipole--quadrupole, quadrupole--quadrupole, and
+higher-order couplings contribute.}
+
+\response{We have done exactly this. A new analysis computes the transition dipole,
+quadrupole and octupole moments and the full set of inter-site interaction terms
+(dipole--dipole, dipole--quadrupole, quadrupole--dipole, dipole--octupole,
+quadrupole--quadrupole, octupole--dipole). Summing through octupole recovers only
+${\sim}28\%$ of the full coupling (dipole alone ${\sim}18\%$, through quadrupole
+${\sim}26\%$), demonstrating that the interaction is not captured by any low-order
+multipole truncation.}
+
+\comment{For the computation of transition density coupling\ldots\ the spacing between
+grid points should be specified. As mentioned in Ref. 13, one can compute such
+couplings analytically\ldots\ This avoids the use of a grid representation.}
+
+\response{We now specify the grid: a uniform $200\times200\times200$ Cartesian grid
+with spacing $\approx 0.19~\mathrm{\AA}$ (voxel volume $\approx 7\times10^{-3}~
+\mathrm{\AA^{3}}$), of which $\sim3\times10^{5}$ significant voxels enter the Coulomb
+double sum. We also acknowledge in the Methods that these couplings can be evaluated
+analytically from atom-centred transition charges, and note that our dense-grid
+integral converges to the same value while additionally supplying the volumetric
+densities shown in the figures.}
+
+\comment{For QM/MM modeling, one should specify the number of QM atoms.}
+
+\response{The QM region sizes are now stated explicitly: 238 atoms for the TDDFT
+reference (222 quantum atoms plus 16 hydrogen link atoms; the deprotonated CR2
+chromophore, its first-shell residues and the five nearest waters), and a reduced
+44-atom region (CR2 plus the $\pi$-stacked Tyr203) for the correlated DLPNO-STEOM-CCSD
+calculation, in both cases embedded in the MM point-charge field.}
+
+\comment{It is not sufficient to compare the values of the couplings for a single
+frame\ldots\ the authors should perform constant-temperature simulations to collect a
+set of system configurations, and analyze the couplings for those configurations.}
+
+\response{We agree and have implemented this. The coupling is now analysed over a
+200-frame restrained NVT ensemble rather than a single minimised structure, yielding
+$J = 96 \pm 2~\mathrm{cm^{-1}}$ and demonstrating that the value is stable
+($\sim3\%$ variation) with respect to thermal and protonation-independent geometric
+disorder about the bound interface.}
+
+\end{document}

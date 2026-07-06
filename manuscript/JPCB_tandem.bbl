@@ -1,0 +1,439 @@
+\providecommand{\latin}[1]{#1}
+\makeatletter
+\providecommand{\doi}
+  {\begingroup\let\do\@makeother\dospecials
+  \catcode`\{=1 \catcode`\}=2 \doi@aux}
+\providecommand{\doi@aux}[1]{\endgroup\texttt{#1}}
+\makeatother
+\providecommand*\mcitethebibliography{\thebibliography}
+\csname @ifundefined\endcsname{endmcitethebibliography}
+  {\let\endmcitethebibliography\endthebibliography}{}
+\begin{mcitethebibliography}{48}
+\providecommand*\natexlab[1]{#1}
+\providecommand*\mciteSetBstSublistMode[1]{}
+\providecommand*\mciteSetBstMaxWidthForm[2]{}
+\providecommand*\mciteBstWouldAddEndPuncttrue
+  {\def\EndOfBibitem{\unskip.}}
+\providecommand*\mciteBstWouldAddEndPunctfalse
+  {\let\EndOfBibitem\relax}
+\providecommand*\mciteSetBstMidEndSepPunct[3]{}
+\providecommand*\mciteSetBstSublistLabelBeginEnd[3]{}
+\providecommand*\EndOfBibitem{}
+\mciteSetBstSublistMode{f}
+\mciteSetBstMaxWidthForm{subitem}{(\alph{mcitesubitemcount})}
+\mciteSetBstSublistLabelBeginEnd
+  {\mcitemaxwidthsubitemform\space}
+  {\relax}
+  {\relax}
+
+\bibitem[Förster(1965)]{forster1965delocalized}
+Förster,~T. \emph{Modern Quantum Chemistry. Istanbul Lectures. Part III:
+  Action of Light and Organic Crystals}; Academic Press: New York, NY, USA,
+  1965; pp 93--137\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[May and K{\"u}hn(2004)May, and K{\"u}hn]{may2004charge}
+May,~V.; K{\"u}hn,~O. \emph{Charge and Energy Transfer Dynamics in Molecular
+  Systems}; Wiley-VCH: Weinheim, 2004\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[F{\"o}rster(1948)]{forster1948intermolecular}
+F{\"o}rster,~T. Intermolecular energy migration and fluorescence. \emph{Annalen
+  der Physik} \textbf{1948}, \emph{2}, 55--75\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Davydov(1971)]{davydov1971}
+Davydov,~A.~S. \emph{Theory of Molecular Excitons}; Plenum Press, 1971\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Clegg(2006)]{clegg2006history}
+Clegg,~R.~M. \emph{Reviews in Fluorescence 2006}; Springer: Berlin/Heidelberg,
+  Germany, 2006; pp 1--45\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Nelson(2018)]{nelson2018role}
+Nelson,~P.~C. The role of quantum decoherence in FRET. \emph{Biophysical
+  Journal} \textbf{2018}, \emph{115}, 167--172\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Kim \latin{et~al.}(2019)Kim, Puhl, Chen, Taumoefolau, Nguyen, Kliger,
+  Blank, and Vogel]{kim2019venusa206}
+Kim,~Y.; Puhl,~H.~L.; Chen,~E.; Taumoefolau,~G.~H.; Nguyen,~T.~A.;
+  Kliger,~D.~S.; Blank,~P.~S.; Vogel,~S.~S. Venus\textsubscript{A206} dimers
+  behave coherently at room temperature. \emph{Biophysical Journal}
+  \textbf{2019}, \emph{116}, 1918--1930\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Freed \latin{et~al.}(2025)Freed, Rouse, Rocco, Al-Khalili, Florescu,
+  and Burgess]{freed2025effect}
+Freed,~M.; Rouse,~D.~M.; Rocco,~A.; Al-Khalili,~J.; Florescu,~M.; Burgess,~A.
+  The effect of permanent dipoles on dark states in molecular dimers. \emph{New
+  Journal of Physics} \textbf{2025}, \emph{27}, 124515\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Cusick \latin{et~al.}(2026)Cusick, Thuen, Schultz, Puhl, Hines, Kim,
+  Vogel, and Drobizhev]{cusick2026polarization}
+Cusick,~A.; Thuen,~A.; Schultz,~S.; Puhl,~H.~L.; Hines,~K.; Kim,~Y.;
+  Vogel,~S.~S.; Drobizhev,~M. The Two-Photon Polarization Ratio Explains
+  Unusual Shape of the Two-Photon Absorption Spectra of Dyes and Detects Weak
+  Excitonic Coupling in Fluorescent Protein Dimers. \emph{The Journal of
+  Physical Chemistry A} \textbf{2026}, ASAP\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Scholes(2003)]{scholes2003}
+Scholes,~G.~D. Long-range resonance energy transfer in molecular systems.
+  \emph{Annual Review of Physical Chemistry} \textbf{2003}, \emph{54},
+  57--87\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[van Amerongen \latin{et~al.}(2000)van Amerongen, Valkunas, and van
+  Grondelle]{van2000photosynthetic}
+van Amerongen,~R.; Valkunas,~L.; van Grondelle,~R. \emph{Photosynthetic
+  Excitons}; World Scientific: Singapore, 2000\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Ishizaki and Fleming(2009)Ishizaki, and Fleming]{ishizaki2009unified}
+Ishizaki,~A.; Fleming,~G.~R. Unified treatment of quantum coherent and
+  incoherent hopping dynamics in electronic energy transfer: Reduced hierarchy
+  equation approach. \emph{The Journal of Chemical Physics} \textbf{2009},
+  \emph{130}\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Kitoh-Nishioka \latin{et~al.}(2017)Kitoh-Nishioka, Yokogawa, and
+  Irle]{kitohnishioka2017forster}
+Kitoh-Nishioka,~H.; Yokogawa,~D.; Irle,~S. Förster Resonance Energy Transfer
+  between Fluorescent Proteins: Efficient Transition Charge-Based Study.
+  \emph{The Journal of Physical Chemistry C} \textbf{2017}, \emph{121},
+  4220--4238\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Sobakinskaya \latin{et~al.}(2018)Sobakinskaya, Schmidt~am Busch, and
+  Renger]{sobakinskaya2018theory}
+Sobakinskaya,~E.; Schmidt~am Busch,~M.; Renger,~T. Theory of FRET
+  ``Spectroscopic Ruler'' for Short Distances: Application to Polyproline.
+  \emph{The Journal of Physical Chemistry B} \textbf{2018}, \emph{122},
+  54--67\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Mennucci(2012)]{mennucci2012}
+Mennucci,~B. Polarizable continuum models. \emph{WIREs Computational Molecular
+  Science} \textbf{2012}, \emph{2}, 386--404\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Skourtis \latin{et~al.}(2016)Skourtis, Liu, Antoniou, Virshup, and
+  Beratan]{skourtis2016dexter}
+Skourtis,~S.~S.; Liu,~C.; Antoniou,~P.; Virshup,~A.~M.; Beratan,~D.~N. Dexter
+  energy transfer pathways. \emph{Proceedings of the National Academy of
+  Sciences} \textbf{2016}, \emph{113}, 8115--8120\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Hsu(2009)]{hsu2009}
+Hsu,~C.-P. The electronic couplings in electron transfer and excitation energy
+  transfer. \emph{Accounts of Chemical Research} \textbf{2009}, \emph{42},
+  509--518\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Duan \latin{et~al.}(2017)Duan, Prokhorenko, Cogdell, Ashraf, Stevens,
+  Thorwart, and Miller]{duan2017nature}
+Duan,~H.-G.; Prokhorenko,~V.~I.; Cogdell,~R.~J.; Ashraf,~K.; Stevens,~A.~L.;
+  Thorwart,~M.; Miller,~R.~D. Nature does not rely on long-lived electronic
+  quantum coherence for photosynthetic energy transfer. \emph{Proceedings of
+  the National Academy of Sciences} \textbf{2017}, \emph{114}, 8493--8498\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Manzano(2020)]{manzano2020short}
+Manzano,~D. A short introduction to the {L}indblad master equation. \emph{AIP
+  Advances} \textbf{2020}, \emph{10}\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Abrahams(2025)]{abrahams2025excitonic}
+Abrahams,~I.~T. Excitonic Coupling and Photon Antibunching in Venus Yellow
+  Fluorescent Protein Dimers: A Lindblad Master Equation Approach. \emph{arXiv
+  preprint arXiv:2508.14233} \textbf{2025}, \relax
+\mciteBstWouldAddEndPunctfalse
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Breuer and Petruccione(2002)Breuer, and Petruccione]{petruccione}
+Breuer,~H.-P.; Petruccione,~F. \emph{The theory of open quantum systems};
+  Oxford University Press, 2002\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[DeLano(2002)]{delano2002pymol}
+DeLano,~W.~L. Pymol: An open-source molecular graphics tool. \emph{CCP4 Newsl.
+  Protein Crystallogr.} \textbf{2002}, \emph{40}, 82--92\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Neese \latin{et~al.}(2020)Neese, Wennmohs, Becker, and
+  Riplinger]{neese2020orca}
+Neese,~F.; Wennmohs,~F.; Becker,~U.; Riplinger,~C. The {ORCA} quantum chemistry
+  program package. \emph{The Journal of Chemical Physics} \textbf{2020},
+  \emph{152}, 224108\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Neese(2022)]{neese2022orca}
+Neese,~F. Software update: The {ORCA} program system---Version 5.0. \emph{WIREs
+  Computational Molecular Science} \textbf{2022}, \emph{12}, e1606\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Nooijen and Bartlett(1997)Nooijen, and Bartlett]{nooijen1997steom}
+Nooijen,~M.; Bartlett,~R.~J. A new method for excited states: Similarity
+  transformed equation-of-motion coupled-cluster theory. \emph{The Journal of
+  Chemical Physics} \textbf{1997}, \emph{106}, 6441--6448\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Dutta \latin{et~al.}(2018)Dutta, Saitow, Riplinger, Neese, and
+  Izs{\'a}k]{dutta2018ipeom}
+Dutta,~A.~K.; Saitow,~M.; Riplinger,~C.; Neese,~F.; Izs{\'a}k,~R. A near-linear
+  scaling equation of motion coupled cluster method for ionized states.
+  \emph{The Journal of Chemical Physics} \textbf{2018}, \emph{148},
+  244101\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Dutta \latin{et~al.}(2019)Dutta, Saitow, Demoulin, Neese, and
+  Izs{\'a}k]{dutta2019eaeom}
+Dutta,~A.~K.; Saitow,~M.; Demoulin,~B.; Neese,~F.; Izs{\'a}k,~R. A domain-based
+  local pair natural orbital implementation of the equation of motion coupled
+  cluster method for electron attached states. \emph{The Journal of Chemical
+  Physics} \textbf{2019}, \emph{150}, 164123\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Dutta \latin{et~al.}(2016)Dutta, Neese, and Izs{\'a}k]{dutta2016dlpno}
+Dutta,~A.~K.; Neese,~F.; Izs{\'a}k,~R. Towards a pair natural orbital coupled
+  cluster method for excited states. \emph{The Journal of Chemical Physics}
+  \textbf{2016}, \emph{145}, 034102\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Manohar and Krylov(2008)Manohar, and Krylov]{manohar2008ft}
+Manohar,~P.~U.; Krylov,~A.~I. A noniterative perturbative triples correction
+  for the spin-flipping and spin-conserving equation-of-motion coupled-cluster
+  methods with single and double substitutions. \emph{The Journal of Chemical
+  Physics} \textbf{2008}, \emph{129}, 194105\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Epifanovsky \latin{et~al.}(2021)Epifanovsky, \latin{et~al.}
+  others]{epifanovsky2021qchem}
+Epifanovsky,~E.; others Software for the frontiers of quantum chemistry: An
+  overview of developments in the {Q-Chem} 5 package. \emph{The Journal of
+  Chemical Physics} \textbf{2021}, \emph{155}, 084801\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Nguyen \latin{et~al.}(2025)Nguyen, Puhl, Chen, Hines, Rani, Blank,
+  Carlotti, Kim, Goodson, and Vogel]{nguyen2025anomalous}
+Nguyen,~T.; Puhl,~H.~L.; Chen,~E.; Hines,~K.; Rani,~C.; Blank,~P.~S.;
+  Carlotti,~B.; Kim,~Y.; Goodson,~T.; Vogel,~S.~S. Anomalous photophysical
+  behaviors attributed to excitonic coupling in fluorescent proteins.
+  \emph{Biophysical Journal} \textbf{2025}, \emph{124}, 4293--4309\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Berman \latin{et~al.}(2000)Berman, Westbrook, Feng, Gilliland, Bhat,
+  Weissig, Shindyalov, and Bourne]{berman2000protein}
+Berman,~H.~M.; Westbrook,~J.; Feng,~Z.; Gilliland,~G.; Bhat,~T.; Weissig,~H.;
+  Shindyalov,~I.~N.; Bourne,~P.~E. The Protein Data Bank. \emph{Nucleic Acids
+  Research} \textbf{2000}, \emph{28}, 235--242\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Eastman \latin{et~al.}(2017)Eastman, Swails, Chodera, McGibbon, Zhao,
+  Beauchamp, Wang, Simmonett, Harrigan, Stern, \latin{et~al.}
+  others]{openmm2017}
+Eastman,~P.; Swails,~J.; Chodera,~J.~D.; McGibbon,~R.~T.; Zhao,~Y.;
+  Beauchamp,~K.~A.; Wang,~L.-P.; Simmonett,~A.~C.; Harrigan,~M.~P.;
+  Stern,~C.~D. \latin{et~al.}  OpenMM 7: Rapid development of high performance
+  algorithms for molecular dynamics. \emph{PLOS Computational Biology}
+  \textbf{2017}, \emph{13}, e1005659\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Case \latin{et~al.}(2014)Case, Babin, Berryman, Betz, Cai, Cerutti,
+  Cheatham, Darden, Duke, Gohlke, \latin{et~al.} others]{amber14_manual}
+Case,~D.~A.; Babin,~V.; Berryman,~J.~T.; Betz,~R.~M.; Cai,~Q.; Cerutti,~D.~S.;
+  Cheatham,~T.~E.,~III; Darden,~T.~A.; Duke,~R.~E.; Gohlke,~H. \latin{et~al.}
+  AMBER 14 Reference Manual. University of California, San Francisco: San
+  Francisco, CA, 2014\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Ufimtsev and Martinez(2009)Ufimtsev, and Martinez]{terachem2009}
+Ufimtsev,~I.~S.; Martinez,~T.~J. Quantum Chemistry on Graphical Processing
+  Units. 2. Direct Self-Consistent-Field Implementation. \emph{Journal of
+  Chemical Theory and Computation} \textbf{2009}, \emph{5}, 1004--1015\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Seritan \latin{et~al.}(2021)Seritan, Bannwarth, Fales, Hohenstein,
+  Isborn, Kokkila-Schumacher, Li, Liu, Luehr, Snyder~Jr, \latin{et~al.}
+  others]{seritan2021terachem}
+Seritan,~S.; Bannwarth,~C.; Fales,~B.~S.; Hohenstein,~E.~G.; Isborn,~C.~M.;
+  Kokkila-Schumacher,~S. I.~L.; Li,~X.; Liu,~F.; Luehr,~N.; Snyder~Jr,~J.~W.
+  \latin{et~al.}  TeraChem: A graphical processing unit-accelerated electronic
+  structure package for large-scale ab initio molecular dynamics. \emph{Wiley
+  Interdisciplinary Reviews: Computational Molecular Science} \textbf{2021},
+  \emph{11}, e1494\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Mardirossian and Head-Gordon(2017)Mardirossian, and
+  Head-Gordon]{mardirossian2017}
+Mardirossian,~N.; Head-Gordon,~M. Thirty years of density functional theory in
+  computational chemistry: an overview and extensive assessment of 200 density
+  functionals. \emph{Molecular Physics} \textbf{2017}, \emph{115},
+  2315--2372\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Klamt and Sch{\"u}{\"u}rmann(1993)Klamt, and
+  Sch{\"u}{\"u}rmann]{klamt1993cosmo}
+Klamt,~A.; Sch{\"u}{\"u}rmann,~G. COSMO: a new approach to dielectric screening
+  in solvents with explicit expressions for the screening energy and its
+  gradient. \emph{Journal of the Chemical Society, Perkin Transactions 2}
+  \textbf{1993}, 799--805\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Riplinger and Neese(2013)Riplinger, and Neese]{riplinger2013dlpno}
+Riplinger,~C.; Neese,~F. An efficient and near linear scaling pair natural
+  orbital based local coupled cluster method. \emph{The Journal of Chemical
+  Physics} \textbf{2013}, \emph{138}, 034106\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Weigend and Ahlrichs(2005)Weigend, and Ahlrichs]{weigend2005def2}
+Weigend,~F.; Ahlrichs,~R. Balanced basis sets of split valence, triple zeta
+  valence and quadruple zeta valence quality for {H} to {Rn}: Design and
+  assessment of accuracy. \emph{Physical Chemistry Chemical Physics}
+  \textbf{2005}, \emph{7}, 3297--3305\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Rappoport and Furche(2010)Rappoport, and Furche]{rappoport2010svpd}
+Rappoport,~D.; Furche,~F. Property-optimized {Gaussian} basis sets for
+  molecular response calculations. \emph{The Journal of Chemical Physics}
+  \textbf{2010}, \emph{133}, 134105\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Lam \latin{et~al.}(2015)Lam, Pitrou, and Seibert]{lam2015numba}
+Lam,~S.~K.; Pitrou,~A.; Seibert,~S. Numba: A LLVM-based Python JIT compiler.
+  Proceedings of the Second Workshop on the LLVM Compiler Infrastructure in
+  HPC. 2015; pp 1--6\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Kl{\"o}ckner \latin{et~al.}(2012)Kl{\"o}ckner, Pinto, Lee, Catanzaro,
+  Ivanov, and Fasih]{klockner2012pycuda}
+Kl{\"o}ckner,~A.; Pinto,~N.; Lee,~Y.; Catanzaro,~B.; Ivanov,~P.; Fasih,~A.
+  PyCUDA and PyOpenCL: A scripting-based approach to GPU run-time code
+  generation. \emph{Parallel Computing} \textbf{2012}, \emph{38},
+  157--174\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Ozaydin and Curutchet(2023)Ozaydin, and
+  Curutchet]{ozaydin2023unraveling}
+Ozaydin,~B.; Curutchet,~C. Unraveling the role of thermal fluctuations on the
+  exciton structure of the cryptophyte PC612 and PC645 photosynthetic antenna
+  complexes. \emph{Frontiers in Molecular Biosciences} \textbf{2023},
+  \emph{10}, 1268278\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Chakraborty \latin{et~al.}(2008)Chakraborty, Pak, and
+  Hammes-Schiffer]{chakraborty2008development}
+Chakraborty,~A.; Pak,~M.~V.; Hammes-Schiffer,~S. Development of Electron-Proton
+  Density Functionals for Multicomponent Density Functional Theory.
+  \emph{Physical Review Letters} \textbf{2008}, \emph{101}, 153001\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Bourne-Worster and Worth(2024)Bourne-Worster, and
+  Worth]{bourne2024quantum}
+Bourne-Worster,~S.; Worth,~G.~A. Quantum dynamics of excited state proton
+  transfer in green fluorescent protein. \emph{The Journal of Chemical Physics}
+  \textbf{2024}, \emph{160}\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Eastman \latin{et~al.}(2013)Eastman, \latin{et~al.} others]{pdbfixer}
+Eastman,~P.; others {PDBFixer}. \url{https://github.com/openmm/pdbfixer}, 2013;
+  GitHub repository\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\end{mcitethebibliography}
