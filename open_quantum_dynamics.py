@@ -112,7 +112,8 @@ def solve_me(p, tf=TF, dt=DT, psi0=None):
     bloch = np.stack([2 * np.real(rho[:, 0, 1]),
                       2 * np.imag(rho[:, 0, 1]),
                       P1 - P2], axis=1)
-    return dict(t=t, P1=P1, P2=P2, coh=coh, PB=PB, PD=PD, bloch=bloch)
+    purity = np.trace(rho @ rho, axis1=1, axis2=2).real
+    return dict(t=t, P1=P1, P2=P2, coh=coh, PB=PB, PD=PD, bloch=bloch, purity=purity)
 
 
 # --------------------------------------------------------------------------- #
@@ -257,14 +258,35 @@ def regenerate_base_figures(p, out, tf, dt, seed):
                loc="lower center", bbox_to_anchor=(0.5, 1.0),
                handlelength=1.4, columnspacing=1.4, borderaxespad=0.4)
 
-    # Fig_Coupling: J(t)
-    fig, ax = plt.subplots(figsize=(4.2, 3.4))
-    ax.plot(t, J_of_t(t, p), color=_C_ME, lw=2)
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    ax.grid(True, color="0.9", lw=0.6); ax.set_axisbelow(True); ax.set_xlim(0, tf)
-    ax.set_xlabel(r"Time (ps)"); ax.set_ylabel(r"$J(t)\ \ (\mathrm{cm^{-1}})$")
-    fig.tight_layout(); fig.savefig(out / "Fig_Coupling.pdf"); plt.close(fig)
+    # Fig_Purity_Coupling (Panel d)
+    fig, ax1 = plt.subplots(figsize=(4.2, 3.4))
+    c_pur = "#8e44ad"
+    c_coup = _C_ME
+    ax1.plot(t, me["purity"], color=c_pur, lw=2, label="Purity")
+    ax1.set_xlabel(r"Time (ps)")
+    ax1.set_ylabel(r"Purity $\mathrm{Tr}(\hat{\rho}^2)$", color=c_pur)
+    ax1.tick_params(axis="y", labelcolor=c_pur)
+    ax1.set_ylim(0.4, 1.05)
+    
+    ax2 = ax1.twinx()
+    ax2.plot(t, J_of_t(t, p), color=c_coup, lw=2, ls="--", label=r"$|J(t)|$")
+    ax2.set_ylabel(r"Coupling $|J(t)|\ \ (\mathrm{cm^{-1}})$", color=c_coup)
+    ax2.tick_params(axis="y", labelcolor=c_coup)
+    
+    for s in ("top", "bottom"):
+        ax1.spines[s].set_color("0.35")
+        ax2.spines[s].set_color("0.35")
+    ax1.spines["left"].set_color(c_pur)
+    ax2.spines["right"].set_color(c_coup)
+    ax1.spines["top"].set_visible(False)
+    ax2.spines["top"].set_visible(False)
+    ax1.grid(True, color="0.9", lw=0.6)
+    ax1.set_axisbelow(True)
+    ax1.set_xlim(0, tf)
+    
+    fig.tight_layout()
+    fig.savefig(out / "Fig_Purity_Coupling.pdf")
+    plt.close(fig)
 
     # Fig_SSE_Site
     fig, ax = plt.subplots(figsize=(4.2, 3.4))
