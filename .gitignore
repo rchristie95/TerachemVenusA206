@@ -115,3 +115,7 @@ TeraChem_UserGuide*.txt
 # ---- Public manuscript source (original JPCL submission; revision/diff kept in a private repo) ----
 !manuscript/
 !manuscript/**
+
+# ---- arXiv / JPCB revised manuscript (tandem dimer paper) ----
+!arXiv-2605.00027v1/
+!arXiv-2605.00027v1/**
