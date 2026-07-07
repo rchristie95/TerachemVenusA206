@@ -58,7 +58,8 @@ substantially in response to the reports. The principal changes are:
   1000-frame unrestrained NVT ensemble of the tandem dimer.
   \item \textbf{Multipole origin of the PDA breakdown.} We add an explicit
   multipole decomposition (dipole through octupole) quantifying which terms contribute
-  and demonstrating that the enhancement resides in the short-range density overlap.
+  and demonstrating that the enhancement resides in the short-range Coulomb coupling
+  between the extended (non-overlapping) transition densities.
   \item \textbf{A spectroscopic observable.} We connect the coupling and the
   open-system parameters to an absorption/CD lineshape (new Figure~5), yielding the bisignate CD
   couplet characteristic of the dimer.
@@ -194,12 +195,13 @@ environment inducing strong decoherence'', but values such as the present one, a
 larger, are common in photosynthetic pigment--protein complexes (e.g.,
 10.1146/annurev.physchem.54\ldots).}
 
-\response{We have adjusted the framing in the Introduction. We now state
-explicitly that couplings of this magnitude, and larger, are well documented in
-photosynthetic complexes, and that the open question here is therefore not the
-magnitude of $J$ but the \emph{persistence of its coherent spectroscopic signatures} at
-room temperature. This is precisely what the separation-of-timescales argument
-addresses.}
+\response{Good point. We agree that couplings of this magnitude, and
+larger, are well documented in photosynthetic pigment--protein complexes, and the
+revised Introduction now states this explicitly and cites it, rather than presenting the
+magnitude of $J$ as itself surprising. We have correspondingly reframed the open
+question as the room-temperature \emph{persistence} of the coherent spectroscopic
+signatures, which is what the separation-of-timescales argument addresses. We are
+grateful to the reviewer for prompting this clarification.}
 
 \comment{The authors present as a result that the point-dipole approximation is not
 accurate for distances comparable to the molecular size, which is nowadays a well
@@ -209,8 +211,8 @@ established fact (e.g., 10.1021/acs.jpcb.7b09535).}
 and Summary now cite this established result, and we recast our contribution as (i)
 \emph{quantifying} the magnitude of the effect for this fluorescent-protein dimer and
 (ii) identifying its multipolar origin through an explicit decomposition, which shows
-that the enhancement lies in the short-range density overlap rather than in a few
-leading multipoles.}
+that the enhancement lies in the short-range Coulomb coupling between the extended
+(non-overlapping) transition densities rather than in a few leading multipoles.}
 
 \comment{My only suggestion is to add small arrows in Figure 1a to indicate the time
 progression of the two trajectories.}
@@ -233,7 +235,7 @@ analysis of coupling fluctuations is performed.}
 
 \response{We have added conformational sampling. The coupling is now evaluated on 1000
 snapshots from an unrestrained NVT trajectory of the tandem dimer, giving
-$J = 111 \pm 3~\mathrm{cm^{-1}}$ with the centroid separation tightly clustered. The coupling varies by only $\sim3\%$, so the reported value is
+$J = 111 \pm 3~\mathrm{cm^{-1}}$ with the centroid separation tightly clustered so the reported value is
 representative of the thermal ensemble rather than one configuration among many.}
 
 \comment{The manuscript repeatedly discusses environmental fluctuations and
@@ -278,8 +280,7 @@ coupling,'' could be toned down.}
 
 \response{We have moderated the language throughout. The overstated phrases have been
 removed or rephrased, and the remaining uses of ``robust'' are now quantitatively
-justified (e.g., the $\sim3\%$ variation of the coupling across the thermal ensemble).}
-
+justified.
 \newpage
 \section*{Response to Reviewer 4}
 
@@ -298,22 +299,27 @@ $78$ (bulk water) leaves $J(0)$ unchanged, affecting only the long-time relaxed 
 \comment{The authors mentioned ``the rapid, smooth decay of off-diagonal coherence''.
 But it cannot be clearly seen in Figure 1b.}
 
-\response{The caption of Figure~1 now points explicitly to the sub-$100$\,fs decay of
-the site-basis coherence $|\rho_{12}|$ shown in panels (b) and (e), and the surrounding text
-gives the decay time from the $T_2^{*}$ sweep. This makes the decay identifiable in the
-figure.}
+\response{We have added a second row of panels to Figure~1; in particular,
+\textbf{Figure~1(e)} now shows explicitly the decay of the off-diagonal density-matrix
+element (the ensemble-averaged site-basis coherence $|\rho_{12}|$), and the caption points
+to its rapid sub-$100$\,fs decay in panels (b) and (e). The surrounding text gives the
+decay time from the $T_2^{*}$ sweep, so the off-diagonal decay is now clearly identifiable
+in the figure.}
 
 \comment{They should at least compute the monomer quadrupole and octupole moments of
 the transition density, and show how dipole--quadrupole, quadrupole--quadrupole, and
 higher-order couplings contribute.}
 
-\response{We have done exactly this. A new analysis computes the transition dipole,
+\response{We have now done exactly this. A new analysis computes the transition dipole,
 quadrupole and octupole moments and the full set of inter-site interaction terms
 (dipole--dipole, dipole--quadrupole, quadrupole--dipole, dipole--octupole,
 quadrupole--quadrupole, octupole--dipole). Summing through octupole recovers only
-${\sim}28\%$ of the full coupling (dipole alone ${\sim}18\%$, through quadrupole
-${\sim}26\%$), demonstrating that the interaction is not captured by any low-order
-multipole truncation.}
+${\sim}28\%$ of the full coupling (dipole alone ${\sim}23\%$, through quadrupole
+${\sim}27\%$), demonstrating that the interaction is not captured by any low-order
+multipole truncation. We emphasise that this is a purely Coulombic (transition-density)
+effect: the two densities do not overlap (their facing tails approach to ${\sim}9$~\AA,
+the nuclei to ${\sim}15$~\AA), so it is distinct from short-range Dexter exchange, which
+remains negligible at these separations.}
 
 \comment{For the computation of transition density coupling\ldots\ the spacing between
 grid points should be specified. As mentioned in Ref. 13, one can compute such
@@ -329,11 +335,11 @@ densities shown in the figures.}
 
 \comment{For QM/MM modeling, one should specify the number of QM atoms.}
 
-\response{The QM region sizes are now stated explicitly: 238 atoms for the TDDFT
-reference (the deprotonated CR2 chromophore, its first-shell residues and the five
-nearest waters, including hydrogen link-atom caps), and a reduced
-44-atom region (CR2 plus the $\pi$-stacked Tyr203) for the correlated DLPNO-STEOM-CCSD
-calculation, in both cases embedded in the MM point-charge field.}
+\response{The QM region is now stated explicitly: both the single-excitation TDDFT
+reference and the correlated DLPNO-STEOM-CCSD calculation use the same 44-atom region
+(the deprotonated CR2 chromophore plus the $\pi$-stacked Tyr203, including hydrogen
+link-atom caps), embedded in the identical MM point-charge field, so the two methods
+are compared on an identical structure and embedding.}
 
 \comment{It is not sufficient to compare the values of the couplings for a single
 frame\ldots\ the authors should perform constant-temperature simulations to collect a

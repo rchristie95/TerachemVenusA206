@@ -8,7 +8,7 @@
 \providecommand*\mcitethebibliography{\thebibliography}
 \csname @ifundefined\endcsname{endmcitethebibliography}
   {\let\endmcitethebibliography\endthebibliography}{}
-\begin{mcitethebibliography}{48}
+\begin{mcitethebibliography}{49}
 \providecommand*\natexlab[1]{#1}
 \providecommand*\mciteSetBstSublistMode[1]{}
 \providecommand*\mciteSetBstMaxWidthForm[2]{}
@@ -87,29 +87,28 @@ Freed,~M.; Rouse,~D.~M.; Rocco,~A.; Al-Khalili,~J.; Florescu,~M.; Burgess,~A.
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
 \EndOfBibitem
-\bibitem[Cusick \latin{et~al.}(2026)Cusick, Thuen, Schultz, Puhl, Hines, Kim,
-  Vogel, and Drobizhev]{cusick2026polarization}
-Cusick,~A.; Thuen,~A.; Schultz,~S.; Puhl,~H.~L.; Hines,~K.; Kim,~Y.;
-  Vogel,~S.~S.; Drobizhev,~M. The Two-Photon Polarization Ratio Explains
-  Unusual Shape of the Two-Photon Absorption Spectra of Dyes and Detects Weak
-  Excitonic Coupling in Fluorescent Protein Dimers. \emph{The Journal of
-  Physical Chemistry A} \textbf{2026}, ASAP\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
-\bibitem[Scholes(2003)]{scholes2003}
-Scholes,~G.~D. Long-range resonance energy transfer in molecular systems.
-  \emph{Annual Review of Physical Chemistry} \textbf{2003}, \emph{54},
-  57--87\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
 \bibitem[van Amerongen \latin{et~al.}(2000)van Amerongen, Valkunas, and van
   Grondelle]{van2000photosynthetic}
-van Amerongen,~R.; Valkunas,~L.; van Grondelle,~R. \emph{Photosynthetic
+van Amerongen,~H.; Valkunas,~L.; van Grondelle,~R. \emph{Photosynthetic
   Excitons}; World Scientific: Singapore, 2000\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Adolphs and Renger(2006)Adolphs, and Renger]{adolphs2006proteins}
+Adolphs,~J.; Renger,~T. How Proteins Trigger Excitation Energy Transfer in the
+  FMO Complex of Green Sulfur Bacteria. \emph{Biophysical Journal}
+  \textbf{2006}, \emph{91}, 2778--2797\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Krueger \latin{et~al.}(1998)Krueger, Scholes, and
+  Fleming]{krueger1998}
+Krueger,~B.~P.; Scholes,~G.~D.; Fleming,~G.~R. Calculation of Couplings and
+  Energy-Transfer Pathways between the Pigments of LH2 by the ab Initio
+  Transition Density Cube Method. \emph{The Journal of Physical Chemistry B}
+  \textbf{1998}, \emph{102}, 5378--5386\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
@@ -119,6 +118,14 @@ Ishizaki,~A.; Fleming,~G.~R. Unified treatment of quantum coherent and
   incoherent hopping dynamics in electronic energy transfer: Reduced hierarchy
   equation approach. \emph{The Journal of Chemical Physics} \textbf{2009},
   \emph{130}\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Scholes(2003)]{scholes2003}
+Scholes,~G.~D. Long-range resonance energy transfer in molecular systems.
+  \emph{Annual Review of Physical Chemistry} \textbf{2003}, \emph{54},
+  57--87\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
@@ -276,6 +283,17 @@ Epifanovsky,~E.; others Software for the frontiers of quantum chemistry: An
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
 \EndOfBibitem
+\bibitem[Cusick \latin{et~al.}(2026)Cusick, Thuen, Schultz, Puhl, Hines, Kim,
+  Vogel, and Drobizhev]{cusick2026polarization}
+Cusick,~A.; Thuen,~A.; Schultz,~S.; Puhl,~H.~L.; Hines,~K.; Kim,~Y.;
+  Vogel,~S.~S.; Drobizhev,~M. The Two-Photon Polarization Ratio Explains
+  Unusual Shape of the Two-Photon Absorption Spectra of Dyes and Detects Weak
+  Excitonic Coupling in Fluorescent Protein Dimers. \emph{The Journal of
+  Physical Chemistry A} \textbf{2026}, ASAP\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
 \bibitem[Nguyen \latin{et~al.}(2025)Nguyen, Puhl, Chen, Hines, Rani, Blank,
   Carlotti, Kim, Goodson, and Vogel]{nguyen2025anomalous}
 Nguyen,~T.; Puhl,~H.~L.; Chen,~E.; Hines,~K.; Rani,~C.; Blank,~P.~S.;
@@ -317,43 +335,12 @@ Case,~D.~A.; Babin,~V.; Berryman,~J.~T.; Betz,~R.~M.; Cai,~Q.; Cerutti,~D.~S.;
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
 \EndOfBibitem
-\bibitem[Ufimtsev and Martinez(2009)Ufimtsev, and Martinez]{terachem2009}
-Ufimtsev,~I.~S.; Martinez,~T.~J. Quantum Chemistry on Graphical Processing
-  Units. 2. Direct Self-Consistent-Field Implementation. \emph{Journal of
-  Chemical Theory and Computation} \textbf{2009}, \emph{5}, 1004--1015\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
-\bibitem[Seritan \latin{et~al.}(2021)Seritan, Bannwarth, Fales, Hohenstein,
-  Isborn, Kokkila-Schumacher, Li, Liu, Luehr, Snyder~Jr, \latin{et~al.}
-  others]{seritan2021terachem}
-Seritan,~S.; Bannwarth,~C.; Fales,~B.~S.; Hohenstein,~E.~G.; Isborn,~C.~M.;
-  Kokkila-Schumacher,~S. I.~L.; Li,~X.; Liu,~F.; Luehr,~N.; Snyder~Jr,~J.~W.
-  \latin{et~al.}  TeraChem: A graphical processing unit-accelerated electronic
-  structure package for large-scale ab initio molecular dynamics. \emph{Wiley
-  Interdisciplinary Reviews: Computational Molecular Science} \textbf{2021},
-  \emph{11}, e1494\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
 \bibitem[Mardirossian and Head-Gordon(2017)Mardirossian, and
   Head-Gordon]{mardirossian2017}
 Mardirossian,~N.; Head-Gordon,~M. Thirty years of density functional theory in
   computational chemistry: an overview and extensive assessment of 200 density
   functionals. \emph{Molecular Physics} \textbf{2017}, \emph{115},
   2315--2372\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
-\bibitem[Klamt and Sch{\"u}{\"u}rmann(1993)Klamt, and
-  Sch{\"u}{\"u}rmann]{klamt1993cosmo}
-Klamt,~A.; Sch{\"u}{\"u}rmann,~G. COSMO: a new approach to dielectric screening
-  in solvents with explicit expressions for the screening energy and its
-  gradient. \emph{Journal of the Chemical Society, Perkin Transactions 2}
-  \textbf{1993}, 799--805\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
@@ -432,6 +419,27 @@ Bourne-Worster,~S.; Worth,~G.~A. Quantum dynamics of excited state proton
 \bibitem[Eastman \latin{et~al.}(2013)Eastman, \latin{et~al.} others]{pdbfixer}
 Eastman,~P.; others {PDBFixer}. \url{https://github.com/openmm/pdbfixer}, 2013;
   GitHub repository\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Ufimtsev and Martinez(2009)Ufimtsev, and Martinez]{terachem2009}
+Ufimtsev,~I.~S.; Martinez,~T.~J. Quantum Chemistry on Graphical Processing
+  Units. 2. Direct Self-Consistent-Field Implementation. \emph{Journal of
+  Chemical Theory and Computation} \textbf{2009}, \emph{5}, 1004--1015\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Seritan \latin{et~al.}(2021)Seritan, Bannwarth, Fales, Hohenstein,
+  Isborn, Kokkila-Schumacher, Li, Liu, Luehr, Snyder~Jr, \latin{et~al.}
+  others]{seritan2021terachem}
+Seritan,~S.; Bannwarth,~C.; Fales,~B.~S.; Hohenstein,~E.~G.; Isborn,~C.~M.;
+  Kokkila-Schumacher,~S. I.~L.; Li,~X.; Liu,~F.; Luehr,~N.; Snyder~Jr,~J.~W.
+  \latin{et~al.}  TeraChem: A graphical processing unit-accelerated electronic
+  structure package for large-scale ab initio molecular dynamics. \emph{Wiley
+  Interdisciplinary Reviews: Computational Molecular Science} \textbf{2021},
+  \emph{11}, e1494\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax

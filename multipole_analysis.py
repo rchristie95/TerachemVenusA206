@@ -2,12 +2,28 @@
 r"""
 multipole_analysis.py  --  Multipole decomposition of the excitonic coupling.
 
-Reviewer item 3 (R4 explicit, R1 conceptual): decompose the factor-of-~5.6
-enhancement of the full Transition Density Coupling (J_TDC = 74.38 cm^-1) over
-the point-dipole approximation (J_PDA = 13.31 cm^-1) into multipole orders --
-dipole-dipole, dipole-quadrupole, quadrupole-quadrupole (and higher) -- to show
-which terms drive the near-field enhancement at the 27.6 A centroid separation,
-and where the PDA breaks down.
+Reviewer item 3 (R4 explicit, R1 conceptual): decompose the near-field
+enhancement of the full Transition Density Coupling over the point-dipole
+approximation into multipole orders -- dipole-dipole, dipole-quadrupole,
+quadrupole-quadrupole (and higher) -- to show which terms drive it and where
+the PDA breaks down.
+
+Correct usage (the paper's frame): align with OLD_MONOMER, the frame the dimer
+chains were built in, and the reframed spec-normalised density:
+    --npz neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz \
+    --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb --epsilon 1.77
+gives J_TDC = 100.2 cm^-1, J_PDA = 23.0 cm^-1 (enhancement ~4.4x), centroid
+separation ~25 A. Summing through octupole recovers only ~28% of J_TDC (dip-dip
+~23%, +quad ~27%). The series is convergent (bounding spheres separated) but
+converges slowly because the coupling is dominated by close-contact pairs; the
+remaining ~72% is short-range Coulomb (transition-density) coupling between the
+extended, non-overlapping densities (closest density approach ~9 A, nuclei ~15 A)
+-- not Dexter exchange.
+
+WARNING: aligning with the anion-frame monomer (tc_simple_anionic/...) instead of
+OLD_MONOMER places the two densities ~2 A too close and inflates J to a spurious
+~155 cm^-1. Always use OLD_MONOMER with the *_oldframe density. (The legacy
+factor-of-~5.6 numbers, J_TDC=74.38 / J_PDA=13.31 cm^-1, were the TDDFT density.)
 
 Method (primitive Cartesian multipole expansion of the Coulomb interaction):
   The exact coupling is  J = sum_ij q_i q_j / |R + a_i - b_j|  (atomic units),
@@ -260,27 +276,41 @@ def plot_decomposition(terms, cumulative, tdc, pda, out_pdf):
 # Real-data driver (reuses the Stage 3 flow)
 # --------------------------------------------------------------------------- #
 def run_real(args):
-    workdir, candidates, tried = autodetect_workdir_and_candidates(args.workdir)
-    if not candidates:
-        print(f"[!] No excited-state candidates. Tried: {tried}")
-        sys.exit(1)
-    print_excited_state_table(candidates)
-    state, density_file, _, mode = select_target_state_and_density(
-        candidates, workdir, args.density_mode, requested_root=args.root)
-    mu_target = oscillator_to_dipole_au(state["ev"], state["osc"])
-    print(f"    - Root {state['root']} ({mode}): f={state['osc']:.4f}, |mu|={mu_target:.4f} a.u.")
+    if args.npz:
+        # Pre-built transition density (e.g. the DLPNO-STEOM-CCSD spec-normalised
+        # density in neo_model/orca_steom/steom_transdens.npz). Already carries the
+        # correct STEOM dipole, so no oscillator-strength renormalisation is applied.
+        data = np.load(args.npz)
+        pts_opt = np.asarray(data["pts_ang"], float)
+        q_opt = np.asarray(data["q"], float)
+        if pts_opt.size == 0:
+            print(f"[!] Empty density in {args.npz}.")
+            sys.exit(1)
+        mu_target = float(np.linalg.norm(transition_dipole_au(pts_opt, q_opt)))
+        print(f"    - STEOM density {args.npz}: {len(q_opt)} pts, "
+              f"|mu|={mu_target:.4f} a.u., sum q={q_opt.sum():+.2e}")
+    else:
+        workdir, candidates, tried = autodetect_workdir_and_candidates(args.workdir)
+        if not candidates:
+            print(f"[!] No excited-state candidates. Tried: {tried}")
+            sys.exit(1)
+        print_excited_state_table(candidates)
+        state, density_file, _, mode = select_target_state_and_density(
+            candidates, workdir, args.density_mode, requested_root=args.root)
+        mu_target = oscillator_to_dipole_au(state["ev"], state["osc"])
+        print(f"    - Root {state['root']} ({mode}): f={state['osc']:.4f}, |mu|={mu_target:.4f} a.u.")
 
-    pts_opt, q_opt = read_dx(density_file, threshold=args.thresh, stride=args.grid_stride)
-    if pts_opt.size == 0:
-        print("[!] Empty transition density.")
-        sys.exit(1)
+        pts_opt, q_opt = read_dx(density_file, threshold=args.thresh, stride=args.grid_stride)
+        if pts_opt.size == 0:
+            print("[!] Empty transition density.")
+            sys.exit(1)
 
-    # Renormalise to the oscillator-strength dipole (Stage 3 convention).
-    if np.isfinite(mu_target):
-        local_origin = np.mean(pts_opt, axis=0)
-        dip_mag = np.linalg.norm(np.dot(q_opt, pts_opt - local_origin)) / BOHR_TO_ANGSTROM
-        if dip_mag > 1e-6:
-            q_opt = q_opt * (mu_target / dip_mag)
+        # Renormalise to the oscillator-strength dipole (Stage 3 convention).
+        if np.isfinite(mu_target):
+            local_origin = np.mean(pts_opt, axis=0)
+            dip_mag = np.linalg.norm(np.dot(q_opt, pts_opt - local_origin)) / BOHR_TO_ANGSTROM
+            if dip_mag > 1e-6:
+                q_opt = q_opt * (mu_target / dip_mag)
 
     matrix_A, matrix_B, aln_A, aln_B, err = get_super_matrices_with_pymol(args.monomer, args.dimer)
     if err:
@@ -305,6 +335,10 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--self-test", action="store_true", help="Run the numerical validation and exit.")
     p.add_argument("--workdir", type=Path, default=Path("tc_tddft_old_current"))
+    p.add_argument("--npz", type=Path, default=None,
+                   help="Load the transition density from an .npz (keys pts_ang,q), e.g. the "
+                        "DLPNO-STEOM-CCSD density neo_model/orca_steom/steom_transdens.npz. "
+                        "Bypasses the workdir/.dx path and its oscillator-strength renormalisation.")
     p.add_argument("--monomer", type=Path, default=Path("tc_simple_old/classical_relaxed.pdb"))
     p.add_argument("--dimer", type=Path, default=Path("venus_dimer.pdb"))
     p.add_argument("--root", type=int, default=None)
