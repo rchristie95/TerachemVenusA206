@@ -303,7 +303,7 @@ def regenerate_base_figures(p, out, tf, dt, seed):
     # Fig_ME_Site
     fig, ax = plt.subplots(figsize=(4.2, 3.4))
     ax.plot(t, me["P1"], color=_C_RHO11, lw=2, label=r"$\rho_{11}$")
-    ax.plot(t, me["P2"], color=_C_RHO22, lw=2, label=r"$\rho_{22}$")
+    ax.plot(t, me["P2"], color=_C_RHO22, lw=2, ls="--", label=r"$\rho_{22}$")
     ax.plot(t, me["coh"], color=_C_COH, lw=2, label=r"$|\rho_{12}|$")
     _style_2d(ax, r"Time (ps)", r"Population", tf)
     ax.legend(ncol=3, **leg)
