@@ -1,0 +1,67 @@
+{
+  "software": {
+    "orca": "6.1.1 RELEASE",
+    "external_autoci_used": false,
+    "orca_module_for_steom": "MDCI/DLPNO-STEOM-CCSD"
+  },
+  "qm_model": {
+    "atoms": 44,
+    "charge": -1,
+    "multiplicity": 1,
+    "description": "CR2 plus Tyr203 phenol, hydrogen capped",
+    "point_charges": 2350
+  },
+  "orca_tddft_bright_state": {
+    "energy_eV": 3.435623,
+    "wavenumber_cm-1": 27710.2,
+    "wavelength_nm": 360.9,
+    "oscillator_strength": 1.032982996,
+    "transition_dipole_norm_au": 3.503198698760891,
+    "final_scf_energy_Eh": -1200.140264856161,
+    "terminated_normally": true
+  },
+  "orca_steom_bright_state": {
+    "energy_eV": 2.366633,
+    "wavenumber_cm-1": 19088.2,
+    "wavelength_nm": 523.9,
+    "oscillator_strength": 0.885045444,
+    "transition_dipole_norm_au": 3.880955393933303,
+    "spectrum_converged": true,
+    "note": "The spectrum precedes the optional natural-transition-orbital MDCI post-step error."
+  },
+  "steom_density": {
+    "nto_pairs": [[92, 93, 0.94764284], [91, 94, 0.02484332], [90, 95, 0.00866944], [89, 96, 0.00518175]],
+    "multipair_points": 157474,
+    "multipair_dipole_norm_au": 3.0058101595358293,
+    "multipair_charge_sum": 0.0006059576820474921,
+    "spectroscopic_normalized_points": 157474,
+    "spectroscopic_dipole_norm_au": 3.756209811158952,
+    "spectroscopic_charge_sum": 0.0007572193809649852,
+    "aligned_dipole_norm_au": 3.7562098111589504
+  },
+  "static_geometry": {
+    "J_TDC_cm-1": 100.2018964942497,
+    "J_PDA_cm-1": 22.969670300155666,
+    "separation_A": 25.520561302551428,
+    "dipole_angle_deg": 104.19295394796674,
+    "alignment_A_rms_A": 0.6048257946968079,
+    "alignment_B_rms_A": 0.604821503162384
+  },
+  "tandem_ensemble": {
+    "frames": 1000,
+    "mean_J_cm-1": 110.56434666056353,
+    "std_J_cm-1": 2.7883588087697655,
+    "min_J_cm-1": 92.14669533465602,
+    "max_J_cm-1": 117.44010703165851,
+    "median_J_cm-1": 110.6780956253629,
+    "epsilon": 1.77
+  },
+  "multipole": {
+    "dipole_dipole_cm-1": 22.9697,
+    "dipole_quadrupole_cm-1": 4.1538,
+    "quadrupole_quadrupole_cm-1": 0.3350,
+    "dipole_octupole_cm-1": 0.6327,
+    "full_TDC_cm-1": 100.2019,
+    "TDC_over_PDA": 4.3624
+  }
+}

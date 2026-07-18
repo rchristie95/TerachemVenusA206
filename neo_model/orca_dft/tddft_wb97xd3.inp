@@ -1,0 +1,9 @@
+! wB97X-D3 6-311G** RIJCOSX def2/J TightSCF
+%maxcore 2000
+%pal nprocs 8 end
+%tddft
+  tda true
+  nroots 5
+end
+%pointcharges "field.pc"
+* xyzfile -1 1 geom_cthrp.xyz

@@ -1,0 +1,19 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# SERIAL PATCH for the exceptional-point problem: serial ORCA TOLERATES non-converged EOM
+# satellite roots (the high-double-character IP/EA states that coalesce into complex eigenpairs
+# and that STEOM EXCLUDES from the transformation anyway) and proceeds, whereas parallel aborts.
+# Lets the real bright pi->pi* (which converges) come through.
+# Clean 54-atom model: CR2 + full Tyr203, His148 in MM (no CT contamination). CPU-only.
+%maxcore 16000
+%pal nprocs 1 end
+%pointcharges "field_chrtyr.pc"
+%mdci
+  NRoots 3
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+end
+* xyzfile -1 1 geom_chrtyr.xyz

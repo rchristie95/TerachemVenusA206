@@ -1,0 +1,19 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# The ONLY STEOM-stable in-protein region: CR2 + Tyr203 phenol ring (His148 in MM) = the
+# 44-atom model that gave 500.9 nm. Re-run with STEOM natural transition orbitals so we can
+# plot the bright-state STEOM transition density (more accurate than TDDFT; drives coupling J).
+# Identical to the proven steom_svp_c8 run + DoSTEOMNatTransOrb.
+%maxcore 4000
+%pal nprocs 8 end
+%pointcharges "field.pc"
+%mdci
+  NRoots 5
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+  DoSTEOMNatTransOrb true
+end
+* xyzfile -1 1 geom_cthrp.xyz

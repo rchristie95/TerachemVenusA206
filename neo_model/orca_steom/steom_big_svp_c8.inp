@@ -1,0 +1,17 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# 73-atom model (chr + His148 + full Tyr203), def2-SVP. Comparable to the 44-atom SVP
+# (500.9 nm) -> isolates the His148 + full-Tyr203 effect. NRoots 3 (only need bright state 1)
+# + maxcore 3000 for memory margin. SVP/TightPNO PNO space is far smaller than TZVP, so it fits.
+%maxcore 3000
+%pal nprocs 8 end
+%pointcharges "field_big.pc"
+%mdci
+  NRoots 3
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+end
+* xyzfile -1 1 geom_big.xyz

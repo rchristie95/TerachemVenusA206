@@ -1,0 +1,7 @@
+! EOM-CCSD def2-SVP def2/J RIJCOSX TightSCF
+# Canonical EOM-CCSD in ORCA, SERIAL/low-mem. Isolates: (a) ORCA-EOM vs Q-Chem-EOM = code check,
+# (b) ORCA-STEOM vs ORCA-EOM = pure STEOM method error (same code).
+%maxcore 26000
+%pal nprocs 1 end
+%mdci NRoots 3  MaxIter 200 end
+* xyzfile 0 1 neutral_chromophore.xyz

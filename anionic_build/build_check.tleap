@@ -1,0 +1,7 @@
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+source leaprc.xFPchromophores
+mol = loadpdb monomer_clean2.pdb
+check mol
+charge mol
+quit

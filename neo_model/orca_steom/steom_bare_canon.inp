@@ -1,0 +1,11 @@
+! STEOM-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF
+# CANONICAL STEOM-CCSD (no DLPNO) on the bare anion -> bounds the DLPNO error
+# (compare to steom_bare.inp = DLPNO-STEOM). Feasible at 326 BF / 31 atoms gas-phase.
+%maxcore 9000
+%pal nprocs 8 end
+%mdci
+  NRoots 5
+  DoRootWise true
+  MaxIter 200
+end
+* xyzfile -1 1 cr2_chromophore.xyz

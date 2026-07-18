@@ -1,5 +1,11 @@
 # TerachemVenusA206
 
+> **ORCA-only reconstruction:** The recovered original source, templates,
+> scientific inputs, exact execution order, manuscript-result map, validation
+> values, and external-file contract are documented in
+> [`ORCA_ONLY_PIPELINE.md`](ORCA_ONLY_PIPELINE.md). This records the original
+> workflow and is not a Windows port or a Linux installation guide.
+
 QM/MM computational pipeline for studying Davydov (excitonic) coupling in Venus fluorescent protein (YFP A206) dimers using TeraChem and OpenMM.
 
 ## Paper

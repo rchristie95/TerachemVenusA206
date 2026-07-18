@@ -1,0 +1,217 @@
+<ForceField>
+  <AtomTypes>
+    <Type name="CR2_N1" class="N" element="N" mass="14.006720"/>
+    <Type name="CR2_H" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_CA1" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HA1" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_HA12" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_C1" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_N2" class="N" element="N" mass="14.006720"/>
+    <Type name="CR2_N3" class="N" element="N" mass="14.006720"/>
+    <Type name="CR2_C2" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_O2" class="O" element="O" mass="15.999430"/>
+    <Type name="CR2_CA2" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_CA3" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HA31" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_HA32" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_C3" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_O3" class="O" element="O" mass="15.999430"/>
+    <Type name="CR2_CB2" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HB2" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_CG2" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_CD1" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HD1" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_CD2" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HD2" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_CE1" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HE1" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_CE2" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_HE2" class="H" element="H" mass="1.007947"/>
+    <Type name="CR2_CZ" class="C" element="C" mass="12.010780"/>
+    <Type name="CR2_OH" class="O" element="O" mass="15.999430"/>
+    <Type name="CR2_HOH" class="H" element="H" mass="1.007947"/>
+  </AtomTypes>
+  <Residues>
+    <Residue name="CR2">
+      <Atom name="N1" type="CR2_N1"/>
+      <Atom name="H" type="CR2_H"/>
+      <Atom name="CA1" type="CR2_CA1"/>
+      <Atom name="HA1" type="CR2_HA1"/>
+      <Atom name="HA12" type="CR2_HA12"/>
+      <Atom name="C1" type="CR2_C1"/>
+      <Atom name="N2" type="CR2_N2"/>
+      <Atom name="N3" type="CR2_N3"/>
+      <Atom name="C2" type="CR2_C2"/>
+      <Atom name="O2" type="CR2_O2"/>
+      <Atom name="CA2" type="CR2_CA2"/>
+      <Atom name="CA3" type="CR2_CA3"/>
+      <Atom name="HA31" type="CR2_HA31"/>
+      <Atom name="HA32" type="CR2_HA32"/>
+      <Atom name="C3" type="CR2_C3"/>
+      <Atom name="O3" type="CR2_O3"/>
+      <Atom name="CB2" type="CR2_CB2"/>
+      <Atom name="HB2" type="CR2_HB2"/>
+      <Atom name="CG2" type="CR2_CG2"/>
+      <Atom name="CD1" type="CR2_CD1"/>
+      <Atom name="HD1" type="CR2_HD1"/>
+      <Atom name="CD2" type="CR2_CD2"/>
+      <Atom name="HD2" type="CR2_HD2"/>
+      <Atom name="CE1" type="CR2_CE1"/>
+      <Atom name="HE1" type="CR2_HE1"/>
+      <Atom name="CE2" type="CR2_CE2"/>
+      <Atom name="HE2" type="CR2_HE2"/>
+      <Atom name="CZ" type="CR2_CZ"/>
+      <Atom name="OH" type="CR2_OH"/>
+      <Atom name="HOH" type="CR2_HOH"/>
+      <Bond atomName1="N1" atomName2="H"/>
+      <Bond atomName1="CA1" atomName2="HA1"/>
+      <Bond atomName1="CA1" atomName2="HA12"/>
+      <Bond atomName1="CA3" atomName2="HA31"/>
+      <Bond atomName1="CA3" atomName2="HA32"/>
+      <Bond atomName1="CB2" atomName2="HB2"/>
+      <Bond atomName1="CD1" atomName2="HD1"/>
+      <Bond atomName1="CD2" atomName2="HD2"/>
+      <Bond atomName1="CE1" atomName2="HE1"/>
+      <Bond atomName1="CE2" atomName2="HE2"/>
+      <Bond atomName1="OH" atomName2="HOH"/>
+      <Bond atomName1="N1" atomName2="CA1"/>
+      <Bond atomName1="CA1" atomName2="C1"/>
+      <Bond atomName1="C1" atomName2="N2"/>
+      <Bond atomName1="C1" atomName2="N3"/>
+      <Bond atomName1="N2" atomName2="CA2"/>
+      <Bond atomName1="N3" atomName2="C2"/>
+      <Bond atomName1="N3" atomName2="CA3"/>
+      <Bond atomName1="C2" atomName2="O2"/>
+      <Bond atomName1="C2" atomName2="CA2"/>
+      <Bond atomName1="CA2" atomName2="CB2"/>
+      <Bond atomName1="CA3" atomName2="C3"/>
+      <Bond atomName1="C3" atomName2="O3"/>
+      <Bond atomName1="CB2" atomName2="CG2"/>
+      <Bond atomName1="CG2" atomName2="CD1"/>
+      <Bond atomName1="CG2" atomName2="CD2"/>
+      <Bond atomName1="CD1" atomName2="CE1"/>
+      <Bond atomName1="CD2" atomName2="CE2"/>
+      <Bond atomName1="CE1" atomName2="CZ"/>
+      <Bond atomName1="CE2" atomName2="CZ"/>
+      <Bond atomName1="CZ" atomName2="OH"/>
+      <ExternalBond atomName="C3"/>
+      <ExternalBond atomName="N1"/>
+    </Residue>
+  </Residues>
+  <HarmonicBondForce>
+    <Bond type1="CR2_N1" type2="CR2_H" length="0.117986" k="300000.0"/>
+    <Bond type1="CR2_CA1" type2="CR2_HA1" length="0.119500" k="300000.0"/>
+    <Bond type1="CR2_CA1" type2="CR2_HA12" length="0.120781" k="300000.0"/>
+    <Bond type1="CR2_CA3" type2="CR2_HA31" length="0.118874" k="300000.0"/>
+    <Bond type1="CR2_CA3" type2="CR2_HA32" length="0.118631" k="300000.0"/>
+    <Bond type1="CR2_CB2" type2="CR2_HB2" length="0.118219" k="300000.0"/>
+    <Bond type1="CR2_CD1" type2="CR2_HD1" length="0.117835" k="300000.0"/>
+    <Bond type1="CR2_CD2" type2="CR2_HD2" length="0.118040" k="300000.0"/>
+    <Bond type1="CR2_CE1" type2="CR2_HE1" length="0.118111" k="300000.0"/>
+    <Bond type1="CR2_CE2" type2="CR2_HE2" length="0.118345" k="300000.0"/>
+    <Bond type1="CR2_OH" type2="CR2_HOH" length="0.117987" k="300000.0"/>
+    <Bond type1="CR2_N1" type2="CR2_CA1" length="0.147451" k="300000.0"/>
+    <Bond type1="CR2_CA1" type2="CR2_C1" length="0.149769" k="300000.0"/>
+    <Bond type1="CR2_C1" type2="CR2_N2" length="0.141154" k="300000.0"/>
+    <Bond type1="CR2_C1" type2="CR2_N3" length="0.135529" k="300000.0"/>
+    <Bond type1="CR2_N2" type2="CR2_CA2" length="0.143142" k="300000.0"/>
+    <Bond type1="CR2_N3" type2="CR2_C2" length="0.136491" k="300000.0"/>
+    <Bond type1="CR2_N3" type2="CR2_CA3" length="0.147526" k="300000.0"/>
+    <Bond type1="CR2_C2" type2="CR2_O2" length="0.119828" k="300000.0"/>
+    <Bond type1="CR2_C2" type2="CR2_CA2" length="0.148916" k="300000.0"/>
+    <Bond type1="CR2_CA2" type2="CR2_CB2" length="0.135087" k="300000.0"/>
+    <Bond type1="CR2_CA3" type2="CR2_C3" length="0.148428" k="300000.0"/>
+    <Bond type1="CR2_C3" type2="CR2_O3" length="0.121858" k="300000.0"/>
+    <Bond type1="CR2_CB2" type2="CR2_CG2" length="0.149473" k="300000.0"/>
+    <Bond type1="CR2_CG2" type2="CR2_CD1" length="0.143812" k="300000.0"/>
+    <Bond type1="CR2_CG2" type2="CR2_CD2" length="0.147526" k="300000.0"/>
+    <Bond type1="CR2_CD1" type2="CR2_CE1" length="0.145845" k="300000.0"/>
+    <Bond type1="CR2_CD2" type2="CR2_CE2" length="0.142646" k="300000.0"/>
+    <Bond type1="CR2_CE1" type2="CR2_CZ" length="0.146127" k="300000.0"/>
+    <Bond type1="CR2_CE2" type2="CR2_CZ" length="0.141202" k="300000.0"/>
+    <Bond type1="CR2_CZ" type2="CR2_OH" length="0.148045" k="300000.0"/>
+  </HarmonicBondForce>
+  <HarmonicAngleForce>
+    <Angle type1="CR2_CA1" type2="CR2_N1" type3="CR2_H" angle="1.846807" k="300.0"/>
+    <Angle type1="CR2_C1" type2="CR2_CA1" type3="CR2_HA1" angle="2.625222" k="300.0"/>
+    <Angle type1="CR2_C1" type2="CR2_CA1" type3="CR2_HA12" angle="1.554693" k="300.0"/>
+    <Angle type1="CR2_C1" type2="CR2_CA1" type3="CR2_N1" angle="1.787866" k="300.0"/>
+    <Angle type1="CR2_HA1" type2="CR2_CA1" type3="CR2_HA12" angle="1.513343" k="300.0"/>
+    <Angle type1="CR2_HA1" type2="CR2_CA1" type3="CR2_N1" angle="1.768252" k="300.0"/>
+    <Angle type1="CR2_HA12" type2="CR2_CA1" type3="CR2_N1" angle="2.348246" k="300.0"/>
+    <Angle type1="CR2_CA1" type2="CR2_C1" type3="CR2_N2" angle="2.215514" k="300.0"/>
+    <Angle type1="CR2_CA1" type2="CR2_C1" type3="CR2_N3" angle="2.164678" k="300.0"/>
+    <Angle type1="CR2_N2" type2="CR2_C1" type3="CR2_N3" angle="1.902946" k="300.0"/>
+    <Angle type1="CR2_C1" type2="CR2_N2" type3="CR2_CA2" angle="1.837984" k="300.0"/>
+    <Angle type1="CR2_C1" type2="CR2_N3" type3="CR2_C2" angle="1.990515" k="300.0"/>
+    <Angle type1="CR2_C1" type2="CR2_N3" type3="CR2_CA3" angle="2.165533" k="300.0"/>
+    <Angle type1="CR2_C2" type2="CR2_N3" type3="CR2_CA3" angle="2.126709" k="300.0"/>
+    <Angle type1="CR2_CA2" type2="CR2_C2" type3="CR2_N3" angle="1.796166" k="300.0"/>
+    <Angle type1="CR2_CA2" type2="CR2_C2" type3="CR2_O2" angle="2.200255" k="300.0"/>
+    <Angle type1="CR2_N3" type2="CR2_C2" type3="CR2_O2" angle="2.286494" k="300.0"/>
+    <Angle type1="CR2_C2" type2="CR2_CA2" type3="CR2_CB2" angle="2.138025" k="300.0"/>
+    <Angle type1="CR2_C2" type2="CR2_CA2" type3="CR2_N2" angle="1.897094" k="300.0"/>
+    <Angle type1="CR2_CB2" type2="CR2_CA2" type3="CR2_N2" angle="2.247910" k="300.0"/>
+    <Angle type1="CR2_C3" type2="CR2_CA3" type3="CR2_HA31" angle="1.824092" k="300.0"/>
+    <Angle type1="CR2_C3" type2="CR2_CA3" type3="CR2_HA32" angle="1.874703" k="300.0"/>
+    <Angle type1="CR2_C3" type2="CR2_CA3" type3="CR2_N3" angle="2.086980" k="300.0"/>
+    <Angle type1="CR2_HA31" type2="CR2_CA3" type3="CR2_HA32" angle="1.782810" k="300.0"/>
+    <Angle type1="CR2_HA31" type2="CR2_CA3" type3="CR2_N3" angle="1.950944" k="300.0"/>
+    <Angle type1="CR2_HA32" type2="CR2_CA3" type3="CR2_N3" angle="1.917974" k="300.0"/>
+    <Angle type1="CR2_CA3" type2="CR2_C3" type3="CR2_O3" angle="2.070321" k="300.0"/>
+    <Angle type1="CR2_CA2" type2="CR2_CB2" type3="CR2_CG2" angle="2.294747" k="300.0"/>
+    <Angle type1="CR2_CA2" type2="CR2_CB2" type3="CR2_HB2" angle="1.926020" k="300.0"/>
+    <Angle type1="CR2_CG2" type2="CR2_CB2" type3="CR2_HB2" angle="1.874602" k="300.0"/>
+    <Angle type1="CR2_CB2" type2="CR2_CG2" type3="CR2_CD1" angle="2.170732" k="300.0"/>
+    <Angle type1="CR2_CB2" type2="CR2_CG2" type3="CR2_CD2" angle="2.017344" k="300.0"/>
+    <Angle type1="CR2_CD1" type2="CR2_CG2" type3="CR2_CD2" angle="2.095076" k="300.0"/>
+    <Angle type1="CR2_CE1" type2="CR2_CD1" type3="CR2_CG2" angle="2.075841" k="300.0"/>
+    <Angle type1="CR2_CE1" type2="CR2_CD1" type3="CR2_HD1" angle="2.014323" k="300.0"/>
+    <Angle type1="CR2_CG2" type2="CR2_CD1" type3="CR2_HD1" angle="2.082918" k="300.0"/>
+    <Angle type1="CR2_CE2" type2="CR2_CD2" type3="CR2_CG2" angle="2.097947" k="300.0"/>
+    <Angle type1="CR2_CE2" type2="CR2_CD2" type3="CR2_HD2" angle="2.076711" k="300.0"/>
+    <Angle type1="CR2_CG2" type2="CR2_CD2" type3="CR2_HD2" angle="2.092824" k="300.0"/>
+    <Angle type1="CR2_CD1" type2="CR2_CE1" type3="CR2_CZ" angle="2.087742" k="300.0"/>
+    <Angle type1="CR2_CD1" type2="CR2_CE1" type3="CR2_HE1" angle="1.932784" k="300.0"/>
+    <Angle type1="CR2_CZ" type2="CR2_CE1" type3="CR2_HE1" angle="2.257286" k="300.0"/>
+    <Angle type1="CR2_CD2" type2="CR2_CE2" type3="CR2_CZ" angle="2.095533" k="300.0"/>
+    <Angle type1="CR2_CD2" type2="CR2_CE2" type3="CR2_HE2" angle="1.973249" k="300.0"/>
+    <Angle type1="CR2_CZ" type2="CR2_CE2" type3="CR2_HE2" angle="2.211541" k="300.0"/>
+    <Angle type1="CR2_CE1" type2="CR2_CZ" type3="CR2_CE2" angle="2.114227" k="300.0"/>
+    <Angle type1="CR2_CE1" type2="CR2_CZ" type3="CR2_OH" angle="2.093902" k="300.0"/>
+    <Angle type1="CR2_CE2" type2="CR2_CZ" type3="CR2_OH" angle="2.075052" k="300.0"/>
+    <Angle type1="CR2_CZ" type2="CR2_OH" type3="CR2_HOH" angle="1.929582" k="300.0"/>
+  </HarmonicAngleForce>
+  <NonbondedForce coulomb14scale="0.833333" lj14scale="0.5">
+    <Atom type="CR2_N1" charge="0.000000" sigma="0.325000" epsilon="0.170000"/>
+    <Atom type="CR2_H" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_CA1" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HA1" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_HA12" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_C1" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_N2" charge="0.000000" sigma="0.325000" epsilon="0.170000"/>
+    <Atom type="CR2_N3" charge="0.000000" sigma="0.325000" epsilon="0.170000"/>
+    <Atom type="CR2_C2" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_O2" charge="0.000000" sigma="0.296000" epsilon="0.210000"/>
+    <Atom type="CR2_CA2" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_CA3" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HA31" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_HA32" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_C3" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_O3" charge="0.000000" sigma="0.296000" epsilon="0.210000"/>
+    <Atom type="CR2_CB2" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HB2" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_CG2" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_CD1" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HD1" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_CD2" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HD2" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_CE1" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HE1" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_CE2" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_HE2" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+    <Atom type="CR2_CZ" charge="0.000000" sigma="0.340000" epsilon="0.276100"/>
+    <Atom type="CR2_OH" charge="0.000000" sigma="0.296000" epsilon="0.210000"/>
+    <Atom type="CR2_HOH" charge="0.000000" sigma="0.250000" epsilon="0.015700"/>
+  </NonbondedForce>
+</ForceField>

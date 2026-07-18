@@ -1,0 +1,17 @@
+Compact validation excerpt transcribed from the original generated ORCA 6.1.1 outputs.
+This is not an ORCA executable, restart file, or licence material.
+
+TDDFT: neo_model/orca_dft/tddft_wb97xd3.out
+  Program Version: 6.1.1 RELEASE
+  bright state: 3.435623 eV, 27710.2 cm^-1, 360.9 nm
+  oscillator strength: 1.032982996
+  transition dipole norm: 3.503198698760891 au
+  final single-point energy: -1200.140264856161 Eh
+  ORCA terminated normally
+
+DLPNO-STEOM-CCSD: neo_model/orca_steom/steom_phenol_svpd.out
+  Program Version: 6.1.1 RELEASE
+  converged bright spectrum row: 2.366633 eV, 19088.2 cm^-1, 523.9 nm
+  oscillator strength: 0.885045444
+  transition dipole norm: 3.880955393933303 au
+  spectrum printed successfully; optional DoSTEOMNatTransOrb post-step later ended in MDCI

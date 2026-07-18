@@ -1,0 +1,15 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# Gas-phase bare anionic chromophore (31 atoms). DLPNO-STEOM-CCSD anchor for the
+# canonical-vs-DLPNO validation + cross-code check. Expect ~470-490 (PySCF ADC(2)=476, exp 480).
+%maxcore 4000
+%pal nprocs 8 end
+%mdci
+  NRoots 5
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+end
+* xyzfile -1 1 cr2_chromophore.xyz
