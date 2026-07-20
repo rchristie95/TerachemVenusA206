@@ -1,0 +1,8 @@
+# Zero-based frames used for the published tandem ensemble
+source: tandem_nvt_1000_clean.pdb
+selection: 0-999 inclusive
+stride: 1
+count: 1000
+random_subsampling: false
+MD_step_for_frame_i: (i + 1) * 500
+MD_time_ps_for_frame_i: (i + 1) * 1.0

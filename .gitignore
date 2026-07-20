@@ -1,121 +1,213 @@
-# ============================================================
-#  Venus_A206 excitonic-coupling pipeline — .gitignore
-#  Tracked (published): the curated pipeline/analysis code, the two
-#  input structures (1MYW.pdb, venus_dimer.pdb), Structure.png,
-#  visualise_dimer.pml, README. Everything below is excluded — the
-#  generated QM/MM data alone exceeds 150 GB and regenerates from the
-#  pipeline; manuscript sources, private notes and third-party/
-#  proprietary material are not redistributed.
-# ============================================================
-
-# ---- Python / caches ----
+# Python/editor caches
 __pycache__/
-*.pyc
+*.py[cod]
 .ipynb_checkpoints/
 .ruff_cache/
 .ccd_cache/
 
-# ---- Large external installs & archives (keep local, never upload) ----
+# Licensed third-party installations and archives (never publish)
 orca_*/
-*.tar.xz
+*.tar
 *.tar.gz
+*.tar.xz
+*.zip
+TeraChem_UserGuide*
 
-# ---- ORCA / Q-Chem QM scratch & outputs (100+ GB) ----
-neo_model/
-qchem_validation/
-resp_cr2/
+# Credentials, licences and keys
+*.lic
+*.license
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+
+# Quantum-chemistry scratch, restart and large volumetric artefacts
+*.gbw
+*.ges
+*.loc
+*.nto
+*.cis
+*.densities
+*.densitiesinfo
+*.bas[0-9]
+*.molden
+*.chk
+*.h5
 *.tmp
 *.tmp.*
+*.cube
+*.dx
+*.npz
+*.hostnames
+*.pid
+.*_pid
+*.property.txt
+*.bibtex
+*.pse
 
-# ---- TeraChem / OpenMM working & output directories ----
+# Large MD trajectories and generated production structures.  Scientifically
+# essential small structures are explicitly re-included below.
+*trajectory*.pdb
+*nvt*.pdb
 tc_*/
 anionic_build/
 
-# ---- Generated analysis output ----
+# Generated calculation/output trees
+qchem_validation/
+resp_cr2/
 coupling_sampling*/
 coupling_paper_*/
-pipeline_logs/
-paper_data_summary.json
+coupling_tandem_*/
 lineshape_out/
-multipole_out/
-oqs_out/
+lineshape_tandem/
+multipole_out*/
+oqs_out*/
+pipeline_logs/
 plots/
 plots_steom/
+si_out/
 videos/
+paper_data_summary.json
+*.log
+*.out
+*.pdf
 *.mp4
 
-# ---- Logs ----
-*.log
-
-# ---- Manuscript / paper sources (not part of the code release) ----
+# Local manuscript mirrors and working notes
 UoP_Surrey_Venus_Collaboration/
 arXiv-*/
-*.tex
+BRIEFING_FOR_LLM.txt
+NEXT_AGENT_INSTRUCTIONS.txt
+STEOM_COUPLING_FINDINGS_*.txt
+WHY_ORCA_NOT_TERACHEM.txt
+ResearchPaper_origin.tex
+YimVenusPaper.pdf
+pymol_output.txt
 
-# ---- MATLAB sources (ported to open_quantum_dynamics.py) ----
-LindbladCodes/
+# ---------------------------------------------------------------------------
+# Explicitly publish the compact original inputs and validation results needed
+# to reconstruct the ORCA-only tandem-paper pipeline.  These exceptions guard
+# against future broad output/extension rules hiding scientific source data.
+# ---------------------------------------------------------------------------
 
-# ---- Bulk data: trajectories, volumetric densities, QM I/O ----
-# Keep only the two canonical input structures; ignore all other PDBs.
-*.pdb
+# Canonical and hand-constructed structures
 !1MYW.pdb
 !venus_dimer.pdb
-*.xyz
-*.dx
-*.cube
-*.npz
-*.pse
-*.gbw
-*.molden
-*.chk
+!tandem_dimer.pdb
+!tandem_build/
+!tandem_build/**
 
-# ---- Proprietary / third-party docs & PDFs (do not redistribute) ----
-*.pdf
-TeraChem_UserGuide*.txt
+# Deterministic monomer/QM preparation inputs and coordinate frames
+!anionic_build/
+anionic_build/*
+!anionic_build/monomer_min.pdb
+!anionic_build/monomer_solv.prmtop
+!anionic_build/monomer_solv.inpcrd
+!anionic_build/build_check.tleap
+!anionic_build/build_solv.tleap
+!anionic_build/monomer_clean.pdb
+!anionic_build/monomer_clean2.pdb
+!anionic_build/monomer_clean_nonprot.pdb
+!anionic_build/monomer_clean_renum.txt
+!anionic_build/monomer_clean_sslink
+!anionic_build/monomer_raw.pdb
+!anionic_build/monomer_solv.pdb
+!tc_simple_anionic/
+tc_simple_anionic/*
+!tc_simple_anionic/monomer_relaxed.pdb
+!tc_simple_anionic/qm_selection.json
+!tc_simple_anionic/qm_region_forcefield.xml
+!tc_simple_anionic/qm_setup_settings.in
+!tc_simple_anionic/mm_charges.dat
+!tc_simple_anionic/qm_deprotonated.xyz
+!tc_simple_old/
+tc_simple_old/*
+!tc_simple_old/classical_relaxed.pdb
+!tc_simple_old/qm_region_atoms.txt
+!tc_simple_old/qm_boundary_cuts.txt
+!tc_simple_old/random_seed.txt
+!tc_simple_old/mm_charges.dat
+!tc_simple_old/nonstandard_residues_generic.xml
+!tc_simple_old/qm_deprotonated.xyz
+!tc_simple_old/qm_region_forcefield.xml
+!tc_simple_old/qm_setup_settings.in
+!tc_qmmm_opt_constrained/
+tc_qmmm_opt_constrained/*
+!tc_qmmm_opt_constrained/qm_opt.xyz
+!tc_qmmm_opt_constrained/cr2only_freeze.txt
+!tc_qmmm_opt_constrained/mm_charges.dat
+!tc_qmmm_opt_constrained/opt.in
+!tc_qmmm_opt_constrained/qm.xyz
+!tc_tandem_nvt_1000/
+tc_tandem_nvt_1000/*
+!tc_tandem_nvt_1000/nonstandard_residues_generic.xml
+!tc_tandem_nvt_1000/pdb_for_solvation.pdb
 
-# ---- Working text notes (LLM handoffs, findings) and stray text ----
-*.txt
+# ORCA templates, project-generated fields/geometries and runner scripts.
+# Large ORCA outputs/restarts remain excluded by the rules above.
+!neo_model/
+!neo_model/*.py
+!neo_model/*.json
+!neo_model/*.xyz
+!neo_model/orca_dft/
+!neo_model/orca_dft/*.inp
+!neo_model/orca_dft/*.xyz
+!neo_model/orca_dft/*.pc
+!neo_model/orca_steom/
+!neo_model/orca_steom/*.inp
+!neo_model/orca_steom/*.xyz
+!neo_model/orca_steom/*.pc
+!neo_model/orca_steom/*.sh
+!neo_model/orca_steom/README.txt
+
+# Compact numerical data underlying the manuscript figures/tables
+!coupling_paper_steom_static/
+coupling_paper_steom_static/*
+!coupling_paper_steom_static/coupling_distribution.json
+!coupling_paper_steom_static/coupling_samples.csv
+!coupling_paper_steom_thermal/
+coupling_paper_steom_thermal/*
+!coupling_paper_steom_thermal/coupling_distribution.json
+!coupling_paper_steom_thermal/coupling_samples.csv
+!coupling_paper_steom_thermal/dipole_geometry.json
+!coupling_tandem_1000/
+coupling_tandem_1000/*
+!coupling_tandem_1000/coupling_distribution.json
+!coupling_tandem_1000/coupling_samples.csv
+!lineshape_tandem/
+lineshape_tandem/*
+!lineshape_tandem/lineshape_data.csv
+!multipole_out_correct/
+multipole_out_correct/*
+!multipole_out_correct/multipole_analysis.csv
+
+# Source, workflow templates, documentation and compact validation data are
+# never excluded merely because they live beside generated output.
+!*.py
+!*.sh
+!*.pml
+!*.md
+!*.yml
+!*.yaml
+!*.toml
 !requirements.txt
+!tests/
+!tests/**
+!config/
+!config/**
+!reference/
+!reference/**
 
-# ---- Shell runner scripts (exploratory) ----
-*.sh
-
-# ---- PyMOL scripts (keep only the published one) ----
-*.pml
-!visualise_dimer.pml
-
-# ---- Images (keep only the published figure) ----
-*.png
-!Structure.png
-
-# ---- Python: publish only the curated pipeline/analysis scripts. ----
-# Exploratory/working scripts (build_steom_*, make_*, compute_*, the
-# render/prepare helpers, tests/, etc.) stay local. Already-tracked files
-# are unaffected by these patterns; the rules keep `git status` clean and
-# guard against an accidental `git add`. To publish another script, add a
-# matching `!name.py` line.
-*.py
-!build_dimer.py
-!minimise_dimer.py
-!run_nvt.py
-!qmmm_tddft_pipeline.py
-!coupling_core.py
-!coupling_ensemble.py
-!absorption_cd_spectra.py
-!multipole_analysis.py
-!open_quantum_dynamics.py
-!reproduce_paper.py
-!align_steom_density.py
-!export_dipole_geometry.py
-
-# ---- Sonification videos for the openquantumsonification channel ----
-!sonification/
-!sonification/**
-
-# ---- Public manuscript source (original JPCL submission; revision/diff kept in a private repo) ----
+# Tracked manuscript source/figures remain public.  Build by-products stay out.
 !manuscript/
 !manuscript/**
+manuscript/*.aux
+manuscript/*.blg
+manuscript/*.log
+manuscript/*.pdf
+manuscript/acs-*.bib
 
-# ---- arXiv / JPCB revised manuscript (tandem dimer paper) ----
-!arXiv-2605.00027v1/
-!arXiv-2605.00027v1/**
+# Reassert cache exclusions after the source-directory negation rules above.
+**/__pycache__/
+*.pyc

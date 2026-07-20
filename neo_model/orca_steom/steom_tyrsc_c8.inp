@@ -1,0 +1,17 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# Screen-recommended STEOM region: CR2 + Tyr203 SIDECHAIN (cut Ca-Cb, H-link), His148 in MM,
+# NO backbone. TDDFT screen: 1 dark-below-bright (like the proven phenol) -> predicted clean.
+# Validation: should converge in PARALLEL with no serial patch needed. Compare to 44-atom 500.9 nm.
+%maxcore 4000
+%pal nprocs 8 end
+%pointcharges "field_tyrsc.pc"
+%mdci
+  NRoots 3
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+end
+* xyzfile -1 1 geom_tyrsc.xyz

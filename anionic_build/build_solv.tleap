@@ -1,0 +1,9 @@
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+source leaprc.xFPchromophores
+mol = loadpdb monomer_clean2.pdb
+solvateBox mol TIP3PBOX 10.0
+addions mol Na+ 0
+saveamberparm mol monomer_solv.prmtop monomer_solv.inpcrd
+savepdb mol monomer_solv.pdb
+quit

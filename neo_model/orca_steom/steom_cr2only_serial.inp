@@ -1,0 +1,19 @@
+! STEOM-DLPNO-CCSD def2-SVPD RIJCOSX TightSCF TightPNO AutoAux
+# CR2 deprotonated chromophore ONLY (31 atoms, charge -1) + MM point-charge field
+# (Tyr203 phenol + rest of protein/water as 2187 point charges).
+# Direct comparison to the 44-atom (CR2 + Tyr203 in QM) STEOM/def2-SVPD = 532.6 nm.
+# Same convergence recipe as steom_phenol_svpd.inp.
+%maxcore 14000
+%pal nprocs 1 end
+%pointcharges "field_cr2only.pc"
+%mdci
+  NRoots 5
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+  DoSTEOMNatTransOrb true
+end
+* xyzfile -1 1 geom_cr2only.xyz

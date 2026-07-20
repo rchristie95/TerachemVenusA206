@@ -1,0 +1,18 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# Same clean tyrsc region (CR2 + Tyr203 sidechain, His148 in MM), now with STEOM natural
+# transition orbitals so we can plot the bright-state STEOM transition density (more accurate
+# than TDDFT; it is what drives the coupling J). orca_plot -> Gaussian cube -> PyMOL.
+%maxcore 4000
+%pal nprocs 8 end
+%pointcharges "field_tyrsc.pc"
+%mdci
+  NRoots 3
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+  DoSTEOMNatTransOrb true
+end
+* xyzfile -1 1 geom_tyrsc.xyz

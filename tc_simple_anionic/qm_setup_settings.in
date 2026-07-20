@@ -1,0 +1,9 @@
+# Stage 1 QM setup settings for downstream TD-DFT
+method wb97xd3
+basis 6-311g**
+charge 0
+spinmult 1
+pcm cosmo
+epsilon 78.390000
+pcm_grid iswig
+solvent_radius 1.400000

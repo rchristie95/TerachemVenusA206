@@ -1,0 +1,17 @@
+! STEOM-DLPNO-CCSD def2-TZVP def2-TZVP/C def2/J RIJCOSX TightSCF TightPNO
+# 73-atom production model: chr + His148 + full Tyr203, def2-TZVP.
+# Convergence recipe validated on the 44-atom SVP run (-> 500.9 nm, clean STEOM).
+# 8 ranks + conservative maxcore: TZVP/73-atom is memory-heavy (62 GB box), watchdog armed.
+%maxcore 4000
+%pal nprocs 8 end
+%pointcharges "field_big.pc"
+%mdci
+  NRoots 5
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+end
+* xyzfile -1 1 geom_big.xyz

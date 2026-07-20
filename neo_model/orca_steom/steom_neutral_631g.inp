@@ -1,0 +1,15 @@
+! STEOM-DLPNO-CCSD 6-31G AutoAux RIJCOSX TightSCF TightPNO
+# Neutral chromophore, 6-31G (~178 BF) for a fast 3-method comparison (<10 h).
+# Same geometry as the def2-SVP runs; we want the METHOD trend (basis-insensitive).
+%maxcore 4000
+%pal nprocs 1 end
+%mdci
+  NRoots 3
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+end
+* xyzfile 0 1 neutral_chromophore.xyz

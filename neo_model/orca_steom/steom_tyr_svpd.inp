@@ -1,0 +1,17 @@
+! STEOM-DLPNO-CCSD def2-SVPD RIJCOSX TightSCF TightPNO AutoAux
+# 44-atom phenol + def2-SVPD (SVP + diffuse). AutoAux: no def2-SVPD/C fitting set exists.
+# Diffuse-STEOM test 1: red-shift toward exp ~535 + check diffuse stabilizes EA-EOM. vs SVP 500.9.
+%maxcore 4000
+%pal nprocs 8 end
+%pointcharges "field.pc"
+%mdci
+  NRoots 5
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+  DoSTEOMNatTransOrb true
+end
+* xyzfile -1 1 geom_cthrp.xyz
