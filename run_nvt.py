@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import json
 import os
 import re
 import shlex
@@ -95,10 +96,14 @@ import pdbfixer
 import openmm
 from openmm import Platform, unit
 from openmm.app import (
+    AmberPrmtopFile,
+    CheckpointReporter,
     CutoffNonPeriodic,
+    DCDReporter,
     ForceField,
     HBonds,
     Modeller,
+    NoCutoff,
     PDBFile,
     PDBReporter,
     PME,
@@ -279,6 +284,90 @@ def find_nonstandard_residues(topology) -> List[str]:
     return sorted(names)
 
 
+def infer_nonstandard_residue_bonds(topology, positions, residue_names: List[str]) -> int:
+    """Add missing intra-residue covalent bonds for nonstandard residues.
+
+    PDB files often omit CONECT records for chromophores.  OpenMM consequently
+    treats atoms that are visibly bonded in the structure as nonbonded pairs,
+    producing enormous Lennard-Jones repulsion and NaNs during minimization.
+    Infer only short, chemically plausible bonds from covalent radii; standard
+    protein and solvent connectivity is left untouched.
+    """
+    covalent_radius_a = {
+        "H": 0.31,
+        "C": 0.76,
+        "N": 0.71,
+        "O": 0.66,
+        "S": 1.05,
+        "P": 1.07,
+    }
+    wanted = set(residue_names)
+    coords_a = np.array([p.value_in_unit(unit.angstrom) for p in positions])
+    existing = {
+        tuple(sorted((bond.atom1.index, bond.atom2.index)))
+        for bond in topology.bonds()
+    }
+    added = 0
+    residues = list(topology.residues())
+    residue_position = {residue: index for index, residue in enumerate(residues)}
+    for residue in residues:
+        if residue.name not in wanted:
+            continue
+        atoms = list(residue.atoms())
+        for i, atom1 in enumerate(atoms):
+            symbol1 = atom1.element.symbol if atom1.element is not None else "C"
+            radius1 = covalent_radius_a.get(symbol1)
+            if radius1 is None:
+                continue
+            for atom2 in atoms[i + 1:]:
+                key = tuple(sorted((atom1.index, atom2.index)))
+                if key in existing:
+                    continue
+                symbol2 = atom2.element.symbol if atom2.element is not None else "C"
+                radius2 = covalent_radius_a.get(symbol2)
+                if radius2 is None:
+                    continue
+                distance_a = float(np.linalg.norm(coords_a[atom1.index] - coords_a[atom2.index]))
+                cutoff_a = 1.25 * (radius1 + radius2)
+                if 0.40 < distance_a <= cutoff_a:
+                    topology.addBond(atom1, atom2)
+                    existing.add(key)
+                    added += 1
+
+        # Restore peptide connections across an embedded nonstandard residue.
+        # PDB Topology cannot infer these without a residue template, but the
+        # intended C--N pairs are unambiguous at normal covalent distance.
+        index = residue_position[residue]
+        adjacent = []
+        if index > 0 and residues[index - 1].chain == residue.chain:
+            adjacent.append(residues[index - 1])
+        if index + 1 < len(residues) and residues[index + 1].chain == residue.chain:
+            adjacent.append(residues[index + 1])
+        for neighbor in adjacent:
+            for atom1 in atoms:
+                symbol1 = atom1.element.symbol if atom1.element is not None else "C"
+                radius1 = covalent_radius_a.get(symbol1)
+                if radius1 is None:
+                    continue
+                for atom2 in neighbor.atoms():
+                    key = tuple(sorted((atom1.index, atom2.index)))
+                    if key in existing:
+                        continue
+                    symbol2 = atom2.element.symbol if atom2.element is not None else "C"
+                    radius2 = covalent_radius_a.get(symbol2)
+                    if radius2 is None:
+                        continue
+                    distance_a = float(
+                        np.linalg.norm(coords_a[atom1.index] - coords_a[atom2.index])
+                    )
+                    cutoff_a = 1.25 * (radius1 + radius2)
+                    if 0.40 < distance_a <= cutoff_a:
+                        topology.addBond(atom1, atom2)
+                        existing.add(key)
+                        added += 1
+    return added
+
+
 def residue_names_in_forcefield_xml(xml_path: Path) -> set:
     text = Path(xml_path).read_text(errors="replace")
     return set(re.findall(r"<Residue\s+name=\"([^\"]+)\"", text))
@@ -405,6 +494,298 @@ def write_generic_forcefield_xml(topology, positions, residue_names: List[str], 
         handle.write("</ForceField>\n")
 
 
+def apply_amber_cr2_parameters(system, topology, prmtop_path: Path) -> dict:
+    """Replace placeholder CR2 terms with those from a retained AMBER prmtop.
+
+    The target residue must have the same atom names and local connectivity as
+    the reference CR2.  Standard residues and solvent remain ff14SB/TIP3P-FB.
+    Every force or exception touching CR2 is replaced, including peptide-edge
+    angles/torsions and hydrogen-bond constraints.
+    """
+    prmtop_path = resolve_path(prmtop_path)
+    reference = AmberPrmtopFile(str(prmtop_path))
+    reference_system = reference.createSystem(
+        nonbondedMethod=NoCutoff,
+        constraints=HBonds,
+    )
+    reference_atoms = list(reference.topology.atoms())
+    reference_residues = list(reference.topology.residues())
+    reference_cr2 = [residue for residue in reference_residues if residue.name == "CR2"]
+    if len(reference_cr2) != 1:
+        raise RuntimeError(f"Reference topology needs exactly one CR2; found {len(reference_cr2)}")
+    reference_cr2 = reference_cr2[0]
+    reference_cr2_indices = {atom.index for atom in reference_cr2.atoms()}
+
+    target_atoms = list(topology.atoms())
+    target_residues = list(topology.residues())
+    target_cr2 = [residue for residue in target_residues if residue.name == "CR2"]
+    if len(target_cr2) != 2:
+        raise RuntimeError(f"Target topology needs exactly two CR2 residues; found {len(target_cr2)}")
+
+    def atom_dict(residue):
+        result = {atom.name: atom for atom in residue.atoms()}
+        if len(result) != len(list(residue.atoms())):
+            raise RuntimeError(f"Duplicate atom names in residue {residue}")
+        return result
+
+    reference_names = set(atom_dict(reference_cr2))
+    for residue in target_cr2:
+        target_names = set(atom_dict(residue))
+        if target_names != reference_names:
+            missing = sorted(reference_names - target_names)
+            extra = sorted(target_names - reference_names)
+            raise RuntimeError(
+                f"CR2 atom-name mismatch at residue {residue.id}: missing={missing}, extra={extra}"
+            )
+
+    def descriptor(atom):
+        delta = atom.residue.index - reference_cr2.index
+        if delta == 0:
+            return ("CR2", atom.name)
+        if delta == -1:
+            return ("PREV", atom.name)
+        if delta == 1:
+            return ("NEXT", atom.name)
+        raise RuntimeError(
+            f"AMBER CR2 term extends beyond adjacent residues: {atom.residue.name} {atom.name}"
+        )
+
+    target_site_maps = []
+    for residue in target_cr2:
+        previous_residue = target_residues[residue.index - 1]
+        next_residue = target_residues[residue.index + 1]
+        reference_previous = reference_residues[reference_cr2.index - 1]
+        reference_next = reference_residues[reference_cr2.index + 1]
+        if (previous_residue.name, next_residue.name) != (
+            reference_previous.name,
+            reference_next.name,
+        ):
+            raise RuntimeError(
+                f"CR2 flanking residues differ from AMBER reference: "
+                f"{previous_residue.name}/CR2/{next_residue.name} versus "
+                f"{reference_previous.name}/CR2/{reference_next.name}"
+            )
+        site_map = {}
+        for label, local_residue in (
+            ("PREV", previous_residue),
+            ("CR2", residue),
+            ("NEXT", next_residue),
+        ):
+            site_map.update({(label, atom.name): atom.index for atom in local_residue.atoms()})
+        target_site_maps.append(site_map)
+
+    def find_force(source_system, force_type):
+        matches = [force for force in source_system.getForces() if isinstance(force, force_type)]
+        if len(matches) != 1:
+            raise RuntimeError(f"Expected one {force_type.__name__}; found {len(matches)}")
+        return matches[0]
+
+    reference_bond = find_force(reference_system, openmm.HarmonicBondForce)
+    reference_angle = find_force(reference_system, openmm.HarmonicAngleForce)
+    reference_torsion = find_force(reference_system, openmm.PeriodicTorsionForce)
+    reference_nonbonded = find_force(reference_system, openmm.NonbondedForce)
+    target_bond = find_force(system, openmm.HarmonicBondForce)
+    target_angle = find_force(system, openmm.HarmonicAngleForce)
+    target_torsion = find_force(system, openmm.PeriodicTorsionForce)
+    target_nonbonded = find_force(system, openmm.NonbondedForce)
+
+    reference_terms = {"bonds": [], "angles": [], "torsions": [], "constraints": [], "exceptions": []}
+    for index in range(reference_bond.getNumBonds()):
+        i, j, length, k = reference_bond.getBondParameters(index)
+        if int(i) in reference_cr2_indices or int(j) in reference_cr2_indices:
+            reference_terms["bonds"].append(((descriptor(reference_atoms[int(i)]), descriptor(reference_atoms[int(j)])), (length, k)))
+    for index in range(reference_angle.getNumAngles()):
+        i, j, k_atom, angle, k_force = reference_angle.getAngleParameters(index)
+        indices = (int(i), int(j), int(k_atom))
+        if any(value in reference_cr2_indices for value in indices):
+            reference_terms["angles"].append((tuple(descriptor(reference_atoms[value]) for value in indices), (angle, k_force)))
+    for index in range(reference_torsion.getNumTorsions()):
+        i, j, k_atom, l, periodicity, phase, k_force = reference_torsion.getTorsionParameters(index)
+        indices = (int(i), int(j), int(k_atom), int(l))
+        if any(value in reference_cr2_indices for value in indices):
+            reference_terms["torsions"].append((tuple(descriptor(reference_atoms[value]) for value in indices), (periodicity, phase, k_force)))
+    for index in range(reference_system.getNumConstraints()):
+        i, j, distance = reference_system.getConstraintParameters(index)
+        if int(i) in reference_cr2_indices or int(j) in reference_cr2_indices:
+            reference_terms["constraints"].append(((descriptor(reference_atoms[int(i)]), descriptor(reference_atoms[int(j)])), distance))
+    for index in range(reference_nonbonded.getNumExceptions()):
+        i, j, charge_product, sigma, epsilon = reference_nonbonded.getExceptionParameters(index)
+        if int(i) in reference_cr2_indices or int(j) in reference_cr2_indices:
+            reference_terms["exceptions"].append(((descriptor(reference_atoms[int(i)]), descriptor(reference_atoms[int(j)])), (charge_product, sigma, epsilon)))
+
+    all_target_cr2_indices = {
+        atom.index for residue in target_cr2 for atom in residue.atoms()
+    }
+    for index in range(target_bond.getNumBonds()):
+        i, j, length, k = target_bond.getBondParameters(index)
+        if int(i) in all_target_cr2_indices or int(j) in all_target_cr2_indices:
+            target_bond.setBondParameters(index, i, j, length, 0 * k)
+    for index in range(target_angle.getNumAngles()):
+        i, j, k_atom, angle, k_force = target_angle.getAngleParameters(index)
+        if any(int(value) in all_target_cr2_indices for value in (i, j, k_atom)):
+            target_angle.setAngleParameters(index, i, j, k_atom, angle, 0 * k_force)
+    for index in range(target_torsion.getNumTorsions()):
+        i, j, k_atom, l, periodicity, phase, k_force = target_torsion.getTorsionParameters(index)
+        if any(int(value) in all_target_cr2_indices for value in (i, j, k_atom, l)):
+            target_torsion.setTorsionParameters(index, i, j, k_atom, l, periodicity, phase, 0 * k_force)
+
+    target_constraint_lookup = {}
+    for index in range(system.getNumConstraints()):
+        i, j, _ = system.getConstraintParameters(index)
+        target_constraint_lookup[tuple(sorted((int(i), int(j))))] = index
+    target_exception_lookup = {}
+    for index in range(target_nonbonded.getNumExceptions()):
+        i, j, *_ = target_nonbonded.getExceptionParameters(index)
+        target_exception_lookup[tuple(sorted((int(i), int(j))))] = index
+
+    reference_cr2_by_name = atom_dict(reference_cr2)
+    for site_map in target_site_maps:
+        for name, reference_atom in reference_cr2_by_name.items():
+            target_index = site_map[("CR2", name)]
+            target_nonbonded.setParticleParameters(
+                target_index,
+                *reference_nonbonded.getParticleParameters(reference_atom.index),
+            )
+        for descriptors, parameters in reference_terms["bonds"]:
+            i, j = (site_map[value] for value in descriptors)
+            target_bond.addBond(i, j, *parameters)
+        for descriptors, parameters in reference_terms["angles"]:
+            i, j, k_atom = (site_map[value] for value in descriptors)
+            target_angle.addAngle(i, j, k_atom, *parameters)
+        for descriptors, parameters in reference_terms["torsions"]:
+            i, j, k_atom, l = (site_map[value] for value in descriptors)
+            target_torsion.addTorsion(i, j, k_atom, l, *parameters)
+        for descriptors, distance in reference_terms["constraints"]:
+            pair = tuple(sorted(site_map[value] for value in descriptors))
+            if pair not in target_constraint_lookup:
+                raise RuntimeError(f"Missing target CR2 constraint {descriptors}")
+            system.setConstraintParameters(target_constraint_lookup[pair], pair[0], pair[1], distance)
+        expected_exception_pairs = set()
+        for descriptors, parameters in reference_terms["exceptions"]:
+            pair = tuple(sorted(site_map[value] for value in descriptors))
+            expected_exception_pairs.add(pair)
+            if pair not in target_exception_lookup:
+                raise RuntimeError(f"Missing target CR2 exception {descriptors}")
+            target_nonbonded.setExceptionParameters(target_exception_lookup[pair], pair[0], pair[1], *parameters)
+        actual_exception_pairs = {
+            pair for pair in target_exception_lookup if any(index in all_target_cr2_indices for index in pair)
+            and any(index in {site_map[("CR2", name)] for name in reference_names} for index in pair)
+        }
+        if actual_exception_pairs != expected_exception_pairs:
+            raise RuntimeError(
+                f"CR2 exception topology mismatch: expected {len(expected_exception_pairs)}, "
+                f"found {len(actual_exception_pairs)}"
+            )
+
+    charges = []
+    for residue in target_cr2:
+        charge = sum(
+            target_nonbonded.getParticleParameters(atom.index)[0].value_in_unit(unit.elementary_charge)
+            for atom in residue.atoms()
+        )
+        charges.append(float(charge))
+    summary = {
+        "reference_prmtop": str(prmtop_path),
+        "target_cr2_residues": len(target_cr2),
+        "atoms_per_cr2": len(reference_names),
+        "charge_per_cr2_e": charges,
+        "reference_bonds_transplanted_per_site": len(reference_terms["bonds"]),
+        "reference_angles_transplanted_per_site": len(reference_terms["angles"]),
+        "reference_torsions_transplanted_per_site": len(reference_terms["torsions"]),
+        "reference_constraints_transplanted_per_site": len(reference_terms["constraints"]),
+        "reference_exceptions_transplanted_per_site": len(reference_terms["exceptions"]),
+    }
+    if any(abs(charge + 1.0) > 1.0e-6 for charge in charges):
+        raise RuntimeError(f"Unexpected transplanted CR2 charges: {charges}")
+    return summary
+
+
+def ensure_amber_cr2_topology(topology, prmtop_path: Path) -> dict:
+    """Make the target CR2 bonds and hydrogen inventory identical to AMBER."""
+    reference = AmberPrmtopFile(str(resolve_path(prmtop_path)))
+    reference_atoms = list(reference.topology.atoms())
+    reference_residues = list(reference.topology.residues())
+    reference_cr2 = [residue for residue in reference_residues if residue.name == "CR2"]
+    if len(reference_cr2) != 1:
+        raise RuntimeError(f"Reference topology needs exactly one CR2; found {len(reference_cr2)}")
+    reference_cr2 = reference_cr2[0]
+
+    def descriptor(atom, cr2_residue):
+        delta = atom.residue.index - cr2_residue.index
+        if delta == 0:
+            return ("CR2", atom.name)
+        if delta == -1:
+            return ("PREV", atom.name)
+        if delta == 1:
+            return ("NEXT", atom.name)
+        raise RuntimeError(f"CR2 bond reaches nonadjacent residue: {atom.residue} {atom.name}")
+
+    reference_cr2_indices = {atom.index for atom in reference_cr2.atoms()}
+    expected_bonds = set()
+    hydrogen_variant = []
+    for atom1, atom2 in reference.topology.bonds():
+        if atom1.index in reference_cr2_indices or atom2.index in reference_cr2_indices:
+            expected_bonds.add(
+                frozenset((descriptor(atom1, reference_cr2), descriptor(atom2, reference_cr2)))
+            )
+        if atom1.residue == reference_cr2 and atom2.residue == reference_cr2:
+            if atom1.element is not None and atom1.element.symbol == "H":
+                hydrogen_variant.append((atom1.name, atom2.name))
+            elif atom2.element is not None and atom2.element.symbol == "H":
+                hydrogen_variant.append((atom2.name, atom1.name))
+    hydrogen_variant.sort()
+
+    target_residues = list(topology.residues())
+    target_cr2 = [residue for residue in target_residues if residue.name == "CR2"]
+    if len(target_cr2) != 2:
+        raise RuntimeError(f"Target topology needs exactly two CR2 residues; found {len(target_cr2)}")
+    existing_pairs = {
+        frozenset((atom1.index, atom2.index)) for atom1, atom2 in topology.bonds()
+    }
+    added = 0
+    for residue in target_cr2:
+        site_map = {}
+        for label, local_residue in (
+            ("PREV", target_residues[residue.index - 1]),
+            ("CR2", residue),
+            ("NEXT", target_residues[residue.index + 1]),
+        ):
+            for atom in local_residue.atoms():
+                site_map[(label, atom.name)] = atom
+        reference_names = {atom.name for atom in reference_cr2.atoms()}
+        target_names = {atom.name for atom in residue.atoms()}
+        if target_names != reference_names:
+            raise RuntimeError(
+                f"CR2 atom-name mismatch before protonation: missing={sorted(reference_names-target_names)}, "
+                f"extra={sorted(target_names-reference_names)}"
+            )
+        expected_index_pairs = set()
+        for descriptor_pair in expected_bonds:
+            descriptors = tuple(descriptor_pair)
+            atom1, atom2 = site_map[descriptors[0]], site_map[descriptors[1]]
+            index_pair = frozenset((atom1.index, atom2.index))
+            expected_index_pairs.add(index_pair)
+            if index_pair not in existing_pairs:
+                topology.addBond(atom1, atom2)
+                existing_pairs.add(index_pair)
+                added += 1
+        actual_cr2_pairs = {
+            pair
+            for pair in existing_pairs
+            if any(index in {atom.index for atom in residue.atoms()} for index in pair)
+        }
+        if actual_cr2_pairs != expected_index_pairs:
+            raise RuntimeError(
+                f"CR2 bond topology contains unexpected bonds at residue {residue.id}: "
+                f"expected {len(expected_index_pairs)}, found {len(actual_cr2_pairs)}"
+            )
+    return {
+        "bonds_per_site": len(expected_bonds),
+        "bonds_added": added,
+        "hydrogen_variant": hydrogen_variant,
+    }
+
+
 def choose_cutoff_from_box(topology, default_nm: float = 1.0):
     vectors = topology.getPeriodicBoxVectors()
     if vectors is None:
@@ -424,7 +805,12 @@ def resolve_path(path: Path) -> Path:
 
 
 def preprocess_pdb_for_solvation(pdb_path: Path, workdir: Path) -> Path:
-    """Insert TER records at residue gaps or protein/nonstandard boundaries to help solvation."""
+    """Insert TER records at genuine residue-number gaps before solvation.
+
+    A nonstandard chromophore embedded in a protein chain is not a chain break.
+    Splitting at that boundary makes PDBFixer add terminal OXT/H atoms on top of
+    the chromophore and produces catastrophic nonbonded clashes.
+    """
     output_path = workdir / "pdb_for_solvation.pdb"
     inserted = False
 
@@ -458,8 +844,7 @@ def preprocess_pdb_for_solvation(pdb_path: Path, workdir: Path) -> Path:
                         gap = False
                         if prev_resi and resi and prev_resi.isdigit() and resi.isdigit():
                             gap = int(resi) != int(prev_resi) + 1
-                        boundary = (prev_is_protein != is_protein)
-                        if gap or boundary:
+                        if gap:
                             out_handle.write("TER\n")
                             inserted = True
 
@@ -1031,6 +1416,12 @@ def parse_args(argv=None):
         description="Run dimer OpenMM NVT relaxation and render a video (standalone)."
     )
     parser.add_argument("--pdb", type=Path, default=Path("venus_dimer.pdb"), help="Input dimer PDB")
+    parser.add_argument(
+        "--amber-cr2-prmtop",
+        type=Path,
+        default=None,
+        help="Retained AMBER prmtop supplying exact CR2 RESP and bonded parameters",
+    )
     parser.add_argument("--workdir", type=Path, default=Path("tc_dimer_nvt"), help="Output workdir")
     parser.add_argument(
         "--overwrite-workdir",
@@ -1101,6 +1492,33 @@ def parse_args(argv=None):
         type=int,
         default=500,
         help="Trajectory report interval in steps",
+    )
+    parser.add_argument(
+        "--trajectory-protein-only",
+        action="store_true",
+        help="Write only protein/chromophore atoms to the trajectory (solvent remains in the simulation)",
+    )
+    parser.add_argument(
+        "--protein-topology-file",
+        default="protein_topology.pdb",
+        help="Solvent-free topology matching --trajectory-protein-only",
+    )
+    parser.add_argument(
+        "--checkpoint-file",
+        default="nvt.chk",
+        help="Rolling OpenMM checkpoint filename saved in workdir",
+    )
+    parser.add_argument(
+        "--checkpoint-interval",
+        type=int,
+        default=5000,
+        help="Checkpoint interval in MD steps (0 disables)",
+    )
+    parser.add_argument(
+        "--resume-checkpoint",
+        type=Path,
+        default=None,
+        help="Resume an interrupted NVT run from this checkpoint and append to a DCD trajectory",
     )
     parser.add_argument(
         "--ignore-external-bonds",
@@ -1253,7 +1671,28 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     fixer.findMissingResidues()
     fixer.findMissingAtoms()
     fixer.addMissingAtoms()
-    fixer.addMissingHydrogens(args.ph)
+    if args.amber_cr2_prmtop is not None:
+        cr2_topology_summary = ensure_amber_cr2_topology(
+            fixer.topology, args.amber_cr2_prmtop
+        )
+        hydrogen_modeller = Modeller(fixer.topology, fixer.positions)
+        variants = [
+            cr2_topology_summary["hydrogen_variant"] if residue.name == "CR2" else None
+            for residue in hydrogen_modeller.topology.residues()
+        ]
+        hydrogen_modeller.addHydrogens(pH=args.ph, variants=variants)
+        fixer.topology = hydrogen_modeller.topology
+        fixer.positions = hydrogen_modeller.positions
+        cr2_topology_summary = ensure_amber_cr2_topology(
+            fixer.topology, args.amber_cr2_prmtop
+        )
+        print(
+            "    - Exact AMBER CR2 topology: "
+            f"bonds/site={cr2_topology_summary['bonds_per_site']}, "
+            f"hydrogens/site={len(cr2_topology_summary['hydrogen_variant'])}"
+        )
+    else:
+        fixer.addMissingHydrogens(args.ph)
 
     base_topology = fixer.topology
     base_positions = fixer.positions
@@ -1261,14 +1700,27 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     nonstandard_names = find_nonstandard_residues(base_topology)
     print(f"    - Nonstandard residues: {nonstandard_names if nonstandard_names else 'none'}")
 
+    if args.amber_cr2_prmtop is None:
+        inferred_nonstandard_bonds = infer_nonstandard_residue_bonds(
+            base_topology, base_positions, nonstandard_names
+        )
+        if inferred_nonstandard_bonds:
+            print(f"    - Inferred nonstandard-residue bonds: {inferred_nonstandard_bonds}")
+
     fallback_nonstandard_xml = None
     if nonstandard_names:
         fallback_nonstandard_xml = workdir / "nonstandard_residues_generic.xml"
         write_generic_forcefield_xml(base_topology, base_positions, nonstandard_names, fallback_nonstandard_xml)
-        print(
-            f"    - Warning: using generic fallback FF for {nonstandard_names}; "
-            "this is approximate and may reduce physical accuracy"
-        )
+        if args.amber_cr2_prmtop is None:
+            print(
+                f"    - Warning: using generic fallback FF for {nonstandard_names}; "
+                "this is approximate and may reduce physical accuracy"
+            )
+        else:
+            print(
+                f"    - Generic template used only to construct {nonstandard_names}; "
+                "CR2 physical terms will be replaced from the retained AMBER topology"
+            )
         print(f"    - Wrote fallback nonstandard FF: {fallback_nonstandard_xml}")
 
     ff_inputs = ["amber14-all.xml", "amber14/tip3pfb.xml"]
@@ -1293,6 +1745,33 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         PDBFile.writeFile(modeller.topology, modeller.positions, handle, keepIds=True)
     print(f"    - Saved: {solvated_pdb}")
 
+    protein_atom_indices = [
+        atom.index
+        for atom in modeller.topology.atoms()
+        if atom.residue.name not in WATER_RESIDUE_NAMES
+        and atom.residue.name not in COMMON_ION_RESIDUES
+    ]
+    protein_modeller = Modeller(modeller.topology, modeller.positions)
+    protein_modeller.delete(
+        [
+            residue
+            for residue in protein_modeller.topology.residues()
+            if residue.name in WATER_RESIDUE_NAMES or residue.name in COMMON_ION_RESIDUES
+        ]
+    )
+    protein_topology_path = workdir / args.protein_topology_file
+    with open(protein_topology_path, "w", encoding="utf-8") as handle:
+        PDBFile.writeFile(
+            protein_modeller.topology,
+            protein_modeller.positions,
+            handle,
+            keepIds=True,
+        )
+    print(
+        f"    - Protein topology: {protein_topology_path} "
+        f"({len(protein_atom_indices)} atoms; solvent/ions excluded)"
+    )
+
     print("[*] Stage 2/2: Classical GPU relaxation (minimize + NVT + minimize)")
     nonbonded_cutoff = choose_cutoff_from_box(modeller.topology, default_nm=1.0)
     has_periodic_box = get_periodic_box_lengths_ang(modeller.topology) is not None
@@ -1304,6 +1783,18 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         constraints=HBonds,
         ignoreExternalBonds=args.ignore_external_bonds,
     )
+    if args.amber_cr2_prmtop is not None:
+        cr2_parameter_summary = apply_amber_cr2_parameters(
+            system, modeller.topology, args.amber_cr2_prmtop
+        )
+        parameter_summary_path = workdir / "cr2_amber_parameter_transplant.json"
+        parameter_summary_path.write_text(json.dumps(cr2_parameter_summary, indent=2) + "\n")
+        print(
+            "    - CR2 AMBER transplant: "
+            f"charges={cr2_parameter_summary['charge_per_cr2_e']}, "
+            f"torsions/site={cr2_parameter_summary['reference_torsions_transplanted_per_site']}"
+        )
+        print(f"    - CR2 parameter audit: {parameter_summary_path}")
 
     # Optional flat-bottom restraint on the CR2-CR2 chromophore-centroid distance.
     # The Venus A206 dimer interface is weak; in unrestrained bulk solvent the
@@ -1364,6 +1855,17 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
             ) from exc
         raise
     simulation.context.setPositions(modeller.positions)
+    resumed = False
+    if args.resume_checkpoint is not None:
+        resume_checkpoint = resolve_path(args.resume_checkpoint)
+        if not resume_checkpoint.exists():
+            raise FileNotFoundError(f"Resume checkpoint not found: {resume_checkpoint}")
+        simulation.loadCheckpoint(str(resume_checkpoint))
+        resumed = True
+        print(
+            f"    - Resumed checkpoint: {resume_checkpoint} "
+            f"(currentStep={simulation.currentStep})"
+        )
 
     class _NvtEnergyReporter:
         def __init__(self, interval: int):
@@ -1424,27 +1926,62 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     openmm_traj_path = None
     if args.nvt_steps > 0 and args.openmm_trajectory_interval and int(args.openmm_trajectory_interval) > 0:
         openmm_traj_path = workdir / args.openmm_trajectory_file
-        simulation.reporters.append(PDBReporter(str(openmm_traj_path), int(args.openmm_trajectory_interval)))
+        atom_subset = protein_atom_indices if args.trajectory_protein_only else None
+        if openmm_traj_path.suffix.lower() == ".dcd":
+            simulation.reporters.append(
+                DCDReporter(
+                    str(openmm_traj_path),
+                    int(args.openmm_trajectory_interval),
+                    append=resumed and openmm_traj_path.exists(),
+                    atomSubset=atom_subset,
+                )
+            )
+        else:
+            if resumed and openmm_traj_path.exists():
+                raise RuntimeError("Checkpoint resume requires a .dcd trajectory for safe appending")
+            simulation.reporters.append(
+                PDBReporter(
+                    str(openmm_traj_path),
+                    int(args.openmm_trajectory_interval),
+                    atomSubset=atom_subset,
+                )
+            )
         simulation.reporters.append(_NvtEnergyReporter(int(args.openmm_trajectory_interval)))
+    if args.nvt_steps > 0 and args.checkpoint_interval and int(args.checkpoint_interval) > 0:
+        checkpoint_path = workdir / args.checkpoint_file
+        simulation.reporters.append(
+            CheckpointReporter(str(checkpoint_path), int(args.checkpoint_interval))
+        )
+        print(f"    - Rolling checkpoint: {checkpoint_path}")
 
     def potential_kj_per_mol() -> float:
         state = simulation.context.getState(getEnergy=True)
         return state.getPotentialEnergy().value_in_unit(unit.kilojoule_per_mole)
 
     e_before_min1 = potential_kj_per_mol()
-    if can_stream_minimization and _MinimizationProgressReporter is not None:
-        reporter = _MinimizationProgressReporter("#1", minimize_report_interval)
-        openmm.LocalEnergyMinimizer.minimize(
-            simulation.context,
-            maxIterations=args.minimize_iters,
-            reporter=reporter,
-        )
+    if resumed:
+        print("    - Initial minimization skipped after checkpoint resume")
+        e_after_min1 = e_before_min1
     else:
-        simulation.minimizeEnergy(maxIterations=args.minimize_iters)
-    e_after_min1 = potential_kj_per_mol()
+        if can_stream_minimization and _MinimizationProgressReporter is not None:
+            reporter = _MinimizationProgressReporter("#1", minimize_report_interval)
+            openmm.LocalEnergyMinimizer.minimize(
+                simulation.context,
+                maxIterations=args.minimize_iters,
+                reporter=reporter,
+            )
+        else:
+            simulation.minimizeEnergy(maxIterations=args.minimize_iters)
+        e_after_min1 = potential_kj_per_mol()
 
     if args.nvt_steps > 0:
-        simulation.step(int(args.nvt_steps))
+        remaining_steps = max(0, int(args.nvt_steps) - int(simulation.currentStep))
+        print(
+            f"    - NVT production: currentStep={simulation.currentStep}, "
+            f"remaining={remaining_steps}"
+        )
+        if remaining_steps:
+            simulation.step(remaining_steps)
         e_before_min2 = potential_kj_per_mol()
     else:
         print("    - NVT skipped (--nvt-steps=0)")

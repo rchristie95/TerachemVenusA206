@@ -1,0 +1,230 @@
+{
+  "method": "fixed STEOM multipair difference-density probe against explicit AMBER/TIP3P MM charges",
+  "trajectory": "external/full_highres_0to4ps_4fs.dcd",
+  "frames": 1000,
+  "dt_fs": 4.0,
+  "duration_fs": 3996.0,
+  "opencl_device": "NVIDIA GeForce RTX 4080",
+  "probe_net_delta_charge_e": 1.243850942383995e-15,
+  "probe_delta_mu_e_bohr": [
+    -0.05626931593899212,
+    -0.8130093581950685,
+    0.9446784723789056
+  ],
+  "topology": {
+    "cr2_residues": [
+      [
+        "A",
+        "66",
+        "CR2"
+      ],
+      [
+        "A",
+        "328",
+        "CR2"
+      ]
+    ],
+    "excluded_qm_residues": [
+      [
+        [
+          "A",
+          "66",
+          "CR2"
+        ],
+        [
+          "A",
+          "202",
+          "TYR"
+        ]
+      ],
+      [
+        [
+          "A",
+          "328",
+          "CR2"
+        ],
+        [
+          "A",
+          "464",
+          "TYR"
+        ]
+      ]
+    ]
+  },
+  "charge_counts": {
+    "total_atoms": 69471,
+    "protein_atoms": 7761,
+    "water_atoms": 61587,
+    "ion_atoms": 123,
+    "net_system_charge_e": -1.9999992477241904
+  },
+  "fit_rmsd_A": {
+    "site_A_mean": 0.19370087217099105,
+    "site_B_mean": 0.20640764388515948,
+    "maximum": 0.31823859418375205
+  },
+  "total": {
+    "site_A_mean_cm-1": 122.15962190330127,
+    "site_B_mean_cm-1": -88.13207562643846,
+    "site_A_sigma_cm-1": 289.3138866818713,
+    "site_B_sigma_cm-1": 286.4777201501675,
+    "difference_sigma_cm-1": 374.37310330205656,
+    "site_cross_correlation_rho0": 0.1545377407121146,
+    "site_A_solvation_1e_fs": 92.18060135102806,
+    "site_B_solvation_1e_fs": 71.24735390881419,
+    "difference_correlation_1e_fs": 56.78821611572262,
+    "site_A_positive_integral_fs": 73.10744381021681,
+    "site_B_positive_integral_fs": 55.62393595351827,
+    "difference_positive_integral_fs": 41.678094371496336,
+    "classical_cumulant_T2_1e_fs": 22.397431310320663,
+    "site_A_biexponential": {
+      "fast_amplitude": 0.6251671426488834,
+      "tau_fast_fs": 69.81001274553003,
+      "tau_slow_fs": 4343.8708294188555,
+      "offset": -0.49999999999999933,
+      "fit_rmse": 0.08664805954622062,
+      "fit_window_fs": 1000.0
+    },
+    "site_B_biexponential": {
+      "fast_amplitude": 0.6542997544319046,
+      "tau_fast_fs": 46.24432055392906,
+      "tau_slow_fs": 676.7033440433917,
+      "offset": -0.2452456281718426,
+      "fit_rmse": 0.06838646411072971,
+      "fit_window_fs": 1000.0
+    },
+    "difference_biexponential": {
+      "fast_amplitude": 0.9476835070717351,
+      "tau_fast_fs": 45.874882322062014,
+      "tau_slow_fs": 45.870732115541045,
+      "offset": -0.031026398142660574,
+      "fit_rmse": 0.09408622222607406,
+      "fit_window_fs": 1000.0
+    }
+  },
+  "components": {
+    "protein": {
+      "site_A_mean_cm-1": 331.83700364573787,
+      "site_B_mean_cm-1": -29.308075797607433,
+      "site_A_sigma_cm-1": 294.63800606535744,
+      "site_B_sigma_cm-1": 278.24785292823043,
+      "difference_sigma_cm-1": 361.2603182721124,
+      "site_cross_correlation_rho0": 0.20568077887505504,
+      "site_A_solvation_1e_fs": 97.81767463592001,
+      "site_B_solvation_1e_fs": 71.363571018119,
+      "difference_correlation_1e_fs": 56.651347886923,
+      "site_A_positive_integral_fs": 77.7990904679686,
+      "site_B_positive_integral_fs": 54.945003821676174,
+      "difference_positive_integral_fs": 41.45426486708748,
+      "classical_cumulant_T2_1e_fs": 23.271503630612045,
+      "site_A_biexponential": {
+        "fast_amplitude": 0.5755853581392795,
+        "tau_fast_fs": 67.34506298822805,
+        "tau_slow_fs": 1938.7053938889917,
+        "offset": -0.49999999999999967,
+        "fit_rmse": 0.08675900662063823,
+        "fit_window_fs": 1000.0
+      },
+      "site_B_biexponential": {
+        "fast_amplitude": 0.4904369928742685,
+        "tau_fast_fs": 37.822829991531144,
+        "tau_slow_fs": 906.8663140029274,
+        "offset": -0.499999999983278,
+        "fit_rmse": 0.07642876626704609,
+        "fit_window_fs": 1000.0
+      },
+      "difference_biexponential": {
+        "fast_amplitude": 0.7160653996934536,
+        "tau_fast_fs": 41.985936939405306,
+        "tau_slow_fs": 4999.99999958966,
+        "offset": -0.3744800699082877,
+        "fit_rmse": 0.0973213086018099,
+        "fit_window_fs": 1000.0
+      }
+    },
+    "water": {
+      "site_A_mean_cm-1": -64.92804971854252,
+      "site_B_mean_cm-1": -175.91917072856305,
+      "site_A_sigma_cm-1": 80.32321909692965,
+      "site_B_sigma_cm-1": 106.61146240091993,
+      "difference_sigma_cm-1": 91.95960591264704,
+      "site_cross_correlation_rho0": 0.5465866781279104,
+      "site_A_solvation_1e_fs": 199.78695778232546,
+      "site_B_solvation_1e_fs": 541.0971345494236,
+      "difference_correlation_1e_fs": 81.22144544962626,
+      "site_A_positive_integral_fs": 208.39828898915803,
+      "site_B_positive_integral_fs": 444.2275379019196,
+      "difference_positive_integral_fs": 85.1696096292673,
+      "classical_cumulant_T2_1e_fs": 107.34888266501567,
+      "site_A_biexponential": {
+        "fast_amplitude": 0.28483631171002366,
+        "tau_fast_fs": 8.632250486441885,
+        "tau_slow_fs": 335.61716778437824,
+        "offset": -0.011661402360522806,
+        "fit_rmse": 0.04568421242497861,
+        "fit_window_fs": 1000.0
+      },
+      "site_B_biexponential": {
+        "fast_amplitude": 0.2180232949697433,
+        "tau_fast_fs": 61.66125369957411,
+        "tau_slow_fs": 2006.3796972610633,
+        "offset": -0.49999999999999994,
+        "fit_rmse": 0.048986996871143024,
+        "fit_window_fs": 1000.0
+      },
+      "difference_biexponential": {
+        "fast_amplitude": 0.23727356374460537,
+        "tau_fast_fs": 6.821793604141307,
+        "tau_slow_fs": 78.31062375908313,
+        "offset": 0.10678493045078612,
+        "fit_rmse": 0.08374093291831397,
+        "fit_window_fs": 1000.0
+      }
+    },
+    "ions": {
+      "site_A_mean_cm-1": -144.74933202389408,
+      "site_B_mean_cm-1": 117.09517089973201,
+      "site_A_sigma_cm-1": 20.319726886541154,
+      "site_B_sigma_cm-1": 24.943186787555824,
+      "difference_sigma_cm-1": 36.37316825981858,
+      "site_cross_correlation_rho0": -0.28406816295725923,
+      "site_A_solvation_1e_fs": 611.8132446313842,
+      "site_B_solvation_1e_fs": 447.7770366077072,
+      "difference_correlation_1e_fs": 984.0490351073166,
+      "site_A_positive_integral_fs": 461.29353592760117,
+      "site_B_positive_integral_fs": 596.162005002491,
+      "difference_positive_integral_fs": 748.2133266304786,
+      "classical_cumulant_T2_1e_fs": 213.0934640027437,
+      "site_A_biexponential": {
+        "fast_amplitude": 7.340855393122207e-19,
+        "tau_fast_fs": 387.37828242725766,
+        "tau_slow_fs": 970.9550674212375,
+        "offset": -0.49999999999999994,
+        "fit_rmse": 0.08108286965555214,
+        "fit_window_fs": 1000.0
+      },
+      "site_B_biexponential": {
+        "fast_amplitude": 0.9999999999996931,
+        "tau_fast_fs": 197.33491249580194,
+        "tau_slow_fs": 3216.8029732129103,
+        "offset": 0.3975109853331339,
+        "fit_rmse": 0.07040742104546512,
+        "fit_window_fs": 1000.0
+      },
+      "difference_biexponential": {
+        "fast_amplitude": 3.315285242927629e-24,
+        "tau_fast_fs": 374.75093494909515,
+        "tau_slow_fs": 2150.8833763189327,
+        "offset": -0.49999999999998707,
+        "fit_rmse": 0.03801557658082679,
+        "fit_window_fs": 1000.0
+      }
+    }
+  },
+  "limitations": [
+    "fixed STEOM difference density; no geometry-dependent QM excitation calculation",
+    "TIP3P/AMBER fixed-charge environment; no induced electronic polarization",
+    "classical high-temperature second cumulant; no quantum correction or detailed balance",
+    "short trajectory intended for ultrafast numerical testing, not converged slow protein dynamics"
+  ]
+}

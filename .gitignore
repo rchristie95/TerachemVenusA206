@@ -4,6 +4,7 @@ __pycache__/
 .ipynb_checkpoints/
 .ruff_cache/
 .ccd_cache/
+tmp/
 
 # Licensed third-party installations and archives (never publish)
 orca_*/
@@ -73,6 +74,22 @@ paper_data_summary.json
 *.out
 *.pdf
 *.mp4
+
+# Local/superseded production products.  Keep these on the workstation; the
+# compact canonical exceptions further below are sufficient to regenerate the
+# published plots and numerical summaries.
+coupling_nvt_production_cr2_250_*/
+coupling_nvt_steom_20260721/
+solvation_decoherence_test/pme_smoke/
+solvation_decoherence_test/pme_scale5_100frames/
+solvation_decoherence_test/smoke/
+solvation_decoherence_test/smoke_cutoff/
+solvation_decoherence_test/spectra_t2_*/
+solvation_decoherence_test/run_*_dipole_matched/
+solvation_decoherence_test/run_*_dominant_pair/
+solvation_decoherence_test/run_*/gap_timeseries.csv
+solvation_decoherence_test/run_*/solvation_decoherence_test.png
+coupling_nvt_production_cr2_1000_*/spectra_ensemble_nguyen_convention.csv
 
 # Local manuscript mirrors and working notes
 UoP_Surrey_Venus_Collaboration/
@@ -182,6 +199,20 @@ lineshape_tandem/*
 multipole_out_correct/*
 !multipole_out_correct/multipole_analysis.csv
 
+# Canonical 1000-frame ensemble and representative FP64 precision audits.
+!coupling_nvt_production_cr2_1000_20260721/coupling_geometry.npz
+!coupling_nvt_production_cr2_1000_20260721/precision_check_f64/frame_0000/coupling_geometry.npz
+!coupling_nvt_production_cr2_1000_20260721/precision_check_f64/frame_0499/coupling_geometry.npz
+!coupling_nvt_production_cr2_1000_20260721/precision_check_f64/frame_0999/coupling_geometry.npz
+
+# Compact electrostatic-gap/probe arrays retained for the 8-ps validation.
+!solvation_decoherence_test/run_4ps/gap_timeseries.npz
+!solvation_decoherence_test/run_4to8ps/gap_timeseries.npz
+!solvation_decoherence_test/pme_validation_8ps/pme_gap_timeseries.npz
+!solvation_decoherence_test/steom_difference_probe.npz
+!solvation_decoherence_test/steom_difference_probe_dipole_matched.npz
+!solvation_decoherence_test/steom_difference_probe_dominant_pair.npz
+
 # Source, workflow templates, documentation and compact validation data are
 # never excluded merely because they live beside generated output.
 !*.py
@@ -206,7 +237,19 @@ manuscript/*.aux
 manuscript/*.blg
 manuscript/*.log
 manuscript/*.pdf
+!manuscript/Fig_Spectra_NguyenStyle_Traces.pdf
+!manuscript/Fig_Spectra_NguyenStyle_Difference.pdf
+!manuscript/Fig_Spectra_NguyenStyle_Components.pdf
 manuscript/acs-*.bib
+
+# The Nguyen panel is a local third-party reference asset and is deliberately
+# not distributed.  JPCB_tandem.tex supplies an attributed placeholder.
+manuscript/Nguyen2025_Figure4_unmodified.jpg
+
+# Standalone technical note and its project-generated figures.
+!notes/Fig_T2_CommonScale.pdf
+!notes/solvation_decoherence_note.pdf
+notes/*.aux
 
 # Reassert cache exclusions after the source-directory negation rules above.
 **/__pycache__/

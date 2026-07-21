@@ -1,0 +1,38 @@
+{
+  "description": "Common-amplitude-scale comparison of the numerical 60 fs and 24 fs tandem CD spectra",
+  "normalization": "Both raw difference spectra divided by the absolute 60 fs peak",
+  "T2_60_fs": 60.0,
+  "T2_24_fs": 24.01456343609405,
+  "hwhm_60_cm-1": 88.48062431460241,
+  "hwhm_24_cm-1": 221.06741490444614,
+  "raw_peak_60": 6548.960912676725,
+  "raw_peak_24": 1723.2663301315,
+  "peak_ratio_24_over_60": 0.2631358398850418,
+  "peak_reduction_fraction": 0.7368641601149581,
+  "extrema_60_nm": {
+    "negative": 520.5987634233647,
+    "positive": 527.2038227055529
+  },
+  "extrema_24_nm": {
+    "negative": 519.4718043078256,
+    "positive": 528.3646171629878
+  },
+  "exciton_centres_nm": {
+    "short": 520.6871667989856,
+    "long": 527.1200580420481
+  },
+  "sources": {
+    "coupling_csv": "coupling_nvt_production_cr2_1000_20260721/coupling_samples.csv",
+    "coupling_csv_sha256": "C7FB35BC748A0C7D390FF280F78FAC0AAA91406A764C41CDF78642508E5A7F94",
+    "geometry_npz": "coupling_nvt_production_cr2_1000_20260721/coupling_geometry.npz",
+    "geometry_npz_sha256": "C940197469BD90AA15017CA13E8C9431DDF8AA31A1D35B4180162EBA624F94D7",
+    "orca_validation": "reference/orca_validation.json",
+    "orca_validation_sha256": "BCAC8D10B355774D8FB4CEE21A0F4E8A3427A79012AB005CB431FEB404A60772",
+    "pme_summary": "solvation_decoherence_test/pme_validation_8ps/summary.json",
+    "pme_summary_sha256": "E2BF330162B4566F42098794062966C35E8E1F012BE1C85EBEA323DC578E61A6"
+  },
+  "outputs": {
+    "pdf": "notes/Fig_T2_CommonScale.pdf",
+    "png": "notes/Fig_T2_CommonScale.png"
+  }
+}

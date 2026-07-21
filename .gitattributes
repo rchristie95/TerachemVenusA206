@@ -1,0 +1,2 @@
+# PDB is a fixed-column format; terminal padding preserves standard columns.
+tandem_dimer_production_cr2.pdb -whitespace

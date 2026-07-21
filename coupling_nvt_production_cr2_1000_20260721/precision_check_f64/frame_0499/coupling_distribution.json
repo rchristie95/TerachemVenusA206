@@ -1,0 +1,21 @@
+{
+  "n": 1,
+  "mean": 120.99657677975566,
+  "std": 0.0,
+  "min": 120.99657677975566,
+  "max": 120.99657677975566,
+  "median": 120.99657677975566,
+  "epsilon": 1.77,
+  "bin_width_A": 0.0,
+  "opencl_precision": "f64",
+  "original_points": 259277,
+  "aggregated_signed_cells": 259277,
+  "charge_error_au": 0.0,
+  "dipole_error_au": 0.0,
+  "dipole_norm_au": 3.8576184883850844,
+  "fit_rmsd_mean_A": 0.5716207276288516,
+  "fit_rmsd_max_A": 0.6674949245730598,
+  "samples": [
+    120.99657677975566
+  ]
+}

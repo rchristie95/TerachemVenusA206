@@ -18,6 +18,7 @@ dependencies:
   - numpy
   - scipy
   - matplotlib
+  - mdtraj         # streamed DCD/topology analysis for gap traces and transforms
   - numba          # GPU (CUDA) Coulomb kernel; falls back to CPU/PyOpenCL
   - pyopencl       # GPU (OpenCL) Coulomb kernel used on this project's RTX 4080
   - pymol-open-source

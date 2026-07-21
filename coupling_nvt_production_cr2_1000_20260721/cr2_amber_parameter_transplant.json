@@ -1,0 +1,14 @@
+{
+  "reference_prmtop": "anionic_build/monomer_solv.prmtop",
+  "target_cr2_residues": 2,
+  "atoms_per_cr2": 29,
+  "charge_per_cr2_e": [
+    -0.9999999985182989,
+    -0.9999999985182989
+  ],
+  "reference_bonds_transplanted_per_site": 22,
+  "reference_angles_transplanted_per_site": 56,
+  "reference_torsions_transplanted_per_site": 119,
+  "reference_constraints_transplanted_per_site": 10,
+  "reference_exceptions_transplanted_per_site": 166
+}

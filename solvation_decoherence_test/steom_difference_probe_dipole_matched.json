@@ -1,0 +1,86 @@
+{
+  "output": "steom_difference_probe_dipole_matched.npz",
+  "grid_shape": [
+    100,
+    100,
+    100
+  ],
+  "grid_voxels": 1000000,
+  "voxel_volume_bohr3": 0.028008596356088707,
+  "nto_pair_count": 7,
+  "nto_occupation_represented": 0.99045993,
+  "grid_net_delta_charge_e": -4.544211688944822e-16,
+  "atom_net_delta_charge_e": -5.186823193170653e-16,
+  "grid_delta_mu_e_bohr": [
+    -0.0278960192783398,
+    -0.7866391955950396,
+    0.8927634087783841
+  ],
+  "atom_delta_mu_e_bohr": [
+    -0.027896019278336334,
+    -0.7866391955950427,
+    0.8927634087783843
+  ],
+  "atom_delta_mu_before_correction_e_bohr": [
+    -0.05626931593899212,
+    -0.8130093581950685,
+    0.9446784723789056
+  ],
+  "delta_mu_partition_error_e_bohr": 4.661099651446131e-15,
+  "grid_dipole_matched": true,
+  "charge_correction_rms_e": 0.0005153510875937778,
+  "charge_correction_max_abs_e": 0.0010236269685736199,
+  "atom_delta_q_min_e": -0.22165193360343174,
+  "atom_delta_q_max_e": 0.1693884206187458,
+  "pairs": [
+    {
+      "hole": 92,
+      "particle": 93,
+      "occupation": 0.96558779,
+      "hole_grid_norm_before": 1.0000257211555208,
+      "particle_grid_norm_before": 1.0000689427077896
+    },
+    {
+      "hole": 91,
+      "particle": 94,
+      "occupation": 0.01476372,
+      "hole_grid_norm_before": 1.000008387171176,
+      "particle_grid_norm_before": 1.0001435344755703
+    },
+    {
+      "hole": 90,
+      "particle": 95,
+      "occupation": 0.003151,
+      "hole_grid_norm_before": 1.0001433203031913,
+      "particle_grid_norm_before": 0.9999501525525051
+    },
+    {
+      "hole": 89,
+      "particle": 96,
+      "occupation": 0.00237768,
+      "hole_grid_norm_before": 1.0011870640381484,
+      "particle_grid_norm_before": 1.0006550133331096
+    },
+    {
+      "hole": 88,
+      "particle": 97,
+      "occupation": 0.00196516,
+      "hole_grid_norm_before": 0.9999770946176418,
+      "particle_grid_norm_before": 0.9993640183513358
+    },
+    {
+      "hole": 87,
+      "particle": 98,
+      "occupation": 0.00149604,
+      "hole_grid_norm_before": 1.0006100050484146,
+      "particle_grid_norm_before": 1.000298528951471
+    },
+    {
+      "hole": 86,
+      "particle": 99,
+      "occupation": 0.00111854,
+      "hole_grid_norm_before": 0.9999583006888793,
+      "particle_grid_norm_before": 0.9995613585732845
+    }
+  ]
+}

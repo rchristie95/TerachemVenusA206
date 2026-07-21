@@ -1,0 +1,36 @@
+{
+  "output": "steom_difference_probe_dominant_pair.npz",
+  "grid_shape": [
+    100,
+    100,
+    100
+  ],
+  "grid_voxels": 1000000,
+  "voxel_volume_bohr3": 0.028008596356088707,
+  "nto_pair_count": 1,
+  "nto_occupation_represented": 0.96558779,
+  "grid_net_delta_charge_e": -4.3851664274336604e-16,
+  "atom_net_delta_charge_e": 8.413408858487514e-16,
+  "grid_delta_mu_e_bohr": [
+    -0.039662747693196526,
+    -0.782842604666252,
+    0.8842382554542726
+  ],
+  "atom_delta_mu_e_bohr": [
+    -0.06995357855328432,
+    -0.8060219622362892,
+    0.9335948057944754
+  ],
+  "delta_mu_partition_error_e_bohr": 0.06237696780895222,
+  "atom_delta_q_min_e": -0.22370172352323825,
+  "atom_delta_q_max_e": 0.1706029454855384,
+  "pairs": [
+    {
+      "hole": 92,
+      "particle": 93,
+      "occupation": 0.96558779,
+      "hole_grid_norm_before": 1.0000257211555208,
+      "particle_grid_norm_before": 1.0000689427077896
+    }
+  ]
+}

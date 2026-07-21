@@ -1,0 +1,186 @@
+{
+  "method": "centred OpenMM PME charge-offset derivative on actual CR2 atoms",
+  "trajectories": [
+    "external/full_highres_0to4ps_4fs.dcd",
+    "external/full_highres_4to8ps_4fs.dcd"
+  ],
+  "frames": 1000,
+  "dt_fs": 8.0,
+  "duration_fs": 7992.0,
+  "finite_difference_scale": 10.0,
+  "probe": {
+    "cr2_atoms": 29,
+    "net_before_neutralization_e": 0.0025812590223225334,
+    "neutralization_per_atom_e": 8.900893180422529e-05,
+    "net_after_neutralization_e": -4.96564594998361e-17,
+    "omitted_tyr_absolute_charge_e": 0.0043969325436600745
+  },
+  "topology": {
+    "cr2_residues": [
+      [
+        "A",
+        "66",
+        "CR2"
+      ],
+      [
+        "A",
+        "328",
+        "CR2"
+      ]
+    ],
+    "excluded_qm_residues": [
+      [
+        [
+          "A",
+          "66",
+          "CR2"
+        ],
+        [
+          "A",
+          "202",
+          "TYR"
+        ]
+      ],
+      [
+        [
+          "A",
+          "328",
+          "CR2"
+        ],
+        [
+          "A",
+          "464",
+          "TYR"
+        ]
+      ]
+    ]
+  },
+  "PME": {
+    "site_A_mean_cm-1": 86.45296125017332,
+    "site_B_mean_cm-1": -146.85677887197934,
+    "site_A_sigma_cm-1": 276.9235227421161,
+    "site_B_sigma_cm-1": 285.3789811625608,
+    "difference_sigma_cm-1": 367.5807727065898,
+    "site_cross_correlation_rho0": 0.14559479795602545,
+    "site_A_solvation_1e_fs": 71.0846215718983,
+    "site_B_solvation_1e_fs": 62.007273942064984,
+    "difference_correlation_1e_fs": 21.484375752255787,
+    "site_A_positive_integral_fs": 61.26930719927353,
+    "site_B_positive_integral_fs": 76.35572400419669,
+    "difference_positive_integral_fs": 74.27148813913762,
+    "classical_cumulant_T2_1e_fs": 24.01456343609405,
+    "site_A_biexponential": {
+      "fast_amplitude": 0.7113101434731119,
+      "tau_fast_fs": 55.88362865140374,
+      "tau_slow_fs": 4999.999999639377,
+      "offset": -0.3077595293714837,
+      "fit_rmse": 0.07963657027054817,
+      "fit_window_fs": 1000.0
+    },
+    "site_B_biexponential": {
+      "fast_amplitude": 0.49647729798557033,
+      "tau_fast_fs": 24.805129019810703,
+      "tau_slow_fs": 293.7144133483174,
+      "offset": -0.1565902749109677,
+      "fit_rmse": 0.0483578547496264,
+      "fit_window_fs": 1000.0
+    },
+    "difference_biexponential": {
+      "fast_amplitude": 0.4386123420622397,
+      "tau_fast_fs": 6.67887674523789,
+      "tau_slow_fs": 124.22353336463395,
+      "offset": 0.00897268401805571,
+      "fit_rmse": 0.06601440136609184,
+      "fit_window_fs": 1000.0
+    }
+  },
+  "minimum_image_same_probe": {
+    "site_A_mean_cm-1": 13.641806806732392,
+    "site_B_mean_cm-1": -186.5919602633817,
+    "site_A_sigma_cm-1": 280.8026981105984,
+    "site_B_sigma_cm-1": 295.44176183976697,
+    "difference_sigma_cm-1": 381.2865102485722,
+    "site_cross_correlation_rho0": 0.12509869742213492,
+    "site_A_solvation_1e_fs": 72.05869836553822,
+    "site_B_solvation_1e_fs": 75.00017723088186,
+    "difference_correlation_1e_fs": 23.170225462325895,
+    "site_A_positive_integral_fs": 61.52963835778457,
+    "site_B_positive_integral_fs": 78.65702111082307,
+    "difference_positive_integral_fs": 73.64529874657677,
+    "classical_cumulant_T2_1e_fs": 23.00490038858377,
+    "site_A_biexponential": {
+      "fast_amplitude": 0.6691282275940399,
+      "tau_fast_fs": 55.912487612862456,
+      "tau_slow_fs": 4999.999999999476,
+      "offset": -0.38401271635316764,
+      "fit_rmse": 0.07431698426419062,
+      "fit_window_fs": 1000.0
+    },
+    "site_B_biexponential": {
+      "fast_amplitude": 0.3202277992518677,
+      "tau_fast_fs": 7.133294922309867,
+      "tau_slow_fs": 198.96876973513264,
+      "offset": -0.14660048226625433,
+      "fit_rmse": 0.046805787974914866,
+      "fit_window_fs": 1000.0
+    },
+    "difference_biexponential": {
+      "fast_amplitude": 0.38384839245294533,
+      "tau_fast_fs": 6.079477867358569,
+      "tau_slow_fs": 132.08632960751507,
+      "offset": -0.030787732479486202,
+      "fit_rmse": 0.06219502231075016,
+      "fit_window_fs": 1000.0
+    }
+  },
+  "PME_minus_minimum_image": {
+    "site_A_mean_cm-1": 72.81115444344094,
+    "site_B_mean_cm-1": 39.73518139140235,
+    "site_A_sigma_cm-1": 61.823551458106586,
+    "site_B_sigma_cm-1": 66.1616208651619,
+    "difference_sigma_cm-1": 87.03819697892536,
+    "site_cross_correlation_rho0": 0.07626051687337802,
+    "site_A_solvation_1e_fs": 167.84073266567438,
+    "site_B_solvation_1e_fs": 124.73769265724023,
+    "difference_correlation_1e_fs": 95.22800808911322,
+    "site_A_positive_integral_fs": 187.37508377059837,
+    "site_B_positive_integral_fs": 184.8270441558784,
+    "difference_positive_integral_fs": 94.4428289656245,
+    "classical_cumulant_T2_1e_fs": 104.70716112155588,
+    "site_A_biexponential": {
+      "fast_amplitude": 0.18214514370480733,
+      "tau_fast_fs": 8.768068969553836,
+      "tau_slow_fs": 226.6450838136338,
+      "offset": 0.01684405788272701,
+      "fit_rmse": 0.0570230997665506,
+      "fit_window_fs": 1000.0
+    },
+    "site_B_biexponential": {
+      "fast_amplitude": 0.5685676836972771,
+      "tau_fast_fs": 79.7136635440485,
+      "tau_slow_fs": 4999.999999995345,
+      "offset": -0.4457415962393001,
+      "fit_rmse": 0.03022327187422268,
+      "fit_window_fs": 1000.0
+    },
+    "difference_biexponential": {
+      "fast_amplitude": 0.4302535019967528,
+      "tau_fast_fs": 49.10347672995685,
+      "tau_slow_fs": 164.73393781767865,
+      "offset": -0.05645447349436323,
+      "fit_rmse": 0.04305416329278173,
+      "fit_window_fs": 1000.0
+    }
+  },
+  "site_trace_correlations": {
+    "A_PME_vs_minimum_image": 0.9755204423639257,
+    "B_PME_vs_minimum_image": 0.9746414718658061,
+    "difference_PME_vs_minimum_image": 0.9736439127651959
+  },
+  "limitations": [
+    "difference density is fixed and restricted to the 29 CR2 atoms",
+    "PME uses the same fixed-charge AMBER/TIP3P Hamiltonian as the trajectory",
+    "particle-parameter offsets do not restore scaled 1-4 exception interactions across the QM boundary",
+    "classical second cumulant; no quantum correction or geometry-dependent excitation energies"
+  ]
+}

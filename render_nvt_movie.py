@@ -29,6 +29,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
 
 def parse_args():
     argv = sys.argv[1:]
@@ -36,6 +40,8 @@ def parse_args():
         argv = argv[argv.index("--") + 1:]
     ap = argparse.ArgumentParser()
     ap.add_argument("--traj", required=True)
+    ap.add_argument("--topology-pdb",
+                    help="topology PDB required when --traj is DCD/XTC rather than multi-model PDB")
     ap.add_argument("--out", required=True)
     ap.add_argument("--width", type=int, default=1600)
     ap.add_argument("--height", type=int, default=1200)
@@ -69,6 +75,8 @@ def parse_args():
     ap.add_argument("--end-frame", type=int, default=0,
                     help="last sampled movie frame to render (inclusive; 0 means final frame)")
     ap.add_argument("--keep-frames", action="store_true")
+    ap.add_argument("--frames-only", action="store_true",
+                    help="render the selected chunk but defer ffmpeg encoding")
     return ap.parse_args(argv)
 
 
@@ -96,6 +104,33 @@ def _load_dx(path):
     return grid, np.array(origin), h
 
 
+def _cr2_atoms(pdb_path):
+    import numpy as np
+    atoms = {}
+    with open(pdb_path) as handle:
+        for line in handle:
+            if line[:6].strip() in ("ATOM", "HETATM") and line[17:20].strip() == "CR2":
+                element = line[76:78].strip().upper()
+                if element == "H" or (not element and line[12:16].strip().upper().startswith("H")):
+                    continue
+                atoms[line[12:16].strip()] = np.array(
+                    [float(line[30:38]), float(line[38:46]), float(line[46:54])]
+                )
+    return atoms
+
+
+def _kabsch(P, Q):
+    import numpy as np
+    Pc, Qc = P - P.mean(0), Q - Q.mean(0)
+    U, _, Vt = np.linalg.svd(Pc.T @ Qc)
+    handedness = np.sign(np.linalg.det(Vt.T @ U.T))
+    rotation = Vt.T @ np.diag([1.0, 1.0, handedness]) @ U.T
+    translation = Q.mean(0) - rotation @ P.mean(0)
+    fitted = (rotation @ P.T).T + translation
+    rmsd = float(np.sqrt(((fitted - Q) ** 2).sum(1).mean()))
+    return rotation, translation, rmsd
+
+
 def _parse_barrel_frames(traj):
     """Per MODEL: chain-A CA coords (for the intra_fit stabiliser) and CR2 atom
     dicts {name: xyz} for the two barrels (chain A = FP1, chain C = FP2)."""
@@ -117,6 +152,38 @@ def _parse_barrel_frames(traj):
     return frames
 
 
+def _pymol_cr2_frames(cmd, n_states):
+    """Return the two CR2 atom-name dictionaries for every loaded state.
+
+    The tandem topology is one continuous chain, so the two chromophores are
+    identified by (chain,residue id), not by the old dimer A/C chain labels.
+    Coordinates are read after intra_fit and therefore already include the
+    frame-stabilising rigid transform.
+    """
+    import numpy as np
+
+    first = cmd.get_model("traj and resn CR2", state=1)
+    residue_keys = []
+    for atom in first.atom:
+        key = ((atom.chain or "").strip(), str(atom.resi).strip())
+        if key not in residue_keys:
+            residue_keys.append(key)
+    if len(residue_keys) != 2:
+        raise RuntimeError(f"Expected two CR2 residues, found {residue_keys}")
+
+    frames = []
+    for state in range(1, n_states + 1):
+        model = cmd.get_model("traj and resn CR2", state=state)
+        by_residue = {key: {} for key in residue_keys}
+        for atom in model.atom:
+            key = ((atom.chain or "").strip(), str(atom.resi).strip())
+            if key in by_residue:
+                by_residue[key][atom.name.strip()] = np.asarray(atom.coord, dtype=float)
+        frames.append({"cr2_1": by_residue[residue_keys[0]],
+                       "cr2_2": by_residue[residue_keys[1]]})
+    return frames
+
+
 def main():
     args = parse_args()
 
@@ -133,11 +200,19 @@ def main():
     out.parent.mkdir(parents=True, exist_ok=True)
     frames_dir = out.parent / (out.stem + "_frames")
     frames_dir.mkdir(exist_ok=True)
-    for stale in frames_dir.glob("frm_*.png"):
-        stale.unlink()
+    if args.start_frame <= 1:
+        for stale in frames_dir.glob("frm_*.png"):
+            stale.unlink()
 
     cmd.reinitialize()
-    cmd.load(args.traj, "traj")
+    trajectory_suffix = Path(args.traj).suffix.lower()
+    if trajectory_suffix in (".dcd", ".xtc", ".trr"):
+        if not args.topology_pdb:
+            raise ValueError("--topology-pdb is required for a binary trajectory")
+        cmd.load(args.topology_pdb, "traj")
+        cmd.load_traj(args.traj, "traj", state=1)
+    else:
+        cmd.load(args.traj, "traj")
     n_states = cmd.count_states("traj")
     if args.max_frames and args.max_frames > 0:
         n_states = min(n_states, args.max_frames)
@@ -195,6 +270,8 @@ def main():
         cmd.show("spheres", cr2)
         cmd.set("sphere_scale", 0.24 if args.rep == "density" else 0.22, cr2)
         util.cbaw(cr2)
+        if args.rep == "density":
+            cmd.color("gray80", cr2)
         cmd.color("yellow", f"{cr2} and elem H")
     else:
         cmd.hide("sticks", cr2)
@@ -202,11 +279,14 @@ def main():
         cmd.show("cartoon", cr2)
 
     try:
-        cmd.intra_fit("traj and chain A and name CA", 1)
+        align_selection = "traj and chain A and name CA"
+        if cmd.count_atoms("traj and chain C and name CA", state=1) == 0:
+            align_selection = "traj and resi 1-229 and name CA"
+        cmd.intra_fit(align_selection, 1)
     except Exception as exc:
         print(f"[!] intra_fit skipped: {exc}")
-    cmd.orient("traj")
-    cmd.zoom("traj", buffer=5)
+    cmd.orient("traj", state=1)
+    cmd.zoom("traj", buffer=2, state=1)
 
     all_states = list(range(1, n_states + 1, max(1, args.stride)))
     start_index = max(0, args.start_frame - 1)
@@ -227,8 +307,6 @@ def main():
         import numpy as np
         from skimage import measure
         from pymol.cgo import BEGIN, TRIANGLES, COLOR, NORMAL, VERTEX, END
-        from align_steom_density import kabsch, cr2_atoms
-
         grid, origin, h = _load_dx(args.density_dx)
         cmd.set("two_sided_lighting", 1)
 
@@ -244,21 +322,18 @@ def main():
             blk[:, 4] = VERTEX; blk[:, 5:8] = V[fv]
             return [BEGIN, TRIANGLES, COLOR, *rgb] + blk.reshape(-1).tolist() + [END]
 
-        mono_cr2 = cr2_atoms(args.monomer_pdb)
-        frames = _parse_barrel_frames(args.traj)
-        ref_ca = frames[0]["A_ca"]
+        mono_cr2 = _cr2_atoms(args.monomer_pdb)
+        frames = _pymol_cr2_frames(cmd, n_states)
 
         def _placement(fr, cr2_key):
-            Tr, Tt, _ = kabsch(fr["A_ca"], ref_ca)                 # intra_fit on chain A
             common = sorted(set(mono_cr2) & set(fr[cr2_key]))
             P = np.array([mono_cr2[n] for n in common])            # old-frame monomer CR2
-            Q = np.array([fr[cr2_key][n] for n in common])         # this barrel's CR2
-            Pr, Pt, _ = kabsch(P, Q)                               # old -> raw barrel
-            return Tr @ Pr, Tr @ Pt + Tt                           # compose -> stabilised barrel
+            Q = np.array([fr[cr2_key][n] for n in common])         # stabilised barrel CR2
+            return _kabsch(P, Q)[:2]                               # old -> stabilised barrel
 
         for s in states:
             fr = frames[s - 1]
-            for cr2_key, ch in (("A_cr2", "A"), ("C_cr2", "C")):
+            for cr2_key, ch in (("cr2_1", "A"), ("cr2_2", "C")):
                 R, t = _placement(fr, cr2_key)
                 cmd.load_cgo(_cgo(pos_v @ R.T + t, pos_n @ R.T, pos_fv, (0.90, 0.12, 0.12)),
                              f"dens_{ch}_pos", state=s)
@@ -288,7 +363,9 @@ def main():
         return 1
 
     ffmpeg = shutil.which("ffmpeg")
-    if ffmpeg:
+    if args.frames_only:
+        print(f"[*] Rendered chunk only; frames retained in {frames_dir}")
+    elif ffmpeg:
         cmd_ff = [ffmpeg, "-y", "-framerate", str(args.fps),
                   "-pattern_type", "glob", "-i", str(frames_dir / "frm_*.png"),
                   "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18",
