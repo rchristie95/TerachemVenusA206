@@ -2,7 +2,7 @@
 
 This directory retains the compact inputs and audits for the standalone
 solvation/decoherence note.  The results are intentionally not incorporated
-into `manuscript/JPCB_tandem.tex`.
+into `manuscript/JPCB_tandem_round_2.tex`.
 
 ## Environment and hardware
 

@@ -1,0 +1,23 @@
+! STEOM-DLPNO-CCSD def2-SVPD RIJCOSX TightSCF TightPNO AutoAux
+# Frozen-geometry gas-phase control: same 44-atom anion and deterministic
+# active-space settings as steom_phenol_svpd_robust2.inp, with all MM point
+# charges removed.
+%maxcore 4000
+%pal nprocs 8 end
+%mdci
+  NRoots 5
+  DoRootWise true
+  FollowCIS true
+  RootHoming true
+  CheckEachRoot true
+  DTol 1e-5
+  DoStoreSTEOM true
+  AddL2Term True
+  DoDbFilter true
+  NRootsCISNAT 10
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 400
+  DoSTEOMNatTransOrb true
+end
+* xyzfile -1 1 geom_cthrp.xyz

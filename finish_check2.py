@@ -4,7 +4,7 @@ transition-density .dx, and compute J with the same alignment used for STEOM."""
 import numpy as np, sys, glob
 sys.path.insert(0, "/home/robson/PetaChem")
 import coupling_core as cc
-HARTREE_CM = 219474.6314; EPS = 1.78
+HARTREE_CM = 219474.6314; EPS = 1.77
 MONOMER = "/home/robson/PetaChem/tc_simple_anionic/monomer_relaxed.pdb"
 DIMER   = "/home/robson/PetaChem/venus_dimer.pdb"
 mA, mB, aA, aB, err = cc.get_super_matrices_with_pymol(MONOMER, DIMER)
@@ -33,5 +33,5 @@ for d, lbl in [("tc_tddft_44", "TDDFT 6-311G** (no diffuse)"),
     J = cc.calculate_coupling(ptsA, q, ptsB, q) / EPS * HARTREE_CM
     mu = np.linalg.norm(cc.transition_dipole_au(pts, q))
     print(f"{lbl:<32}{1239.84/ev:>8.0f}nm{f:>6.2f}{mu:>7.2f}{J:>9.1f}")
-print("--- reference: STEOM-CCSD/def2-SVPD (44-atom) J=154.8 ; published TDDFT/6-311G** (238-atom) J=74.4 ---")
+print("--- revised references: definitive STEOM 44-atom J=30.5; legacy TDDFT J=20.8 cm^-1 ---")
 print("CHECK2 DONE")

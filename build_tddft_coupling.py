@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Build the 44-atom ORCA TDDFT bright-state (S2) transition density from the CIS
-transition-density cube, normalise to the ORCA transition dipole (same TrEsp step
-as the STEOM build), reframe into the dimer-chain frame, and compute J_TDC / J_PDA
+transition-density cube, normalise to the ORCA transition dipole (the same
+spectroscopic-normalisation step as the STEOM build), reframe into the
+dimer-chain frame, and compute J_TDC / J_PDA
 on the identical dimer geometry used for the STEOM coupling. This is the
-single-excitation cross-check of the near-field enhancement (paper: J_TDC=79,
-J_PDA=18 cm^-1, ~4.4x; STEOM couples ~1.3x more strongly).
+single-excitation cross-check of the near-field correction (revised values:
+J_TDC=22.1 and J_PDA=18.0 cm^-1, 1.23x; the definitive STEOM density couples ~1.38x more
+strongly). The revised TDC value uses the reciprocal-length conversion
+1 Angstrom^-1 = 0.529177 bohr^-1.
 
 Regenerate the S2 transition-density cube from the ORCA TDDFT run (neo_model/orca_dft,
 wB97X-D3/6-311G** TDA, DoNTO) with:
@@ -16,7 +19,7 @@ sys.path.insert(0, REPO)
 import coupling_core as cc
 from align_steom_density import match_density_to_frame
 
-BOHR = 0.52917721067
+BOHR = 0.529177210903
 H = 219474.6314; EPS = 1.77
 SD = os.path.join(REPO, "neo_model/orca_dft")            # cube + output npz live here
 CUBE = os.path.join(SD, "tddft_S2_transdens.cube")
@@ -45,7 +48,7 @@ scale = np.dot(MU_TDDFT, mu_raw)/np.dot(mu_raw, mu_raw)
 mu_scaled = mu_raw*scale
 print(f"grid {tuple(n)}  voxel {dvol:.4f} bohr^3   sum q = {q.sum():+.2e}")
 print(f"raw cistp dipole |mu| = {np.linalg.norm(mu_raw):.3f} au  (ORCA target {np.linalg.norm(MU_TDDFT):.3f})")
-print(f"TrEsp scale = {scale:.4f}   cos(theta)={np.dot(mu_raw,MU_TDDFT)/(np.linalg.norm(mu_raw)*np.linalg.norm(MU_TDDFT)):+.4f}")
+print(f"Spectroscopic dipole scale = {scale:.4f}   cos(theta)={np.dot(mu_raw,MU_TDDFT)/(np.linalg.norm(mu_raw)*np.linalg.norm(MU_TDDFT)):+.4f}")
 q_norm = q*scale; pts_ang = pts_bohr*BOHR
 thr = 1e-6*np.abs(q_norm).max(); keep=np.abs(q_norm)>thr
 npz_anion = f"{SD}/tddft_transdens_specnorm.npz"
@@ -70,4 +73,4 @@ pda=(np.dot(muA,muB)-3*np.dot(muA,Rh)*np.dot(muB,Rh))/Rn**3*H/EPS
 print("")
 print(f"=== 44-ATOM ORCA TDDFT (S2) TRANSITION-DENSITY COUPLING (eps={EPS}) ===")
 print(f"  J_TDC(TDDFT) = {J:.2f} cm^-1     J_PDA(TDDFT) = {pda:.2f} cm^-1     TDC/PDA = {abs(J/pda):.2f}x")
-print(f"  (STEOM on same geometry: J_TDC=100.2, J_PDA=23.0; STEOM/TDDFT = {100.2/abs(J):.2f}x)")
+print(f"  (definitive STEOM on same geometry: J_TDC=30.5, J_PDA=24.8; STEOM/TDDFT = {30.453973388943076/abs(J):.2f}x)")

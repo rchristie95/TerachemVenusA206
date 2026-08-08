@@ -15,10 +15,10 @@ A pure rotation+translation preserves |mu|.
 
 Usage:
     python align_steom_density.py \
-        --density   neo_model/orca_steom/steom_transdens_specnorm.npz \
+        --density   neo_model/orca_steom/steom_transdens_capmasked.npz \
         --anion-pdb tc_simple_anionic/monomer_relaxed.pdb \
         --old-pdb   tc_simple_old/classical_relaxed.pdb \
-        --out       neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz
+        --out       neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz
 """
 import argparse
 from pathlib import Path
@@ -78,10 +78,10 @@ def match_density_to_frame(density_npz, anion_pdb, old_pdb, out_npz):
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--density", default="neo_model/orca_steom/steom_transdens_specnorm.npz")
+    p.add_argument("--density", default="neo_model/orca_steom/steom_transdens_capmasked.npz")
     p.add_argument("--anion-pdb", default="tc_simple_anionic/monomer_relaxed.pdb")
     p.add_argument("--old-pdb", default="tc_simple_old/classical_relaxed.pdb")
-    p.add_argument("--out", default="neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz")
+    p.add_argument("--out", default="neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz")
     args = p.parse_args(argv)
     info = match_density_to_frame(args.density, args.anion_pdb, args.old_pdb, args.out)
     print(f"[matched-density] {info['n_common_cr2']} shared CR2 atoms, "

@@ -3,34 +3,33 @@ r"""
 open_quantum_dynamics.py  --  Open-quantum-system dynamics of the Venus dimer exciton.
 
 Python port of the MATLAB open-quantum-systems code in LindbladCodes/
-(Combined.m / Lindblad.m / NonAdiabatic.m), which the authors can no longer run
-(MATLAB access lost). It integrates the Debye-screened, time-dependent coupling
+(Combined.m / Lindblad.m / NonAdiabatic.m). It integrates the Debye-screened, time-dependent coupling
 J(t) together with Lindblad pure dephasing and reproduces the manuscript
-figures, AND adds the reviewer-requested sensitivity sweeps (item 4):
+figures, and adds the associated sensitivity sweeps:
 
-  * default            : regenerate the six manuscript figures
+  * default            : regenerate the manuscript figures and standalone coupling trace
                          (Fig_Coupling, Fig_SSE_Site, Fig_ME_Site,
                           Fig_SSE_Adiabatic, Fig_ME_Adiabatic, Fig_Bloch_Grid).
-  * --sweep-t2         : sweep the pure-dephasing time T2* (reviewers R2/R3 note
-                         60 fs is borrowed from photosynthetic systems) and show
+  * --sweep-t2         : sweep the pure-dephasing time T2* (the illustrative
+                         60 fs value is borrowed from photosynthetic systems) and show
                          the timescale-separation conclusion holds across a range
                          -> Fig_T2_Sweep.pdf.
-  * --sweep-eps        : vary the static (protein) dielectric (R3/R4 note eps=78
-                         is wrong inside a beta-barrel) and show the central
-                         t=0 optical-limit coupling J(0)=111 cm^-1 is invariant
+  * --sweep-eps        : vary the static (protein) dielectric rather than treating
+                         bulk-water eps=78 as a protein-interior value, and show the central
+                         t=0 optical-limit coupling J(0)=32.82 cm^-1 is invariant
                          to it -> Fig_Dielectric_Sweep.pdf.
   * --all              : everything.
 
 Model (energies in cm^-1, time in ps), from Combined.m:
-  hbar = 5.308837 cm^-1*ps ; E1=E2=18437 ; eps_inf=1.77, eps_s=78, tau_D=8.3 ps
+  hbar = 5.308837 cm^-1*ps ; E1=E2=19088.2 ; eps_inf=1.77, eps_s=78, tau_D=8.3 ps
   1/eps(t) = 1/eps_s + (1/eps_inf - 1/eps_s) exp(-t/tau_D)
-  J(t)     = J_pref / eps factors  with  J_pref = J_opt * eps_inf,  J_opt=111
+  J(t)     = J_pref / eps factors  with  J_pref = J_opt * eps_inf,  J_opt=32.82
   H(t)     = [[E1, J(t)], [J(t), E2]] ;  U=(1/sqrt2)[[1,1],[1,-1]]
   ME (Lindblad pure dephasing, rate gamma=1/T2*):
       drho/dt = -(i/hbar)[H,rho] + dephasing(off-diagonals * -gamma)
-  SSE (Ito QSD, L = sqrt(hbar*gamma/2) sigma_z):
-      dpsi = (1/hbar)(-iH - 0.5 L^2 + <L>L - 0.5<L>^2) psi dt
-             + (1/sqrt(hbar))(L - <L>) psi dW
+  SSE (Ito QSD, rate-normalised L = sqrt(gamma/2) sigma_z):
+      dpsi = (-iH/hbar - 0.5 L^2 + <L>L - 0.5<L>^2) psi dt
+             + (L - <L>) psi dW
 
 Pure NumPy/SciPy (solve_ivp replaces ode45). No QuTiP.
 """
@@ -43,14 +42,14 @@ from scipy.integrate import solve_ivp
 
 # ----- default physical parameters (Combined.m) -----------------------------
 HBAR = 5.308837      # cm^-1 * ps
-E1 = E2 = 18437.0    # cm^-1
+E1 = E2 = 19088.2    # cm^-1 (embedded STEOM bright-state energy; common shift cancels)
 EPS_INF = 1.77
 EPS_S = 78.0
 TAU_D = 8.3          # ps
 # Thermally averaged STEOM transition-density coupling from the VenusA206 tandem
 # NVT ensemble. Figure 1 uses this ensemble-mean optical-limit coupling so that
 # the open-system dynamics are consistent with the reported definitive J value.
-J_OPT = 111.0        # cm^-1  (tandem thermal mean; paper reports 111 +/- 3)
+J_OPT = 32.8165      # cm^-1  (unit-corrected tandem thermal mean, 1000 frames)
 T2_STAR = 0.060      # ps
 TF = 1.0             # ps
 DT = 1e-4            # ps
@@ -124,7 +123,7 @@ def solve_sse(p, tf=TF, dt=DT, psi0=None, seed=20260618):
     rng = np.random.default_rng(seed)
     tspan = np.arange(0.0, tf + dt, dt)
     n = len(tspan)
-    L = np.sqrt(HBAR * p["gamma"] / 2.0) * np.array([[1.0, 0.0], [0.0, -1.0]])
+    L = np.sqrt(p["gamma"] / 2.0) * np.array([[1.0, 0.0], [0.0, -1.0]])
     L2 = L @ L
     I2 = np.eye(2)
 
@@ -143,8 +142,8 @@ def solve_sse(p, tf=TF, dt=DT, psi0=None, seed=20260618):
         if k < n - 1:
             H = H_local(tspan[k], p)
             exp_L = np.real(np.conj(psi) @ (L @ psi))
-            u = (1.0 / HBAR) * ((-1j * H - 0.5 * L2 + exp_L * L - 0.5 * exp_L**2 * I2) @ psi)
-            s = (1.0 / np.sqrt(HBAR)) * ((L - exp_L * I2) @ psi)
+            u = ((-1j * H / HBAR - 0.5 * L2 + exp_L * L - 0.5 * exp_L**2 * I2) @ psi)
+            s = (L - exp_L * I2) @ psi
             psi = psi + u * dt + s * np.sqrt(dt) * rng.standard_normal()
             psi = psi / np.linalg.norm(psi)
 
@@ -180,8 +179,8 @@ def _mpl():
 _C_RHO11 = "#c0392b"    # site 1  rho_11
 _C_RHO22 = "#1f6aa5"    # site 2  rho_22
 _C_COH   = "#555555"    # coherence |rho_12|
-_C_BRIGHT = "#3a7d44"   # P_+  (bright)
-_C_DARK   = "#7b4397"   # P_-  (dark)
+_C_PLUS   = "#3a7d44"   # P_+
+_C_MINUS  = "#7b4397"   # P_-
 _C_SSE = _C_RHO11       # SSE trajectory (red)
 _C_ME  = _C_RHO22       # ME curve (blue)
 
@@ -257,6 +256,19 @@ def regenerate_base_figures(p, out, tf, dt, seed):
                loc="lower center", bbox_to_anchor=(0.5, 1.0),
                handlelength=1.4, columnspacing=1.4, borderaxespad=0.4)
 
+    # Standalone coupling trace retained for compatibility with the original
+    # figure set. It is not embedded in the revised manuscript, but keeping it
+    # current prevents an obsolete pre-correction plot from circulating.
+    fig, ax = plt.subplots(figsize=(4.2, 3.4))
+    j_trace = np.abs(J_of_t(t, p))
+    ax.plot(t, j_trace, color=_C_ME, lw=2)
+    _style_2d(ax, r"Time (ps)", r"$|J(t)|$ (cm$^{-1}$)", tf)
+    margin = max(0.5, 0.12 * float(np.ptp(j_trace)))
+    ax.set_ylim(float(j_trace.min()) - margin, float(j_trace.max()) + margin)
+    fig.tight_layout()
+    fig.savefig(out / "Fig_Coupling.pdf")
+    plt.close(fig)
+
     # Fig_Purity_Coupling (Panel d)
     fig, ax1 = plt.subplots(figsize=(4.2, 3.4))
     c_pur = "#8e44ad"
@@ -311,16 +323,16 @@ def regenerate_base_figures(p, out, tf, dt, seed):
 
     # Fig_SSE_Adiabatic
     fig, ax = plt.subplots(figsize=(4.2, 3.4))
-    ax.plot(sse["t"], sse["PB"], color=_C_BRIGHT, lw=0.9, alpha=0.95, label=r"$P_{+}$")
-    ax.plot(sse["t"], sse["PD"], color=_C_DARK, lw=0.9, alpha=0.95, label=r"$P_{-}$")
+    ax.plot(sse["t"], sse["PB"], color=_C_PLUS, lw=0.9, alpha=0.95, label=r"$P_{+}$")
+    ax.plot(sse["t"], sse["PD"], color=_C_MINUS, lw=0.9, alpha=0.95, label=r"$P_{-}$")
     _style_2d(ax, r"Time (ps)", r"Population", tf)
     ax.legend(ncol=2, **leg)
     fig.tight_layout(); fig.savefig(out / "Fig_SSE_Adiabatic.pdf"); plt.close(fig)
 
     # Fig_ME_Adiabatic
     fig, ax = plt.subplots(figsize=(4.2, 3.4))
-    ax.plot(t, me["PB"], color=_C_BRIGHT, lw=2, label=r"$P_{+}$")
-    ax.plot(t, me["PD"], color=_C_DARK, lw=2, label=r"$P_{-}$")
+    ax.plot(t, me["PB"], color=_C_PLUS, lw=2, label=r"$P_{+}$")
+    ax.plot(t, me["PD"], color=_C_MINUS, lw=2, label=r"$P_{-}$")
     _style_2d(ax, r"Time (ps)", r"Population", tf)
     ax.legend(ncol=2, **leg)
     fig.tight_layout(); fig.savefig(out / "Fig_ME_Adiabatic.pdf"); plt.close(fig)
@@ -328,7 +340,7 @@ def regenerate_base_figures(p, out, tf, dt, seed):
     # Fig_Bloch_Grid: clean floating Bloch sphere
     _bloch_figure(plt, np, sse, me, out)
 
-    print("    - wrote 6 base figures.")
+    print("    - wrote 7 base figures.")
     return me, sse
 
 

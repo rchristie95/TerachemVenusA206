@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the three production-NVT panels used in manuscript Figure 4.
+"""Generate the three production-NVT panels used in manuscript Figure 5.
 
 The coupling and geometry statistics are calculated from ``coupling_samples.csv``
 at run time; no manuscript result is hard-coded.  By default the script reads the

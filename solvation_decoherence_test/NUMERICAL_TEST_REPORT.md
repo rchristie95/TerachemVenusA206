@@ -1,5 +1,11 @@
 # Tandem-Venus solvation and decoherence numerical test
 
+> **Coupling correction (8 August 2026):** The shared-scale spectral sensitivity
+> values in this report have been regenerated with the corrected production
+> J = 32.82 +/- 1.55 cm-1 documented in `reference/orca_validation.json`.
+> The independently calculated electrostatic-gap traces and 22--24 fs
+> dephasing estimates are unaffected by the TDC unit correction.
+
 ## Scope
 
 This is an equilibrium QM/MM electrostatic-gap test, not a final quantum-bath
@@ -83,25 +89,25 @@ clock for the chromophore. The local protein/water response is strongly
 multicomponent and contains sub-100-fs motion as well as slower solvent
 relaxation.
 
-## Consequence for the Figure 5 CD reconstruction
+## Consequence for the corrected-coupling CD sensitivity
 
-The current 60 fs assumption gives a Lorentzian HWHM of 88.48 cm-1. Using the
-PME value 24.01 fs gives HWHM = 221.07 cm-1 and FWHM = 442.13 cm-1, larger than
-the mean Davydov splitting 2J = 234.38 cm-1. The nominal two exciton centres do
-not move (520.69 and 527.12 nm), because T2 changes the broadening rather than
+The archived reconstruction's 60 fs assumption gives a Lorentzian HWHM of
+88.48 cm-1. Using the PME value 24.01 fs gives HWHM = 221.07 cm-1 and
+FWHM = 442.13 cm-1, larger than the corrected mean Davydov splitting
+2J = 65.63 cm-1. The nominal two exciton centres do not move (522.98 and
+524.79 nm), because T2 changes the broadening rather than
 J. In the rerun reconstruction:
 
-- fitted component HWHM changes from about 89.10 to 221.23 cm-1;
 - normalized CD sign order remains negative-short/positive-long;
-- the extrema move from 520.60/527.20 nm to 519.47/528.36 nm;
-- extrema separation changes from 6.61 to 8.89 nm;
-- the raw model peak magnitude falls to 26% of the 60 fs result (the manuscript
-  plots normalized ordinate, so this loss is hidden by normalization).
+- the extrema move from 522.30/525.47 nm to 520.32/527.49 nm;
+- extrema separation changes from 3.17 to 7.18 nm;
+- the raw model peak magnitude falls to 17.3% of the 60 fs result (independent
+  normalization of each curve would hide this loss).
 
 Thus the CD couplet topology survives, but its width, extrema and raw amplitude
 are materially affected. A 22--24 fs Lorentzian lifetime would not support a
 resolved absorption doublet under the simple FWHM < 2J criterion; that threshold
-is T2* = 45.3 fs for J = 117.19 cm-1.
+is T2* = 161.7 fs for J = 32.82 cm-1.
 
 ## Important limitations
 

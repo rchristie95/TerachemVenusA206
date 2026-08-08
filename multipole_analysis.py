@@ -2,28 +2,27 @@
 r"""
 multipole_analysis.py  --  Multipole decomposition of the excitonic coupling.
 
-Reviewer item 3 (R4 explicit, R1 conceptual): decompose the near-field
+Robustness analysis: decompose the near-field
 enhancement of the full Transition Density Coupling over the point-dipole
 approximation into multipole orders -- dipole-dipole, dipole-quadrupole,
 quadrupole-quadrupole (and higher) -- to show which terms drive it and where
 the PDA breaks down.
 
 Correct usage (the paper's frame): align with OLD_MONOMER, the frame the dimer
-chains were built in, and the reframed spec-normalised density:
-    --npz neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz \
+chains were built in, and the definitive reframed cap-masked density:
+    --npz neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz \
     --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb --epsilon 1.77
-gives J_TDC = 100.2 cm^-1, J_PDA = 23.0 cm^-1 (enhancement ~4.4x), centroid
-separation ~25 A. Summing through octupole recovers only ~28% of J_TDC (dip-dip
-~23%, +quad ~27%). The series is convergent (bounding spheres separated) but
-converges slowly because the coupling is dominated by close-contact pairs; the
-remaining ~72% is short-range Coulomb (transition-density) coupling between the
-extended, non-overlapping densities (closest density approach ~9 A, nuclei ~15 A)
--- not Dexter exchange.
+gives J_TDC = 30.454 cm^-1, J_PDA = 24.814 cm^-1 (correction 1.227x), centroid
+separation 25.209 A. Dipole--dipole accounts for 81.5% of J_TDC; adding
+dipole--quadrupole gives 94.7%, including quadrupole--quadrupole gives 95.2%,
+and adding dipole--octupole gives 97.6%. The residual 2.4% comprises higher
+orders, so the multipole series is well converged at this geometry.
 
 WARNING: aligning with the anion-frame monomer (tc_simple_anionic/...) instead of
 OLD_MONOMER places the two densities ~2 A too close and inflates J to a spurious
 ~155 cm^-1. Always use OLD_MONOMER with the *_oldframe density. (The legacy
-factor-of-~5.6 numbers, J_TDC=74.38 / J_PDA=13.31 cm^-1, were the TDDFT density.)
+factor-of-~5.6 numbers arose before correction of the reciprocal-Angstrom unit
+conversion and must not be used.)
 
 Method (primitive Cartesian multipole expansion of the Coulomb interaction):
   The exact coupling is  J = sum_ij q_i q_j / |R + a_i - b_j|  (atomic units),
@@ -277,8 +276,8 @@ def plot_decomposition(terms, cumulative, tdc, pda, out_pdf):
 # --------------------------------------------------------------------------- #
 def run_real(args):
     if args.npz:
-        # Pre-built transition density (e.g. the DLPNO-STEOM-CCSD spec-normalised
-        # density in neo_model/orca_steom/steom_transdens.npz). Already carries the
+        # Pre-built transition density (e.g. the definitive DLPNO-STEOM-CCSD
+        # density in neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz). Already carries the
         # correct STEOM dipole, so no oscillator-strength renormalisation is applied.
         data = np.load(args.npz)
         pts_opt = np.asarray(data["pts_ang"], float)
@@ -286,9 +285,22 @@ def run_real(args):
         if pts_opt.size == 0:
             print(f"[!] Empty density in {args.npz}.")
             sys.exit(1)
-        mu_target = float(np.linalg.norm(transition_dipole_au(pts_opt, q_opt)))
+        density_origin = np.mean(pts_opt, axis=0)
+        mu_target = float(
+            np.linalg.norm(
+                transition_dipole_au(
+                    pts_opt, q_opt, origin_angstrom=density_origin
+                )
+            )
+        )
+        mu_stored = (
+            float(np.linalg.norm(data["mu_au"]))
+            if "mu_au" in data
+            else float("nan")
+        )
         print(f"    - STEOM density {args.npz}: {len(q_opt)} pts, "
-              f"|mu|={mu_target:.4f} a.u., sum q={q_opt.sum():+.2e}")
+              f"|mu|_stored={mu_stored:.4f} a.u., "
+              f"|mu|_centred={mu_target:.4f} a.u., sum q={q_opt.sum():+.2e}")
     else:
         workdir, candidates, tried = autodetect_workdir_and_candidates(args.workdir)
         if not candidates:
@@ -337,7 +349,7 @@ def main(argv=None):
     p.add_argument("--workdir", type=Path, default=Path("tc_tddft_old_current"))
     p.add_argument("--npz", type=Path, default=None,
                    help="Load the transition density from an .npz (keys pts_ang,q), e.g. the "
-                        "DLPNO-STEOM-CCSD density neo_model/orca_steom/steom_transdens.npz. "
+                        "DLPNO-STEOM-CCSD density neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz. "
                         "Bypasses the workdir/.dx path and its oscillator-strength renormalisation.")
     p.add_argument("--monomer", type=Path, default=Path("tc_simple_old/classical_relaxed.pdb"))
     p.add_argument("--dimer", type=Path, default=Path("venus_dimer.pdb"))

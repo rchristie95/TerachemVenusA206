@@ -1,10 +1,17 @@
 # Handoff: tandem-Venus solvation and decoherence investigation
 
+> **Coupling correction (8 August 2026):** The shared-scale spectral example
+> below has been regenerated with the corrected production J = 32.82 +/- 1.55
+> cm-1 in `reference/orca_validation.json`. The electrostatic-gap traces and
+> 22--24 fs dephasing estimates do not depend on the corrected TDC conversion.
+> Files retained under `spectra_t2_24fs/` are historical pre-correction output
+> and are not used for the values below or for the current manuscript.
+
 ## Objective
 
 Test whether explicit QM/MM environmental fluctuations can explain the
 solvation and electronic-decoherence timescales assumed in
-`manuscript/JPCB_tandem.tex`, and determine the effect on the reconstructed CD
+`manuscript/JPCB_tandem_round_2.tex`, and determine the effect on the reconstructed CD
 spectrum.
 
 ## Work completed
@@ -19,8 +26,8 @@ spectrum.
   coherence envelope.
 - Checked 1 ps blocks, sampling cadence, ion removal, NTO truncation, dipole
   matching and full OpenMM PME electrostatics.
-- Reran the Figure 5 Nguyen-style CD reconstruction using the calculated PME
-  dephasing time.
+- Regenerated the shared-scale CD sensitivity panel with the corrected
+  production coupling and the calculated PME dephasing time.
 
 ## Main result
 
@@ -39,13 +46,14 @@ slower and more common-mode, giving approximately 74 fs dephasing in the full
 noise, but the solvation memory time is not itself T2*: decoherence also
 depends strongly on the fluctuation amplitude.
 
-## Consequence for Figure 5
+## Consequence for the corrected-coupling CD sensitivity
 
 Using 24 fs instead of the assumed 60 fs changes the Lorentzian HWHM from 88.5
-to 221.1 cm-1 (FWHM 442.1 cm-1). This exceeds the mean Davydov splitting of
-234.4 cm-1. The exciton centres remain at 520.69 and 527.12 nm, and the CD sign
-order survives, but the spectrum broadens substantially, the extrema move
-outwards, and the unnormalised peak magnitude falls by about 74%. Normalizing
+to 221.1 cm-1 (FWHM 442.1 cm-1). This exceeds the corrected mean Davydov
+splitting of 65.6 cm-1. The exciton centres remain at 522.98 and 524.79 nm, and
+the CD sign order survives, but the spectrum broadens substantially, the
+extrema move outwards, and the unnormalised peak magnitude falls by about
+82.7%. Normalizing
 the plotted CD hides this intensity loss.
 
 ## Important limitations
@@ -66,7 +74,8 @@ the plotted CD hides this intensity loss.
 - `solvation_decoherence_test/validation_8ps/validation_summary.json` -- block and stride tests.
 - `solvation_decoherence_test/validation_8ps/solvation_decoherence_validation.png` -- summary figure.
 - `solvation_decoherence_test/pme_validation_8ps/summary.json` -- PME cross-check.
-- `solvation_decoherence_test/spectra_t2_24fs/` -- Figure 5 reconstruction at 24 fs.
+- `solvation_decoherence_test/spectra_t2_24fs/` -- archived reconstruction at 24 fs.
+- `notes/Fig_T2_CommonScale.pdf` -- corrected-coupling shared-scale sensitivity panel.
 - `build_steom_difference_probe.py` -- constructs the STEOM difference-charge probe.
 - `analyze_solvation_decoherence.py` -- computes electrostatic gap traces and cumulant coherence.
 - `analyze_pme_decoherence.py` -- full-PME validation.

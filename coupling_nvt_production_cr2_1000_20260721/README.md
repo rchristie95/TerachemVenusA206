@@ -1,6 +1,6 @@
 # Audited 1000-frame VenusA206 tandem production ensemble
 
-This package is the production rerun used for manuscript Figures 4 and 5. It
+This package is the production rerun used for manuscript Figure 5. It
 contains 1000 snapshots spanning 1 ns and the mutual transition-density
 coupling evaluated for every snapshot.
 
@@ -61,23 +61,34 @@ All spreads above and below are sample standard deviations.
 - link/cap contributions excluded by the precomputed cap Voronoi mask before
   both the coupling calculation and the movie density map
 
-The resulting ensemble is:
+The resulting ensemble, after correcting the reciprocal-distance unit
+conversion described below, is:
 
-- TDC coupling: `117.1898 +/- 5.5496 cm^-1` (`n = 1000`)
-- median: `117.1529 cm^-1`
-- range: `98.4730..135.3392 cm^-1`
-- Davydov splitting: `234.3796 +/- 11.0991 cm^-1`
+- TDC coupling: `32.8165 +/- 1.5540 cm^-1` (`n = 1000`)
+- median: `32.8062 cm^-1`
+- range: `27.5753..37.8988 cm^-1`
+- Davydov splitting: `65.6330 +/- 3.1081 cm^-1`
 - point-dipole coupling: `27.6424 +/- 1.2832 cm^-1`
-- ratio of ensemble means, TDC/PDA: `4.2395`
+- ratio of ensemble means, TDC/PDA: `1.1872`
+
+The original archived GPU output multiplied a Coulomb sum evaluated with
+distances in Angstrom by `ANGSTROM_TO_BOHR = 1.889726`. Reciprocal distances
+require `BOHR_TO_ANGSTROM = 0.529177`, so the original TDC values were high by
+exactly `3.571065`; PDA values were already evaluated in bohr and are unchanged.
+The CSV and JSON values in this directory carry the corrected factor
+`0.280028520539078`, and the JSON includes an explicit `unit_correction` audit
+record. A method-matched ORCA calculation on a separate crystal-derived
+geometry gives corrected TDC/PDA values of `6.09/5.36 meV` and
+provides a separate implementation check.
 
 Representative full-grid FP64 checks used exactly the same density and
 geometry:
 
 | Zero-based frame | FP32 | FP64 | FP32 - FP64 (cm^-1) |
 |---:|---:|---:|---:|
-| 0 | 104.9693 | 104.9583 | +0.0110 |
-| 499 | 121.0101 | 120.9966 | +0.0135 |
-| 999 | 123.0723 | 123.0586 | +0.0137 |
+| 0 | 29.3944 | 29.3913 | +0.0031 |
+| 499 | 33.8863 | 33.8825 | +0.0038 |
+| 999 | 34.4638 | 34.4599 | +0.0038 |
 
 ## Nguyen-style numerical CD spectra
 
@@ -86,13 +97,13 @@ couplings and transition-dipole geometries into the same wavelength axis and
 `TDX - TD` subtraction order used by Nguyen et al. The site origin is read
 from the converged ORCA STEOM electric-dipole spectrum (`19088.2 cm^-1`,
 `523.90 nm`, `f = 0.885045444`) rather than aligned to an experimental peak.
-At `T2* = 60 fs`, the numerical ensemble gives mean exciton centres at
-`520.6872` and `527.1201 nm`.
+At `T2* = 60 fs`, the unit-corrected numerical ensemble gives mean exciton
+centres at `522.9847` and `524.7861 nm`.
 
 The Nguyen-form three-Lorentzian fit places the two active components at
-`520.6970` and `527.1100 nm` (HWHM `89.10 cm^-1`). A test component retained
+`522.8560` and `524.9160 nm` (HWHM `85.40/85.36 cm^-1`). A test component retained
 at Nguyen's `481.3709 nm` position has fitted relative amplitude only
-`1.49e-4`; the S1-only two-state model therefore does not predict that third
+`-9.26e-4`; the S1-only two-state model therefore does not predict that third
 experimental band. The calculated ordinate is normalized interaction-induced
 CD, not absolute molar ellipticity, because intrinsic monomer/TDX CD is not
 available from the present electric-dipole data.
@@ -123,6 +134,6 @@ available from the present electric-dipole data.
 
 - raw DCD: `5DA1F8B2CE814DD04467B4D121C3BA70CCC8619852D045120D2E73086DF53E5E`
 - PBC-whole DCD: `C8285024076091EB14BCEB2C25A93CD73BAB7FB5675CBA41BF42E7C064425C93`
-- coupling CSV: `C7FB35BC748A0C7D390FF280F78FAC0AAA91406A764C41CDF78642508E5A7F94`
-- histogram PNG: `05C19E77BA07FF28E151091F15F64A75DC5AC3986D08A260F42056401D517633`
+- corrected coupling CSV: `31A28CEFDA1A1C7932D3C8C2E0CDA1EE6103640843728B1580506BC6B45E826A`
+- corrected histogram PNG: `3F86C14F37F990E265704E5795F5B118BC61CF3D4C5C2F824D74EC0A5C6F29B9`
 - final 1000-frame MP4: `83D79AC1D49F55A5E42C16AA071CDD7DE8DDC91CD90BA8485F156AF946D09553`

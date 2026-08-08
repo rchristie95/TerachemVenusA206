@@ -4,7 +4,7 @@ Usage: compute_coupling_from_dx.py <transdens.dx>"""
 import numpy as np, sys
 sys.path.insert(0, "/home/robson/PetaChem")
 import coupling_core as cc
-HARTREE_CM = 219474.6314; EPS = 1.78
+HARTREE_CM = 219474.6314; EPS = 1.77
 MONOMER = "/home/robson/PetaChem/tc_simple_anionic/monomer_relaxed.pdb"
 DIMER   = "/home/robson/PetaChem/venus_dimer.pdb"
 

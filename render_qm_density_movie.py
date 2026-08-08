@@ -30,7 +30,7 @@ import numpy as np
 
 B = "/home/robson/PetaChem"
 MONO = f"{B}/tc_simple_old/classical_relaxed.pdb"                 # coupling's monomer ref
-DENSITY = f"{B}/neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz"
+DENSITY = f"{B}/neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz"
 QMXYZ = f"{B}/neo_model/orca_steom/steom_qm.xyz"
 CR2_ATOM_COUNT = 29
 

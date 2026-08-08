@@ -63,7 +63,7 @@ def parse_args():
     ap.add_argument("--iso-transparency", type=float, default=0.5,
                     help="surface transparency for the density isosurface (0 opaque .. 1 clear)")
     ap.add_argument("--density-dx",
-                    default="neo_model/orca_steom/steom_transdens_oldframe.dx",
+                    default="neo_model/orca_steom/steom_transdens_capmasked_oldframe.dx",
                     help="axis-aligned old-frame transition-density grid (from voxelize_density.py)")
     ap.add_argument("--monomer-pdb", default="tc_simple_old/classical_relaxed.pdb",
                     help="old-monomer reference the density is registered to (super target ref)")

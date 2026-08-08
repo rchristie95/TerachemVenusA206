@@ -1,3 +1,7 @@
+% SUPERSEDED HISTORICAL SOURCE (arXiv v1, 21 April 2026).
+% Its TDC values use an incorrect reciprocal-distance conversion. Do not use
+% its numerical coupling or near-field interpretation; see JPCB_tandem_round_2.tex and
+% the repository README for the audited 8 August 2026 correction.
 \documentclass[journal=jpclcd, manuscript=letter, layout=twocolumn, doi=true]{achemso}
 
 \usepackage[utf8]{inputenc}
@@ -37,6 +41,14 @@
 \begin{document}
 
 \maketitle
+
+\noindent\fcolorbox{red!75!black}{yellow!18}{%
+\parbox{0.92\columnwidth}{\centering\bfseries
+SUPERSEDED---DO NOT SUBMIT\\[2pt]
+This historical arXiv-v1 manuscript contains an incorrect reciprocal-length
+conversion in the TDC calculation. Use \texttt{JPCB\_tandem\_round\_2.pdf}; the audited
+ensemble result is $J=32.8\pm1.6~\mathrm{cm^{-1}}$ and TDC/PDA $=1.19$.}}
+\medskip
 
 % Move tocentry here to bypass layout-induced frame distortion
 \begin{tocentry}

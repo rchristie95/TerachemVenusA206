@@ -1,10 +1,10 @@
 {
   "n": 1,
-  "mean": 123.05859968695049,
+  "mean": 34.459917609947404,
   "std": 0.0,
-  "min": 123.05859968695049,
-  "max": 123.05859968695049,
-  "median": 123.05859968695049,
+  "min": 34.459917609947404,
+  "max": 34.459917609947404,
+  "median": 34.459917609947404,
   "epsilon": 1.77,
   "bin_width_A": 0.0,
   "opencl_precision": "f64",
@@ -16,6 +16,15 @@
   "fit_rmsd_mean_A": 0.5120584438052403,
   "fit_rmsd_max_A": 0.5225889285431069,
   "samples": [
-    123.05859968695049
-  ]
+    34.459917609947404
+  ],
+  "unit_correction": {
+    "status": "corrected",
+    "date": "2026-08-07",
+    "factor_old_to_new": 0.2800285205390781,
+    "old_reciprocal_distance_factor": 1.8897261246257702,
+    "new_reciprocal_distance_factor": 0.529177210903,
+    "reason": "Coulomb kernel distances are in Angstrom; 1/Angstrom to 1/bohr uses BOHR_TO_ANGSTROM",
+    "pda_values_changed": false
+  }
 }

@@ -5,7 +5,7 @@ coupling pipeline. rho_0n(r) ~ sqrt(lambda) * phi_hole(r) * phi_particle(r) (dom
 We fix the absolute normalization by matching the transition dipole to the ORCA value."""
 import numpy as np
 
-BOHR = 0.52917721067  # Angstrom per bohr
+BOHR = 0.529177210903  # Angstrom per bohr
 MU_STEOM = np.array([1.08027, -1.98184, 3.01365])  # au, from SVPD spectrum (state 1)
 
 def read_cube(fn):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r"""
-voxelize_density.py -- Turn the coupling's spec-normalised STEOM transition
-density point cloud (steom_transdens_specnorm_oldframe.npz, already in the "old"
+voxelize_density.py -- Turn the coupling's definitive cap-masked STEOM transition
+density point cloud (steom_transdens_capmasked_oldframe.npz, already in the "old"
 monomer frame the NVT dimer chains were built from) into an axis-aligned OpenDX
 volumetric grid, so it can be rendered as a translucent isosurface and placed on
 each trajectory barrel with the SAME super/matrix_copy mechanism the published
@@ -9,8 +9,8 @@ figures use (visualise_dimer.pml). This is the exact density that enters J(t),
 just rasterised for display.
 
     python voxelize_density.py \
-        --npz neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz \
-        --out neo_model/orca_steom/steom_transdens_oldframe.dx
+        --npz neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz \
+        --out neo_model/orca_steom/steom_transdens_capmasked_oldframe.dx
 """
 import argparse
 from pathlib import Path
@@ -21,8 +21,8 @@ from scipy.ndimage import gaussian_filter
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--npz", default="neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz")
-    ap.add_argument("--out", default="neo_model/orca_steom/steom_transdens_oldframe.dx")
+    ap.add_argument("--npz", default="neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz")
+    ap.add_argument("--out", default="neo_model/orca_steom/steom_transdens_capmasked_oldframe.dx")
     ap.add_argument("--spacing", type=float, default=0.30, help="grid spacing (Angstrom)")
     ap.add_argument("--pad", type=float, default=2.5, help="padding around points (Angstrom)")
     ap.add_argument("--smear", type=float, default=0.40, help="Gaussian smear width (Angstrom)")

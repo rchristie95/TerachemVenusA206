@@ -1,9 +1,9 @@
 term,contribution_cm,cumulative_cm
-dip-dip (PDA),22.9697,22.9697
-dip-quad,4.1538,27.1235
-quad-quad,0.3350,27.4585
-dip-oct,0.6327,28.0912
-multipole_sum,,28.0912
-full_TDC,,100.2019
-PDA_reference,,22.9697
-TDC_over_PDA,,4.3624
+dip-dip (PDA),24.8143,24.8143
+dip-quad,4.0270,28.8413
+quad-quad,0.1623,29.0036
+dip-oct,0.7341,29.7377
+multipole_sum,,29.7377
+full_TDC,,30.4540
+PDA_reference,,24.8143
+TDC_over_PDA,,1.2273

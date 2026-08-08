@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Validate the numba coupling kernel: run it on the TDDFT .dx densities and check
-it reproduces the published J_TDDFT = 74.38 cm^-1 (same pipeline, eps=1.78)."""
+"""Validate the unit-corrected numba kernel on the TDDFT .dx densities.
+
+The Coulomb sum uses inverse-Angstrom distances and therefore multiplies by
+BOHR_TO_ANGSTROM. The revised 44-atom bright-state reference is 22.1 cm^-1.
+"""
 import numpy as np, sys, time, glob
 from numba import njit, prange, set_num_threads
 set_num_threads(16)
 sys.path.insert(0, "/home/robson/PetaChem")
 import coupling_core as cc
 
-HARTREE_CM = 219474.6314; EPS = 1.78; A2B = cc.ANGSTROM_TO_BOHR
+HARTREE_CM = 219474.6314; EPS = 1.77; INV_A_TO_INV_BOHR = cc.BOHR_TO_ANGSTROM
 MONOMER = "/home/robson/PetaChem/tc_simple_anionic/monomer_relaxed.pdb"
 DIMER   = "/home/robson/PetaChem/venus_dimer.pdb"
 
@@ -32,9 +35,9 @@ print(f"[align] RMSD A={aA[0]:.3f} B={aB[0]:.3f}", flush=True)
 def J_of(pts, q):
     pA=np.ascontiguousarray(cc.apply_pymol_matrix(pts,mA),np.float64)
     pB=np.ascontiguousarray(cc.apply_pymol_matrix(pts,mB),np.float64)
-    return coupling_numba(pA,q,pB,q)*A2B/EPS*HARTREE_CM
+    return coupling_numba(pA,q,pB,q)*INV_A_TO_INV_BOHR/EPS*HARTREE_CM
 
-print("\n=== TDDFT states (tc_tddft_44/transdens_N.dx), reproduce published 74.38? ===", flush=True)
+print("\n=== TDDFT states (tc_tddft_44/transdens_N.dx), revised reference 22.1 cm^-1 ===", flush=True)
 for f in sorted(glob.glob("/home/robson/PetaChem/tc_tddft_44/transdens_*.dx")):
     pts,q = cc.read_dx(f, threshold=1e-6, stride=1)
     pts=np.ascontiguousarray(pts,np.float64); q=np.ascontiguousarray(q,np.float64)

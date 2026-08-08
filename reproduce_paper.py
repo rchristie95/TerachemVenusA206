@@ -6,9 +6,8 @@ Venus_A206 excitonic-coupling paper.
 Chains the existing tools into a single, reproducible, reuse-aware orchestrator:
 
   TDDFT  (TeraChem, GPU)      site energy + transition density   [single-excitation reference]
-  STEOM-CCSD (ORCA, CPU)      in-protein bright state (~532 nm)
-  EOM-CCSD(fT)/ADC(2) (Q-Chem) triples energy + doubles character [the doubles/triples that
-                               TDDFT, being single-excitation, structurally cannot show]
+  STEOM-CCSD (ORCA, CPU)      in-protein bright state (523.9 nm)
+  EOM-CCSD(fT)/ADC(2) (Q-Chem) correlated-method calibration + optional 2p2h diagnostic
   Davydov coupling J (TDC)    static (single geometry) + thermal NVT ensemble, for both
                                the TDDFT and STEOM transition densities
 
@@ -19,19 +18,24 @@ Design:
     right environment (TeraChem env for OpenMM/TeraChem/coupling; the openmpi416+ORCA
     env via go_par.sh for STEOM; Q-Chem at $HOME/qchem for EOM/ADC).
   * Coupling runs on the GPU via the OpenCL backend (numba-CUDA is PTX-blocked on this box).
-  * Aggregates everything to paper_data_summary.json + a printed table.
+  * Aggregates the electronic-structure/static results and the audited production
+    ensemble archive to paper_data_summary.json + a printed table. The expensive
+    1000-frame DCD/TDC production route is run by extract_cr2_transforms.py and
+    run_coupling_production_cr2_1000.ps1, then consumed here with checksum and
+    unit-metadata validation.
 
 Honest-provenance notes baked in:
-  * The doubles/triples character is a STEOM/EOM-CCSD property; the script reports the
-    method ladder (TDDFT -> bare EOM-CCSD -> EOM-CCSD(fT) ~ STEOM), not a parsed "% doubles".
-  * The published TDDFT thermal coupling (65.3) is read from its cached distribution; a
-    live recompute of it is a documented open item (see STEOM_COUPLING_FINDINGS, sec 2.5).
-    The STEOM thermal coupling is recomputed live (reproduces ~96.4).
+  * The method ladder is an empirical energy calibration, not a claim that STEOM-CCSD
+    contains full connected triples or can target predominantly doubly excited satellites.
+  * Cached coupling distributions are accepted only when they carry the
+    reciprocal-distance unit-correction metadata; otherwise they must be recomputed.
+    The definitive STEOM result is the corrected 1000-frame tandem ensemble.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import re
 import shutil
@@ -45,16 +49,15 @@ from pathlib import Path
 # ============================================================
 SEED = 20260618                 # global reproducibility seed (NVT integrator, frame choice)
 EPS = 1.77                      # optical screening (matches the published TDDFT ensemble)
-N_FRAMES = 200                  # NVT frames for the thermal coupling ensemble
+N_FRAMES = 1000                 # definitive unrestrained tandem production ensemble
 COUPLING_BACKEND = "opencl"     # GPU backend for the TDC kernel (numba-CUDA is PTX-blocked here)
 ENGINE = "terachem"             # site-energy DFT engine: "terachem" (GPU) or "orca" (CPU).
                                 # "orca" runs ORCA TDDFT at the STEOM geometry AND skips Q-Chem,
                                 # giving a TeraChem-free, ORCA-only path (DFT + STEOM in one engine).
 
 REUSE = {                       # True = reuse cached outputs if present; False = recompute
-    "nvt":     True,            # reuse dimer_nvt_restrained_clean.pdb
     "tddft":   True,            # reuse tc_tddft_*/energy.out + transition density
-    "steom":   True,            # reuse neo_model/orca_steom/steom_phenol_svpd.out
+    "steom":   True,            # reuse neo_model/orca_steom/steom_phenol_svpd_robust2.out
     "eomft":   True,            # reuse qchem_validation/eomcc_ft_*.out + eomccsd_bare/adc2
     "density": True,            # reuse the built/spec-normalised/matched STEOM density npz
     "spectra": True,            # reuse lineshape_out/ absorption+CD figure panels
@@ -64,16 +67,16 @@ REUSE = {                       # True = reuse cached outputs if present; False 
 REPO = Path(__file__).resolve().parent
 PY = sys.executable                              # TeraChem-env python running this script
 
-TRAJ          = "dimer_nvt_restrained_clean.pdb"     # restrained NVT, coupling-ready
 DIMER         = "venus_dimer.pdb"                    # crystal dimer (static-geometry J)
 OLD_MONOMER   = "tc_simple_old/classical_relaxed.pdb"  # frame the dimer chains were built in
 ANION_MONOMER = "tc_simple_anionic/monomer_relaxed.pdb"
 
 STEOM_DIR      = REPO / "neo_model/orca_steom"
-STEOM_SPECNORM = STEOM_DIR / "steom_transdens_specnorm.npz"
-STEOM_MATCHED  = STEOM_DIR / "steom_transdens_specnorm_oldframe.npz"
-STEOM_OUT      = STEOM_DIR / "steom_phenol_svpd.out"
-STEOM_INP      = "steom_phenol_svpd.inp"             # arg to go_par.sh (run from STEOM_DIR)
+STEOM_CAPMASKED = STEOM_DIR / "steom_transdens_capmasked.npz"
+STEOM_MATCHED   = STEOM_DIR / "steom_transdens_capmasked_oldframe.npz"
+STEOM_STEM     = "steom_phenol_svpd_robust2"
+STEOM_OUT      = STEOM_DIR / f"{STEOM_STEM}.out"
+STEOM_INP      = f"{STEOM_STEM}.inp"                 # deterministic DbFilter/NRootsCISNAT variant
 GO_PAR         = STEOM_DIR / "go_par.sh"
 
 # ORCA TDDFT (engine=orca): reuses the *identical* 44-atom STEOM geometry + point-charge
@@ -88,7 +91,7 @@ STEOM_FIELD    = "field.pc"                          # ORCA point-charge embeddi
 
 TDDFT_DIRS = ["tc_tddft_old_current_current", "tc_tddft_prod_current",
               "tc_tddft_anionic_current", "tc_tddft_44"]
-TDDFT_THERMAL_JSON = "coupling_sampling_out/coupling_distribution.json"  # cached 65.3
+TDDFT_THERMAL_JSON = "coupling_sampling_out/coupling_distribution.json"  # optional corrected cache
 
 QCHEM_DIR   = REPO / "qchem_validation"
 QCHEM_EOMFT = "eomcc_ft_631g.out"
@@ -96,19 +99,21 @@ QCHEM_BARE  = "eomccsd_bare.out"
 QCHEM_ADC2  = "adc2_bare.out"
 
 OUT_DIR_STEOM_STATIC  = "coupling_paper_steom_static"
-OUT_DIR_STEOM_THERMAL = "coupling_paper_steom_thermal"
+OUT_DIR_STEOM_THERMAL = "coupling_nvt_production_cr2_1000_20260721"
 OUT_DIR_SPECTRA       = "lineshape_out"                          # absorption/CD figure panels
-DIPOLE_GEOM_JSON      = f"{OUT_DIR_STEOM_THERMAL}/dipole_geometry.json"
+DIPOLE_GEOM_JSON      = "coupling_paper_steom_thermal/dipole_geometry.json"
 ENSEMBLE_GEOM_NPZ     = f"{OUT_DIR_STEOM_THERMAL}/coupling_geometry.npz"  # per-frame mu/r/J
 THERMAL_DIST_JSON     = f"{OUT_DIR_STEOM_THERMAL}/coupling_distribution.json"
 T2_STAR_FS   = 60.0                   # pure-dephasing time feeding the homogeneous Voigt width
+SITE_ENERGY_CM = 19088.2              # embedded STEOM bright-state energy used for spectra
 EXP_SPLITTING = (262.0, 372.0)        # Nguyen U=131-186 cm^-1 -> Davydov splitting 2U (cm^-1)
 SUMMARY = "paper_data_summary.json"
 
 LOG_DIR = REPO / "pipeline_logs"
 
 # Reference numbers (for provenance/labels only; never overwrite a freshly parsed value)
-PUBLISHED_TDDFT_STATIC_J = 74.38      # paper, single minimised geometry
+CORRECTED_LEGACY_TDDFT_STATIC_J = 20.8285213577  # superseded 74.38 value times the exact unit-correction factor
+CORRECT_RECIPROCAL_DISTANCE_FACTOR = 0.529177210903  # 1/Angstrom -> 1/bohr
 REFERENCE_TERACHEM_44_NM = 361.0      # tc_tddft_44 bright state (wb97xd3/6-311g**, TDA) — the
                                       # like-for-like TeraChem number the ORCA TDDFT reproduces
 
@@ -258,12 +263,48 @@ def parse_terachem_all(dirs):
     return out or [{"error": f"no energy.out with parsed states in {dirs}"}]
 
 
+def _has_corrected_tdc_units(summary):
+    """Accept new outputs and explicitly migrated legacy outputs, but nothing implicit."""
+    current = summary.get("tdc_units", {})
+    current_factor = current.get("reciprocal_distance_to_atomic_units")
+    if (
+        current.get("status") == "corrected"
+        and current.get("pair_distance_unit") == "angstrom"
+        and isinstance(current_factor, (int, float))
+        and math.isclose(
+            current_factor,
+            CORRECT_RECIPROCAL_DISTANCE_FACTOR,
+            rel_tol=0.0,
+            abs_tol=1.0e-12,
+        )
+    ):
+        return True
+
+    migrated = summary.get("unit_correction", {})
+    migrated_factor = migrated.get("new_reciprocal_distance_factor")
+    return (
+        migrated.get("status") == "corrected"
+        and isinstance(migrated_factor, (int, float))
+        and math.isclose(
+            migrated_factor,
+            CORRECT_RECIPROCAL_DISTANCE_FACTOR,
+            rel_tol=0.0,
+            abs_tol=1.0e-12,
+        )
+    )
+
+
 def coupling_summary(out_dir):
-    """Read a coupling_ensemble.py output distribution.json."""
+    """Read a coupling distribution only when its reciprocal-distance units are proven."""
     j = REPO / out_dir / "coupling_distribution.json"
     if not j.exists():
         return None
     s = json.loads(j.read_text())
+    if not _has_corrected_tdc_units(s):
+        raise ValueError(
+            f"Refusing unverified coupling cache {j}: missing corrected reciprocal-distance "
+            "unit metadata. Recompute it with the corrected coupling code."
+        )
     return {"J_mean": s["mean"], "J_std": s.get("std", 0.0),
             "two_J": 2 * abs(s["mean"]), "n": s["n"], "eps": s.get("epsilon")}
 
@@ -279,7 +320,7 @@ def preflight(args):
         info["gpu_cuda_numba"] = bool(_is_cuda_ready())
     except Exception as e:
         info["coupling_core_error"] = str(e)
-    for f in [TRAJ, DIMER, OLD_MONOMER, ANION_MONOMER, STEOM_SPECNORM]:
+    for f in [DIMER, OLD_MONOMER, ANION_MONOMER, STEOM_CAPMASKED]:
         if not (REPO / f).exists():
             info["missing"].append(str(f))
     if not info["gpu_opencl"]:
@@ -298,7 +339,7 @@ def stage_tddft(args):
              "--skip-visualize"], "tddft_stage2.log", cwd=REPO)
     return {"engine": "terachem",
             "site_energies": parse_terachem_all(TDDFT_DIRS),
-            "note": "single-excitation reference; misses the doubles/triples character"}
+            "note": "adiabatic TDDFT reference; genuine double-excitation poles are absent"}
 
 
 def _orca_env():
@@ -350,10 +391,10 @@ def stage_tddft_orca(args):
     return {"engine": "orca", "bright": bright,
             "source": str(out.relative_to(REPO)) if out.exists() else None,
             "reference_terachem_44_nm": REFERENCE_TERACHEM_44_NM,
-            "note": ("single-excitation ORCA TDDFT at the identical STEOM geometry/embedding; "
+            "note": ("adiabatic ORCA TDDFT at the identical STEOM geometry/embedding; "
                      "reproduces the TeraChem wb97xd3/6-311g** reference (tc_tddft_44) for a "
-                     "like-for-like DFT number and misses the doubles/triples character that "
-                     "STEOM captures.")}
+                     "like-for-like DFT comparison. The large method shift is reported "
+                     "empirically and is not attributed to one excitation class alone.")}
 
 
 def stage_steom(args):
@@ -364,17 +405,17 @@ def stage_steom(args):
         # still finishes end-to-end (critical for a publishable, reproducible run).
         bak = STEOM_DIR / "_authoritative_backup"
         bak.mkdir(exist_ok=True)
-        for f in list(STEOM_DIR.glob("steom_phenol_svpd.out")) + \
-                 list(STEOM_DIR.glob("steom_phenol_svpd.gbw")) + \
-                 list(STEOM_DIR.glob("steom_phenol_svpd.s1.*.cube")):
+        for f in list(STEOM_DIR.glob(f"{STEOM_STEM}.out")) + \
+                 list(STEOM_DIR.glob(f"{STEOM_STEM}.gbw")) + \
+                 list(STEOM_DIR.glob(f"{STEOM_STEM}.s1.*.cube")):
             shutil.copy2(f, bak / f.name)
         log("  STEOM recompute requested — launching ORCA DLPNO-STEOM-CCSD (CPU, hours).")
-        log("  (expected: prints the 532.6 spectrum, then a benign MDCI/NatTransOrb abort)")
+        log("  (expected: prints the validated 523.9 nm spectrum; an optional NatTransOrb post-step may abort later)")
         run(["bash", str(GO_PAR), STEOM_INP], "steom_run.log", cwd=STEOM_DIR)
         bright = parse_orca_steom_spectrum(STEOM_OUT)
         if not bright:
             log("  [!] re-run produced no STEOM spectrum — restoring authoritative backup.")
-            for f in bak.glob("steom_phenol_svpd.*"):
+            for f in bak.glob(f"{STEOM_STEM}.*"):
                 shutil.copy2(f, STEOM_DIR / f.name)
             return {"bright": parse_orca_steom_spectrum(STEOM_OUT),
                     "recompute_failed_restored": True,
@@ -399,16 +440,17 @@ def stage_eom_triples(args):
         # Established def2-SVP bare-anion comparison (reference; see memory
         # steom-vs-eomccsd-validation). Reproduce live with --run-eomft (Q-Chem, hours).
         "validated_ladder_eV": {
-            "EOM_CCSD_bare": 3.72,   # too blue — misses the triples
+            "EOM_CCSD_bare": 3.72,   # no non-iterative triples correction
             "EOM_CCSD_fT": 3.29,     # (fT) triples correction, ~-0.43 eV
             "STEOM_CCSD": 3.335,     # ~ EOM-CCSD(fT) -> STEOM validated
             "ADC2_2p2h_doubles_pct": 12,   # excited-state double-excitation character
         },
-        "note": ("Doubles/triples is a STEOM/EOM-CCSD property; TDDFT (single-excitation) "
-                 "cannot show it. Evidence: ADC(2) ~12% 2p2h doubles character, and the (fT) "
-                 "triples correction (-0.43 eV) brings bare EOM-CCSD (3.72) onto STEOM (3.335). "
-                 "raw_qchem lists are the cached (heterogeneous-basis) runs; validated_ladder "
-                 "is the established def2-SVP comparison."),
+        "note": ("The state is predominantly singly excited; the prior ADC(2) diagnostic "
+                 "reported ~12% 2p2h weight. The EOM-CCSD(fT) correction (-0.43 eV) brings "
+                 "bare EOM-CCSD (3.72 eV) close to STEOM (3.335 eV). This is an empirical "
+                 "energy calibration, not evidence that standard STEOM contains full "
+                 "connected triples. raw_qchem lists are the cached heterogeneous-basis "
+                 "runs; validated_ladder is the established def2-SVP comparison."),
     }
 
 
@@ -416,9 +458,9 @@ def stage_density(args):
     if args.reuse["density"] and STEOM_MATCHED.exists():
         log(f"  reusing matched STEOM density {STEOM_MATCHED.name}")
         return {"matched_density": str(STEOM_MATCHED.relative_to(REPO)), "rebuilt": False}
-    log("  building matched STEOM density (Kabsch into the dimer-chain frame)")
+    log("  aligning the production cap-masked STEOM density into the dimer-chain frame")
     rc, tail = run([PY, "align_steom_density.py",
-                    "--density", str(STEOM_SPECNORM),
+                    "--density", str(STEOM_CAPMASKED),
                     "--anion-pdb", ANION_MONOMER, "--old-pdb", OLD_MONOMER,
                     "--out", str(STEOM_MATCHED)], "match_density.log", cwd=REPO)
     return {"matched_density": str(STEOM_MATCHED.relative_to(REPO)),
@@ -441,25 +483,43 @@ def stage_static_J(args):
     _sample_coupling(OUT_DIR_STEOM_STATIC, DIMER, OLD_MONOMER, STEOM_MATCHED, 1, args)
     return {
         "STEOM": coupling_summary(OUT_DIR_STEOM_STATIC),
-        "TDDFT_published": {"J": PUBLISHED_TDDFT_STATIC_J, "two_J": 2 * PUBLISHED_TDDFT_STATIC_J,
-                            "note": "paper single-min geometry; same kernel on the 44-atom "
-                                    "spectroscopy geom gives ~118 (open item, findings 2.5)"},
+        "TDDFT_corrected_legacy": {
+            "J": CORRECTED_LEGACY_TDDFT_STATIC_J,
+            "two_J": 2 * CORRECTED_LEGACY_TDDFT_STATIC_J,
+            "note": "Legacy single-minimum TDDFT value after the exact reciprocal-distance "
+                    "unit correction; the revised same-44-atom result reported in the manuscript "
+                    "is J_TDC=22.1 cm^-1 and J_PDA=18.0 cm^-1.",
+        },
     }
 
 
 def stage_thermal_J(args):
-    # STEOM thermal ensemble: recomputed live on the restrained NVT trajectory.
-    _sample_coupling(OUT_DIR_STEOM_THERMAL, TRAJ, OLD_MONOMER, STEOM_MATCHED,
-                     args.n_frames, args, random=(args.n_frames < 200))
+    # The definitive result is the audited full-grid DCD calculation, not the
+    # older coupling_ensemble.py/clean-PDB route. Raw trajectories are external
+    # because of their size; consume the checked archive here. Regeneration is
+    # documented in run_production_cr2_1000.ps1,
+    # extract_cr2_transforms.py, and run_coupling_production_cr2_1000.ps1.
     steom = coupling_summary(OUT_DIR_STEOM_THERMAL)
-    # TDDFT thermal ensemble: read the cached published distribution (65.3).
+    if steom is None:
+        raise FileNotFoundError(
+            f"Missing definitive production archive {OUT_DIR_STEOM_THERMAL}. "
+            "Regenerate it with the audited DCD/TDC production scripts."
+        )
+    if steom["n"] != args.n_frames:
+        raise ValueError(
+            f"Requested {args.n_frames} frames, but the audited archive contains "
+            f"{steom['n']}. Use --n-frames {steom['n']} for the manuscript result."
+        )
+    # TDDFT thermal ensemble: read a cached distribution if one is present.
     tddft = coupling_summary(Path(TDDFT_THERMAL_JSON).parent.name) if \
         (REPO / TDDFT_THERMAL_JSON).exists() else None
     return {
         "STEOM": steom,
         "TDDFT_cached": tddft,
-        "note": ("QM-dipole-normalised (NOT the empirical 7.3 D). TDDFT value is the cached "
-                 "published ensemble; live TDDFT recompute is the documented open item."),
+        "note": ("Definitive unrestrained, full-grid 1000-frame DCD ensemble; "
+                 "QM-dipole-normalised (NOT the empirical 7.3 D). Any cached TDDFT "
+                 "distribution must carry the reciprocal-distance unit-correction metadata; "
+                 "otherwise it must be recomputed."),
     }
 
 
@@ -476,9 +536,23 @@ def stage_spectra(args):
          disorder; the single-geometry dipole JSON is exported as a cross-check.
     """
     geom_path = REPO / DIPOLE_GEOM_JSON
-    if args.reuse["spectra"] and geom_path.exists():
+    geometry_cache_matches_density = False
+    if geom_path.exists():
+        try:
+            cached_geometry = json.loads(geom_path.read_text())
+            cached_source = Path(cached_geometry.get("source_density", ""))
+            if not cached_source.is_absolute():
+                cached_source = REPO / cached_source
+            geometry_cache_matches_density = (
+                cached_source.resolve() == STEOM_MATCHED.resolve()
+            )
+        except (OSError, ValueError, json.JSONDecodeError):
+            geometry_cache_matches_density = False
+    if args.reuse["spectra"] and geom_path.exists() and geometry_cache_matches_density:
         log(f"  reusing dipole geometry {DIPOLE_GEOM_JSON}")
     else:
+        if args.reuse["spectra"] and geom_path.exists():
+            log("  cached dipole geometry uses a different density; regenerating")
         log("  exporting STEOM two-dipole geometry (Kabsch placement at both sites)")
         run([PY, "export_dipole_geometry.py",
              "--density", str(STEOM_MATCHED),
@@ -488,6 +562,7 @@ def stage_spectra(args):
     geom = json.loads(geom_path.read_text()) if geom_path.exists() else {}
 
     cmd = [PY, "absorption_cd_spectra.py",
+           "--E0", str(SITE_ENERGY_CM),
            "--distribution", THERMAL_DIST_JSON,
            "--geometry-json", DIPOLE_GEOM_JSON,
            "--t2-star-fs", str(T2_STAR_FS),
@@ -584,14 +659,14 @@ def main(argv=None):
     log("[STEOM] DLPNO-STEOM-CCSD (CPU)");           results["steom"] = stage_steom(args)
     if _stopping(args, "steom"): return _finish(results, args)
 
-    # --- EOM-CCSD(fT)/ADC(2) triples (Q-Chem) — skipped in the ORCA-only path ---
+    # --- EOM-CCSD(fT)/ADC(2) calibration (Q-Chem) — skipped in the ORCA-only path ---
     if args.engine == "orca":
         log("[EOM] skipped (engine=orca): Q-Chem EOM-CCSD(fT)/ADC(2) omitted")
         results["doubles_triples"] = {"skipped": True, "reason": "engine=orca",
             "note": ("Q-Chem triples/doubles validation intentionally skipped in the ORCA-only "
                      "path; see the terachem-engine run (or the paper) for the validated ladder.")}
     else:
-        log("[EOM] EOM-CCSD(fT)/ADC(2) doubles+triples (Q-Chem)")
+        log("[EOM] EOM-CCSD(fT)/ADC(2) correlated-method calibration (Q-Chem)")
         results["doubles_triples"] = stage_eom_triples(args)
     if _stopping(args, "eom"): return _finish(results, args)
 
@@ -642,14 +717,14 @@ def _print_table(r):
         print(f"  STEOM-CCSD S1 (CPU)    : {_g(st,'nm',default='?')} nm  f={_g(st,'fosc',default='?')}"
               f"  |mu|={_g(st,'mu_au',default='?')} au")
 
-    # --- doubles/triples (may be skipped in the ORCA-only path, or absent if stopped early) ---
+    # --- correlated-method calibration (may be skipped or absent) ---
     dt = _g(r, "doubles_triples", default=None)
     if dt is not None:
         if dt.get("skipped"):
-            print("  Doubles/triples        : skipped (engine=orca)")
+            print("  Correlated calibration : skipped (engine=orca)")
         else:
             lad = dt.get("validated_ladder_eV", {})
-            print(f"  Doubles/triples ladder : bare EOM-CCSD {lad.get('EOM_CCSD_bare','?')} -> "
+            print(f"  Correlated ladder      : bare EOM-CCSD {lad.get('EOM_CCSD_bare','?')} -> "
                   f"EOM-CCSD(fT) {lad.get('EOM_CCSD_fT','?')} ~ STEOM {lad.get('STEOM_CCSD','?')} eV "
                   f"(ADC(2) {lad.get('ADC2_2p2h_doubles_pct','?')}% 2p2h)")
             ftraw = _g(dt, "raw_qchem", "eom_ccsd_fT", "excitation_eV")
@@ -658,7 +733,8 @@ def _print_table(r):
     if "static_J" in r:
         sj = _g(r, "static_J", "STEOM")
         print(f"  Static J  STEOM        : {_g(sj,'J_mean',default='?')} cm^-1  (2|J|={_g(sj,'two_J',default='?')})")
-        print(f"  Static J  TDDFT (pub)  : {_g(r,'static_J','TDDFT_published','J')} cm^-1")
+        print(f"  Static J  TDDFT (legacy corrected): "
+              f"{_g(r,'static_J','TDDFT_corrected_legacy','J')} cm^-1")
     if "thermal_J" in r:
         tj = _g(r, "thermal_J", "STEOM")
         tjt = _g(r, "thermal_J", "TDDFT_cached")

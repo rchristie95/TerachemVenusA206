@@ -180,7 +180,7 @@ def make_davydov(tmp, dur=12.0, t_end_ps=40.0):
     p = make_params()
     n = int(dur * SR)
     tt = np.linspace(0.0, t_end_ps, n)
-    J = J_of_t(tt, p)                       # cm^-1, relaxes 74.4 -> ~1.7
+    J = J_of_t(tt, p)                       # cm^-1, starts at corrected J(0)=32.82
     f0, K = 330.0, 0.15
     g = K * J                                # Hz detuning (audible beating)
     f1 = _osc(f0 + g)

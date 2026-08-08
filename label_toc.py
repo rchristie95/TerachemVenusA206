@@ -25,10 +25,10 @@ ax.text(0.5, 0.925,
         transform=ax.transAxes, ha="center", va="center",
         color="white", fontsize=13)
 ax.text(0.5, 0.075,
-        r"Tandem dimer   $J\approx111\ \mathrm{cm^{-1}}$"
-        r"     Davydov splitting  $2|J|\approx221\ \mathrm{cm^{-1}}$",
+        r"Tandem ensemble: $J=32.8\pm1.6\ \mathrm{cm^{-1}}$"
+        r"     Davydov splitting: $2|J|=65.6\pm3.1\ \mathrm{cm^{-1}}$",
         transform=ax.transAxes, ha="center", va="center",
-        color="white", fontsize=12)
+        color="white", fontsize=9.5)
 
 fig.savefig(OUT, dpi=300, facecolor="black")
 print("wrote", OUT, w, "x", h)

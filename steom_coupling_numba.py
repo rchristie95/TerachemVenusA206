@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""STEOM-CCSD excitonic coupling J — numba-parallel CPU kernel (GPU driver is down).
-Kernel is identical to coupling_core.coupling_cuda_kernel (r-floor 0.1 Ang),
-final result * ANGSTROM_TO_BOHR — directly comparable to published J_TDDFT=74.38 cm^-1."""
+"""STEOM-CCSD excitonic coupling J -- numba-parallel CPU kernel.
+
+The kernel sums q_i q_j/r_ij with r in Angstrom. Its reciprocal-length output
+is converted with BOHR_TO_ANGSTROM because 1 Angstrom^-1 = 0.529177 bohr^-1.
+"""
 import numpy as np, sys, time
 from numba import njit, prange, set_num_threads
 set_num_threads(16)  # leave cores for the running ORCA job (8 ranks)
@@ -9,8 +11,7 @@ sys.path.insert(0, "/home/robson/PetaChem")
 import coupling_core as cc
 
 HARTREE_CM = 219474.6314
-EPS = 1.78
-A2B = cc.ANGSTROM_TO_BOHR
+EPS = 1.77
 MONOMER = "/home/robson/PetaChem/tc_simple_anionic/monomer_relaxed.pdb"
 DIMER   = "/home/robson/PetaChem/venus_dimer.pdb"
 
@@ -42,7 +43,7 @@ pts_B = np.ascontiguousarray(cc.apply_pymol_matrix(pts, matrix_B), np.float64)
 print("[run] JIT compile + double-sum...", flush=True)
 t0 = time.time()
 jsum = coupling_numba(pts_A, q, pts_B, q)
-J_ha = jsum * A2B / EPS
+J_ha = jsum * cc.BOHR_TO_ANGSTROM / EPS
 J_cm = J_ha * HARTREE_CM
 print(f"[run] done in {time.time()-t0:.1f}s", flush=True)
 
@@ -50,13 +51,13 @@ print(f"[run] done in {time.time()-t0:.1f}s", flush=True)
 muA = cc.transition_dipole_au(pts_A, q); muB = cc.transition_dipole_au(pts_B, q)
 cenA = (pts_A*np.abs(q)[:,None]).sum(0)/np.abs(q).sum()
 cenB = (pts_B*np.abs(q)[:,None]).sum(0)/np.abs(q).sum()
-R = (cenB-cenA)*A2B; Rn = np.linalg.norm(R); Rhat = R/Rn
+R = (cenB-cenA)*cc.ANGSTROM_TO_BOHR; Rn = np.linalg.norm(R); Rhat = R/Rn
 Jdd = (np.dot(muA,muB)-3*np.dot(muA,Rhat)*np.dot(muB,Rhat))/Rn**3/EPS
 
 print("", flush=True)
 print("=== EXCITONIC COUPLING from STEOM-CCSD transition density ===", flush=True)
 print(f"  J_TDC(STEOM) = {J_cm:.2f} cm^-1   (eps_opt={EPS})", flush=True)
 print(f"  2|J|         = {2*abs(J_cm):.1f} cm^-1  (Davydov splitting)", flush=True)
-print(f"  J_PDA(STEOM) = {Jdd*HARTREE_CM:.2f} cm^-1   (centroid sep {Rn/A2B:.1f} A)", flush=True)
-print(f"  near-field enhancement TDC/PDA = {abs(J_cm/(Jdd*HARTREE_CM)):.1f}x", flush=True)
-print(f"  -- reference: J_TDC(TDDFT, published)=74.38 cm^-1, 2|J|=149, exp 131-186 --", flush=True)
+print(f"  J_PDA(STEOM) = {Jdd*HARTREE_CM:.2f} cm^-1   (centroid sep {Rn*cc.BOHR_TO_ANGSTROM:.1f} A)", flush=True)
+print(f"  finite-density correction TDC/PDA = {abs(J_cm/(Jdd*HARTREE_CM)):.2f}x", flush=True)
+print(f"  -- revised TDDFT reference: J_TDC=22.1 cm^-1, J_PDA=18.0 cm^-1 --", flush=True)

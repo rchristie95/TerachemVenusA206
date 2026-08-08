@@ -144,7 +144,11 @@ def main() -> None:
     ax.set_ylim(-1.08, 1.08)
     ax.set_xlabel("Photon wavelength (nm)")
     ax.set_ylabel("Interaction-induced CD (common scale)")
-    ax.set_title("Homogeneous-dephasing sensitivity of the tandem CD couplet")
+    ax.set_title(
+        "Homogeneous-dephasing sensitivity\n"
+        rf"Corrected production coupling: $J={mean_j:.2f}$ cm$^{{-1}}$",
+        fontsize=12,
+    )
     ax.grid(alpha=0.18, lw=0.6)
     ax.legend(loc="upper left", frameon=False)
     ax.text(
@@ -179,6 +183,9 @@ def main() -> None:
         "raw_peak_24": float(np.max(np.abs(raw24))),
         "peak_ratio_24_over_60": peak_ratio,
         "peak_reduction_fraction": reduction,
+        "coupling_unit_status": "corrected reciprocal-distance conversion",
+        "mean_J_cm-1": mean_j,
+        "mean_splitting_cm-1": 2.0 * abs(mean_j),
         "extrema_60_nm": {"negative": min60[0], "positive": max60[0]},
         "extrema_24_nm": {"negative": min24[0], "positive": max24[0]},
         "exciton_centres_nm": {"short": short_nm, "long": long_nm},

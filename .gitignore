@@ -236,6 +236,7 @@ multipole_out_correct/*
 manuscript/*.aux
 manuscript/*.blg
 manuscript/*.log
+manuscript/*.out
 manuscript/*.pdf
 !manuscript/Fig_Spectra_NguyenStyle_Traces.pdf
 !manuscript/Fig_Spectra_NguyenStyle_Difference.pdf
@@ -243,7 +244,7 @@ manuscript/*.pdf
 manuscript/acs-*.bib
 
 # The Nguyen panel is a local third-party reference asset and is deliberately
-# not distributed.  JPCB_tandem.tex supplies an attributed placeholder.
+# not distributed.  JPCB_tandem_round_2.tex supplies an attributed placeholder.
 manuscript/Nguyen2025_Figure4_unmodified.jpg
 
 # Standalone technical note and its project-generated figures.
@@ -254,3 +255,14 @@ notes/*.aux
 # Reassert cache exclusions after the source-directory negation rules above.
 **/__pycache__/
 *.pyc
+
+# Confidential peer-review and submission working files. Keep these local
+# even though broad source-file negations above make manuscript/Markdown files
+# publishable by default.
+/REVIEWER2_TDC_UNIT_AUDIT.md
+/reviewer2_*.py
+/manuscript/Email_to_Jaewoo_Reviewer2.md
+/manuscript/Response_to_Reviewers.tex
+/manuscript/Response_to_Reviewers_Round2.tex
+/manuscript/JPCB_tandem_marked_Round2.tex
+/tests/test_reviewer2_submission_consistency.py

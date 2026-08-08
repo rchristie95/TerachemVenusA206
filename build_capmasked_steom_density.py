@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 
 
-BOHR_A = 0.52917721067
+BOHR_A = 0.529177210903
 PAIRS = [
     (92, 93, 0.96558779),
     (91, 94, 0.01476372),

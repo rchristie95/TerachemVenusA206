@@ -1,13 +1,27 @@
 {
   "n": 1,
-  "mean": 100.2018964942497,
+  "mean": 30.453973388943076,
   "std": 0.0,
-  "min": 100.2018964942497,
-  "max": 100.2018964942497,
-  "median": 100.2018964942497,
+  "min": 30.453973388943076,
+  "max": 30.453973388943076,
+  "median": 30.453973388943076,
   "mode": "rigid",
   "epsilon": 1.77,
   "samples": [
-    100.2018964942497
-  ]
+    30.453973388943076
+  ],
+  "tdc_units": {
+    "status": "corrected",
+    "pair_distance_unit": "angstrom",
+    "reciprocal_distance_to_atomic_units": 0.529177210903
+  },
+  "density_provenance": {
+    "source": "neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz",
+    "retained_points": 259277,
+    "recomputed_after_unit_correction": true,
+    "builder": "build_capmasked_steom_density.py",
+    "included_nto_pairs": 7,
+    "represented_nto_occupation": 0.9904599300000001,
+    "link_cap_mask": "nearest-QM-atom Voronoi assignment; atoms 42-44 excluded"
+  }
 }

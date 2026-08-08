@@ -4,7 +4,7 @@ si_robustness_figure.py  --  Supporting-Information figure:
 "Origin and robustness of the near-field excitonic coupling."
 
 Composes, in one paper-styled 3-panel figure, the three sensitivity/decomposition
-results the reviewers asked about (each already produced piecemeal elsewhere):
+robustness results (each already produced piecemeal elsewhere):
 
   (a) Multipole convergence of J: partial sums of the primitive Cartesian
       multipole series (dip-dip -> +dip-quad -> +quad-quad -> +dip-oct) as a

@@ -1,14 +1,15 @@
 \documentclass[11pt]{letter}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 \usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\geometry{a4paper, margin=0.75in}
 
 % --- Author Information ---
 \address{
     Dr Jaewoo Joo \\
     School of Mathematics and Physics \\
     University of Portsmouth \\
-    PO1 3FX, United Kingdom \\
+    Portsmouth PO1 3HF, United Kingdom \\
     Email: jaewoo.joo@port.ac.uk
 }
 
@@ -22,21 +23,23 @@
 
 \opening{Dear Editors,}
 
-I am pleased to submit our revised manuscript entitled \textbf{``Non-Equilibrium Dynamics of the Time-Dependent Excitonic Coupling in Fluorescent Protein Dimers''} for consideration in \textit{The Journal of Physical Chemistry B}.
+I am pleased to submit the second revision of manuscript \textbf{jp-2026-050487}, entitled \textbf{``Non-Equilibrium Dynamics of the Time-Dependent Excitonic Coupling in Fluorescent Protein Dimers''}, for consideration in \textit{The Journal of Physical Chemistry B}.
 
-This work addresses a theoretical tension in biophysics: the observation of robust excitonic delocalization (Davydov splitting) in fluorescent protein dimers despite the highly decoherent, warm, and wet biological environment. Using a novel quantum-classical hybrid workflow, we quantify the excitonic coupling in the dimeric Venus homodimer and provide a physical mechanism that reconciles these seemingly contradictory observations.
+This submission is a regular \textbf{Article} for \textbf{Part B, Section B: Biophysical and Biochemical Systems and Processes}. An earlier author manuscript was posted as arXiv:2605.00027 on 22 April 2026. The present revision materially corrects the coupling values and narrows the associated interpretation; the corresponding author will update the preprint record in coordination with this resubmission.
+
+This work addresses a theoretical tension in biophysics: the observation of excitonic signatures in fluorescent protein dimers despite a highly decoherent, warm, and wet biological environment. Using a quantum-classical hybrid workflow, we quantify the excitonic coupling in the Venus homodimer and delineate what the separation between optical excitation, dephasing, and solvent relaxation can---and cannot---establish.
 
 Our revised manuscript offers three primary contributions of high interest to the physical chemistry \& biology community:
 \begin{enumerate}
-    \item \textbf{Near-Field Multipolar Effects:} We demonstrate that the standard point-dipole approximation underestimates the coupling strength by a factor of 4.4. By employing a full 3D transition-density coupling formalism on a correlated DLPNO-STEOM-CCSD transition density for a 1000-frame unrestrained NVT trajectory of the VenusA206 tandem dimer construct, we find a robust coupling of $J = 111 \pm 3 \text{ cm}^{-1}$, aligning our theoretical results with recent experimental circular dichroism measurements.
-    \item \textbf{Separation of Timescales:} We propose that excitonic coupling is initially protected by a non-equilibrium dielectric response. Because absorption occurs on a sub-femtosecond timescale, the coupling operates in the optical dielectric limit ($\epsilon \approx 1.78$) before the onset of bulk solvent relaxation ($\epsilon \approx 78$).
-    \item \textbf{Stochastic Dynamics:} Using stochastic Schrödinger equation simulations, we visualize the transition from a delocalized exciton superposition to incoherent hopping, providing a clear temporal map of how spectroscopic signatures are imprinted before environmental dephasing dominates.
+    \item \textbf{Distributed-Density Coupling:} We identified and corrected a reciprocal-distance unit-conversion error in our transition-density-cube calculation, regenerated every affected result and figure, and validated the corrected implementation with a separate method-matched ORCA control. The corrected 1000-frame result is $J = 32.8 \pm 1.6~\text{cm}^{-1}$, $1.19$ times the ensemble point-dipole value. We withdraw the previous claim of an approximately fourfold point-dipole underestimate and state that the corrected electrostatic coupling is substantially below the value inferred from recent circular-dichroism fits.
+    \item \textbf{Separation of Timescales:} Because vertical excitation precedes bulk solvent relaxation, the initial electronic coupling is evaluated in the optical dielectric limit ($\epsilon = 1.77$ in the numerical model), not with the equilibrium water permittivity. We now state explicitly that this timescale separation does not guarantee spectroscopic resolution: for the illustrative $T_2^*=60$\,fs, the homogeneous FWHM ($177~\mathrm{cm^{-1}}$) exceeds the corrected splitting ($65.6~\mathrm{cm^{-1}}$).
+    \item \textbf{Stochastic Dynamics:} Using a diffusive stochastic Schrödinger equation, we visualise the transition from a prepared delocalised exciton superposition toward stochastic site-basis localisation, providing a temporal map of post-absorption dephasing in the two-level model.
 \end{enumerate}
 
 Given the journal's focus on reporting significant scientific advances in physical chemistry, we believe our findings will be of great interest to your readers. Thank you for your time and consideration of our work.
-\\
 
-{Sincerely,}\\
-{Robson Christie, Cerys Murray, Youngchan Kim, Jaewoo Joo}
+\medskip
+Sincerely,\\
+Robson Christie, Cerys Murray, Youngchan Kim, Jaewoo Joo
 \end{letter}
 \end{document}

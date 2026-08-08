@@ -2,9 +2,7 @@
 r"""
 absorption_cd_spectra.py  --  Excitonic absorption + circular-dichroism (CD) lineshapes.
 
-Reviewer item 2 (raised by three referees): the open-quantum-systems section is
-"illustrative" and disconnected from the quantum chemistry, and no spectroscopic
-signature is ever computed. This script closes that gap by turning the computed
+This script connects the open-quantum-system dynamics to spectroscopy by turning the computed
 Davydov coupling J (and its fluctuations) plus the dephasing into an absorption
 and a CD lineshape, and overlaying the experimental Davydov splitting window.
 
@@ -24,8 +22,8 @@ Physics (degenerate excitonic dimer, |1> = |e1 g2>, |2> = |g1 e2>):
         * homogeneous  (Lorentzian HWHM)  gamma_cm = 1 / (2 pi c T2*)   from dephasing
         * inhomogeneous (Gaussian sigma)   sigma_cm = std(J)             from the MD
           coupling distribution (coupling_ensemble.py -> coupling_distribution.json)
-    combined as a Voigt profile per band. The two reviewer additions reinforce
-    each other: the spread in J from item 1 IS the inhomogeneous broadening here.
+    combined as a Voigt profile per band. The structural ensemble and linewidth
+    contributions reinforce each other: the spread in J is the inhomogeneous broadening here.
 
 Geometry of the two transition dipoles:
   - Best (used for the manuscript figure): pass --geometry-json with explicit
@@ -43,7 +41,7 @@ Outputs (in --out, default `lineshape_out/`), styled to match the paper figures:
   Fig_Spectra_Absorption.pdf  manuscript panel (b): Davydov doublet, bands +/- J, 2|J|
   Fig_Spectra_CD.pdf          manuscript panel (c): bisignate CD couplet + exp. window
   Fig_Spectra_Coupling.pdf    J distribution over the NVT ensemble (NOT used in the
-                              manuscript, which uses the tandem histogram Fig 4c)
+                              manuscript, which uses the tandem histogram Fig 5c)
   Fig_Spectra.pdf             the coupling/absorption/CD panels composed (preview)
   lineshape_data.csv          the raw absorption/CD grid
 """
@@ -190,7 +188,12 @@ def main(argv=None):
     p.add_argument("--J", type=float, default=96.38,
                    help="Davydov coupling J (cm^-1); STEOM thermal mean. "
                         "Overridden by --distribution mean when given.")
-    p.add_argument("--E0", type=float, default=18437.0, help="Monomer site energy (cm^-1).")
+    p.add_argument(
+        "--E0",
+        type=float,
+        default=19088.2,
+        help="Monomer site energy (cm^-1; default is the embedded STEOM bright state).",
+    )
     p.add_argument("--t2-star-fs", type=float, default=60.0, help="Pure-dephasing time T2* (fs).")
     p.add_argument("--distribution", type=Path, default=None,
                    help="coupling_distribution.json from coupling_ensemble.py "

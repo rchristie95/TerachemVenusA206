@@ -57,7 +57,7 @@ def main() -> None:
         writer.writerows(combined)
 
     summary = {
-        "spread_convention": "sample standard deviation (ddof=1), matching JPCB_tandem.tex",
+        "spread_convention": "sample standard deviation (ddof=1), matching JPCB_tandem_round_2.tex",
         "optical_dielectric": 1.77,
         "manuscript_retained": stats([row["manuscript_J_cm"] for row in combined]),
         "regenerated_generic_CR2_fallback": stats([row["regenerated_J_cm"] for row in combined]),

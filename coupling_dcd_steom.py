@@ -210,7 +210,9 @@ def main() -> None:
         points_a = rotate(points, ra) + ta
         points_b = rotate(points, rb) + tb
         raw = engine.calculate(points_a, points_b)
-        j_cm = raw * ANGSTROM_TO_BOHR * HARTREE_TO_CM / args.epsilon
+        # raw has units of inverse Angstrom. Convert 1/A to 1/bohr by
+        # multiplying by 0.529177, not the reciprocal coordinate factor.
+        j_cm = raw * BOHR_TO_ANGSTROM * HARTREE_TO_CM / args.epsilon
 
         origin_a = rotate(density_origin, ra) + ta
         origin_b = rotate(density_origin, rb) + tb
@@ -266,6 +268,11 @@ def main() -> None:
         "fit_rmsd_mean_A": float(fit_rmsd[frame_indices].mean()),
         "fit_rmsd_max_A": float(fit_rmsd[frame_indices].max()),
         "samples": j.tolist(),
+        "tdc_units": {
+            "status": "corrected",
+            "pair_distance_unit": "angstrom",
+            "reciprocal_distance_to_atomic_units": BOHR_TO_ANGSTROM,
+        },
     }
     columns = ["frame", "J_cm", "J_pda_cm", "angle_deg", "separation_A", "aln_A_rms", "aln_B_rms"]
     with open(args.out / "coupling_samples.csv", "w", newline="") as handle:

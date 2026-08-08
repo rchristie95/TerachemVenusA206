@@ -2,8 +2,7 @@
 """
 coupling_ensemble.py  --  Conformational sampling of the Davydov coupling J.
 
-Reviewer item 1 (the criticism that sank the JPCL submission): the reported
-J = 74.38 cm^-1 comes from a single minimised geometry. A protein environment
+The original analysis used a single minimised geometry. A protein environment
 makes a single frame indefensible. This script samples J over an ensemble of
 MD snapshots and reports J as mean +/- std with a histogram, converting the
 weakness into a result (the spread is the static + dynamic disorder that feeds
@@ -232,7 +231,7 @@ def summarize(j_values):
     }
 
 
-def plot_histogram(j_values, stats, out_pdf, single_frame_ref=74.38):
+def plot_histogram(j_values, stats, out_pdf, single_frame_ref=None):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -350,14 +349,26 @@ def main(argv=None):
 
         print("[*] Loading fixed transition density ...")
         if str(density_file).endswith(".npz"):
-            # Pre-built point-charge density (e.g. the STEOM TrEsp density):
+            # Pre-built voxel-charge density (e.g. a spectroscopically normalised STEOM grid):
             # pts_ang in Angstrom, q in a.u., already spectroscopically normalised.
             _d = np.load(density_file)
             pts_opt = np.ascontiguousarray(_d["pts_ang"], dtype=float)
             q_opt = np.ascontiguousarray(_d["q"], dtype=float)
             _mu = float(np.linalg.norm(_d["mu_au"])) if "mu_au" in _d else float("nan")
-            print(f"    - Loaded npz density: {pts_opt.shape[0]} points, |mu|={_mu:.4f} a.u. "
-                  "(pre-normalised; no oscillator renormalisation)")
+            _origin = np.mean(pts_opt, axis=0)
+            _mu_centred = float(
+                np.linalg.norm(
+                    transition_dipole_au(
+                        pts_opt, q_opt, origin_angstrom=_origin
+                    )
+                )
+            )
+            print(
+                f"    - Loaded npz density: {pts_opt.shape[0]} points, "
+                f"|mu|_stored={_mu:.4f} a.u., "
+                f"|mu|_centred={_mu_centred:.4f} a.u. "
+                "(pre-normalised; no oscillator renormalisation)"
+            )
         else:
             pts_opt, q_opt = read_dx(density_file, threshold=args.thresh, stride=args.grid_stride)
         if pts_opt.size == 0:
@@ -421,6 +432,41 @@ def main(argv=None):
     stats["mode"] = args.mode
     stats["epsilon"] = args.epsilon
     stats["samples"] = j_values
+    stats["tdc_units"] = {
+        "status": "corrected",
+        "pair_distance_unit": "angstrom",
+        "reciprocal_distance_to_atomic_units": BOHR_TO_ANGSTROM,
+    }
+    if args.mode == "rigid":
+        source_path = Path(density_file)
+        try:
+            source_label = source_path.resolve().relative_to(
+                Path(__file__).resolve().parent
+            ).as_posix()
+        except ValueError:
+            source_label = str(source_path)
+        provenance = {
+            "source": source_label,
+            "retained_points": int(len(q_opt)),
+            "recomputed_after_unit_correction": True,
+        }
+        # The aligned production archive intentionally contains only the arrays
+        # needed by the coupling kernel. Recover its deterministic build metadata
+        # from the corresponding unaligned cap-masked archive when available.
+        if "capmasked" in source_path.name:
+            provenance["builder"] = "build_capmasked_steom_density.py"
+            metadata_path = source_path.with_name("steom_transdens_capmasked.npz")
+            if metadata_path.exists():
+                with np.load(metadata_path, allow_pickle=False) as metadata:
+                    nto_pairs = np.asarray(metadata["nto_pairs"], dtype=float)
+                    provenance.update({
+                        "included_nto_pairs": int(nto_pairs.shape[0]),
+                        "represented_nto_occupation": float(nto_pairs[:, 2].sum()),
+                        "link_cap_mask": (
+                            f"{str(metadata['mask_method'])}; atoms 42-44 excluded"
+                        ),
+                    })
+        stats["density_provenance"] = provenance
 
     csv_path = args.out / "coupling_samples.csv"
     json_path = args.out / "coupling_distribution.json"
@@ -428,6 +474,7 @@ def main(argv=None):
     write_csv(rows, csv_path)
     with open(json_path, "w") as f:
         json.dump(stats, f, indent=2)
+        f.write("\n")
 
     # Per-frame two-dipole geometry (rigid mode) for the ensemble-summed
     # absorption/CD lineshape (absorption_cd_spectra.py --ensemble-geometry).

@@ -22,12 +22,12 @@
 
 \newcommand{\wn}{\mathrm{cm}^{-1}}
 \newcommand{\Ttwo}{T_2^{*}}
-\newcommand{\Jmean}{117.19\ \wn}
+\newcommand{\Jmean}{32.82\ \wn}
 
 \title{Explicit-solvent electrostatic dephasing in tandem Venus\\
-\large Standalone numerical calculation note}
+\large Standalone corrected-coupling sensitivity note}
 \author{Tandem-Venus project}
-\date{21 July 2026}
+\date{8 August 2026}
 
 \begin{document}
 \maketitle
@@ -49,7 +49,13 @@ kept separate from the current manuscript.
 \noindent\colorbox{yellow!16}{\parbox{0.96\linewidth}{
 \textbf{Status.} This is a technical calculation note, not a manuscript
 revision.  In particular, the manuscript's phenomenological $\Ttwo=60$ fs
-reference has not been replaced by the classical estimate reported here.}}
+reference has not been replaced by the classical estimate reported here.
+Earlier versions of the coupling-dependent spectral example predated the
+7 August 2026 reciprocal-length unit correction.  The spectral section and
+figure in this version have been regenerated from the corrected production
+value $J=32.82\pm1.55\ \wn$ documented in
+\texttt{reference/orca\_validation.json}; the independently calculated
+electrostatic-gap and dephasing-time results are unaffected.}}
 
 \section{Question and simulation record}
 
@@ -199,7 +205,7 @@ These checks show that the 22--24 fs result is not caused by sampling stride,
 one trajectory segment, the small ion contribution, NTO truncation, probe
 dipole mismatch or the minimum-image electrostatic kernel.
 
-\section{Spectral sensitivity}
+\section{Spectral sensitivity with the corrected coupling}
 
 For an exponential homogeneous coherence envelope, the Lorentzian half-width
 is
@@ -208,13 +214,13 @@ is
 \end{equation}
 The manuscript's 60 fs reference gives $88.48\ \wn$.  Using the PME lifetime
 gives $221.07\ \wn$ (FWHM $442.13\ \wn$), which exceeds the mean Davydov
-splitting $2J=234.38\ \wn$ for $J=\Jmean$.  The exciton centres remain at
-520.69 and 527.12 nm because changing $\Ttwo$ changes broadening rather than
+splitting $2J=65.63\ \wn$ for $J=\Jmean$.  The exciton centres remain at
+522.98 and 524.79 nm because changing $\Ttwo$ changes broadening rather than
 the coupling.
 
-The CD sign order survives, but its extrema move from 520.60/527.20 nm to
-519.47/528.36 nm.  More importantly, the raw peak falls to 0.263 of the 60 fs
-value, a 73.7\% reduction.  Independent normalization conceals this loss;
+The CD sign order survives, but its extrema move from 522.30/525.47 nm to
+520.32/527.49 nm.  More importantly, the raw peak falls to 0.173 of the 60 fs
+value, an 82.7\% reduction.  Independent normalization conceals this loss;
 Fig.~\ref{fig:common-scale} therefore uses one common amplitude scale.
 
 \begin{figure}[ht]
@@ -222,12 +228,12 @@ Fig.~\ref{fig:common-scale} therefore uses one common amplitude scale.
   \includegraphics[width=\linewidth]{Fig_T2_CommonScale.pdf}
   \caption{Project-generated 60 fs and 24.01 fs tandem CD differences on a
   shared amplitude scale.  Dotted lines mark the mean exciton centres.  The
-  faster-dephasing curve is broader and has only 26.3\% of the raw 60 fs peak.}
+  faster-dephasing curve is broader and has only 17.3\% of the raw 60 fs peak.}
   \label{fig:common-scale}
 \end{figure}
 
 Under the simple criterion $\mathrm{FWHM}<2J$, the threshold for resolving the
-two branches is $\Ttwo=45.3$ fs.  A 22--24 fs Lorentzian lifetime would therefore
+two branches is $\Ttwo=161.7$ fs.  A 22--24 fs Lorentzian lifetime would therefore
 not support a resolved linear-absorption doublet, even though the
 interaction-induced CD sign topology remains visible.
 
@@ -236,8 +242,9 @@ interaction-induced CD sign topology remains visible.
 Nguyen et al.\ report a constrained dVenus apparent coupling of
 $130.79\ \wn$ and Lorentzian HWHM parameters of 293.51 and
 $439.25\ \wn$ in their three-component difference-CD fit
-\cite{nguyen2025}.  The present $J=117.19\pm5.55\ \wn$ is about 10\% lower and
-is in good magnitude agreement.  The 24 fs model width is directionally closer
+\cite{nguyen2025}.  The corrected production value used for this sensitivity
+curve is $J=32.82\pm1.55\ \wn$, about fourfold below the constrained apparent
+coupling.  The 24 fs model width is directionally closer
 to the experimental fit widths than the 60 fs width, but this is not a direct
 validation: the experimental widths also contain inhomogeneous, vibronic and
 site-energy contributions absent from the present S1-only model.

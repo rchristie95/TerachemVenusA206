@@ -219,6 +219,17 @@ def transition_dipole_au(points_angstrom, charges, origin_angstrom=None):
         pts_bohr = pts_bohr - (origin_angstrom * ANGSTROM_TO_BOHR)
     return np.sum(charges[:, None] * pts_bohr, axis=0)
 
+
+def inverse_angstrom_to_hartree(coulomb_sum_per_angstrom):
+    """Convert ``sum(q_i q_j / r_ij)`` evaluated with r in Angstrom to Hartree.
+
+    Since ``r_bohr = r_angstrom / BOHR_TO_ANGSTROM``, the reciprocal-distance
+    conversion is ``1/r_bohr = BOHR_TO_ANGSTROM / r_angstrom``. Keeping this
+    conversion in one named helper prevents confusing it with the coordinate
+    conversion ``ANGSTROM_TO_BOHR``.
+    """
+    return coulomb_sum_per_angstrom * BOHR_TO_ANGSTROM
+
 def print_transform_matrix(name, matrix4):
     print(f"    - {name} transform matrix:")
     for row in matrix4:
@@ -387,7 +398,7 @@ def calculate_coupling_gpu(pts1, q1, pts2, q2, gpu_chunk=10000):
             print(f"      GPU progress: {chunk_idx}/{n_chunks} chunks")
 
     print(f"    - Calculation took {time.time() - start_t:.2f} seconds.")
-    return j_sum * ANGSTROM_TO_BOHR
+    return inverse_angstrom_to_hartree(j_sum)
 
 def _is_opencl_ready():
     if not OPENCL_AVAILABLE:
@@ -535,7 +546,7 @@ def calculate_coupling_opencl(
             print(f"      OpenCL progress: {chunk_idx}/{n_chunks} chunks")
 
     print(f"    - Calculation took {time.time() - start_t:.2f} seconds.")
-    return j_sum * ANGSTROM_TO_BOHR
+    return inverse_angstrom_to_hartree(j_sum)
 
 def calculate_coupling(
     pts1,

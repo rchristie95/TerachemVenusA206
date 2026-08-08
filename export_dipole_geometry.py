@@ -25,7 +25,7 @@ Output JSON (read by absorption_cd_spectra.py --geometry-json):
 
 Example:
     python export_dipole_geometry.py \
-        --density neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz \
+        --density neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz \
         --monomer tc_simple_old/classical_relaxed.pdb \
         --dimer   venus_dimer.pdb \
         --out     coupling_paper_steom_thermal/dipole_geometry.json
@@ -90,7 +90,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--density",
-                   default="neo_model/orca_steom/steom_transdens_specnorm_oldframe.npz",
+                   default="neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz",
                    help="STEOM density npz in the old-monomer frame (align_steom_density.py).")
     p.add_argument("--monomer", default="tc_simple_old/classical_relaxed.pdb",
                    help="Monomer reference PDB (chain A) for the super alignment.")
@@ -104,6 +104,7 @@ def main(argv=None):
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with open(args.out, "w") as f:
         json.dump(info, f, indent=2)
+        f.write("\n")
 
     print(f"[dipole-geometry] separation |r_A - r_B| = {info['separation_A']:.2f} A")
     print(f"[dipole-geometry] inter-dipole angle      = {info['angle_deg']:.2f} deg")

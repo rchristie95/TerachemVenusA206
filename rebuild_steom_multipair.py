@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Rigorous STEOM transition density: rho_0n = sum_k sigma_k phi_hole_k phi_part_k
-over the 4 significant NTO pairs (98.6% of S1), NO dipole-forcing. Check it reproduces
-the ORCA dipole on its own, then compute J on the identical coupling pipeline."""
+"""Historical four-pair STEOM density reconstruction (98.6% of S1).
+
+This exploratory reconstruction is retained for provenance but is not the
+definitive manuscript density. The production result uses all seven printed
+NTO pairs, the link-cap Voronoi mask, and spectroscopic normalisation via
+build_capmasked_steom_density.py.
+"""
 import numpy as np, sys, time
 from numba import njit, prange, set_num_threads
 set_num_threads(16); sys.path.insert(0,"/home/robson/PetaChem")
 import coupling_core as cc
-BOHR=0.52917721067; HC=219474.6314; EPS=1.78; A2B=cc.ANGSTROM_TO_BOHR
+BOHR=0.529177210903; HC=219474.6314; EPS=1.77
 MU_STEOM=np.array([1.08027,-1.98184,3.01365])  # au, ORCA SVPD state-1
 D="/home/robson/PetaChem/neo_model/orca_steom/"
 
@@ -72,7 +76,7 @@ mA,mB,aA,aB,err=cc.get_super_matrices_with_pymol("/home/robson/PetaChem/tc_simpl
 pk=np.ascontiguousarray(pts_ang[keep],np.float64); qk=np.ascontiguousarray(q_tot[keep],np.float64)
 pA=np.ascontiguousarray(cc.apply_pymol_matrix(pk,mA),np.float64)
 pB=np.ascontiguousarray(cc.apply_pymol_matrix(pk,mB),np.float64)
-J=K(pA,qk,pB,qk)*A2B/EPS*HC
+J=K(pA,qk,pB,qk)*BOHR/EPS*HC
 print(f"\n=== STEOM coupling, RIGOROUS multipair density ===")
 print(f"  J_TDC(STEOM,multipair) = {J:.2f} cm^-1   2|J| = {2*abs(J):.1f}")
-print(f"  (old single-pair forced = 154.82 ; matched-geom TDDFT full = 117.8 ; exp 2|J|~130)")
+print(f"  (definitive cap-masked references: STEOM TDC/PDA = 30.5/24.8; TDDFT TDC/PDA = 22.1/18.0 cm^-1)")

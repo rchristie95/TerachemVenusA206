@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-r"""Generate the three ensemble-spectroscopy panels used in Figure 5.
+r"""Generate the three archived ensemble-spectroscopy panels.
 
 The production mutual transition-density couplings and placed transition-dipole
 geometries are read from the 1000-frame NVT output.  The script therefore uses

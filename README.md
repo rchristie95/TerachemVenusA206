@@ -12,6 +12,14 @@ QM/MM computational pipeline for studying Davydov (excitonic) coupling in Venus 
 
 > **Preprint:** [arXiv:2605.00027](https://arxiv.org/abs/2605.00027)
 
+> **Correction status (8 August 2026):** arXiv v1 and the retained historical
+> source `manuscript/Submit-JPCL-21April2026.tex` contain superseded coupling
+> values produced with an incorrect reciprocal-distance conversion in the TDC
+> kernel. The audited revision reports the corrected 1000-frame result
+> `J = 32.82 +/- 1.55 cm^-1` and TDC/PDA ratio `1.19`; do not use the v1
+> numerical coupling or its near-field interpretation. The preprint record is
+> to be updated in coordination with the journal revision.
+
 ## Overview
 
 This repository contains scripts to:
@@ -31,7 +39,7 @@ This repository contains scripts to:
 | `minimise_dimer.py` | OpenMM classical minimisation of the dimer with trajectory rendering |
 | `run_nvt.py` | OpenMM NVT MD simulation of the dimer with trajectory rendering |
 | `qmmm_tddft_pipeline.py` | Full standalone QM/MM pipeline: protonation → solvation → QM boundary → TDDFT → Davydov coupling |
-| `reproduce_paper.py` | **One-shot orchestrator** reproducing all numerical paper data: TDDFT (TeraChem, GPU) + STEOM-CCSD (ORCA, CPU) + EOM-CCSD(fT)/ADC(2) doubles/triples (Q-Chem) + static and thermal-NVT Davydov coupling. Config block at the top (seed, ε, frames, per-stage cache reuse); writes `paper_data_summary.json` |
+| `reproduce_paper.py` | Reuse-aware orchestrator for the electronic-structure/static stages and validator/aggregator for the audited 1000-frame production ensemble. It rejects coupling caches without corrected reciprocal-distance metadata and writes `paper_data_summary.json`. |
 | `align_steom_density.py` | Places the STEOM transition density into the dimer-chain coordinate frame (rigid CR2 Kabsch fit) so the STEOM and TDDFT couplings are evaluated at identical geometry |
 | `coupling_core.py` | Reusable, OpenMM-free core: transition-density I/O (`read_dx`), the GPU Coulomb coupling routine (`calculate_coupling`), PyMOL site transforms, and excited-state selection. Imported by the pipeline and all analysis scripts below |
 | `coupling_ensemble.py` | Conformational sampling of the coupling: `J` over an MD ensemble → mean ± std + histogram |
@@ -54,7 +62,7 @@ External, separately licensed QM back-ends (each needed only for its stage):
 
 - [TeraChem](https://www.petachem.com/) — TDDFT reference (GPU)
 - [ORCA](https://www.faccts.de/orca/) 6.1 — DLPNO-STEOM-CCSD site energy and transition density (CPU)
-- [Q-Chem](https://www.q-chem.com/) — EOM-CCSD(fT)/ADC(2) doubles/triples validation (CPU)
+- [Q-Chem](https://www.q-chem.com/) — EOM-CCSD/EOM-CCSD(fT) method calibration and optional ADC(2) diagnostic (CPU)
 
 A conda environment covering the open-source dependencies can be created with:
 
@@ -63,10 +71,10 @@ conda env create -f environment.yml   # or: pip install -r requirements.txt
 conda activate venus_qmmm
 ```
 
-## One-shot reproduction
+## Numerical-summary reproduction
 
-To regenerate all of the paper's **numerical** data (site energies, doubles/triples
-character, and the static + thermal Davydov couplings) in a single command:
+To regenerate or validate the compact electronic-structure, static-coupling,
+and archived thermal-ensemble summary in one command:
 
 ```bash
 python reproduce_paper.py            # all stages reuse cached heavy outputs by default
@@ -78,16 +86,19 @@ Controls live in a config block at the top of the script (and mirror to CLI flag
 |---------|---------|---------|
 | `SEED` | `20260618` | reproducible NVT integrator + random frame selection |
 | `EPS` | `1.77` | optical dielectric screening for the coupling |
-| `N_FRAMES` | `200` | NVT frames in the thermal-coupling ensemble (`--n-frames`) |
+| `N_FRAMES` | `1000` | required frame count of the definitive thermal-coupling archive (`--n-frames`) |
 | `COUPLING_BACKEND` | `opencl` | GPU backend for the TDC kernel |
-| `REUSE[...]` | `True` | per-stage cache reuse; flip a stage off with `--run-nvt`, `--run-tddft`, `--run-steom`, `--run-eomft`, `--run-density` |
+| `REUSE[...]` | `True` | per-stage cache reuse; flip an electronic/static stage off with `--run-tddft`, `--run-steom`, `--run-eomft`, or `--run-density` |
 
-By default every heavy stage (TeraChem TDDFT, the multi-hour ORCA STEOM-CCSD, the Q-Chem
-EOM-CCSD(fT)/ADC(2), and the NVT MD) **reuses cached output**; pass the matching `--run-*`
-flag to recompute one from scratch. Results are aggregated to `paper_data_summary.json`
-and printed as a table. Requires the `TeraChem` conda environment (OpenMM + TeraChem +
-PyMOL + the OpenCL coupling backend); STEOM recompute additionally needs ORCA + the
-`openmpi416` MPI environment, and EOM/ADC recompute needs Q-Chem.
+By default the heavy electronic-structure stages reuse cached output; pass the
+matching `--run-*` flag to recompute one from scratch. The raw 1-ns trajectory
+and 1000-frame full-grid Coulomb calculation are deliberately separate because
+of their size. Regenerate those with `run_production_cr2_1000.ps1`,
+`extract_cr2_transforms.py`, and `run_coupling_production_cr2_1000.ps1`; the
+orchestrator then verifies their frame count and corrected-unit metadata before
+aggregation. Results are written to `paper_data_summary.json` and printed as a
+table. Electronic-structure recomputation requires the corresponding licensed
+backend and environment.
 
 ## Quick start
 
@@ -146,7 +157,8 @@ python absorption_cd_spectra.py --distribution coupling_sampling_out/coupling_di
 
 # 3. Multipole decomposition of the TDC-over-PDA enhancement (validate first)
 python multipole_analysis.py --self-test
-python multipole_analysis.py --workdir tc_tddft_old_current \
+python multipole_analysis.py \
+    --npz neo_model/orca_steom/steom_transdens_capmasked_oldframe.npz \
     --monomer tc_simple_old/classical_relaxed.pdb --dimer venus_dimer.pdb
 #    -> multipole_out/{multipole_analysis.csv, Fig_Multipole_Decomposition.pdf}
 
