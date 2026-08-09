@@ -1,0 +1,11 @@
+{
+  "site": "B",
+  "status": "complete",
+  "returncode": 0,
+  "wall_seconds": 43.921626567840576,
+  "gpu": "0",
+  "input_sha256": "50c23db4934b247133188a65aac2f479effdea537719ce2596b490a55eccc671",
+  "geometry_sha256": "2fc6637d20c47779a65d1c1eb4ef641d1304e5ddf767fd009c8fb1a18948a286",
+  "point_charges_sha256": "c465df01838b44c9c778d7437ec227d6f88304ddeb6581f520846fb63a05522e",
+  "output_sha256": "4e314bcfe2cc2023ffba7bd807b60dd60969ccc7fff4ae42654f7dd3ce1800e8"
+}

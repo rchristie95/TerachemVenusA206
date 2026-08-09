@@ -1,0 +1,264 @@
+{
+  "status": "prepared_production_frame",
+  "topology": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/solvated_protonated.pdb",
+  "topology_file_sha256": "7bbf5cf963fa437ed0d52e301b5b50ba9bb626b38edd505153cc8de9b75511c1",
+  "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/tandem_nvt_1000.dcd",
+  "frame_index": 0,
+  "coordinate_sha256": "0d088ed2df3db80beb5ab0a3b805aed0fa82d45793e17d5abd0d0fd0790568f2",
+  "topology_descriptor_sha256": "0dd7c310f5b1c92b360eb476b96d9a8c28c59e3731dade04c149abdbd3ecd891",
+  "dcd": {
+    "frame_count": 1000,
+    "start_step": 500,
+    "save_interval_steps": 500,
+    "atom_count": 69456
+  },
+  "box_A": [
+    90.7521749130615,
+    90.7521749130615,
+    90.7521749130615
+  ],
+  "embedding_radius_A": 12.0,
+  "embedding_boundary_exclusion_A": 1.8,
+  "embedding_policy": {
+    "version": 2,
+    "retain_partner_cr2_charges": true,
+    "partner_cr2_selection": "retain_complete_non_qm_partner_residue_regardless_of_radius",
+    "partner_cr2_charge_source": "configured_amber_prmtop_exact_atom_name_mapping",
+    "conserve_boundary_residue_charge": true,
+    "boundary_charge_redistribution": "equal_increment_over_retained_non_qm_atoms_in_each_partially_selected_residue"
+  },
+  "embedding_policy_sha256": "346ff24e03e2426679e93b179b49c84f9cc7f695354b37a51b254f1bb3e1c2c4",
+  "retain_partner_cr2_charges": true,
+  "conserve_boundary_residue_charge": true,
+  "amber_cr2_prmtop": "/home/robson/PetaChem/anionic_build/monomer_solv.prmtop",
+  "amber_cr2_prmtop_sha256": "81b99ef639c8df19a044f4d61ec1703ffc44a4dcbdb2478ffa9e4286aeb578d3",
+  "embedding_charges": "/home/robson/PetaChem/terachem_site_energy_cd/results/embedding_charges.npz",
+  "embedding_charges_sha256": "39bf1a991467b83c3fe5d0620fe06af395ddcf786b93bae2efa8ca461a79d5df",
+  "embedding_selection_mode": "fixed_frame0_atom_indices",
+  "fixed_embedding_selection": "/home/robson/PetaChem/terachem_site_energy_cd/results/fixed_embedding_selection.json",
+  "fixed_embedding_selection_sha256": "830b6bb3ee0b8827e5d8184fdca72c7f9ade43ac4921daf81bfa5ffc67031cd0",
+  "preparation_script_sha256": "f169cb5c12ab2642c57723ad91ed99570cc24fa4d3461a5573715aff2e76bd34",
+  "committed_preparation_script_sha256": "60578fbeb733e939181e08af2ef429b62faffb2416ad180cddf2490f7273d14c",
+  "source_difference": "Import renamed from prepare_surrogate_pilot to focused mapping module; numerical functions are unchanged.",
+  "forcefield": "amber14-all.xml + amber14/tip3p.xml MM charges; partner CR2 RESP charges from configured AMBER prmtop",
+  "sites": {
+    "A": {
+      "cr2_key": [
+        "A",
+        "66"
+      ],
+      "stacked_tyr_key": [
+        "A",
+        "202"
+      ],
+      "cr2_reference_heavy_fit_rmsd_A": 0.2422200949987697,
+      "qm_atoms": 44,
+      "physical_qm_atoms": 41,
+      "excluded_link_atom_indices_one_based": [
+        42,
+        43,
+        44
+      ],
+      "link_caps": [
+        {
+          "qm_parent_index_zero_based": 999,
+          "qm_parent": "CR2:66:N1",
+          "mm_partner_index_zero_based": 963,
+          "mm_partner": "LEU:65:C",
+          "parent_partner_distance_A": 1.351625970635639,
+          "cap_distance_A": 1.01,
+          "cap_direction_dot_parent_to_partner": 1.0,
+          "construction": "instantaneous minimum-image severed-bond vector"
+        },
+        {
+          "qm_parent_index_zero_based": 1004,
+          "qm_parent": "CR2:66:C3",
+          "mm_partner_index_zero_based": 1007,
+          "mm_partner": "LEU:67:N",
+          "parent_partner_distance_A": 1.2835456852371068,
+          "cap_distance_A": 1.09,
+          "cap_direction_dot_parent_to_partner": 1.0,
+          "construction": "instantaneous minimum-image severed-bond vector"
+        },
+        {
+          "qm_parent_index_zero_based": 3177,
+          "qm_parent": "TYR:202:CG",
+          "mm_partner_index_zero_based": 3174,
+          "mm_partner": "TYR:202:CB",
+          "parent_partner_distance_A": 1.5572986322441569,
+          "cap_distance_A": 1.09,
+          "cap_direction_dot_parent_to_partner": 1.0,
+          "construction": "instantaneous minimum-image severed-bond vector"
+        }
+      ],
+      "mm_point_charges": 2373,
+      "mm_net_charge_e": 0.015600001481711034,
+      "mm_component_atom_counts": {
+        "protein": 2370,
+        "water": 3,
+        "ions": 0
+      },
+      "partner_cr2_retained_atom_count": 29,
+      "partner_cr2_net_charge_e": -0.9999999985182988,
+      "boundary_charge_redistribution": [
+        {
+          "residue": "A:65:LEU",
+          "retained_atoms": 18,
+          "excluded_atoms": 1,
+          "excluded_charge_e": 0.5973,
+          "equal_increment_per_retained_atom_e": 0.033183333333333336,
+          "charge_conservation_error_e": 8.326672684688674e-17,
+          "redistributed": true
+        },
+        {
+          "residue": "A:67:LEU",
+          "retained_atoms": 17,
+          "excluded_atoms": 2,
+          "excluded_charge_e": -0.14380000000000004,
+          "equal_increment_per_retained_atom_e": -0.008458823529411767,
+          "charge_conservation_error_e": 1.3877787807814457e-16,
+          "redistributed": true
+        },
+        {
+          "residue": "A:95:ARG",
+          "retained_atoms": 22,
+          "excluded_atoms": 2,
+          "excluded_charge_e": 0.8956,
+          "equal_increment_per_retained_atom_e": 0.04070909090909091,
+          "charge_conservation_error_e": 2.220446049250313e-16,
+          "redistributed": true
+        },
+        {
+          "residue": "A:202:TYR",
+          "retained_atoms": 8,
+          "excluded_atoms": 1,
+          "excluded_charge_e": -0.0152,
+          "equal_increment_per_retained_atom_e": -0.0019,
+          "charge_conservation_error_e": -4.85722573273506e-17,
+          "redistributed": true
+        },
+        {
+          "residue": "A:221:GLU",
+          "retained_atoms": 14,
+          "excluded_atoms": 1,
+          "excluded_charge_e": -0.8188,
+          "equal_increment_per_retained_atom_e": -0.05848571428571429,
+          "charge_conservation_error_e": 0.0,
+          "redistributed": true
+        }
+      ],
+      "maximum_boundary_charge_conservation_error_e": 2.220446049250313e-16,
+      "geometry_xyz_sha256": "f560091efea8f21154fb6343c58fa3fe8719aba968447fd63f39d032c6f3b11d",
+      "mm_charges_dat_sha256": "b7410c145e9a3a6b346d8a74003fd19d73b069512f0b064d2c3a2a3c735b79b3"
+    },
+    "B": {
+      "cr2_key": [
+        "A",
+        "328"
+      ],
+      "stacked_tyr_key": [
+        "A",
+        "464"
+      ],
+      "cr2_reference_heavy_fit_rmsd_A": 0.16725359295769754,
+      "qm_atoms": 44,
+      "physical_qm_atoms": 41,
+      "excluded_link_atom_indices_one_based": [
+        42,
+        43,
+        44
+      ],
+      "link_caps": [
+        {
+          "qm_parent_index_zero_based": 5154,
+          "qm_parent": "CR2:328:N1",
+          "mm_partner_index_zero_based": 5118,
+          "mm_partner": "LEU:327:C",
+          "parent_partner_distance_A": 1.3330466131453522,
+          "cap_distance_A": 1.01,
+          "cap_direction_dot_parent_to_partner": 1.0,
+          "construction": "instantaneous minimum-image severed-bond vector"
+        },
+        {
+          "qm_parent_index_zero_based": 5159,
+          "qm_parent": "CR2:328:C3",
+          "mm_partner_index_zero_based": 5162,
+          "mm_partner": "LEU:329:N",
+          "parent_partner_distance_A": 1.3250211546417692,
+          "cap_distance_A": 1.09,
+          "cap_direction_dot_parent_to_partner": 1.0,
+          "construction": "instantaneous minimum-image severed-bond vector"
+        },
+        {
+          "qm_parent_index_zero_based": 7332,
+          "qm_parent": "TYR:464:CG",
+          "mm_partner_index_zero_based": 7329,
+          "mm_partner": "TYR:464:CB",
+          "parent_partner_distance_A": 1.4816601655988408,
+          "cap_distance_A": 1.09,
+          "cap_direction_dot_parent_to_partner": 1.0,
+          "construction": "instantaneous minimum-image severed-bond vector"
+        }
+      ],
+      "mm_point_charges": 2414,
+      "mm_net_charge_e": -0.984399998518291,
+      "mm_component_atom_counts": {
+        "protein": 2402,
+        "water": 12,
+        "ions": 0
+      },
+      "partner_cr2_retained_atom_count": 29,
+      "partner_cr2_net_charge_e": -0.9999999985182988,
+      "boundary_charge_redistribution": [
+        {
+          "residue": "A:324:VAL",
+          "retained_atoms": 15,
+          "excluded_atoms": 1,
+          "excluded_charge_e": -0.5679,
+          "equal_increment_per_retained_atom_e": -0.03786,
+          "charge_conservation_error_e": -6.938893903907228e-17,
+          "redistributed": true
+        },
+        {
+          "residue": "A:327:LEU",
+          "retained_atoms": 18,
+          "excluded_atoms": 1,
+          "excluded_charge_e": 0.5973,
+          "equal_increment_per_retained_atom_e": 0.033183333333333336,
+          "charge_conservation_error_e": 8.326672684688674e-17,
+          "redistributed": true
+        },
+        {
+          "residue": "A:329:LEU",
+          "retained_atoms": 18,
+          "excluded_atoms": 1,
+          "excluded_charge_e": -0.4157,
+          "equal_increment_per_retained_atom_e": -0.023094444444444445,
+          "charge_conservation_error_e": 8.326672684688674e-17,
+          "redistributed": true
+        },
+        {
+          "residue": "A:357:ARG",
+          "retained_atoms": 23,
+          "excluded_atoms": 1,
+          "excluded_charge_e": 0.4478,
+          "equal_increment_per_retained_atom_e": 0.019469565217391304,
+          "charge_conservation_error_e": -2.220446049250313e-16,
+          "redistributed": true
+        },
+        {
+          "residue": "A:464:TYR",
+          "retained_atoms": 8,
+          "excluded_atoms": 1,
+          "excluded_charge_e": -0.0152,
+          "equal_increment_per_retained_atom_e": -0.0019,
+          "charge_conservation_error_e": -4.85722573273506e-17,
+          "redistributed": true
+        }
+      ],
+      "maximum_boundary_charge_conservation_error_e": 2.220446049250313e-16,
+      "geometry_xyz_sha256": "220220aec001086d6952f64eb0951ae62e65be6baae7b59aef3ff0c1e930c854",
+      "mm_charges_dat_sha256": "fb36dbbebf9357b97631c874a5f660b1de85e7f3d8c7ebb5945e5ca030c881f9"
+    }
+  }
+}

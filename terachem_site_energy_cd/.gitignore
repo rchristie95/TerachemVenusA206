@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+results/embedding_charges.npz
+results/**/site_*/geometry.xyz
+results/**/site_*/mm_charges.dat
+results/**/site_*/tddft.in
+results/**/site_*/tddft.out
+results/**/site_*/tddft.incomplete.*.out
+results/**/site_*/scr_*/

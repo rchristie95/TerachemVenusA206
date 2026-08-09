@@ -1,0 +1,15 @@
+{
+  "jobs": [
+    {
+      "site": "A",
+      "status": "reused_complete",
+      "output_sha256": "d9e228e2bb465545835c35c693eaa59b022c8869c37c48b33cc4a209efcdff47"
+    },
+    {
+      "site": "B",
+      "status": "reused_complete",
+      "output_sha256": "4e314bcfe2cc2023ffba7bd807b60dd60969ccc7fff4ae42654f7dd3ce1800e8"
+    }
+  ],
+  "completed_sites": 2
+}

@@ -1,0 +1,88 @@
+{
+  "status": "smoke_only_production_identity_mismatch",
+  "production_join_allowed": false,
+  "starting_commit": "e1c42f8cae66d1763b4fbe91e24fbe9288e99745",
+  "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/tandem_nvt_1000.dcd",
+  "trajectory_sha256": "d854e18b90db301793f1550fcf28b8c1ccb4450732729ffe24deb1880c7fbab0",
+  "expected_archive_trajectory_sha256": "5da1f8b2ce814dd04467b4d121c3ba70ccc8619852d045120d2e73086df53e5e",
+  "topology": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/solvated_protonated.pdb",
+  "topology_sha256": "7bbf5cf963fa437ed0d52e301b5b50ba9bb626b38edd505153cc8de9b75511c1",
+  "topology_descriptor_sha256": "0dd7c310f5b1c92b360eb476b96d9a8c28c59e3731dade04c149abdbd3ecd891",
+  "amber_cr2_prmtop": "/home/robson/PetaChem/anionic_build/monomer_solv.prmtop",
+  "amber_cr2_prmtop_sha256": "81b99ef639c8df19a044f4d61ec1703ffc44a4dcbdb2478ffa9e4286aeb578d3",
+  "dcd": {
+    "frame_count": 1000,
+    "start_step": 500,
+    "save_interval_steps": 500,
+    "atom_count": 69456
+  },
+  "frame_time_convention_ps": "(zero_based_frame + 1) ps",
+  "box_frame0_A": [
+    90.7521749130615,
+    90.7521749130615,
+    90.7521749130615
+  ],
+  "site_mapping": {
+    "A": {
+      "cr2": [
+        "A",
+        "66"
+      ],
+      "stacked_tyr": [
+        "A",
+        "202"
+      ],
+      "cr2_atoms": 29,
+      "cr2_atom_names_exact": true,
+      "mapping_rule": "unique exact atom name; topology order retained independently at each site"
+    },
+    "B": {
+      "cr2": [
+        "A",
+        "328"
+      ],
+      "stacked_tyr": [
+        "A",
+        "464"
+      ],
+      "cr2_atoms": 29,
+      "cr2_atom_names_exact": true,
+      "mapping_rule": "unique exact atom name; topology order retained independently at each site"
+    }
+  },
+  "compact_qm_definition": {
+    "atoms": 44,
+    "physical_atoms": 41,
+    "charge": -1,
+    "multiplicity": 1
+  },
+  "reference_cr2_charge_e": -0.9999999985182989,
+  "terachem": {
+    "path": "/home/robson/Desktop/TeraChemPython/TeraChem/bin/terachem",
+    "binary_sha256": "59c5c114a41ec9d221c8bed4ebf6bd742c02c03b9544387364f58bb07ca9a3cc",
+    "version": "1.97B-beta-251105"
+  },
+  "python": {
+    "executable": "/home/robson/anaconda3/envs/TeraChem/bin/python",
+    "version": "3.12.12",
+    "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39"
+  },
+  "gpu": "NVIDIA GeForce RTX 4080, 580.173.02, 16376 MiB",
+  "settings": {
+    "method": "wB97X-D3",
+    "basis_smoke": "6-31G*",
+    "tda": true,
+    "roots": 7,
+    "embedding_radius_A": 12.0,
+    "boundary_exclusion_A": 1.8,
+    "pcm": "none",
+    "partner_cr2": "complete RESP-charged MM residue",
+    "fixed_embedding_selection": true
+  },
+  "manual_capability_audit": {
+    "manual": "/home/robson/Desktop/TeraChemPython/TeraChem/UserGuide1.97B-beta-251105.pdf",
+    "electric_transition_dipoles": true,
+    "magnetic_transition_dipoles_or_rotational_strengths": false,
+    "conclusion": "Only interaction-induced exciton-chirality CD may be reconstructed; it is not absolute molar CD."
+  }
+}

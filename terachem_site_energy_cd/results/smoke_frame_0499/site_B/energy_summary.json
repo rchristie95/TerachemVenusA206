@@ -1,0 +1,664 @@
+{
+  "status": "converged",
+  "completed": true,
+  "requested_roots": 7,
+  "parsed_roots": 7,
+  "scf_final_energy_au": -1271.7972039931,
+  "mm_point_charges": 2414,
+  "gpu_model": "NVIDIA GeForce RTX 4080",
+  "detected_errors": [],
+  "roots": [
+    {
+      "root": 1,
+      "total_energy_au": -1271.71068999,
+      "energy_eV": 2.35416552,
+      "energy_cm-1": 18987.625596613707,
+      "wavelength_nm": 526.6587984008872,
+      "oscillator_strength": 0.0033,
+      "s2": 0.0,
+      "largest_ci_coefficient": 0.956388,
+      "largest_excitation": {
+        "occupied": 93,
+        "virtual": 94,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        -0.1843,
+        0.1237,
+        0.0845
+      ],
+      "transition_dipole_magnitude_au": 0.2375,
+      "ci_coefficients": [
+        {
+          "occupied": 93,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.956388
+        },
+        {
+          "occupied": 90,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.254913
+        },
+        {
+          "occupied": 92,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.110121
+        }
+      ]
+    },
+    {
+      "root": 2,
+      "total_energy_au": -1271.67606907,
+      "energy_eV": 3.29624849,
+      "energy_cm-1": 26586.0372475098,
+      "wavelength_nm": 376.1372929745354,
+      "oscillator_strength": 1.222,
+      "s2": 0.0,
+      "largest_ci_coefficient": 0.966397,
+      "largest_excitation": {
+        "occupied": 93,
+        "virtual": 95,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        -2.7429,
+        0.9873,
+        2.5755
+      ],
+      "transition_dipole_magnitude_au": 3.8899,
+      "ci_coefficients": [
+        {
+          "occupied": 93,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.966397
+        },
+        {
+          "occupied": 90,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.074018
+        },
+        {
+          "occupied": 93,
+          "virtual": 97,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.060009
+        }
+      ]
+    },
+    {
+      "root": 3,
+      "total_energy_au": -1271.65557133,
+      "energy_eV": 3.85402015,
+      "energy_cm-1": 31084.7691159817,
+      "wavelength_nm": 321.70096048926985,
+      "oscillator_strength": 0.0043,
+      "s2": 0.0,
+      "largest_ci_coefficient": 0.773965,
+      "largest_excitation": {
+        "occupied": 92,
+        "virtual": 94,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        0.1427,
+        0.1585,
+        0.0141
+      ],
+      "transition_dipole_magnitude_au": 0.2137,
+      "ci_coefficients": [
+        {
+          "occupied": 92,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.773965
+        },
+        {
+          "occupied": 90,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.414954
+        },
+        {
+          "occupied": 91,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.25095
+        },
+        {
+          "occupied": 85,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.223321
+        },
+        {
+          "occupied": 79,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.171158
+        },
+        {
+          "occupied": 75,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.156546
+        },
+        {
+          "occupied": 78,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.142404
+        },
+        {
+          "occupied": 80,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.103489
+        },
+        {
+          "occupied": 82,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.084121
+        },
+        {
+          "occupied": 88,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.063796
+        },
+        {
+          "occupied": 77,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.051365
+        },
+        {
+          "occupied": 89,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.050947
+        }
+      ]
+    },
+    {
+      "root": 4,
+      "total_energy_au": -1271.65084553,
+      "energy_eV": 3.98261569,
+      "energy_cm-1": 32121.962102698435,
+      "wavelength_nm": 311.3134885480251,
+      "oscillator_strength": 0.0008,
+      "s2": 0.0,
+      "largest_ci_coefficient": -0.465985,
+      "largest_excitation": {
+        "occupied": 92,
+        "virtual": 94,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        0.0386,
+        -0.0639,
+        -0.0488
+      ],
+      "transition_dipole_magnitude_au": 0.0892,
+      "ci_coefficients": [
+        {
+          "occupied": 92,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.465985
+        },
+        {
+          "occupied": 85,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.442354
+        },
+        {
+          "occupied": 79,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.366027
+        },
+        {
+          "occupied": 75,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.34512
+        },
+        {
+          "occupied": 78,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.338776
+        },
+        {
+          "occupied": 80,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.225071
+        },
+        {
+          "occupied": 90,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.175915
+        },
+        {
+          "occupied": 82,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.171586
+        },
+        {
+          "occupied": 86,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.160978
+        },
+        {
+          "occupied": 91,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.15454
+        },
+        {
+          "occupied": 93,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.138302
+        },
+        {
+          "occupied": 77,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.088029
+        },
+        {
+          "occupied": 88,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.08396
+        },
+        {
+          "occupied": 83,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.076617
+        },
+        {
+          "occupied": 76,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.056504
+        },
+        {
+          "occupied": 89,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.05358
+        }
+      ]
+    },
+    {
+      "root": 5,
+      "total_energy_au": -1271.63151034,
+      "energy_eV": 4.50875299,
+      "energy_cm-1": 36365.54564852032,
+      "wavelength_nm": 274.9855640239897,
+      "oscillator_strength": 0.0018,
+      "s2": 0.0,
+      "largest_ci_coefficient": -0.87291,
+      "largest_excitation": {
+        "occupied": 89,
+        "virtual": 95,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        -0.1159,
+        -0.0295,
+        0.0452
+      ],
+      "transition_dipole_magnitude_au": 0.1279,
+      "ci_coefficients": [
+        {
+          "occupied": 89,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.87291
+        },
+        {
+          "occupied": 89,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.275565
+        },
+        {
+          "occupied": 90,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.187776
+        },
+        {
+          "occupied": 86,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.145685
+        },
+        {
+          "occupied": 89,
+          "virtual": 100,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.134898
+        },
+        {
+          "occupied": 88,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.120993
+        },
+        {
+          "occupied": 93,
+          "virtual": 97,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.104653
+        },
+        {
+          "occupied": 86,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.088231
+        },
+        {
+          "occupied": 92,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.08185
+        },
+        {
+          "occupied": 89,
+          "virtual": 97,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.070297
+        },
+        {
+          "occupied": 91,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.063658
+        },
+        {
+          "occupied": 89,
+          "virtual": 118,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.059779
+        },
+        {
+          "occupied": 89,
+          "virtual": 99,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.056811
+        },
+        {
+          "occupied": 90,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.050047
+        }
+      ]
+    },
+    {
+      "root": 6,
+      "total_energy_au": -1271.62796968,
+      "energy_eV": 4.60509929,
+      "energy_cm-1": 37142.63097088926,
+      "wavelength_nm": 269.23241083907226,
+      "oscillator_strength": 0.0004,
+      "s2": 0.0,
+      "largest_ci_coefficient": -0.928392,
+      "largest_excitation": {
+        "occupied": 91,
+        "virtual": 94,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        0.0578,
+        -0.0014,
+        -0.0171
+      ],
+      "transition_dipole_magnitude_au": 0.0603,
+      "ci_coefficients": [
+        {
+          "occupied": 91,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.928392
+        },
+        {
+          "occupied": 92,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.326609
+        },
+        {
+          "occupied": 82,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.086745
+        },
+        {
+          "occupied": 90,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.067478
+        },
+        {
+          "occupied": 88,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.065732
+        }
+      ]
+    },
+    {
+      "root": 7,
+      "total_energy_au": -1271.62513498,
+      "energy_eV": 4.68223523,
+      "energy_cm-1": 37764.77428932629,
+      "wavelength_nm": 264.79703028504184,
+      "oscillator_strength": 0.0299,
+      "s2": 0.0,
+      "largest_ci_coefficient": -0.724464,
+      "largest_excitation": {
+        "occupied": 93,
+        "virtual": 97,
+        "occupied_type": "D",
+        "virtual_type": "V"
+      },
+      "transition_dipole_au": [
+        0.2997,
+        -0.32,
+        -0.262
+      ],
+      "transition_dipole_magnitude_au": 0.5107,
+      "ci_coefficients": [
+        {
+          "occupied": 93,
+          "virtual": 97,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.724464
+        },
+        {
+          "occupied": 88,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.33989
+        },
+        {
+          "occupied": 87,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.337026
+        },
+        {
+          "occupied": 93,
+          "virtual": 98,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.244178
+        },
+        {
+          "occupied": 92,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.23569
+        },
+        {
+          "occupied": 90,
+          "virtual": 97,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.15459
+        },
+        {
+          "occupied": 86,
+          "virtual": 95,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.138369
+        },
+        {
+          "occupied": 92,
+          "virtual": 97,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.108058
+        },
+        {
+          "occupied": 87,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.101226
+        },
+        {
+          "occupied": 88,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.08842
+        },
+        {
+          "occupied": 92,
+          "virtual": 100,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.059972
+        },
+        {
+          "occupied": 90,
+          "virtual": 94,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.057493
+        },
+        {
+          "occupied": 93,
+          "virtual": 100,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": 0.057125
+        },
+        {
+          "occupied": 90,
+          "virtual": 98,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.057106
+        },
+        {
+          "occupied": 87,
+          "virtual": 100,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.055071
+        },
+        {
+          "occupied": 86,
+          "virtual": 101,
+          "occupied_type": "D",
+          "virtual_type": "V",
+          "coefficient": -0.053835
+        }
+      ]
+    }
+  ],
+  "source_output": "/home/robson/PetaChem/terachem_site_energy_cd/results/smoke_frame_0499/site_B/tddft.out"
+}

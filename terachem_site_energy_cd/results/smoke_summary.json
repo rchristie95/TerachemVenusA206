@@ -1,0 +1,66 @@
+{
+  "status": "smoke_converged_state_identity_ambiguous_production_join_forbidden",
+  "frame": 499,
+  "state_selection": {
+    "A": {
+      "root": 1,
+      "energy_eV": 3.53379925,
+      "energy_cm-1": 28502.013355710995,
+      "oscillator_strength": 1.0047,
+      "transition_dipole_au": [
+        1.7795,
+        -1.2878,
+        2.6038
+      ],
+      "rule": "brightest root with dominant 93->95 configuration",
+      "ambiguity": true,
+      "reason": "No NTO/transition-density overlap was generated for the corrected-charge smoke input."
+    },
+    "B": {
+      "root": 2,
+      "energy_eV": 3.29624849,
+      "energy_cm-1": 26586.0372475098,
+      "oscillator_strength": 1.222,
+      "transition_dipole_au": [
+        -2.7429,
+        0.9873,
+        2.5755
+      ],
+      "rule": "brightest root with dominant 93->95 configuration",
+      "ambiguity": true,
+      "reason": "No NTO/transition-density overlap was generated for the corrected-charge smoke input."
+    }
+  },
+  "detuning_cm-1": 1915.9761082011937,
+  "archived_J_cm_algorithmic_only": 33.88628163437688,
+  "archived_J_join_valid": false,
+  "join_warning": "The smoke DCD SHA-256 differs from the archived coupling trajectory; this J is used only to exercise invariants.",
+  "hamiltonian": {
+    "energies_cm": [
+      26585.438116278543,
+      28502.612486942253
+    ],
+    "omega_cm": 1917.1743706637144,
+    "mixing": 0.03535023433746994,
+    "localization_weights": [
+      [
+        0.000312507427820953,
+        0.9996874925721793
+      ],
+      [
+        0.9996874925721793,
+        0.000312507427820953
+      ]
+    ],
+    "dipole_strengths": [
+      15.110788142213746,
+      11.625497337786264
+    ],
+    "rotational_strengths_relative": [
+      140307.62715105026,
+      -150425.72961022795
+    ],
+    "cd_units": "relative interaction-induced exciton chirality; not absolute molar CD"
+  },
+  "scientific_conclusion_allowed": false
+}
