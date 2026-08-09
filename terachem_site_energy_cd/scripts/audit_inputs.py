@@ -17,7 +17,7 @@ from openmm.app import AmberPrmtopFile, NoCutoff, PDBFile
 
 from prepare_production_frame import SITE_KEYS, read_dcd_frame, topology_descriptor
 
-EXPECTED_ARCHIVE_DCD = "5da1f8b2ce814dd04467b4d121c3ba70ccc8619852d045120d2e73086df53e5e"
+EXPECTED_ARCHIVE_DCD = "d854e18b90db301793f1550fcf28b8c1ccb4450732729ffe24deb1880c7fbab0"
 
 
 def sha256(path: Path) -> str:
