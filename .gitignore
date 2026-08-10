@@ -266,3 +266,17 @@ notes/*.aux
 /manuscript/Response_to_Reviewers_Round2.tex
 /manuscript/JPCB_tandem_marked_Round2.tex
 /tests/test_reviewer2_submission_consistency.py
+
+# Nested standalone repository (own git history, ~43 GB of trajectory data)
+/decoherence_calculation_venus/
+
+# Generated per-frame QM/MM working directories (regenerable; GB scale)
+terachem_site_energy_cd/results/hi_*_frame_*/
+terachem_site_energy_cd/results/linkonly_frame_*/
+terachem_site_energy_cd/results/fullsys_frame_*/
+terachem_site_energy_cd/results/ct_*frame_*/
+terachem_site_energy_cd/results/shell*_frame_*/
+terachem_site_energy_cd/results/pilot_frame_*/
+terachem_site_energy_cd/results/guesstest_frame_*/
+terachem_site_energy_cd/results/diffuse_frame_*/
+terachem_site_energy_cd/results/screened_frame_*/

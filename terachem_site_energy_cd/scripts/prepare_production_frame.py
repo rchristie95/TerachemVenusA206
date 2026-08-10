@@ -628,6 +628,26 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--radius", type=float, default=12.0)
     parser.add_argument("--boundary-exclusion", type=float, default=1.8)
+    parser.add_argument(
+        "--link-only-exclusion",
+        action="store_true",
+        help=(
+            "Exclude only the MM atoms covalently bonded across the QM "
+            "boundary, instead of every MM atom within --boundary-exclusion. "
+            "Keeps hydrogen-bond partners at full charge. Requires "
+            "--full-system-embedding."
+        ),
+    )
+    parser.add_argument(
+        "--full-system-embedding",
+        action="store_true",
+        help=(
+            "Retain every non-QM atom in the MM field instead of a radius "
+            "shell. Both sites then see the identical whole system, so their "
+            "MM complements carry the same net charge by construction and no "
+            "solvent is truncated. Overrides --radius/--boundary-exclusion."
+        ),
+    )
     parser.add_argument("--amber-cr2-prmtop", type=Path)
     parser.add_argument(
         "--retain-partner-cr2-charges",
@@ -766,6 +786,10 @@ def main() -> None:
             )
             link_coords.append(cap)
             link_diagnostics.append(diagnostic)
+        link_partner_indices = {
+            int(item["mm_partner_index_zero_based"])
+            for item in link_diagnostics
+        }
         physical_coords = np.vstack([cr2_coords, tyr_coords])
         qm_coords = np.vstack([physical_coords, np.asarray(link_coords)])
         qm_symbols = cr2_symbols + tyr_symbols + ["H", "H", "H"]
@@ -805,7 +829,36 @@ def main() -> None:
                 and residue.name == "CR2"
                 and residue is not cr2_residue
             )
-            if retained_indices is None:
+            if args.full_system_embedding and args.link_only_exclusion:
+                # Topological exclusion: drop ONLY the MM atoms covalently
+                # bonded across the QM boundary. A purely geometric cutoff
+                # also deletes hydrogen-bond partners (His HD1, Glu OE2, Arg
+                # HH11 ...) whose membership flips with thermal H-bond length,
+                # injecting large site- and frame-dependent errors.
+                keep = np.asarray(
+                    [atom.index not in link_partner_indices
+                     for atom in non_qm_atoms],
+                    dtype=bool,
+                )
+            elif args.full_system_embedding:
+                keep = (
+                    tree.query(candidate_coords)[0] > args.boundary_exclusion
+                )
+            elif args.link_only_exclusion:
+                # Radius-limited shell that still keeps hydrogen-bond partners:
+                # whole-residue selection by distance, covalent-link exclusion
+                # only. Used for the shell-convergence study against the
+                # full-system reference.
+                if not is_partner_cr2:
+                    distances = tree.query(candidate_coords)[0]
+                    if float(distances.min()) >= args.radius:
+                        continue
+                keep = np.asarray(
+                    [atom.index not in link_partner_indices
+                     for atom in non_qm_atoms],
+                    dtype=bool,
+                )
+            elif retained_indices is None:
                 if is_partner_cr2:
                     keep = np.ones(len(non_qm_atoms), dtype=bool)
                 else:
@@ -893,7 +946,12 @@ def main() -> None:
             field_charges_array,
             field_coords_array,
             policy_description=(
-                f"{args.radius:g} A AMBER14/TIP3P embedding; complete "
+                f"{'full-system' if args.full_system_embedding else f'{args.radius:g} A'}"
+                f" AMBER14/TIP3P embedding ("
+                + ("covalent-link exclusion only"
+                   if args.link_only_exclusion
+                   else f"boundary exclusion {args.boundary_exclusion:g} A")
+                + "); complete "
                 "partner CR2 RESP; partial-residue boundary charge conserved"
                 if (
                     args.retain_partner_cr2_charges
@@ -987,7 +1045,11 @@ def main() -> None:
         "topology_descriptor_sha256": topology_descriptor(pdb.topology),
         "dcd": dcd_metadata,
         "box_A": box.tolist(),
-        "embedding_radius_A": args.radius,
+        "full_system_embedding": bool(args.full_system_embedding),
+        "link_only_exclusion": bool(args.link_only_exclusion),
+        "embedding_radius_A": (
+            None if args.full_system_embedding else args.radius
+        ),
         "embedding_boundary_exclusion_A": args.boundary_exclusion,
         "embedding_policy": policy,
         "embedding_policy_sha256": policy_hash,
