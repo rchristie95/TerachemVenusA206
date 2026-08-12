@@ -134,3 +134,99 @@ critique, comment or correction of either paper.
 2. **CD at <=1 uM**, below the dimerisation Kd.
 3. **Masters' three-observable protocol on Venus** (linear + circular 2PA plus
    R_L(0), R_C(0)) to pin the tensor and the emission angle independently.
+
+---
+
+# Cusick et al. 2026 (JPCA 130:5471) — the consortium has landed on J ~ 30
+
+Read from the supplementary, 2026-08-12. **The same authors who published
+131-274 cm^-1 now compute J = 27-43 cm^-1 for the Venus dimer.**
+
+## Their Table S2 (dVenus-vdW = 1MYW, R = 25.4 A CB2-CB2, delta = 31 deg)
+
+| mu (D) | eps (mM^-1cm^-1) | v collinear | **v (3D)** | v (2D) |
+|---:|---:|---:|---:|---:|
+| 7.2 | 92.2 | 31.4 | 26.9 | 27.6 |
+| **7.9** | **110** | **37.6** | **32.1** | **33.2** |
+| 8.4 | 126 | 43.0 | 36.8 | 37.6 |
+
+They accept mu = 7.9 +/- 0.5 D and R = 25.4 +/- 1.0 A, and explicitly disregard
+dielectric screening. dVenus-TD from **AlphaFold3**: R = 24.3-27.5 A,
+delta = 8-15 deg, v = 29-43 cm^-1.
+
+## Validation V1 (done): 3% agreement
+
+Our point-dipole coupling on the same 1MYW structure, unscreened and rescaled
+to mu = 7.9 D: **31.09 cm^-1 against their 32.1**. R agrees to 0.01 A. Two
+independent implementations, same answer.
+
+**But our 32.82 matches their 32.1 by cancellation**, and this is important:
+
+| factor | ours/theirs |
+|---|---:|
+| dipole squared, (9.6/7.9)^2 | 1.478 |
+| our screening 1/1.77 | 0.565 |
+| full TDC vs point dipole | 1.187 |
+| **net** | **0.991** |
+
+Two physics choices are hiding in that near-unity: our spec-normalized STEOM
+density gives **9.6 D** where extinction and Strickler-Berg give **7.5-7.9 D**
+(a 22% dipole error is 48% in J and 2.3x in CD rotational strength), and they
+apply **no** screening where we divide by eps_opt = 1.77. Our own TDC with
+their dipole and no screening would be **36.9 cm^-1**.
+
+## What is genuinely new in their SI
+
+1. **Stark shift = -12 cm^-1** (Note S4(b)): the -e on Glu272 relocates to CB2
+   on going TDX -> TD, shortening its distance to the partner chromophore from
+   27.2 to 25.5 A, with Delta mu_0 = 2 D. **Independent confirmation of our own
+   finding that the TDX->TD red shift is largely electrostatic** (we had
+   15.6 +/- 4.0 cm^-1). They therefore now use an *excitonic* red shift of
+   **-23 cm^-1**, not the raw -35.3.
+2. **AlphaFold3 says the tandem is not in the crystal register**: delta = 8-15
+   deg versus 31 deg for 1MYW. Our candidate-2 gives delta = 14.2/34.4 deg —
+   one site inside their range.
+3. **An internal tension in their own analysis**: their -23 cm^-1 red shift
+   with v = 33-38 requires delta ~ 23-26 deg, i.e. between their crystal 31 deg
+   and their AlphaFold 8-15 deg. Neither of their structures satisfies their
+   own spectroscopic constraint.
+4. New method: two-photon polarization ratio, Omega = f_J Omega_J + f_H Omega_H
+   in a three-state model with Omega_J = 1.5 and Omega_H = 0.25-1.5.
+
+## Proposed numerical validations
+
+**Tier 1 — cheap, do first.**
+
+- **V2. Reproduce their -12 cm^-1 Stark shift with our QM/MM.** We have
+  full-system embedding and already computed 15.6 +/- 4.0 cm^-1 by a different
+  route. Move exactly the charge they move (Glu272 CD -> CB2, 27.2 -> 25.5 A)
+  and compare. Cheap, and it either confirms an independent agreement or finds
+  an error in one of the two.
+- **V3. Recompute every observable with mu = 7.9 D and no screening**, i.e.
+  their conventions, and see which of our conclusions move. J -> 36.9, CD
+  rotational strengths -> x(7.9/9.6)^4 = 0.46. This is the single largest
+  systematic in our numbers and it is now testable against an experimental
+  dipole.
+- **V4. Test their 2D model against our 3D geometry.** Their eq (13) (2D) and
+  eq (S9) (3D) agree to ~3% on the crystal; check whether that survives at
+  candidate-2-like geometries where the two dipoles have very different delta
+  (14.2 vs 34.4 deg), where a single-delta 2D model should fail.
+
+**Tier 2 — moderate.**
+
+- **V5. Build the AlphaFold3 tandem structures ourselves** and run the full
+  TDC + all four observables on them. This is the highest-value structural
+  test available: it is an independent, non-crystallographic prediction of the
+  tandem register, it lands near our candidate-2, and it would settle whether
+  the crystal register was ever the right starting point. Compare delta, R,
+  alpha, J, and the chirality triple product against Table S2.
+
+**Tier 3 — the real prize.**
+
+- **V6. Compute the two-photon transition tensor S for the Venus chromophore**
+  (quadratic response; ORCA or Dalton on the 44-atom QM region we already use)
+  and predict Omega_J and Omega_H from first principles. Their entire new
+  method rests on a three-state model with assumed tensor structure
+  (Omega_J = 1.5, Omega_H = 0.25-1.5). An ab initio tensor would independently
+  validate or refute it — and it is the same calculation that would settle the
+  two-photon anisotropy question from the literature review.
