@@ -199,6 +199,17 @@ lineshape_tandem/*
 multipole_out_correct/*
 !multipole_out_correct/multipole_analysis.csv
 
+# Round-2 harvested site-energy ensembles.  These 15 kB arrays are the compact
+# distillation of ~10 GB of per-frame TeraChem trees and are the sole source of
+# every round-2 detuning/coupling number.  They previously existed only in a
+# /tmp scratch directory; the broad *.npz rule above must never hide them again.
+!terachem_site_energy_cd/results/ensembles/
+!terachem_site_energy_cd/results/ensembles/*.npz
+
+# Absolute-CD comparison against Nguyen 2025 Table S3 (predicted vs experimental
+# couplet on a common grid); small, and the figure cannot be rebuilt without it.
+!terachem_site_energy_cd/results/absolute_cd_spectrum.npz
+
 # Canonical 1000-frame ensemble and representative FP64 precision audits.
 !coupling_nvt_production_cr2_1000_20260721/coupling_geometry.npz
 !coupling_nvt_production_cr2_1000_20260721/precision_check_f64/frame_0000/coupling_geometry.npz
@@ -280,3 +291,11 @@ terachem_site_energy_cd/results/pilot_frame_*/
 terachem_site_energy_cd/results/guesstest_frame_*/
 terachem_site_energy_cd/results/diffuse_frame_*/
 terachem_site_energy_cd/results/screened_frame_*/
+
+# Overnight exciton-observables campaign (2026-08-12): trajectories and
+# checkpoints are regenerable bulk; the per-frame metrics CSVs and the small
+# geometry extracts are the results and ARE tracked.
+overnight_linker_release/**/*.dcd
+overnight_linker_release/**/*.chk
+overnight_linker_release/*.npy
+!exciton_observables/*.npz

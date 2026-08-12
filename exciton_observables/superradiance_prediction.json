@@ -1,0 +1,69 @@
+{
+  "experiment": {
+    "dtau_ps": 57.0,
+    "dtau_sd_ps": 4.0,
+    "tau_ns": 3.026,
+    "phi": 0.57,
+    "dtau_over_tau": 0.018836748182419035,
+    "required_mixing_times_cos": 0.03304692663582287
+  },
+  "ensembles": {
+    "ens_v2_all": {
+      "n": 95,
+      "mean_abs_delta_cm": 576.3517279936756,
+      "median_abs_delta_cm": 556.606141616001,
+      "mean_cos_alpha": -0.11755351315192823,
+      "mean_J_tdc_cm": 28.931116443831574,
+      "mean_J_pda_cm": 24.36920185632713,
+      "mean_omega_cm": 582.6921630251499,
+      "harmonic_omega_cm": 290.7371041339081,
+      "mean_thermal_factor": 0.7351037756660368,
+      "predicted_enhancement": 0.010747536596612544,
+      "predicted_enhancement_sem": 0.0008782581606194041,
+      "predicted_dtau_ps": 18.537566072569245,
+      "predicted_dtau_sem_ps": 1.5148372405995603,
+      "meanfield_no_thermal_dtau_ps": 20.253930798826946,
+      "meanfield_thermal_dtau_ps": 17.883339326536895,
+      "dtau_with_experimental_angle_ps": -106.27507807216178,
+      "implied_mean_abs_delta_cm": NaN
+    },
+    "ens_v2": {
+      "n": 88,
+      "mean_abs_delta_cm": 581.3013650499522,
+      "median_abs_delta_cm": 557.8443633168008,
+      "mean_cos_alpha": -0.11899820273840801,
+      "mean_J_tdc_cm": 28.90642984012459,
+      "mean_J_pda_cm": 24.34840788420198,
+      "mean_omega_cm": 587.7797110144774,
+      "harmonic_omega_cm": 285.3401715918006,
+      "mean_thermal_factor": 0.7337022197192133,
+      "predicted_enhancement": 0.010783001958285012,
+      "predicted_enhancement_sem": 0.0008696713143279823,
+      "predicted_dtau_ps": 18.598737437689156,
+      "predicted_dtau_sem_ps": 1.50002647637919,
+      "meanfield_no_thermal_dtau_ps": 20.312810192394558,
+      "meanfield_thermal_dtau_ps": 17.98759876331973,
+      "dtau_with_experimental_angle_ps": -105.80944541384207,
+      "implied_mean_abs_delta_cm": NaN
+    },
+    "ens_final": {
+      "n": 87,
+      "mean_abs_delta_cm": 549.3330613166186,
+      "median_abs_delta_cm": 425.40142146319704,
+      "mean_cos_alpha": -0.10632169396324712,
+      "mean_J_tdc_cm": 29.21761936230109,
+      "mean_J_pda_cm": 24.610528438595935,
+      "mean_omega_cm": 557.4069433536862,
+      "harmonic_omega_cm": 257.23752847151604,
+      "mean_thermal_factor": 0.7075579940864586,
+      "predicted_enhancement": 0.010416141409297867,
+      "predicted_enhancement_sem": 0.0012221725990249404,
+      "predicted_dtau_ps": 17.965969025585146,
+      "predicted_dtau_sem_ps": 2.1080277422501976,
+      "meanfield_no_thermal_dtau_ps": 19.398198326177468,
+      "meanfield_thermal_dtau_ps": 16.836726061496474,
+      "dtau_with_experimental_angle_ps": -110.81779192850948,
+      "implied_mean_abs_delta_cm": NaN
+    }
+  }
+}

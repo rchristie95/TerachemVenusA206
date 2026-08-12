@@ -1,0 +1,8 @@
+{
+ "box_a": 88.19762708502267,
+ "box_b": 88.19762708502267,
+ "box_c": 88.19762708502267,
+ "natom": 89950,
+ "frame_index": 1199,
+ "source": "/home/robson/PetaChem/tc_tandem_nvt_v3_ff19sb_opc/tandem_nvt_v3_1000.dcd"
+}
