@@ -51,7 +51,7 @@ def predicted_dtau(cos_alpha, j_cm, delta_cm=DELTA_CM):
     return PHI * np.tanh(omega / (2.0 * KT_CM)) * (2.0 * j_cm / omega) * (-cos_alpha) * TAU_PS
 
 
-def geometry_from_transforms(npz_path):
+def geometry_from_transforms(npz_path, box_a=None):
     d = np.load(DENSITY)
     pts, q = d["pts_ang"], d["q"]
     mu_local = ((pts - pts.mean(0)) * q[:, None]).sum(0) * ANGSTROM_TO_BOHR
@@ -66,13 +66,18 @@ def geometry_from_transforms(npz_path):
 
     cos_alpha = np.sum(mu_a * mu_b, axis=1) / (
         np.linalg.norm(mu_a, axis=1) * np.linalg.norm(mu_b, axis=1))
-    r_vec = (o_b - o_a) * ANGSTROM_TO_BOHR
+    sep_vec = o_b - o_a
+    if box_a:  # protein-only DCDs are written wrapped; a two-chain dimer can
+        # land in different periodic images, which inflates the separation by
+        # ~box and collapses J. The angle is unaffected (rotations only).
+        sep_vec = sep_vec - box_a * np.round(sep_vec / box_a)
+    r_vec = sep_vec * ANGSTROM_TO_BOHR
     r = np.linalg.norm(r_vec, axis=1)
     r_hat = r_vec / r[:, None]
     jdd = (np.sum(mu_a * mu_b, axis=1)
            - 3.0 * np.sum(mu_a * r_hat, axis=1) * np.sum(mu_b * r_hat, axis=1))
     j_cm = jdd / (r ** 3 * EPSILON) * HARTREE_TO_CM * TDC_OVER_PDA
-    return cos_alpha, j_cm, np.linalg.norm(o_b - o_a, axis=1)
+    return cos_alpha, j_cm, np.linalg.norm(sep_vec, axis=1)
 
 
 def main():
@@ -80,6 +85,12 @@ def main():
     ap.add_argument("--dcd", type=Path,
                     default=REPO / "overnight_linker_release/control_long/control_long.dcd")
     ap.add_argument("--blocks", type=int, default=6, help="Report this many time blocks.")
+    ap.add_argument("--topology", type=Path, default=TOPOLOGY,
+                    help="Protein-only topology matching the DCD atom order.")
+    ap.add_argument("--frame-ps", type=float, default=25.0, help="Spacing between DCD frames.")
+    ap.add_argument("--box-a", type=float, default=None,
+                    help="Cubic box edge for minimum-image correction. Required for\n"
+                         "multi-chain dimers, whose chains can wrap into different images.")
     args = ap.parse_args()
 
     if not args.dcd.exists():
@@ -88,19 +99,19 @@ def main():
     transforms = HERE / f"transforms_{args.dcd.stem}.npz"
     print(f"[*] extracting CR2 transforms from {args.dcd.name} ...")
     subprocess.run([sys.executable, str(REPO / "extract_cr2_transforms.py"),
-                    "--traj", str(args.dcd), "--topology", str(TOPOLOGY),
+                    "--traj", str(args.dcd), "--topology", str(args.topology),
                     "--monomer", str(MONOMER), "--out", str(transforms)],
                    check=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-    cos_alpha, j_cm, sep = geometry_from_transforms(transforms)
+    cos_alpha, j_cm, sep = geometry_from_transforms(transforms, args.box_a)
     dtau = predicted_dtau(cos_alpha, j_cm)
     angle = np.degrees(np.arccos(np.clip(cos_alpha, -1.0, 1.0)))
     n = len(cos_alpha)
 
-    print(f"\n{n} frames (25 ps apart = {n*0.025:.1f} ns)\n")
+    print(f"\n{n} frames (25 ps apart = {n*args.frame_ps/1000:.1f} ns)\n")
     print(f"{'block':>14}{'alpha':>9}{'cos a':>9}{'J':>8}{'sep':>8}{'pred dtau':>11}")
     for i, sl in enumerate(np.array_split(np.arange(n), args.blocks)):
-        lo, hi = sl[0] * 0.025, (sl[-1] + 1) * 0.025
+        lo, hi = sl[0]*args.frame_ps/1000, (sl[-1]+1)*args.frame_ps/1000
         print(f"{f'{lo:.0f}-{hi:.0f} ns':>14}{angle[sl].mean():9.2f}"
               f"{cos_alpha[sl].mean():+9.3f}{j_cm[sl].mean():8.2f}"
               f"{sep[sl].mean():8.2f}{dtau[sl].mean():11.1f}")
