@@ -1,0 +1,809 @@
+\documentclass[journal=jpcbfk, manuscript=article, layout=twocolumn, doi=true]{achemso}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{physics}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{subcaption}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@dblfptop}{0pt}
+\makeatother
+
+\title{Site-Energy Detuning Explains the Apparent Excitonic Coupling of the
+Venus\textsubscript{A206} Tandem Dimer}
+
+\author{Robson Christie}
+\affiliation{School of Mathematics and Physics, University of Portsmouth, Portsmouth PO1 3HF, United Kingdom}
+
+\author{Cerys Murray}
+\affiliation{School of Mathematics and Physics, University of Surrey, Guildford GU2 7XH, UK}
+
+\author{Youngchan Kim}
+\affiliation{Leverhulme Quantum Biology Doctoral Training Centre, School of Biosciences, Advanced Technology Institute, University of Surrey, Guildford GU2 7XH, UK}
+
+\author{Jaewoo Joo}
+\email{jaewoo.joo@port.ac.uk}
+\affiliation{School of Mathematics and Physics, University of Portsmouth, Portsmouth PO1 3HF, United Kingdom}
+
+\begin{document}
+
+\begin{abstract}
+Circular-dichroism (CD) analyses of the Venus\textsubscript{A206} tandem dimer
+report excitonic couplings of $131$--$186~\mathrm{cm^{-1}}$, an order of
+magnitude larger than the Coulomb coupling obtained from integrated transition
+densities. We show that this discrepancy is not an error in the computed
+coupling but a consequence of the degeneracy assumption embedded in the
+experimental analysis. Domain-based local-pair-natural-orbital
+similarity-transformed equation-of-motion coupled-cluster transition densities
+integrated over $1000$ snapshots of the covalently tethered dimer give
+$J = 32.82 \pm 1.55~\mathrm{cm^{-1}}$, validated against an independent
+gas-phase control to $1\%$. Quantum-mechanics/molecular-mechanics calculations
+on the same construct show that the two chromophores are \emph{not}
+isoenergetic: the site-energy detuning is
+$\langle|\Delta|\rangle = 603~\mathrm{cm^{-1}}$, an order of magnitude above
+$2|J| = 65.6~\mathrm{cm^{-1}}$. Because the exciton-chirality rotational
+strength of each band scales as $J/\Omega$ with
+$\Omega = \sqrt{\Delta^{2}+4J^{2}}$, a CD measurement reports a
+rotational-strength-weighted mean of $\Omega$ that is close to its harmonic
+mean and roughly half its arithmetic mean. Interpreted as $2J$ under an
+assumption of degeneracy, this yields an apparent coupling of
+$105$--$159~\mathrm{cm^{-1}}$ depending on the treatment of environmental
+screening, encompassing the constrained experimental value while the true
+coupling remains $32.8~\mathrm{cm^{-1}}$. The ratio of the reported to the computed coupling,
+$130.79/32.82 = 3.99$, is thus accounted for. The eigenstates are
+correspondingly localised (mean mixing $0.18$), so the CD splitting of this
+system should not be read as a Davydov splitting.
+\end{abstract}
+
+\section{Introduction}
+
+Excitonic coupling in fluorescent-protein dimers has been inferred
+spectroscopically from the Davydov structure of difference-CD
+spectra.\cite{kim2019venusa206,nguyen2025anomalous} For the
+Venus\textsubscript{A206} tandem dimer (dVenus-TD), a constrained
+three-Lorentzian analysis places the excitonic pair
+$261.58~\mathrm{cm^{-1}}$ apart, giving an apparent coupling
+$U = 130.79~\mathrm{cm^{-1}}$; an unconstrained fit gives
+$U = 185.4~\mathrm{cm^{-1}}$.\cite{nguyen2025anomalous} Couplings computed
+from first principles by integrating monomer transition densities are
+substantially smaller, and the resulting mismatch has been treated as a
+deficiency of the electronic-structure model.
+
+Both experimental analyses assume that the two chromophores are isoenergetic,
+and in the constrained fit the assumption is not implicit but structural. That
+model places the two couplet components at $G_{1} \mp \delta$, where $G_{1}$ is
+held fixed at the first Gaussian of the corresponding one-chromophore
+(dVenus-TDX) \emph{absorption} spectrum and $\delta$ is the only free splitting
+parameter, so $\delta$ is the coupling by construction: a symmetric splitting
+about the monomer energy is the degenerate-dimer prediction, and the detuning
+$\Delta$ never enters as a parameter. The supplement gives the rationale as the
+symmetry ``expected for Davydov splitting'' about that peak on an energy scale.
+Two features of the same analysis make the assumption worth testing rather than
+adopting. The centre is taken from the one-chromophore control, yet the
+authors' own absorption decomposition reports that this component moves
+$35~\mathrm{cm^{-1}}$ to the red --- $27\%$ of $\delta$ --- in the
+two-chromophore construct. And the splitting recovered, $2\delta =
+261.58~\mathrm{cm^{-1}}$, is smaller than the fitted half-width of either band
+it separates ($293.5$ and $439.3~\mathrm{cm^{-1}}$), so the couplet is
+unresolved and the fit is correspondingly ill-conditioned. Nguyen \emph{et al.}
+are themselves cautious: they describe their couplings as ``apparent'', note
+that the fitted components may result from ``the merger of multiple unresolved
+split components'', and caution that a model with ``only two excited states
+might be overly simplistic''.\cite{nguyen2025anomalous} Here we test the
+degeneracy assumption directly and show that it is the origin of the
+discrepancy.
+
+\section{Methods}
+
+\subsection{Construct}
+
+The simulated construct is the covalently tethered tandem dimer of Kim
+\emph{et al.}\cite{kim2019venusa206} A single $491$-residue polypeptide carries
+two complete Venus $\beta$-barrels joined by a $33$-residue linker
+(\texttt{SGLRSENLYFQGPREFCRYPAQWRPLESRPRTT}, containing the TEV site
+\texttt{ENLYFQG}); barrel~1 spans residues $1$--$229$, the linker $230$--$262$,
+and barrel~2 $263$--$491$. The chromophores are the anionic CR2 residues at
+positions $66$ and $328$. The A206 dimer interface is docked throughout, with
+$40$ residues in inter-barrel contact; mapping to GFP numbering (shifted by
+$-1$ through the chromophore condensation), Ala206, Leu207, Leu221 and Phe223
+all appear in the contact set. This is the construct whose sequence Nguyen
+\emph{et al.} inherit by citation for dVenus-TD, with one stated difference:
+for bacterial expression they mutated the single linker cysteine to glycine to
+suppress spontaneous inter-construct disulfide
+formation.\cite{nguyen2025anomalous} The residue is Cys246, in the flexible
+tether and $23.8$ and $42.9~\text{\AA}$ from the two chromophore centroids in
+the built structure; a trajectory rebuilt with the substitution gives
+site-energy statistics indistinguishable from the ensemble used here
+(Mann--Whitney $p = 0.45$).
+
+\subsection{Coulomb coupling}
+
+Inter-chromophore couplings were obtained by integrating the cap-masked
+DLPNO-STEOM-CCSD transition density over both sites of each snapshot, as
+described previously. To be explicit about the scheme: this is the
+transition-density-cube approach of Krueger, Scholes and
+Fleming,\cite{krueger1998} in which $q_i$ and $q_j$ in the Coulomb double sum
+are the transition densities integrated over individual grid \emph{voxels} of
+the cap-masked cube, not the atom-centred transition charges of a TrEsp or
+Renger-type fit.\cite{madjet2006} No atomic-charge fitting is performed at any
+stage. Distances in the Coulomb double sum are evaluated in
+\AA{}, so the reciprocal distance is converted to atomic units with
+$1~\text{\AA}^{-1} = 0.529177\,a_{0}^{-1}$. Using the coordinate conversion
+$1.8897$ in its place inflates every coupling by
+$1/0.529177^{2} = 3.5711$; this error is now guarded by a regression test that
+checks a closed-form two-charge reference and scans the source for the
+signature.
+
+\subsection{Site energies}
+
+Site energies were computed with time-dependent density-functional theory in
+the Tamm--Dancoff approximation (CAM-B3LYP/6-311+G**, TeraChem 1.97B) on
+$44$-atom QM regions embedded in the complete
+$69{,}412$-point-charge field of the solvated system. The region is specified
+exactly as follows, since the count is easy to reproduce incorrectly:
+
+\begin{itemize}
+\item the complete anionic CR2 chromophore residue, \textbf{29 atoms}
+      (all heavy atoms and their hydrogens, the residue as parameterised in
+      the AMBER topology);
+\item the $\pi$-stacked Tyr203 \textbf{phenol group only}, \textbf{12 atoms}
+      --- CG, CD1, CD2, CE1, CE2, CZ, OH and the five hydrogens HD1, HD2, HE1,
+      HE2, HH. The tyrosine C$_\beta$ and backbone are \emph{not} included;
+      the cut is made at the C$_\gamma$--C$_\beta$ bond;
+\item \textbf{3 link hydrogens} capping the three bonds severed at the QM/MM
+      boundary.
+\end{itemize}
+
+The stoichiometry is C$_{19}$H$_{18}$N$_3$O$_4$ with a net charge of $-1$, and
+a structure diagram with every atom labelled is given as
+Fig.~S\ref{fig:qmregion} in the Supporting Information. A count of $45$ arises
+if the tyrosine C$_\beta$ is retained instead of being replaced by a link
+hydrogen.
+
+Two embedding choices proved essential. First, both sites must see the
+identical whole system: a $12~\text{\AA}$ shell gives the two supposedly
+equivalent site models MM fields whose net charges differ by exactly
+$1.000000000000\,e$ at every frame, whereas full-system embedding makes them
+identical to $\sim\!5\times10^{-15}\,e$ by construction. Second, only MM atoms
+covalently bonded across the QM boundary may be excluded. A geometric
+$1.8~\text{\AA}$ cutoff additionally deletes hydrogen-bond partners --- the
+His HD1 proton, Glu OE2, and an Arg or Gln proton --- and membership of that
+set changes with thermal hydrogen-bond length, injecting large
+frame-dependent errors. Radius-truncated shells are unusable for ensembles:
+shell net charge is frame-unstable ($\pm2$ to $\pm4\,e$), and even on a
+charge-symmetric frame a $20~\text{\AA}$ shell errs by $+450.7~\mathrm{cm^{-1}}$
+against the full-system reference.
+
+To separate the intrinsic electronic structure from the electrostatic
+environment, both methods were also run in the gas phase on the identical
+frozen $44$-atom anion --- same charge, multiplicity, method, basis and
+geometry, with every protein and solvent point charge removed.
+Table~\ref{tab:gasphase} collects the pair.
+
+\begin{table}[t]
+\centering
+\caption{Bright-state vertical excitation of the $44$-atom model with and
+without the protein/solvent point-charge field. Geometry, charge,
+multiplicity, method and basis are identical within each row; only the
+embedding differs.}
+\label{tab:gasphase}
+\begin{tabular}{lccc}
+\toprule
+Method & Gas phase & Embedded & Environmental shift \\
+       & (cm$^{-1}$ / nm) & (cm$^{-1}$ / nm) & (cm$^{-1}$) \\
+\midrule
+TDA-wB97X-D3/6-311G** & $27\,324.5$ / $366.0$ & $27\,710.2$ / $360.9$ & $+385.7$ \\
+DLPNO-STEOM-CCSD/def2-SVPD & \emph{[running]} & $19\,088.2$ / $523.9$ & \emph{[running]} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The bright state is the same state in both environments: the gas-phase and
+embedded transition dipoles are collinear to $\cos\theta = 0.9992$. The
+environmental shift is therefore a genuine electrostatic effect on a fixed
+electronic state, not a change of state ordering. Note that the comparison
+isolates electrostatics only: the geometry is held frozen, so it does not
+include the geometric relaxation the protein also imposes.
+
+The bright $\pi\pi^{*}$ state was assigned by maximum oscillator strength;
+frames whose runner-up margin fell below $3\times$ were discarded rather than
+averaged. Excited-state phase is arbitrary per calculation, so transition
+dipoles were oriented along the chromophore long axis (imidazolinone ring
+centroid to phenolate oxygen, $|\!\cos| \ge 0.994$) before forming the
+chirality triple product; without this the product changes sign from frame to
+frame and the ensemble CD couplet averages to zero.
+
+\subsection{Exciton model}
+
+For each snapshot the two-site Hamiltonian
+$H = \left(\begin{smallmatrix} E_{A} & J \\ J & E_{B}\end{smallmatrix}\right)$ was
+diagonalised, giving $\Omega = \sqrt{\Delta^{2} + 4J^{2}}$ with
+$\Delta = E_{A}-E_{B}$. Exciton-chirality rotational strengths were taken as
+$R_{\pm} = \mp\pi\bar\nu\,c_{A}c_{B}\,\mathbf{R}_{AB}\cdot(\bm\mu_{A}\times\bm\mu_{B})$
+with $c_{A}c_{B} = \pm J/\Omega$.
+
+\section{Results}
+
+\subsection{The coupling is small and independently validated}
+
+Across $1000$ snapshots the transition-density coupling is
+$J = 32.82 \pm 1.55~\mathrm{cm^{-1}}$, only $1.19$ times the point-dipole
+value. A method-matched gas-phase control gives distributed-density and
+point-dipole magnitudes of $6.09$ and $5.36~\mathrm{meV}$, against
+$6.02$ and $5.36~\mathrm{meV}$ from an independent Q-Chem calculation
+performed by a referee: agreement to $1\%$ on the distributed density and to
+three significant figures on the point-dipole term.
+
+The excess of the distributed-density coupling over the point-dipole value is
+accounted for term by term by a multipole decomposition of the same transition
+density: dipole--dipole $24.81$, dipole--quadrupole $4.03$,
+dipole--octupole $0.73$ and quadrupole--quadrupole $0.16~\mathrm{cm^{-1}}$,
+summing to $29.74$ against the full $30.45~\mathrm{cm^{-1}}$. The near-field
+correction at this separation is therefore a $19\%$ dipole--quadrupole effect,
+not a factor of several.
+
+An independent confirmation has since appeared. Cusick \emph{et
+al.}\cite{cusick2026twophoton}, from the same laboratories that reported the
+larger values, compute dipole--dipole couplings of $26.9$--$36.8~\mathrm{cm^{-1}}$
+for the Venus dimer on the same 1MYW structure, adopting
+$\mu = 7.9 \pm 0.5$~D and $R = 25.4 \pm 1.0$~\AA{} and no dielectric screening.
+Repeating our own point-dipole evaluation on that structure under their
+conventions gives $31.1~\mathrm{cm^{-1}}$ against their $32.1$, an agreement of
+$3\%$ between independent implementations.
+
+\subsection{Kim's Davydov splitting is $\Omega$, not $2|J|$}
+\label{sec:omega}
+
+The most direct test of the small coupling is the splitting Kim
+\emph{et al.}\cite{kim2019venusa206} measured, $14.6 \pm 0.3$~nm, which has
+been read throughout the literature as $2|J|$ and therefore as
+$J = 274~\mathrm{cm^{-1}}$. That reading assumes degenerate sites. For a
+detuned dimer the exciton gap is
+\begin{equation}
+\Omega = \sqrt{\Delta^{2} + 4J^{2}},
+\label{eq:omega}
+\end{equation}
+which for the present system is dominated by the detuning rather than by the
+coupling. With the computed $J = 32.82~\mathrm{cm^{-1}}$ and
+$|\Delta| = 550~\mathrm{cm^{-1}}$, Eq.~\eqref{eq:omega} gives
+$\Omega = 553.9~\mathrm{cm^{-1}}$, which at $516$~nm is
+\textbf{$14.75$~nm} --- inside Kim's stated uncertainty, with no adjustable
+parameter.
+
+The agreement is robust to the two largest remaining systematics. Replacing
+our transition dipole ($9.6$~D from the spectroscopically normalised STEOM
+density) with the experimental $7.9$~D, and removing the optical screening
+$\varepsilon_{\mathrm{opt}} = 1.77$, moves $J$ between $22.2$ and
+$39.3~\mathrm{cm^{-1}}$ but moves the predicted splitting only from $14.69$ to
+$14.79$~nm, because $\Delta \gg 2|J|$ makes $\Omega$ almost independent of $J$.
+
+Reading $14.6$~nm as $2|J|$ instead requires $J = 274~\mathrm{cm^{-1}}$, which
+at the crystallographic $25.4$~\AA{} separation demands a transition dipole of
+$\approx 29$~D, or a separation of $\approx 10$~\AA{} --- the distance between
+the two halves of a bacteriochlorophyll special pair. Neither is available to
+two $\beta$-barrels of diameter $\geq 22$~\AA.
+
+The corollary is that the couplet \emph{amplitude}, suppressed by
+$2|J|/\Omega = 0.119$, is the observable that carries $J$; the couplet
+\emph{width} is a lineshape observable that saturates at the bandwidth.
+
+\subsection{The chromophores are strongly inequivalent}
+
+\begin{table}[t]
+\centering
+\caption{Site-energy detuning of the tandem dimer from QM/MM
+(CAM-B3LYP/6-311+G**, full-system embedding, link-only exclusion).}
+\label{tab:detuning}
+\begin{tabular}{lc}
+\toprule
+Quantity & Value (cm$^{-1}$) \\
+\midrule
+$\langle|\Delta|\rangle$              & $603.3$ \\
+median $|\Delta|$                     & $429.2$ \\
+sample standard deviation of $\Delta$ & $703.6$ \\
+$\langle\Omega\rangle$ (arithmetic)   & $611.2$ \\
+$\Omega$ (harmonic mean)              & $295.9$ \\
+$2|J|$ for comparison                 & $65.63$ \\
+mean mixing $2|J|/\Omega$             & $0.18$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:detuning} collects the ensemble. The detuning exceeds $2|J|$ in
+$32$ of $32$ frames at this level of theory and in $23$ of $25$ frames in a
+cheaper basis; the mean detuning is $9.2$ times $2|J|$. The eigenstates are
+therefore largely localised, with mean mixing $0.18$, corresponding to roughly
+$98\%$ of the excitation residing on one chromophore at any instant.
+
+The detuning decorrelates in $\le 5$~ps: nine frames spaced $5$~ps apart span
+a standard deviation of $774.3~\mathrm{cm^{-1}}$, $1.10$ times that of the full
+nanosecond ensemble, and the lag-one autocorrelation is indistinguishable from
+zero. The $1$~ns trajectory therefore already contains $\sim\!200$ independent
+samples, and no additional sampling is required.
+
+\subsection{Why a CD analysis reports a larger coupling}
+
+The rotational strength of snapshot $i$ is
+$|R_i| \propto (J/\Omega_i)\,|T_i|$, where
+$T_i = \mathbf{R}_{AB}\cdot(\bm\mu_{A}\times\bm\mu_{B})$ is the chirality
+triple product. A CD measurement therefore reports
+\begin{equation}
+\langle\Omega\rangle_{\mathrm{CD}}
+= \frac{\sum_i (J/\Omega_i)\,|T_i|\,\Omega_i}{\sum_i (J/\Omega_i)\,|T_i|} ,
+\label{eq:weighted}
+\end{equation}
+which reduces to the harmonic mean $N/\sum_i \Omega_i^{-1}$ when $T_i$ is
+constant. Because the $1/\Omega$ factor emphasises the smallest splittings,
+rare near-degenerate snapshots carry disproportionate weight: three of the
+present $32$ frames account for $31.4\%$ of the total CD weight and eight for
+$60.1\%$.
+
+Retaining the per-snapshot $|T_i|$ matters. The triple product varies by
+$19.6\%$ across the ensemble and is positively correlated with the splitting
+($r = +0.325$), partially offsetting the $1/\Omega$ weighting; the transition
+dipole magnitudes themselves are nearly constant ($3.7\%$). Treating $T_i$ as
+constant, i.e.\ using the plain harmonic mean, gives
+$295.9~\mathrm{cm^{-1}}$ and understates the apparent coupling by $7.5\%$.
+Equation~(\ref{eq:weighted}) gives $318.1~\mathrm{cm^{-1}}$, roughly half the
+arithmetic mean of $611.2~\mathrm{cm^{-1}}$, corresponding to an apparent
+coupling of $159.0~\mathrm{cm^{-1}}$.
+
+\begin{table}[t]
+\centering
+\caption{Apparent coupling recovered by a degenerate-model analysis of the
+detuned ensemble, as a function of the environmental screening applied to the
+classical field, from Eq.~(\ref{eq:weighted}). Intervals are $16$--$84$
+percentiles from $3000$ bootstrap resamples of the present $n=32$ ensemble.
+The true coupling is $32.82~\mathrm{cm^{-1}}$ throughout.}
+\label{tab:apparent}
+\begin{tabular}{lccc}
+\toprule
+Screening & $\langle|\Delta|\rangle$ & $\langle\Omega\rangle_{\mathrm{CD}}$ & $J_{\mathrm{app}}$ \\
+\midrule
+none                           & $603.3$ & $318.1$ & $159.0^{+31}_{-23}$ \\
+$\varepsilon_{\rm opt} = 1.77$ & $340.8$ & $210.3$ & $105.2^{+16}_{-13}$ \\
+\midrule
+\multicolumn{3}{l}{Exp.\ dVenus-TD, constrained} & $130.79$ \\
+\multicolumn{3}{l}{Exp.\ dVenus-TD, unconstrained} & $185.4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:apparent} shows that the apparent coupling lies between $105$ and
+$159~\mathrm{cm^{-1}}$ across the defensible range of environmental screening.
+That interval contains the constrained experimental value of
+$130.79~\mathrm{cm^{-1}}$ and falls $14\%$ short of the unconstrained
+$185.4~\mathrm{cm^{-1}}$, which is the fit whose components are least
+determined by the data (Sec.~\ref{sec:couplet}). In every case the apparent
+coupling exceeds the true coupling by a factor of $3.2$--$4.8$. Taking the constrained
+experimental value at face value,
+\begin{equation}
+\frac{U_{\mathrm{exp}}}{J_{\mathrm{calc}}}
+= \frac{130.79}{32.82} = 3.99 ,
+\end{equation}
+so the long-standing ``factor of four'' is accounted for to within $1\%$ by the
+degeneracy assumption alone.
+
+\subsection{The couplet on an absolute scale}
+\label{sec:absolute}
+
+The interaction-induced couplet can be placed on an absolute scale. Nguyen
+et al.\cite{nguyen2025anomalous} report
+$\varepsilon_{516} = 184\,400~\mathrm{M^{-1}\,cm^{-1}}$ for dVenus-TD and
+$92\,200$ for dVenus-TDX, all samples at $25~\mu\mathrm{M}$ in a $0.5$~cm
+cuvette, with $[\theta] = (\mathrm{mdeg}\times M_{w})/(10\,L\,C)$. The exact
+$2\!:\!1$ ratio of the two extinction coefficients fixes the normalisation as
+per mole of construct, TD carrying two chromophores and TDX one, so the
+Table~S3 Lorentzian amplitudes $A_{1} = +3.59$ and $A_{2} = -2.27$ (in
+$10^{5}~\mathrm{deg\,cm^{2}\,dmol^{-1}}$, at $\bar\nu_{0}\mp130.79~
+\mathrm{cm^{-1}}$) are absolute. Two conditions on that scale are checked by
+the authors themselves. The chromophore count is verified independently of the
+assumed $\varepsilon$: the TDX absorption peaks are $0.52$, $0.51$ and $0.54$
+of their TD counterparts, bounding missing or immature chromophores in the
+three TD samples at $3.4\%$, $2.7\%$ and $9.3\%$, so for dVenus-TD the
+two-chromophore normalisation is good to $3\%$. Against that, all spectra were
+recorded at $25~\mu\mathrm{M}$, where the mean intermolecular separation is
+$\sim\!20$~nm, and the authors concede in their Discussion that even the TDX
+negative control ``might have had some small degree of intermolecular excitonic
+coupling'' at this concentration --- a contribution that would enter the
+difference spectrum with the wrong sign.
+
+No magnetic transition dipole is needed for the comparison, because the
+coupled-oscillator couplet is generated by the two electric transition dipoles
+and their displacement alone. The quantity to compare is the couplet first
+moment,
+\begin{equation}
+M = \int \frac{\Delta\varepsilon(\bar\nu)}{\bar\nu}\,
+        (\bar\nu-\bar\nu_{0})\,\mathrm{d}\bar\nu
+  = \frac{R_{+}\Omega}{2.296\times10^{-39}}
+  = -\,\frac{\pi\bar\nu_{0}\,J\,T}{2.296\times10^{-39}} ,
+\label{eq:firstmomentcd}
+\end{equation}
+in which the $1/\Omega$ carried by $R_{\pm}$ cancels against the $\Omega$ lever
+arm. $M$ therefore depends on the coupling and the chirality triple product
+$T = \mathbf{R}_{AB}\cdot(\bm\mu_{A}\times\bm\mu_{B})$ alone, and is
+independent of the detuning, of the homogeneous linewidth and of the
+inhomogeneous spread---every quantity in this problem that is either uncertain
+or force-field-derived.
+
+Over the $95$ usable production frames $\langle T\rangle = -81.7 \pm
+16.8~\mathrm{\AA}\,\mathrm{a.u.}^{2}$, and an independent $1000$-frame ensemble
+built on transition-density rather than heavy-atom centroids gives $-69.6 \pm
+11.7$, so the geometric systematic is $15\%$ and the sign is unanimous in both.
+The experimental couplet must be extracted with care. Table~S3 fits the
+\emph{difference} spectrum, which Nguyen \emph{et al.} define by ``subtracting
+the TD from TDX'', i.e.\ $\Delta[\theta] = [\theta]_{\mathrm{TDX}} -
+[\theta]_{\mathrm{TD}}$. The couplet exists only in TD, so the couplet carried
+by $\Delta[\theta]$ is \emph{minus} that of the dimer itself: their tabulated
+$A_{1} = +3.59$ sits on the low-wavenumber component, and inverting it gives a
+dimer couplet that is positive to the blue and negative to the red, a negative
+exciton chirality. Equation~(\ref{eq:firstmomentcd}) gives
+$M_{\mathrm{calc}} = +1.5\times10^{7}$ against
+$M_{\mathrm{exp}} = +3.7\times10^{6}~\mathrm{deg\,cm^{2}\,dmol^{-1}\,cm^{-1}}$,
+so the handedness agrees and the magnitudes differ by a factor of $4.1$ for a
+quantity with no adjustable scale.
+
+Peak-to-peak intensities agree far better---$2.9\times10^{5}$ predicted against
+$2.8\times10^{5}$ observed, dissymmetry factors $4.8\times10^{-4}$ and
+$4.7\times10^{-4}$---but that agreement is partly fortuitous. Our couplet is
+spread over a mean $\Omega$ of $584~\mathrm{cm^{-1}}$ against the observed
+$262~\mathrm{cm^{-1}}$, and the peak amplitude lost to that extra width offsets
+the fourfold excess in $M$. The first moment is the quantity to trust.
+
+That fourfold excess is most plausibly the transition-dipole normalisation
+rather than the geometry, because $M \propto J\,T$ with both $J$ and $T$
+quadratic in $|\bm\mu|$, so $M \propto |\bm\mu|^{4}$ and the excess is only a
+$40\%$ error in the dipole. The published extinction coefficient now bounds
+that independently. Scaling the Table~S2 four-Gaussian decomposition of the
+dVenus-TDX band to $\varepsilon_{516} = 92{,}200~\mathrm{M^{-1}cm^{-1}}$ and
+integrating $\int(\varepsilon/\bar\nu)\,\mathrm{d}\bar\nu$ gives
+$|\bm\mu| = 7.5$~D reading the tabulated widths in the convention of the
+fitting package the authors name, and $6.2$--$8.6$~D across the plausible width
+conventions, against the $9.8$~D carried by our spectroscopically normalised
+STEOM density. A dipole at the top of that range removes most of the factor of
+four; one at $7.3$~D removes all of it. We do not rescale, because an
+extinction-derived dipole carries the medium local-field factor and would
+double-count the explicit $\varepsilon_{\mathrm{opt}} = 1.77$ screening applied
+to $J$, but the comparison shows that the absolute CD intensity does not
+constrain the geometry independently of that normalisation.
+
+\subsection{Two observables that constrain the coupling without assuming
+degeneracy}
+
+The CD splitting is not the only coupling-sensitive quantity Nguyen
+\emph{et al.}\cite{nguyen2025anomalous} measured. Two others were reported but
+not analysed as coupling measurements, and both are free of the degeneracy
+assumption.
+
+\emph{Radiative rate.} For the two-site Hamiltonian of the Methods the
+eigenstate dipole strengths are
+$|\bm{\mu}_\pm|^2 = \mu^2\left(1 \pm \sin 2\theta\,\cos\alpha\right)$ with
+$\sin 2\theta = 2J/\Omega$ and $\alpha$ the angle between the monomer
+transition dipoles, so the radiative rate of the emitting state is shifted from
+the monomer value by exactly $(2J/\Omega)\cos\alpha$. Nguyen \emph{et al.}\
+report that dVenus-TD decays $57 \pm 4$~ps faster than the single-chromophore
+dVenus-TDX control on a $3.026$~ns lifetime, and attribute this to
+superradiance. With the Venus fluorescence quantum yield $\Phi = 0.57$ this
+fixes
+\begin{equation}
+\left| \frac{2J}{\Omega}\cos\alpha \right|
+= \frac{1}{\Phi}\,\frac{\Delta\tau}{\tau} = 0.033 .
+\label{eq:superradiance}
+\end{equation}
+Their time-resolved anisotropy independently fixes the geometric factor: the
+limiting anisotropy falls from $0.52$ in TDX to $0.30$ in TD, which under their
+own complete-transfer analysis gives $|\cos\alpha| = 0.660$. Together these
+require a mixing of $2J/\Omega = 0.050$. At $J = 32.82~\mathrm{cm^{-1}}$ that
+implies $|\Delta| = 1310~\mathrm{cm^{-1}}$, the same order as the
+$603~\mathrm{cm^{-1}}$ computed here. At $J = 130.79~\mathrm{cm^{-1}}$ it
+implies $|\Delta| = 5219~\mathrm{cm^{-1}}$, or $0.65$~eV, which is not a
+physically available detuning between two copies of the same chromophore. A
+degenerate pair at $J = 130.79~\mathrm{cm^{-1}}$ would give
+$2J/\Omega = 1$ and a lifetime shortening of $\sim\!1.1$~ns, twenty times what
+was measured. The measured superradiance therefore excludes the degenerate
+strong-coupling interpretation on its own.
+
+\emph{Absorption shift.} The dipole-strength-weighted first moment of the dimer
+absorption is
+\begin{equation}
+\frac{|\bm{\mu}_+|^2 E_+ + |\bm{\mu}_-|^2 E_-}{|\bm{\mu}_+|^2 + |\bm{\mu}_-|^2}
+= \bar{E} + \frac{\Omega}{2}\,\frac{2J}{\Omega}\cos\alpha
+= \bar{E} + J\cos\alpha ,
+\label{eq:firstmoment}
+\end{equation}
+because the $\Omega$ carried by the intensity asymmetry cancels the $\Omega$
+carried by the splitting. The shift is therefore independent of the detuning
+for every individual dimer, and survives ensemble averaging over any
+distribution of $\Delta$. It is the one coupling observable that a detuned
+dimer and a degenerate dimer report identically. Nguyen \emph{et al.}\ report
+it directly: the narrowest Gaussian of the absorption decomposition, $G_{1}$,
+moves $35~\mathrm{cm^{-1}}$ to the red between dVenus-TDX and dVenus-TD
+($517.5 \rightarrow 518.5$~nm, their Table~S2), and Kim \emph{et al.}\ obtain
+the same value on a different sample, $33.8~\mathrm{cm^{-1}}$, from the
+monomer-to-dimer shift of free Venus\textsubscript{A206}
+($515.9 \rightarrow 516.8$~nm).\cite{kim2019venusa206} Two independent
+measurements on different species agree to $4\%$. Combined with
+$|\cos\alpha| = 0.660$ this bounds $|J| \le 53~\mathrm{cm^{-1}}$, the
+inequality holding because the environmental change on dimerisation contributes
+to the shift as well; reconciling $J = 130.79~\mathrm{cm^{-1}}$ with a
+$35~\mathrm{cm^{-1}}$ shift instead requires $|\cos\alpha| \le 0.27$, dipoles
+within $16^{\circ}$ of perpendicular, which is the opposite of the
+``predominant head-to-tail'' orientation the same red shift is cited as
+evidence for. The same $G_{1}$ shifts for their other two constructs are
+$9~\mathrm{cm^{-1}}$ (dLanYFP-TD) and $29~\mathrm{cm^{-1}}$ (dTomato-TD),
+against CD-derived couplings of $101.74$ and $134.39~\mathrm{cm^{-1}}$: in all
+three constructs the absorption shift is four to eleven times smaller than the
+coupling inferred from the CD couplet, and does not track it.
+
+\subsection{Vibronic structure}
+
+The third band in the experimental decomposition, at $481.37$~nm
+($20\,774~\mathrm{cm^{-1}}$), lies $1452~\mathrm{cm^{-1}}$ above the couplet
+centre $G_{1}$ --- the C=C/C=N stretch. Nguyen \emph{et al.} fit it in both
+their models but do not assign it, and it is not negligible: its integrated
+area is $18\%$ of the positive couplet lobe, and it carries the same sign as
+the negative lobe, so it overlaps and biases the couplet it flanks. A
+one-particle Holstein model with $\omega = 1450~\mathrm{cm^{-1}}$ (fixed by
+that spacing, not fitted) places $21$--$24\%$ of the intensity in the
+$470$--$495$~nm window for Huang--Rhys factors $S = 0.35$--$0.50$, against
+$9.6\%$ for a purely electronic model, and at $S = 0.5$ resolves it as a
+distinct band. The third component is therefore a vibronic sideband, not a
+third electronic state, consistent with the caution of Nguyen
+\emph{et al.}\cite{nguyen2025anomalous} that their components may merge
+unresolved structure. The assignment also fixes the integration window that a
+first-moment reduction of the couplet (Eq.~(\ref{eq:firstmomentcd})) requires:
+without it the measured band does not integrate to zero and its first moment is
+origin-dependent, which is why that reduction must be applied to the raw
+difference spectrum rather than to the published decomposition.
+
+\section{Discussion}
+
+\subsection{What the CD couplet can and cannot determine}
+\label{sec:couplet}
+
+The width of the CD couplet does \emph{not} discriminate between a degenerate
+and a detuned dimer. At a common linewidth the degenerate model gives couplet
+separations of $9.2$--$13.7$~nm and the detuned model $12.8$--$17.4$~nm across
+the range of component widths reported experimentally
+($\mathrm{HWHM} = 294$--$439~\mathrm{cm^{-1}}$), against a measured
+$14.6\pm0.3$~nm.\cite{kim2019venusa206} That measurement is a peak-to-peak
+separation and so is the model quantity, but it is made on free, concentration-
+driven Venus\textsubscript{A206} dimers rather than on the tethered tandem; the
+tandem couplet is reported instead as fitted component centres, $7.0$~nm
+(constrained) and $9.9$~nm (unconstrained).\cite{nguyen2025anomalous} Varying
+the linewidth alone changes the modelled couplet by a factor of $4.4$, whereas
+switching detuning on changes it by $\sim\!40\%$. The couplet is thus
+consistent with our model but is not evidence for it; the evidence for detuning
+is the electronic-structure calculation, not the spectrum.
+
+The reason the couplet is so uninformative is that it is unresolved, and the
+published fits establish this from their own parameters. A bisignate pair
+separated by $\Omega$ and broadened by a lineshape of width $w \gg \Omega$
+collapses to the derivative of that lineshape, whose extrema sit at
+$\pm\sigma$ for a Gaussian and at $\pm\gamma/\sqrt{3}$ for a Lorentzian,
+independently of $\Omega$. In that limit the peak positions carry the linewidth
+and only the couplet amplitude and its signed first moment
+(Eq.~(\ref{eq:firstmomentcd})) carry the coupling. The dVenus-TD fit is in this
+regime by its own numbers: $2\delta = 261.58~\mathrm{cm^{-1}}$ against
+Lorentzian half-widths of $293.5$ and $439.3~\mathrm{cm^{-1}}$. The
+corresponding floor on any extremum-based reading is
+$2\gamma/\sqrt{3} = 339$--$507~\mathrm{cm^{-1}}$, i.e.\ $9.0$--$13.5$~nm at
+$516$~nm --- so a couplet of \emph{zero} splitting with these widths would
+already reproduce most of the observed separation. Fitting component centres,
+as both published analyses do, escapes that floor but not the underlying
+ill-conditioning: as $\delta/\gamma \to 0$ the difference spectrum depends on
+the amplitude and $\delta$ only through their product, so $\delta$ is fixed
+solely by the departure from the derivative limit. At
+$2\delta/\gamma = 0.6$--$0.9$ that departure is present but small, which is
+consistent with Table~S3 quoting $\delta$ to five significant figures without
+an interval despite the $5000$-sample resampling procedure described alongside
+it. The same analysis also gives the two couplet components independent widths
+differing by a factor of $1.50$, so the common-lineshape condition under which
+a component separation maps cleanly onto a splitting does not hold within the
+fit either. This joint indeterminacy of $J$, $\Delta$ and linewidth is why a
+coupling inferred from a normalised CD profile is not uniquely determined.
+
+\subsection{Consequences for the interpretation of coherence}
+
+With mean mixing $0.18$ the exciton eigenstates are close to localised, so the
+description of the absorbing state as delocalised over both chromophores does
+not survive at the computed detunings. The photon-antibunching
+observation\cite{kim2019venusa206} is unaffected, since it requires a single
+emitting entity rather than a delocalised one.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+Three limitations bound the quantitative claims. First, the classical
+non-polarisable force field overestimates electrostatic gap fluctuations: a
+second-order cumulant built from the measured gap correlation function gives a
+dephasing time of $24$~fs, against $128.0\pm8.1$~fs measured for
+dVenus-TD,\cite{nguyen2025anomalous} implying that the fast component of the
+fluctuation is overestimated by $4.34\times$. The comparison is indicative
+rather than exact: the measured value comes from two-photon near-field
+scanning optical microscopy on a vacuum-dried thin film (their Table~S4), not
+from the buffered solution in which the CD and absorption were recorded. Applying that factor to the total
+detuning would reduce the apparent coupling to $60~\mathrm{cm^{-1}}$; we do not
+do so, because the calibration is derived from fast fluctuations while the
+detuning also contains slow structural contributions that are not a dielectric
+screening effect. Second, the site-energy difference is sensitive to basis set
+at the $27\%$ level.
+
+Third, the time dependence of the screening within the dynamics window is
+immaterial to every spectroscopic conclusion. Over the sub-picosecond window of
+the electronic dynamics the inverse dielectric function relaxes only from
+$1/\varepsilon = 0.56$ to $0.50$, which moves $J$ from $32.5$ to
+$29.0~\mathrm{cm^{-1}}$, a $10.7\%$ change, and lengthens the nominal Rabi
+period $h/2|J|$ from $0.51$ to $0.57$~ps. It moves the exciton gap $\Omega$ by
+only $0.14\%$, and the minor-site population weight from $0.69\%$ to $0.55\%$.
+The reason is Eq.~\eqref{eq:omega}: with $|\Delta| \approx 550~\mathrm{cm^{-1}}$
+against $2|J| \approx 65~\mathrm{cm^{-1}}$, the gap and therefore the splitting,
+the mixing and the exciton composition are set by the detuning, and are almost
+independent of the coupling. A $10\%$ drift in $J$ during the first picosecond
+cannot change a system that is $99\%$ localised into one that is not.
+
+Fourth, the absolute CD is limited, but not in the way we previously stated.
+TeraChem does print magnetic transition dipoles and both length- and
+velocity-gauge rotational strengths for every root; they are nonetheless
+unusable here. Across the $220$ completed site calculations the bright-state
+velocity transition dipole carries only $0.233$ times the magnitude required by
+the off-diagonal hypervirial relation
+$\bm\mu_{\mathrm{vel}} = -\omega\,\bm\mu_{\mathrm{len}}$, and lies
+$129.4\pm6.8^{\circ}$ away from it rather than the $180^{\circ}$ that relation
+demands. The two gauges consequently return oscillator strengths differing by a
+factor of $19$ ($f_{\mathrm{len}} = 1.13$, $f_{\mathrm{vel}} = 0.062$), and
+rotational strengths that disagree in sign in $208$ of the $220$ runs. The
+bright state carries essentially all of the chromophore's absorption intensity,
+so $f_{\mathrm{vel}} = 0.06$ is untenable and it is the velocity-gauge quantity
+that is at fault.
+
+This is a property of the method rather than of the code. An independent PySCF
+calculation on the same geometry and functional, also in the Tamm--Dancoff
+approximation, returns $f_{\mathrm{len}}/f_{\mathrm{vel}} = 19.1$ in 6-31G* and
+$17.0$ in 6-311+G**, with the velocity dipole at $0.229$ and $0.243$ of its
+exact value---reproducing the TeraChem ensemble to within its scatter, and not
+improving when diffuse functions are added. Two approximations are implicated:
+the Tamm--Dancoff truncation discards the de-excitation block that the
+off-diagonal hypervirial relation requires, and the range-separated exchange
+operator does not commute with $\mathbf{r}$. A full linear-response treatment
+would be needed before either gauge could be trusted.
+
+This is not a cosmetic problem for the length-gauge value
+either: a shift of the gauge origin by $\mathbf{a}$ moves it by
+$\mathbf{a}\cdot(\bm\mu_{\mathrm{vel}}\times\bm\mu_{\mathrm{len}})$, which
+vanishes only when the two dipoles are collinear, so here a displacement of
+$0.79$~\AA{} changes $R(\mathrm{len})$ by $100\%$. Gauge disagreement and
+origin dependence are the same defect measured two ways, and either one
+disqualifies these numbers.
+
+The absolute comparison of Sec.~\ref{sec:absolute} avoids them by construction,
+needing only electric transition dipoles and geometry. What remains genuinely
+unavailable is the \emph{intrinsic} monomer rotational strength, so we compare
+the interaction-induced couplet rather than the full CD spectrum. The
+experimental fit bounds what that omits: the two couplet bands of Table~S3 have
+areas that cancel to $5.4\%$, so any non-conservative monomer contribution
+beneath the band is small. What limits the absolute intensity is instead the
+transition-dipole normalisation, through the fourth-power dependence set out in
+Sec.~\ref{sec:absolute}; the handedness agrees once Nguyen's difference
+spectrum is inverted to recover the dimer's own couplet.
+
+A fourth limitation concerns sampling. The detuning itself is well determined:
+it decorrelates in $\le 5$~ps, so the trajectory supplies $\sim\!200$
+independent samples and $\langle|\Delta|\rangle$ is stable. The
+rotational-strength-weighted mean of Eq.~(\ref{eq:weighted}) converges more
+slowly, however, because the $1/\Omega$ factor concentrates weight on rare
+near-degenerate snapshots. Bootstrap resampling of the present $n=32$ ensemble
+gives a $16$--$84$ percentile interval of $\pm17\%$ on $J_{\mathrm{app}}$,
+narrowing to $\pm12\%$ at $n=64$ and $\pm6\%$ at $n=256$, with a median stable
+at $159$--$163~\mathrm{cm^{-1}}$ throughout. The numbers reported here should
+therefore be read with that interval attached; a $200$-frame ensemble on the
+$5$~ps grid is in progress and will reduce it to $\sim\!7\%$.
+
+A fifth concerns the dimer geometry, and it is the one point at which our
+structure and the experiment disagree. Our ensemble places the two transition
+dipoles at $100.8 \pm 2.7^\circ$ ($|\cos\alpha| = 0.187$); the crystal
+A206 dimer from which the construct was built gives $110.4^\circ$, and a
+trajectory rebuilt with ff19SB/OPC gives $95.8 \pm 3.3^\circ$, so the value is
+robust to force field and is set by the A206 interface rather than by the
+sampling. The limiting-anisotropy drop requires $|\cos\alpha| = 0.660$ under
+the assumption of complete excitation transfer, a factor of $3.5$ larger. Kim
+\emph{et al.} measured the same quantity on the same construct and obtained
+$r_{0} = 0.20$ against a monomer reference of $0.42$, giving
+$|\cos\alpha| = 0.549$; the two reports differ by $20\%$ on the tandem and by
+a comparable amount on the single-chromophore reference, from which the
+intrinsic absorption--emission angle of one chromophore comes out as
+$25^{\circ}$ and $14^{\circ}$ respectively. All four cross-combinations of the
+two numerators and two references lie between $0.55$ and $0.79$, so the
+qualitative disagreement with our structure is robust even though the value is
+not well determined.
+
+We can exclude several origins for it. The angle is not an artefact of placing
+a rigid density: the rigid STEOM placement ($100.8^{\circ}$), the per-frame
+QM/MM TDDFT dipoles computed independently at each geometry
+($96.8 \pm 3.2^{\circ}$) and the bare chromophore long axes with no dipoles at
+all ($98.6 \pm 3.0^{\circ}$) agree. It is not the transition-dipole direction
+within the chromophore: STEOM-CCSD and CAM-B3LYP agree to $3.4^{\circ}$ and
+both lie within $3.5^{\circ}$ of the long axis, so the $\sim\!12^{\circ}$
+intramolecular tilt that would reconcile them is absent at two levels of
+theory. And it is not the choice of crystallographic dimer. The deposited
+1MYW biological unit is an exact two-fold, for which
+$\cos\alpha = 2\cos^{2}\theta - 1$ with $\theta$ the angle between a
+chromophore dipole and the C2 axis; the observed $\theta = 53.3^{\circ}$
+reproduces $\cos\alpha = -0.285$ to machine precision, and the anisotropy would
+require $\theta = 65.6^{\circ}$. Applying all six space-group operators over
+the surrounding lattice returns exactly one further contact set, at
+chromophore separations of $36$ and $47~\text{\AA}$, so no alternative packing
+register combines the $\sim\!25~\text{\AA}$ separation both experimental
+analyses assume with a larger $|\cos\alpha|$.
+
+What we cannot exclude is that the tethered tandem does not adopt the free
+dimer's register. The crystal register requires the $33$-residue linker to
+span $54.2~\text{\AA}$ from the C-terminus of barrel~1 to the N-terminus of
+barrel~2, against $\sim\!38~\text{\AA}$ for an unperturbed disordered chain of
+that length, and across all $1000$ production frames the linker sits at
+$52.3 \pm 0.7~\text{\AA}$ --- taut, with no slack, for a nominally flexible
+tether. The construct was built in that register and a nanosecond cannot
+re-dock two $\beta$-barrels, so no alternative has been sampled. This is the
+one remaining candidate and it requires enhanced sampling to test.
+
+Through Eq.~(\ref{eq:firstmoment}) our geometry and coupling predict an
+absorption shift of $6.1~\mathrm{cm^{-1}}$ against the $35.3~\mathrm{cm^{-1}}$
+measured. That comparison is not, however, the test it appears to be, because
+the measured shift is not purely excitonic. The TDX control deletes Tyr67, so
+its partner barrel is still folded and docked but its chromophore is absent ---
+and with it the $-1~e$ that the anionic chromophore carries $24.7$~\AA{} away.
+We isolated that term by repeating the site calculation on $16$ frames with
+everything held fixed except the $29$ partner-chromophore point charges, which
+were made neutral: same QM geometry, same TeraChem input, same
+$69{,}374$-charge field at the same coordinates. Over the $15$ frames passing
+the bright-state margin criterion the partner charge red-shifts both sites
+equally, by $15.8 \pm 7.3~\mathrm{cm^{-1}}$ at site~A and
+$15.5 \pm 4.5~\mathrm{cm^{-1}}$ at site~B, giving a band shift of
+$15.6 \pm 4.0~\mathrm{cm^{-1}}$. A classical estimate over all $100$ available
+frames, using the computed difference dipoles
+($|\Delta\bm\mu| = 3.7$ and $3.0$~D) and the unscreened monopole field, gives
+$97 \pm 4~\mathrm{cm^{-1}}$, so the self-consistent embedding screens the term
+by a factor of $6$. Electrostatics and coupling together predict
+$21.7 \pm 4.0~\mathrm{cm^{-1}}$, leaving $13.6~\mathrm{cm^{-1}}$ unassigned.
+The conclusion we draw is negative and deliberately so: a demonstrably
+non-excitonic contribution accounts for $44\%$ of the measured shift, so the
+absorption shift cannot be used to infer a coupling in either direction, and it
+is not evidence for a coupling larger than $32.82~\mathrm{cm^{-1}}$. We note that the
+same tension appears within the experimental data alone: for all three
+constructs the anisotropy and the absorption shift require values of
+$|\cos\alpha|$ that differ by factors of $3.6$, $3.9$ and $7.1$. The
+superradiance constraint of Eq.~(\ref{eq:superradiance}) is unaffected, since
+it fixes the product $(2J/\Omega)\cos\alpha$ directly.
+
+None of these affects the central conclusion, which depends only on the
+inequality $|\Delta| \gg 2|J|$; that inequality holds under every embedding,
+basis, functional and screening treatment examined here, and in every
+individual snapshot.
+
+\section{Conclusions}
+
+The excitonic coupling of the Venus\textsubscript{A206} tandem dimer is
+$32.82 \pm 1.55~\mathrm{cm^{-1}}$, not the $131$--$186~\mathrm{cm^{-1}}$
+inferred from circular dichroism. The two values are reconciled by the
+site-energy detuning, $\langle|\Delta|\rangle = 603~\mathrm{cm^{-1}}$, which
+the experimental analysis does not include: because circular dichroism weights
+each configuration by $J/\Omega$, it reports the harmonic mean of the exciton
+splitting, and reading that as $2J$ inflates the inferred coupling roughly
+fourfold. The dimer is therefore an inhomogeneously detuned pair of largely
+localised chromophores rather than a degenerate excitonic dimer, and its CD
+splitting should not be interpreted as a Davydov splitting.
+
+\begin{acknowledgement}
+We thank the anonymous referee whose independent Q-Chem calculation
+corroborated the corrected transition-density coupling.
+\end{acknowledgement}
+
+\bibliography{Bibliography}
+
+\end{document}
