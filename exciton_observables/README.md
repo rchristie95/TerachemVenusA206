@@ -244,3 +244,48 @@ grid, not a buried-surface-area or energetic score.
 
 **Next:** solvate and run candidate 2, check the interface survives, and
 recompute all four observables on the resulting ensemble.
+
+## Candidate 2, solvated and run: 20.5 ns, ff19SB/OPC
+
+`tc_candidate2_ff19sb_opc/`. Net charge 0.000000 e, 250 ps NPT
+(0.9612 -> 1.0362 g/cm^3), 20 ns NVT. Analysed with `check_convergence.py
+--box-a 88.27` (a two-chain dimer wraps into different periodic images in the
+protein-only DCD; without the minimum-image correction the separation reads
+66 A and J collapses to 1.4 cm^-1).
+
+| | built | equilibrated (20.5 ns) | crystal register | measured |
+|---|---:|---:|---:|---:|
+| alpha (deg) | 131.5 | **121.1 ± 0.5** | 110.4 | — |
+| \|cos alpha\| | 0.660 | **0.516 ± 0.009** | 0.349 | 0.660 (anisotropy) |
+| separation (A) | 25.05 | 24.68 ± 0.35 | 24.1 | — |
+| J (cm^-1) | 33.9 | 32.25 ± 1.80 | 34.5 | 32.82 ± 1.55 (computed) |
+| predicted Dtau (ps) | — | **91.5 ± 1.7** | 57.0 | 57 ± 4 |
+
+**The interface holds.** No dissociation over 20 ns from a 49-contact
+interface; separation flat at 24.68 ± 0.35 A. The candidate's main weakness
+did not materialise. The autocorrelation time of cos(alpha) here is only
+0.51 ns, so 20.5 ns gives ~20 independent samples and alpha is pinned to
+±0.5 deg -- a genuinely equilibrated, stable second basin, not a transient.
+
+**But it relaxes ~10 deg, and it does not return to the crystal.** alpha settles
+at 121.1 deg, between the built 131.5 and the crystal 110.4, and stays there
+(120.7 -> 122.0 deg across the run). The same force field applied to the crystal
+register relaxes 110.4 -> 102. So this is a distinct stable minimum, and the
+~10-12 deg relaxation is now a reproducible systematic across two independent
+starting structures.
+
+**J is essentially unchanged at 32.25 ± 1.80 cm^-1**, indistinguishable from the
+production ensemble's 32.82 ± 1.55 -- so the coupling does not discriminate
+between registers, and neither does anything derived from it alone.
+
+**The prediction now overshoots.** 91.5 ps against a measured 57 ± 4, where the
+crystal register landed on 57 exactly. Reproducing the measurement at candidate
+2's geometry needs |Delta| = 988 cm^-1, versus 576 ± 71 computed, 253 from the
+CD splitting and 1310 from anisotropy+superradiance.
+
+**Reading.** The measurement sits *between* the two stable MD basins (crystal
+-> 33 ps, candidate 2 -> 91 ps), so neither structure is right at the computed
+detuning, and the two bracket the answer. Candidate 2 does move the required
+detuning from 576 toward the anisotropy's 1310, which is the only structural
+change so far that pulls the two angle observables and the detuning in the same
+direction. That is a hint about where the joint solution lies, not a result.
