@@ -1,0 +1,708 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{Why a circular-dichroism analysis of a detuned dimer reports an
+inflated coupling}
+\author{Derivation note}
+\date{\today}
+
+\newcommand{\muv}{\bm{\mu}}
+\newcommand{\Rv}{\mathbf{R}}
+
+\emergencystretch=1em
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We derive, from the two-site exciton Hamiltonian and the coupled-oscillator
+expression for rotational strength, the quantity that a circular-dichroism (CD)
+measurement of an inhomogeneous ensemble of dimers actually reports. Each
+configuration contributes to the CD couplet with weight proportional to
+$|J|/\Omega$, where $\Omega=\sqrt{\Delta^{2}+4J^{2}}$ is its exciton splitting.
+In the \emph{resolved} regime (splitting larger than the linewidth) the first
+moment of the couplet is a \emph{harmonic}-type mean of $\Omega$, and an
+analyst who fits the couplet under the assumption of degeneracy recovers an
+apparent coupling
+$J_{\mathrm{app}}=\tfrac{1}{2}\langle\Omega\rangle_{\mathrm{CD}}\ge|J|$. In the
+\emph{overlapped} regime (splitting smaller than the linewidth, the operative
+case for room-temperature protein chromophores) the couplet collapses to the
+derivative of the lineshape: the peak-to-peak separation then reports the
+\emph{linewidth}, not the splitting, and only the couplet amplitude and the
+signed first moment carry coupling information. The signed first moment is
+shown to measure $|JT|$ exactly, free of detuning, at any degree of overlap.
+We then read the two published reductions of the fluorescent-protein
+tandem-dimer couplet against this framework: the reported splitting is smaller
+than the width of either band it is meant to separate, the degeneracy
+assumption is hard-coded in the constrained fit rather than tested, and the
+couplet centre is taken from the one-chromophore control whose absorption
+maximum the two-chromophore construct does not share.
+Every assumption is stated explicitly, and those that are not automatically
+satisfied are flagged. A closing section describes how to compute the CD
+spectrum directly from QM/MM simulation, which removes the inversion problem
+altogether.
+\end{abstract}
+
+\section{The two-site problem}
+
+Take two chromophores $A$ and $B$ with site energies $E_{A}$, $E_{B}$ and
+electronic coupling $J$, in the single-excitation subspace of the standard
+molecular-exciton model \cite{davydov1962,kasha1965}:
+\begin{equation}
+H=\begin{pmatrix} E_{A} & J \\ J & E_{B}\end{pmatrix} .
+\end{equation}
+Write the mean and difference
+\begin{equation}
+\bar{E}=\tfrac{1}{2}(E_{A}+E_{B}), \qquad \Delta = E_{A}-E_{B} .
+\end{equation}
+Diagonalising,
+\begin{equation}
+E_{\pm}=\bar{E}\pm\tfrac{1}{2}\Omega,
+\qquad
+\boxed{\;\Omega=\sqrt{\Delta^{2}+4J^{2}}\;}
+\label{eq:omega}
+\end{equation}
+so the observable splitting is $\Omega$, and reduces to $2|J|$ only when
+$\Delta=0$. Introduce the mixing angle $\theta$ through
+\begin{equation}
+\sin 2\theta = \frac{2J}{\Omega},
+\qquad
+\cos 2\theta = \frac{\Delta}{\Omega},
+\label{eq:angle}
+\end{equation}
+which fixes $2\theta$ uniquely (the frequently quoted
+$\tan 2\theta = 2J/\Delta$ alone does not: it leaves a branch ambiguity that
+scrambles the state labels when $\Delta$ changes sign). The eigenvectors are
+\begin{align}
+\ket{+} &= \cos\theta\,\ket{A}+\sin\theta\,\ket{B}, \\
+\ket{-} &= -\sin\theta\,\ket{A}+\cos\theta\,\ket{B},
+\end{align}
+and the product of site amplitudes, which is the quantity that will carry the
+chirality, is
+\begin{equation}
+c^{\pm}_{A}c^{\pm}_{B}=\pm\tfrac{1}{2}\sin 2\theta
+=\pm\frac{J}{\Omega}.
+\label{eq:mixing}
+\end{equation}
+Equation~(\ref{eq:mixing}) is the crux: it is bounded in magnitude by
+$\tfrac{1}{2}$ at degeneracy and decays as $|J|/|\Delta|$ once
+$|\Delta|\gg 2|J|$. Note that it carries the sign of $J$ automatically: for
+$J<0$ the symmetric combination becomes the \emph{lower} exciton state and the
+couplet inverts, as it should.
+
+\section{Rotational strength of the couplet}
+
+In the coupled-oscillator (exciton-chirality) approximation
+\cite{tinoco1962,schellman1975,harada1983,berova2007}, the rotational
+strength of the exciton band $k=\pm$ of a dimer is
+\begin{equation}
+R_{\pm} = -\,\pi\bar\nu\;
+c^{\pm}_{A}c^{\pm}_{B}\;
+\Rv_{AB}\cdot(\muv_{A}\times\muv_{B}),
+\label{eq:rgeneral}
+\end{equation}
+where $\Rv_{AB}=\Rv_{B}-\Rv_{A}$ is the inter-chromophore displacement,
+$\muv_{A},\muv_{B}$ are the monomer electric transition dipoles, and $\bar\nu$
+is the mean transition wavenumber.\footnote{Two conventions are folded into the
+overall sign of Eq.~(\ref{eq:rgeneral}): the direction of $\Rv_{AB}$ and the
+sign convention for the magnetic transition-dipole operator. Only the
+\emph{relative} sign of the two bands and their common magnitude matter for
+everything below. Using the band-specific $\bar\nu_{\pm}$ instead of a common
+$\bar\nu$ changes $R_{\pm}$ by $O(\Omega/\bar\nu)$ (well under $1\%$ here) and
+slightly breaks exact conservativity; the common-$\bar\nu$ form is the standard
+choice.} The sign of the mixing product must \emph{not} be double-counted: the
+familiar degenerate-dimer formula
+$R_{\pm}=\mp(\pi\bar\nu/2)\,\Rv_{AB}\cdot(\muv_{A}\times\muv_{B})$ of the
+exciton-chirality literature \cite{harada1983,berova2007} is recovered from
+Eq.~(\ref{eq:rgeneral}) by inserting $c^{\pm}_{A}c^{\pm}_{B}=\pm\tfrac12$; the
+$\mp$ there is nothing but the sign of the amplitude product.\footnote{An
+earlier draft of this note wrote
+$R_{\pm}=\mp(\pi\bar\nu/2)(2c^{\pm}_{A}c^{\pm}_{B})\,T$, i.e.\ kept the $\mp$
+\emph{and} the signed product. Substituting Eq.~(\ref{eq:mixing}) then gives
+both bands the same sign, $R_{+}=R_{-}$, contradicting the conservativity used
+three lines later. The form (\ref{eq:rgeneral}) is the consistent one.}
+Substituting Eq.~(\ref{eq:mixing}) and abbreviating the chirality triple
+product as
+\begin{equation}
+T \equiv \Rv_{AB}\cdot(\muv_{A}\times\muv_{B}),
+\end{equation}
+gives
+\begin{equation}
+\boxed{\;
+R_{\pm} = \mp\,\pi\bar\nu\,\frac{J}{\Omega}\,T \;}
+\label{eq:rotational}
+\end{equation}
+The couplet is conservative, $R_{+}=-R_{-}$, and its amplitude is controlled by
+$|J|/\Omega$. Detuning does not merely widen the couplet; it \emph{weakens} it,
+and does so in inverse proportion to the very splitting it creates. The product
+$|R_{\pm}|\,\Omega=\pi\bar\nu\,|J|\,|T|$ is independent of $\Delta$, a sum rule
+we use repeatedly below.
+
+\section{Ensemble average}
+
+A room-temperature ensemble (or an MD trajectory) samples configurations
+$i=1\ldots N$ with different $\Delta_{i}$, and in general different $T_{i}$ and
+$J_{i}$. Assume each configuration contributes an identical normalised
+lineshape $g$ centred on its own exciton energies, so that the spectrum is the
+incoherent sum\footnote{Strictly $\Delta\varepsilon(\nu)\propto
+\nu\sum_i[\ldots]$; the frequency prefactor shifts moments by
+$O(\sigma_g^{2}/\bar\nu)$ and is suppressed throughout.}
+\begin{equation}
+\Delta A(\nu)\;\propto\;\frac{1}{N}\sum_{i}\Big[
+R^{i}_{+}\,g\!\left(\nu-\nu^{i}_{+}\right)
++R^{i}_{-}\,g\!\left(\nu-\nu^{i}_{-}\right)\Big],
+\label{eq:ensemble}
+\end{equation}
+and assume further that $\mathrm{sign}(J_{i}T_{i})$ is the same for every
+configuration, so that all couplets add with the same sense rather than
+partially cancelling (see assumption~2 below).
+
+\subsection{Resolved regime}
+
+Suppose first that the couplet is \emph{resolved}: the typical splitting
+exceeds the total width of a single-configuration band, so the positive-going
+lobe of the measured spectrum is built from the $+$ components only (and
+likewise for the negative lobe). Because $g$ is common to all configurations
+and normalised, the first moment of each lobe is then the $|R|$-weighted mean
+of its component positions, and the separation of the two lobe moments is
+\begin{equation}
+\langle\Omega\rangle_{\mathrm{CD}}
+=\frac{\sum_{i}|R^{i}|\;\Omega_{i}}{\sum_{i}|R^{i}|}
+=\frac{\sum_{i}\left(|J_{i}T_{i}|/\Omega_{i}\right)\Omega_{i}}
+       {\sum_{i}\left(|J_{i}T_{i}|/\Omega_{i}\right)}
+=\frac{\sum_{i} |J_{i}T_{i}|}{\sum_{i} |J_{i}T_{i}|/\Omega_{i}} .
+\label{eq:weighted}
+\end{equation}
+(The separation of lobe moments is insensitive to disorder in $\bar\nu_i$,
+since $\nu^{i}_{+}-\nu^{i}_{-}=\Omega_i$ configuration by configuration.) If
+$J_{i}$ and $T_{i}$ are constant across the ensemble this collapses to
+\begin{equation}
+\langle\Omega\rangle_{\mathrm{CD}}
+=\frac{N}{\sum_{i}\Omega_{i}^{-1}}
+\equiv \Omega_{\mathrm{harm}},
+\label{eq:harmonic}
+\end{equation}
+the \emph{harmonic} mean of the exciton splitting. Since the harmonic mean of a
+positive spread quantity never exceeds its arithmetic mean, with equality only
+for a degenerate distribution,
+\begin{equation}
+\langle\Omega\rangle_{\mathrm{CD}}\;\le\;\langle\Omega\rangle ,
+\end{equation}
+CD systematically reports \emph{less} than the typical splitting of a
+disordered ensemble: the $1/\Omega_i$ weighting means the couplet is dominated
+by the near-degenerate sub-ensemble. The bias grows with the width of the
+$\Omega$ distribution. The analogous weighting of polarized spectra of
+disordered aggregates is analysed in Ref.~\cite{somsen1996}.
+
+\subsection{Overlapped regime: the peak separation measures the linewidth}
+\label{sec:overlap}
+
+The identification of lobe moments with component positions fails when the two
+bands overlap, and this is not a small correction: it changes what the
+experiment measures. For a single configuration with $\Omega\ll\sigma_g$
+(lineshape width), expand Eq.~(\ref{eq:ensemble}):
+\begin{equation}
+\Delta A(\nu)\;\approx\;\mp\,|R|\,\Omega\,g'(\nu-\bar\nu),
+\label{eq:derivative}
+\end{equation}
+the \emph{derivative} of the lineshape. For a Gaussian $g$ of standard
+deviation $\sigma_g$ the extrema of $g'$ sit at $\pm\sigma_g$; for a Lorentzian
+of half-width at half-maximum $\gamma$ they sit at $\pm\gamma/\sqrt{3}$. The
+apparent peak-to-peak separation therefore saturates at
+\begin{equation}
+\Delta\nu_{\mathrm{pp}}\;\xrightarrow[\;\Omega\ll w\;]{}\;
+\begin{cases}
+2\sigma_g & \text{(Gaussian)}\\[2pt]
+2\gamma/\sqrt{3} & \text{(Lorentzian)}
+\end{cases}
+\qquad\text{independent of }\Omega ,
+\label{eq:pp}
+\end{equation}
+where $w$ denotes the relevant width. The Lorentzian case is not academic: both
+published analyses of these constructs fit Lorentzians
+(Sec.~\ref{sec:published}). Meanwhile the couplet amplitude, by the sum rule
+$|R|\,\Omega=\pi\bar\nu|J||T|$, becomes
+\begin{equation}
+|\Delta A|_{\max}\;\propto\;|R|\,\Omega\,|g'(\sigma_g)|
+\;\propto\;|J|\,|T|,
+\end{equation}
+independent of $\Delta$. In the overlapped regime the roles therefore swap:
+the \emph{amplitude} carries the coupling and the \emph{peak positions} carry
+the linewidth \cite{rodger1997,pescitelli2016}. An analyst who reads the
+peak-to-peak separation as $2J$ in this regime recovers
+$J_{\mathrm{app}}\approx\sigma_g$ (or $\gamma/\sqrt3$) --- the linewidth in
+disguise, with no coupling content at all.
+
+The fluorescent-protein constructs that motivate this note sit in exactly this
+regime, and their own published parameters say so. Nguyen \emph{et al.}\ fit
+the $\mathrm{dVenus\mbox{-}TD}$ difference-ellipticity couplet with Lorentzians
+of half-widths $\gamma_{1}=293.5$ and $\gamma_{2}=439.3~\mathrm{cm^{-1}}$ and a
+component separation of $2\delta=261.6~\mathrm{cm^{-1}}$ (Table~S3 of
+Ref.~\cite{nguyen2025}): the splitting they report is \emph{smaller than either
+band it is meant to separate}. Equation~(\ref{eq:pp}) then puts the
+derivative-limit floor on any extremum-based reading at
+$2\gamma/\sqrt{3} = 339$--$507~\mathrm{cm^{-1}}$. For comparison, the
+peak-to-peak Davydov splitting reported by Kim \emph{et al.}\ for
+concentration-driven $\mathrm{Venus_{A206}}$ dimers, $14.6\pm0.3$~nm about
+$516$~nm \cite{kim2019}, is $548~\mathrm{cm^{-1}}$, i.e.\ $U=274~\mathrm{cm^{-1}}$
+--- inside the band that a couplet of \emph{zero} splitting and these widths
+would produce.\footnote{Kim's couplet is measured on free
+$\mathrm{Venus_{A206}}$ against monomeric $\mathrm{Venus_{A206K}}$ at three
+concentrations, not on the tethered tandem construct; the two experiments are
+on different species and only Nguyen's is a tandem dimer.}
+
+\subsection{What the published fits actually constrain}
+\label{sec:published}
+
+It is worth being precise about the procedure, because the two published
+reductions differ from each other and neither is a naive reading of the couplet
+extrema. Nguyen \emph{et al.}\ report two \cite{nguyen2025}:
+
+\begin{description}
+\item[Unconstrained (main text).] A sum of three Lorentzians in
+\emph{wavelength}, $\sum_i A_i/[(\lambda-\lambda_i)^{2}+B_i]$, with all centres
+free. The couplet is components $2$ and $3$, and the coupling is defined as
+half their wavenumber separation,
+$U=\tfrac{1}{2}(\lambda_{2}^{-1}-\lambda_{3}^{-1})\times10^{7}$. For
+$\mathrm{dVenus\mbox{-}TD}$, $\lambda=511.8$ and $521.7$~nm give
+$U=185.4~\mathrm{cm^{-1}}$.
+\item[Constrained (Table~S3).] A sum of three Lorentzians in \emph{wavenumber}
+in which the two couplet centres are pinned symmetrically at $G_{1}\mp\delta$,
+with $G_{1}$ \emph{fixed} to the first Gaussian of the corresponding
+$\mathrm{TDX}$ \emph{absorption} spectrum and $\delta$ the single free
+splitting parameter. Widths and amplitudes are independent, and the third band
+is free. For $\mathrm{dVenus\mbox{-}TD}$, $G_{1}=19{,}322~\mathrm{cm^{-1}}$ and
+$\delta=130.79~\mathrm{cm^{-1}}$; this is the origin of the value usually
+quoted.
+\end{description}
+
+Four features of the constrained fit bear directly on the derivation above.
+
+\emph{(i) The degeneracy assumption is hard-coded, not implicit.} Placing the
+two components at $G_{1}\mp\delta$ and identifying $\delta$ with the coupling
+is Eq.~(\ref{eq:omega}) evaluated at $\Delta=0$. The supplement states the
+motivation as ``the predicted symmetry expected for Davydov splitting around
+this absorption peak when plotted on an energy scale.'' Nothing in the data
+tests it; $\Delta$ is never a parameter.
+
+\emph{(ii) The centre is taken from the wrong construct.} $G_{1}$ is the
+$\mathrm{TDX}$ absorption peak, but the same analysis (Table~S2 of
+Ref.~\cite{nguyen2025}) reports that $G_{1}$ moves $-35~\mathrm{cm^{-1}}$ on
+going from $\mathrm{TDX}$ to $\mathrm{TD}$. The couplet of the
+\emph{two-chromophore} construct is therefore centred $35~\mathrm{cm^{-1}}$
+--- $27\%$ of $\delta$ --- away from that construct's own absorption maximum,
+and in a fit whose only splitting freedom is symmetric about that centre, a
+mis-centring of this size is absorbed by $\delta$ and by the amplitude
+asymmetry.
+
+\emph{(iii) The fit's own widths violate the common-lineshape assumption.} The
+two couplet components are given independent widths, and the fitted values
+differ by a factor $1.50$ ($293.5$ against $439.3~\mathrm{cm^{-1}}$). This is
+assumption~4 below, broken inside the analysis that the coupling is extracted
+from. It is also why the couplet looks strongly non-conservative in amplitude
+($A_{1}/|A_{2}|=1.58$) while its \emph{areas} cancel to $5.4\%$ of the positive
+lobe ($A\pi\gamma$: $3310$ against $3132$), area being the quantity
+conservativity actually constrains.
+
+\emph{(iv) No uncertainty is quoted on $\delta$.} The supplement describes a
+$5000$-sample resampling procedure, and reports bootstrap-based comparisons for
+the absorption decomposition, but Table~S3 gives $\delta$ to five significant
+figures with no interval. In the overlapped limit $\delta\ll\gamma$ the couplet
+shape depends on $\delta$ and the amplitude only through the product $A\delta$
+(Eq.~\ref{eq:derivative}), so $\delta$ is fixed solely by the departure from
+the derivative limit. At $2\delta/\gamma\approx0.6$--$0.9$ that departure is
+present but small, and the fit is correspondingly ill-conditioned: the reported
+precision is a property of the constraint, not of the data.
+
+None of this makes the measurement wrong. It makes $\delta$ a
+model-conditioned quantity --- the splitting a degenerate dimer with these
+widths would need in order to reproduce the observed couplet --- which is
+precisely $J_{\mathrm{app}}$ of Eq.~(\ref{eq:japp}), not $J$.
+
+\subsection{A moment observable immune to detuning}
+\label{sec:moment}
+
+There is a reduction of the couplet that survives arbitrary overlap. Because
+$g$ is normalised and common, and each couplet is conservative
+($\int\Delta A\,d\nu=0$, which also makes the moment origin-independent), the
+signed first moment of the \emph{entire} CD band is
+\begin{equation}
+M_{1}\equiv\int \nu\,\Delta A(\nu)\,d\nu
+\;\propto\;\frac{1}{N}\sum_{i}R^{i}_{+}\left(\nu^{i}_{+}-\nu^{i}_{-}\right)
+=\frac{1}{N}\sum_{i}R^{i}_{+}\,\Omega_{i}
+=\pm\,\frac{\pi\bar\nu}{N}\sum_{i}|J_{i}T_{i}| ,
+\label{eq:moment}
+\end{equation}
+where the last step uses the sum rule. \emph{All dependence on the detuning
+has cancelled}: $M_{1}$ measures the ensemble mean of $|JT|$ exactly, at any
+degree of band overlap and for any distribution of $\bar\nu_i$. The practical
+price is that extracting $|J|$ from $M_{1}$ requires the geometric factor $T$
+(known here from structure), an absolute intensity calibration, and an
+integration window free of vibronic and neighbouring-transition
+contamination. Where those conditions can be met, Eq.~(\ref{eq:moment}) --- not
+the peak separation --- is the model-robust way to reduce a couplet to a
+coupling; related sum-rule analyses of aggregate CD are given in
+Refs.~\cite{somsen1996,vanamerongen2000}.
+
+The published dVenus fit cannot be reduced this way as it stands, and the
+reason is instructive. $M_{1}$ is origin-independent only when the integrated
+band vanishes, and for the Table~S3 parameters it does not: the couplet is
+conservative in area to $5.4\%$, and the third component --- which the paper
+fits at $20{,}774~\mathrm{cm^{-1}}$ but never assigns --- carries $18\%$ of the
+couplet's area with the same sign as the negative lobe. Until that component is
+assigned (its $\approx 1450~\mathrm{cm^{-1}}$ offset from the couplet centre is
+a C=C/C=N stretch, so vibronic is the natural reading, but that is an inference
+and not the authors') the integration window is not defined, and a first moment
+taken over it inherits an origin-dependent contribution comparable to the
+signal. A moment reduction therefore needs the \emph{raw} difference spectrum
+and a defensible window, not the published decomposition. (For Lorentzian
+components $\int\nu\,L\,d\nu$ exists only as a principal value; that is
+harmless once the zeroth moment vanishes, and fatal when it does not.)
+
+\section{What a degenerate-model fit returns}
+
+An analyst who assumes the two chromophores are isoenergetic sets $\Delta=0$ in
+Eq.~(\ref{eq:omega}), so that the measured component separation is interpreted
+as $2|J|$. In the resolved regime the recovered value is therefore
+\begin{equation}
+\boxed{\;
+J_{\mathrm{app}}=\tfrac{1}{2}\langle\Omega\rangle_{\mathrm{CD}}
+=\frac{1}{2}\,\frac{\sum_{i} |J_{i}T_{i}|}{\sum_{i} |J_{i}T_{i}|/\Omega_{i}} \;}
+\label{eq:japp}
+\end{equation}
+For a single configuration this is simply
+$J_{\mathrm{app}}=\tfrac{1}{2}\sqrt{\Delta^{2}+4J^{2}}\ge |J|$, with equality
+only at $\Delta=0$: within the static electronic model the inferred coupling
+can only ever be too large, never too small. Taking $J_{i}=J>0$ and $T_{i}=T$
+fixed, the inflation factor is
+\begin{equation}
+\frac{J_{\mathrm{app}}}{J}
+=\frac{\langle\Omega\rangle_{\mathrm{CD}}}{2J}
+\;\xrightarrow[\;|\Delta|\gg 2|J|\;]{}\;
+\frac{\langle|\Delta|\rangle_{\mathrm{CD}}}{2J},
+\end{equation}
+i.e.\ in the strongly detuned limit the apparent coupling measures the
+\emph{detuning}, not the coupling at all. In the overlapped regime of
+Sec.~\ref{sec:overlap} the situation is worse still: peak reading returns
+$J_{\mathrm{app}}\approx\sigma_g$, which is bounded below by the linewidth
+however small $J$ and $\Delta$ may be.
+
+\section{Assumptions, and which of them can fail}
+
+\begin{enumerate}
+\item \textbf{Coupled-oscillator CD.} Intrinsic monomer rotational strength,
+inter-chromophore electric--magnetic cross terms, and quadrupole contributions
+are neglected \cite{tinoco1962,jurinovich2014}. This is the standard
+exciton-chirality treatment and is appropriate here because the experimental
+observable is a \emph{difference} spectrum, constructed precisely to cancel
+the monomer contribution --- with the caveat that the cancellation is exact
+only if dimerisation leaves the intrinsic monomer CD unchanged.
+
+\item \textbf{Sign coherence.} $\mathrm{sign}(J_{i}T_{i})$ is taken to be
+common to all configurations. If the coupling (or the chirality sense) changes
+sign across the ensemble, sub-populations contribute couplets of opposite
+sense that partially cancel; the weights in Eq.~(\ref{eq:weighted}) then
+become signed and the moment analysis can fail outright (the denominator can
+pass through zero). For a rigid dimer with $|J|$ well above its fluctuation
+this is safe, but it must be checked on the trajectory.
+
+\item \textbf{Static ensemble.} Each configuration is assumed frozen on the
+optical timescale, so the spectrum is an incoherent sum,
+Eq.~(\ref{eq:ensemble}). This requires the site-energy-gap correlation time to
+exceed the dephasing time; in the opposite limit the ensemble is exchange
+narrowed \cite{knapp1984} and the effective detuning spread collapses toward
+its mean. Note the direction of this failure: narrowing drives
+$J_{\mathrm{app}}$ \emph{down toward} $|J|$ (for $\langle\Delta\rangle=0$), so
+violating this assumption reduces the inflation but cannot turn it into an
+underestimate. \emph{This assumption must be checked, not assumed.} For these
+constructs there is now a measured number to check it against: $128.0\pm8.1$~fs
+for $\mathrm{dVenus\mbox{-}TD}$ by two-photon NSOM on a thin film (Table~S4 of
+Ref.~\cite{nguyen2025}), against which the site-energy gap correlation time
+from simulation must be compared --- with the caveat that a dried film is not
+the solution sample the CD was measured on.
+
+\item \textbf{Common lineshape.} Eq.~(\ref{eq:weighted}) uses the first
+moment, which is exact provided $g$ is identical for every configuration and
+for both bands. In reality the upper exciton band is lifetime-broadened by
+downhill interexciton relaxation \cite{renger2002}, which correlates linewidth
+with lobe and biases the moment separation. The published fit does not assume
+it either: its two couplet components carry independent widths differing by a
+factor $1.50$ (Sec.~\ref{sec:published}, point~iii).
+
+\item \textbf{Two states per monomer.} Vibronic structure is excluded. This is
+not only a fitting hazard --- and a live one here, since both published fits
+require a third, unassigned band under the couplet, and the absorption
+decomposition of the same spectra needs four Gaussians by AIC --- it is a
+physical one. Vibronic coupling renormalises the
+effective resonance coupling of the 0--0 region by a Franck--Condon factor,
+$J_{\mathrm{eff}}\simeq\braket{0|0}^{2}J<J$ in the weak-exchange limit
+\cite{simpson1957,hestand2018}, so a CD-derived splitting can also
+\emph{under}-report the bare electronic coupling. This is the one mechanism in
+this list that can reverse the sign of the bias.
+
+\item \textbf{Resolved couplet, moment-returning fit.} Equations
+(\ref{eq:weighted})--(\ref{eq:japp}) presuppose the resolved regime, and real
+analyses fit component centres rather than moments. When the bands overlap the
+fit is ill-conditioned ($J$, $\Delta$ and linewidth trade off against one
+another), naive peak reading returns the linewidth
+(Sec.~\ref{sec:overlap}), and only amplitude- or moment-based reductions
+(Sec.~\ref{sec:moment}) retain coupling information.
+\end{enumerate}
+
+Assumptions 2, 3, 5 and 6 are the ones that can materially move the answer,
+and none of them is guaranteed by the derivation itself.
+
+\section{Consequence}
+
+Three statements follow that do not depend on the numerical details:
+
+\begin{itemize}
+\item Within the static, purely electronic model, a coupling extracted from CD
+under an assumption of degeneracy is an \emph{upper bound} on the true
+coupling, configuration by configuration --- and if the couplet is unresolved,
+peak reading inflates it further, to the linewidth scale.
+\item The bound is model-bound, not unconditional. Motional narrowing only
+tightens it toward $|J|$; but vibronic (Franck--Condon) renormalisation can
+push the observed 0--0 splitting \emph{below} the bare electronic $2|J|$
+\cite{simpson1957,hestand2018}. A CD-derived coupling is therefore neither a
+reliable upper nor lower bound once vibronic structure is strong.
+\item The discrepancy between a computed $J$ and a CD-derived ``coupling'' is
+not by itself evidence that the computed $J$ is wrong. Establishing that
+requires independent knowledge of $\Delta$ (from electronic structure --- a
+single splitting measurement cannot separate $\Delta$ from $J$,
+Eq.~(\ref{eq:omega})), or an observable that does not contain $\Delta$ at all,
+such as the signed first moment of Eq.~(\ref{eq:moment}).
+\end{itemize}
+
+\subsection*{A second detuning-free observable, in absorption}
+
+The CD moment of Sec.~\ref{sec:moment} is not the only reduction that cancels
+$\Delta$. The exciton dipole strengths are
+$|\muv_{\pm}|^{2}=\mu^{2}(1\pm\sin2\theta\cos\alpha)$ with $\alpha$ the angle
+between the monomer dipoles, so the dipole-strength-weighted first moment of
+the absorption band is
+\begin{equation}
+\bar{E}_{\mathrm{abs}}
+=\bar{E}+\frac{\Omega}{2}\,\frac{2J}{\Omega}\cos\alpha
+=\bar{E}+J\cos\alpha ,
+\label{eq:absmoment}
+\end{equation}
+the $\Omega$ of the intensity asymmetry cancelling the $\Omega$ of the
+splitting. Like Eq.~(\ref{eq:moment}) this survives averaging over any
+distribution of $\Delta$; unlike it, it is carried by absorption, which is far
+better determined than a difference-CD couplet. The same experiments supply it:
+$-35~\mathrm{cm^{-1}}$ for the $\mathrm{TDX}\to\mathrm{TD}$ shift of the
+$G_{1}$ absorption component \cite{nguyen2025}, and $-33.8~\mathrm{cm^{-1}}$
+from the monomer-to-dimer shift $515.9\to516.8$~nm \cite{kim2019} --- two
+independent measurements agreeing to $4\%$. It is a bound rather than a match,
+because the environmental change on dimerisation (or on deleting a tyrosine)
+shifts the site energies as well; but attributing the whole shift to the
+exciton gives $|J|\le 35/|\cos\alpha|~\mathrm{cm^{-1}}$, which is
+$35~\mathrm{cm^{-1}}$ for the head-to-tail geometry the authors invoke and
+$53~\mathrm{cm^{-1}}$ at their own anisotropy-derived $|\cos\alpha|=0.660$.
+Reconciling $J=130.79~\mathrm{cm^{-1}}$ with a $35~\mathrm{cm^{-1}}$ shift
+requires $|\cos\alpha|\le0.27$, i.e.\ dipoles within $16^{\circ}$ of
+perpendicular --- the opposite of the head-to-tail arrangement the same red
+shift is cited as evidence for. The two geometric readings in the experimental
+papers are already inconsistent with each other --- ``predominant head-to-tail''
+from the red shift, $|\cos\alpha|=0.660$ from the limiting-anisotropy drop ---
+so this tension is internal to the measurement, not a conflict with anything
+computed here.
+
+\section{Bypassing the inversion: CD directly from the QM/MM simulation}
+\label{sec:direct}
+
+Every difficulty above stems from \emph{inverting} the spectrum to a model
+parameter. The inversion is unnecessary: the QM/MM machinery already in place
+for site energies and couplings can produce the CD spectrum itself, which is
+then compared with experiment with no degeneracy assumption, no lineshape
+deconvolution, and no fit. Two complementary routes:
+
+\subsection{Per-snapshot rotatory strengths (fit-free, exciton-model-free)}
+
+For each MD snapshot, place \emph{both} chromophores (and any strongly
+interacting residues) in the QM region, the remaining protein and solvent in
+the (ideally polarizable) MM region, and compute the low-lying excited states
+$k$ of the full dimer together with their rotatory strengths
+\begin{equation}
+R_{k}=\operatorname{Im}\big[\braket{0|\hat{\muv}|k}\cdot\braket{k|\hat{\mathbf{m}}|0}\big],
+\end{equation}
+evaluated in the velocity gauge (or with gauge-including orbitals) so the
+result is origin-independent \cite{autschbach2009}. The ensemble CD spectrum
+is then the direct sum
+\begin{equation}
+\Delta\varepsilon(\nu)\;\propto\;\nu\,
+\Big\langle{\textstyle\sum_{k}}\,R_{k}\,g\big(\nu-\nu_{k}\big)\Big\rangle_{\mathrm{snapshots}},
+\label{eq:directcd}
+\end{equation}
+with residual broadening $g$ representing only what the ensemble does not
+already contain. Running the identical protocol on the monomer construct gives
+the dimer-minus-monomer difference spectrum \emph{exactly as measured}. This
+route automatically contains everything the exciton-chirality model discards:
+intrinsic monomer CD, electric--magnetic cross terms, charge-transfer mixing,
+and environment-induced chirality. It is the strategy of the
+TDDFT/MMPol/PCM exciton-CD framework of Jurinovich \emph{et
+al.}~\cite{jurinovich2014}; standard good-practice protocols for computed ECD
+apply \cite{pescitelli2016}, and simplified TDDFT makes the per-snapshot cost
+of hundreds of frames tractable \cite{bannwarth2014}. Any excited-state
+method that yields transition electric \emph{and} magnetic dipoles (TDDFT,
+sTD-DFT, EOM/STEOM response) can be substituted.
+
+\subsection{Dynamic lineshape from the fluctuating exciton Hamiltonian}
+
+The snapshot sum, like Eq.~(\ref{eq:ensemble}), is still a static
+approximation (assumption~3). The QM/MM trajectory, however, already provides
+the \emph{time series} $E_{A}(t)$, $E_{B}(t)$, $J(t)$ and the geometric
+factors $\Rv_{AB}(t)$, $\muv_{a}(t)$; the CD lineshape follows from linear
+response as the Fourier transform of the electric--magnetic cross-correlation
+function. At the exciton level,
+\begin{equation}
+\Delta\varepsilon(\omega)\;\propto\;\omega\,
+\operatorname{Re}\!\int_{0}^{\infty}\!dt\;e^{i\omega t}\,
+\Big\langle{\textstyle\sum_{a\neq b}}\;
+\pi\bar\nu\,\Rv_{ab}\cdot\big(\muv_{a}\times\muv_{b}\big)\,
+\big[U(t)\big]_{ba}\Big\rangle_{\mathrm{traj}},
+\label{eq:response}
+\end{equation}
+with the time-ordered propagator of the fluctuating Hamiltonian
+\begin{equation}
+U(t)=\mathcal{T}\exp\!\Big[-\tfrac{i}{\hbar}\!\int_{0}^{t}\!H(\tau)\,d\tau\Big],
+\end{equation}
+averaged over trajectory time origins, optionally with a second-order-cumulant
+treatment of the fast intramolecular modes through their spectral density
+\cite{renger2002,zuehlsdorff2019}. Equation~(\ref{eq:response}) interpolates
+between the limits by itself: for slow fluctuations it reduces to the static
+sum (\ref{eq:ensemble}); for fast fluctuations it produces the exchange-narrowed
+spectrum \cite{knapp1984}. It therefore \emph{decides} assumption~3 rather
+than assuming it, and it reuses precisely the site-energy and coupling
+trajectories this project already generates. Disorder-averaged exciton CD of
+pigment--protein aggregates computed in this spirit is standard in the
+photosynthesis literature \cite{somsen1996,vanamerongen2000,renger2002}.
+
+\begin{thebibliography}{99}
+
+\bibitem{davydov1962}
+A.~S. Davydov, \emph{A Theory of Molecular Excitons} (McGraw-Hill, New York,
+1962).
+
+\bibitem{kasha1965}
+M.~Kasha, H.~R. Rawls, M.~A. El-Bayoumi,
+The exciton model in molecular spectroscopy,
+\emph{Pure Appl. Chem.} \textbf{11}, 371--392 (1965).
+
+\bibitem{tinoco1962}
+I.~Tinoco, Jr.,
+Theoretical aspects of optical activity. Part two: polymers,
+\emph{Adv. Chem. Phys.} \textbf{4}, 113--160 (1962).
+
+\bibitem{schellman1975}
+J.~A. Schellman,
+Circular dichroism and optical rotation,
+\emph{Chem. Rev.} \textbf{75}, 323--331 (1975).
+
+\bibitem{harada1983}
+N.~Harada, K.~Nakanishi, \emph{Circular Dichroic Spectroscopy: Exciton
+Coupling in Organic Stereochemistry} (University Science Books, Mill Valley,
+1983).
+
+\bibitem{berova2007}
+N.~Berova, L.~Di Bari, G.~Pescitelli,
+Application of electronic circular dichroism in configurational and
+conformational analysis of organic compounds,
+\emph{Chem. Soc. Rev.} \textbf{36}, 914--931 (2007).
+
+\bibitem{rodger1997}
+A.~Rodger, B.~Nord\'en, \emph{Circular Dichroism and Linear Dichroism}
+(Oxford University Press, Oxford, 1997).
+
+\bibitem{somsen1996}
+O.~J.~G. Somsen, R.~van Grondelle, H.~van Amerongen,
+Spectral broadening of interacting pigments: polarized absorption by
+photosynthetic proteins,
+\emph{Biophys. J.} \textbf{71}, 1934--1951 (1996).
+
+\bibitem{vanamerongen2000}
+H.~van Amerongen, L.~Valkunas, R.~van Grondelle,
+\emph{Photosynthetic Excitons} (World Scientific, Singapore, 2000).
+
+\bibitem{knapp1984}
+E.~W. Knapp,
+Lineshapes of molecular aggregates: exchange narrowing and intersite
+correlation,
+\emph{Chem. Phys.} \textbf{85}, 73--82 (1984).
+
+\bibitem{simpson1957}
+W.~T. Simpson, D.~L. Peterson,
+Coupling strength for resonance force transfer of electronic energy in
+van der Waals solids,
+\emph{J. Chem. Phys.} \textbf{26}, 588--593 (1957).
+
+\bibitem{hestand2018}
+N.~J. Hestand, F.~C. Spano,
+Expanded theory of H- and J-molecular aggregates: the effects of vibronic
+coupling and intermolecular charge transfer,
+\emph{Chem. Rev.} \textbf{118}, 7069--7163 (2018).
+
+\bibitem{renger2002}
+T.~Renger, R.~A. Marcus,
+On the relation of protein dynamics and exciton relaxation in
+pigment--protein complexes: an estimation of the spectral density and a
+theory for the calculation of optical spectra,
+\emph{J. Chem. Phys.} \textbf{116}, 9997--10019 (2002).
+
+\bibitem{jurinovich2014}
+S.~Jurinovich, G.~Pescitelli, L.~Di Bari, B.~Mennucci,
+A TDDFT/MMPol/PCM model for the simulation of exciton-coupled circular
+dichroism spectra,
+\emph{Phys. Chem. Chem. Phys.} \textbf{16}, 16407--16418 (2014).
+
+\bibitem{autschbach2009}
+J.~Autschbach,
+Computing chiroptical properties with first-principles theoretical
+chemistry: background and illustrative examples,
+\emph{Chirality} \textbf{21}, E116--E152 (2009).
+
+\bibitem{pescitelli2016}
+G.~Pescitelli, T.~Bruhn,
+Good computational practice in the assignment of absolute configurations by
+TDDFT calculations of ECD spectra,
+\emph{Chirality} \textbf{28}, 466--474 (2016).
+
+\bibitem{bannwarth2014}
+C.~Bannwarth, S.~Grimme,
+A simplified time-dependent density functional theory approach for
+electronic ultraviolet and circular dichroism spectra of very large
+molecules,
+\emph{Comput. Theor. Chem.} \textbf{1040--1041}, 45--53 (2014).
+
+\bibitem{zuehlsdorff2019}
+T.~J. Zuehlsdorff, A.~Montoya-Castillo, J.~A. Napoli, T.~E. Markland,
+C.~M. Isborn,
+Optical spectra in the condensed phase: capturing anharmonic and vibronic
+features using dynamic and static approaches,
+\emph{J. Chem. Phys.} \textbf{151}, 074111 (2019).
+
+\bibitem{kim2019}
+Y.~Kim, H.~L. Puhl, E.~Chen, G.~H. Taumoefolau, T.~A. Nguyen, D.~S. Kliger,
+P.~S. Blank, S.~S. Vogel,
+Venus$_{\mathrm{A206}}$ dimers behave coherently at room temperature,
+\emph{Biophys. J.} \textbf{116}, 1918--1930 (2019).
+
+\bibitem{nguyen2025}
+T.~Nguyen, H.~L. Puhl, E.~Chen, K.~Hines, C.~Rani, P.~S. Blank, B.~Carlotti,
+Y.~Kim, T.~Goodson, S.~S. Vogel,
+Anomalous photophysical behaviors attributed to excitonic coupling in
+fluorescent proteins,
+\emph{Biophys. J.} \textbf{124}, 4293--4309 (2025).
+
+\end{thebibliography}
+
+\end{document}

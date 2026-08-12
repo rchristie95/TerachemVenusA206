@@ -171,3 +171,76 @@ Each of these was checked before committing time to it, and none pay:
 - All three observables are interpreted in the same two-state
   (one-exciton, two-site) framework. Nguyen themselves hedge that a model with
   "only two excited states might be overly simplistic".
+
+---
+
+# Test sequence, 2026-08-12: over-determination, then a register search
+
+## Step 2 — the two-state model is falsified by its own observables
+
+`joint_constraints.py`. Four measurements constrain two unknowns
+(|cos alpha|, |Delta|) with J fixed at 32.82 +/- 1.55, so the system is
+over-determined and can be falsified:
+
+| observable | constrains | value |
+|---|---|---|
+| superradiance, 57 ± 4 ps | both | Dtau/tau = 0.01884 ± 0.00165 |
+| limiting anisotropy, R0 0.52 -> 0.30 | \|cos alpha\| | 0.660 ± 0.061 |
+| CD couplet splitting | \|Delta\| | 253 ± 56 cm^-1 |
+| absorption red shift (electrostatics removed) | \|cos alpha\| | 0.600 ± 0.125 |
+
+**Every pair fits perfectly (chi^2 ~ 0). All four together give chi^2 = 46.0 for
+2 dof, p = 1e-10.** The two-state model cannot accommodate the full data set.
+This is robust to the one assumed error bar: even at an absurd R0 ± 0.12 the
+fit is still rejected at p = 0.01.
+
+Leave-one-out isolates the incompatibility:
+
+| dropped | chi^2 (1 dof) | p | solution |
+|---|---:|---:|---|
+| superradiance | 0.2 | 0.67 | alpha 130.4 deg, \|Delta\| 253 |
+| CD splitting | 0.2 | 0.67 | alpha 130.4 deg, \|Delta\| 1281 |
+| anisotropy | 8.1 | 0.004 | alpha 104.5 deg, \|Delta\| 268 |
+| red shift | 40.6 | ~0 | alpha 107.7 deg, \|Delta\| 341 |
+
+So **superradiance and the CD splitting demand incompatible detunings**
+(1281 vs 253), while the two *independent* angle observables — anisotropy and
+red shift — agree with each other on alpha ~ 130 deg. That agreement is the
+important part: it is no longer one experiment against our structure.
+
+## Step 1 — a rigid register CAN satisfy every constraint at once
+
+`register_search.py`. The lattice scan only ever tested six crystallographic
+operators. This searches the full rigid-body space, 20 million trials, with
+every filter **calibrated against the known biological dimer** (which, as a
+validation run showed, fails naive filters: it has 15 heavy atoms within 3.2 A
+and a 54.2 A linker span, so thresholds of "no clash below 3.2 A" and
+"span <= 48 A" reject the real structure).
+
+20,000,000 trials -> 98,698 passed alpha/separation/J/handedness -> **6 also
+passed sterics and linker span**. The best three are in
+`register_candidate_{1,2,3}.pdb`:
+
+| rank | alpha (deg) | sep (A) | J (cm^-1) | contacts | linker (A) |
+|---|---:|---:|---:|---:|---:|
+| 1 | 126.1 | 26.1 | 30.1 | 52 | 22.4 |
+| **2** | **131.5** | **25.1** | **33.9** | **49** | **20.6** |
+| 3 | 135.0 | 25.1 | 33.0 | 49 | 21.0 |
+| *crystal, for reference* | *110.4* | *24.1* | *34.5* | *72* | *54.2* |
+
+Candidate 2 matches the experimental angle (131.3 deg), the computed coupling
+(32.8 ± 1.6), and the crystal separation simultaneously, with a linker span of
+20.6 A that a 33-residue tether spans without strain — against 54.2 A in the
+crystal register.
+
+**Caveats.** The interface is weaker than the crystal dimer's (49 vs 72 atoms
+in the contact shell). For a *tethered* tandem that is not obviously wrong —
+the linker supplies the association, and the crystal interface forms at
+crystallisation concentrations — but it is not a strong interface and these
+candidates are unrelaxed rigid-body poses built from a rigid crystal monomer,
+so no side-chain accommodation is included. They are hypotheses to test, not
+structures. The contact count is a distance-transform shell count on a 0.6 A
+grid, not a buried-surface-area or energetic score.
+
+**Next:** solvate and run candidate 2, check the interface survives, and
+recompute all four observables on the resulting ensemble.

@@ -1,0 +1,34 @@
+{
+  "constraints": {
+    "superradiance_dtau_over_tau": [
+      0.018836748182419035,
+      0.0016523463317911432
+    ],
+    "anisotropy_abs_cos_alpha": [
+      0.6602252917735247,
+      0.06137930492781546
+    ],
+    "cd_splitting_abs_delta_cm": [
+      253.2,
+      55.9
+    ],
+    "red_shift_abs_cos_alpha": [
+      0.6002437538086532,
+      0.12514685682948076
+    ]
+  },
+  "global_fit": {
+    "abs_cos_alpha": 0.3191666666666667,
+    "abs_delta_cm": 362.0,
+    "chi2": 45.951333130680624,
+    "dof": 2
+  },
+  "computed": {
+    "abs_cos_alpha_crystal": 0.349,
+    "abs_cos_alpha_md": 0.213,
+    "abs_delta_cm": [
+      576.4,
+      71.0
+    ]
+  }
+}
