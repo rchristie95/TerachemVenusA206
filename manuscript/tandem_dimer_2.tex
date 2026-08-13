@@ -162,9 +162,30 @@ exactly as follows, since the count is easy to reproduce incorrectly:
 
 The stoichiometry is C$_{19}$H$_{18}$N$_3$O$_4$ with a net charge of $-1$, and
 a structure diagram with every atom labelled is given as
-Fig.~S\ref{fig:qmregion} in the Supporting Information. A count of $45$ arises
+Fig.~\ref{fig:qmregion}. A count of $45$ arises
 if the tyrosine C$_\beta$ is retained instead of being replaced by a link
-hydrogen.
+hydrogen. Figure~\ref{fig:qmregion} shows the region at three orientations.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.32\textwidth]{FigS1_qmregion_a.png}\hfill
+\includegraphics[width=0.32\textwidth]{FigS1_qmregion_b.png}\hfill
+\includegraphics[width=0.32\textwidth]{FigS1_qmregion_c.png}
+\caption{The $44$-atom QM region used for every site energy, drawn from the
+exact geometry of the production calculations at three orientations
+($0^\circ$, $90^\circ$ about $y$, $90^\circ$ about $x$). Carbon grey, oxygen
+red, nitrogen blue, hydrogen white; the \textbf{three link hydrogens are green
+and enlarged}. Composition: the complete anionic CR2 chromophore ($29$ atoms,
+the phenolate ring at lower right and the imidazolinone at centre), the
+$\pi$-stacked Tyr203 phenol ($12$ atoms, upper right, retaining its OH), and
+$3$ link hydrogens. The links cap N1 of CR2, C10 of CR2 and C30 of the tyrosine
+at $1.010$, $1.090$ and $1.090$~\AA{} respectively; the third of these replaces
+the tyrosine C$_\beta$, and retaining that carbon instead of capping is what
+produces a count of $45$. Net charge $-1$, stoichiometry
+C$_{19}$H$_{18}$N$_3$O$_4$.}
+\label{fig:qmregion}
+\end{figure*}
+
 
 Two embedding choices proved essential. First, both sites must see the
 identical whole system: a $12~\text{\AA}$ shell gives the two supposedly
@@ -271,6 +292,18 @@ $\mu = 7.9 \pm 0.5$~D and $R = 25.4 \pm 1.0$~\AA{} and no dielectric screening.
 Repeating our own point-dipole evaluation on that structure under their
 conventions gives $31.1~\mathrm{cm^{-1}}$ against their $32.1$, an agreement of
 $3\%$ between independent implementations.
+
+More importantly, the same work reports an \emph{experimental} coupling. From
+the spectral dependence of the two-photon polarization ratio $\Omega$ of
+dVenus-TD --- an observable independent of CD, of absorption shifts and of any
+degeneracy assumption --- they obtain a coupling strength of
+$\bm{32}$--$\bm{40~\mathrm{cm^{-1}}}$, with a corresponding H--J splitting of
+$60$--$90~\mathrm{cm^{-1}}$. Our computed $J = 32.82 \pm 1.55$ and
+$2|J| = 65.63 \pm 3.11~\mathrm{cm^{-1}}$ fall inside both ranges. The
+long-standing discrepancy between computed and measured couplings for this
+system is therefore closed from the experimental side as well: the quantity that
+is $131$--$274~\mathrm{cm^{-1}}$ is the CD couplet width, and the quantity that
+is $\approx 33~\mathrm{cm^{-1}}$ is the coupling.
 
 \subsection{Kim's Davydov splitting is $\Omega$, not $2|J|$}
 \label{sec:omega}
@@ -679,7 +712,18 @@ from the buffered solution in which the CD and absorption were recorded. Applyin
 detuning would reduce the apparent coupling to $60~\mathrm{cm^{-1}}$; we do not
 do so, because the calibration is derived from fast fluctuations while the
 detuning also contains slow structural contributions that are not a dielectric
-screening effect. Second, the site-energy difference is sensitive to basis set
+screening effect. Second, the tandem may not adopt the crystallographic register. Every
+geometry here derives from the 1MYW biological dimer, and Cusick \emph{et
+al.}\cite{cusick2026twophoton} find from the same $\Omega$ analysis a
+chromophore tilt angle of $\delta = 14$--$20^\circ$ for dVenus-TD, matching
+their AlphaFold3 prediction of $15^\circ$ but not the $31^\circ$ of the crystal
+dimer, and attribute the difference to the linker or to crystal-versus-solution
+conditions. Our own coupling is insensitive to this (it changes by $<15\%$
+between registers we have tested, because $J$ is dominated by the separation,
+which barely moves) and so is $\Omega$, which is set by $\Delta$; but the
+inter-dipole angle $\alpha$ is not, and the angle is the one quantity where our
+geometry disagrees with experiment. Third, the site-energy difference is
+sensitive to basis set
 at the $27\%$ level.
 
 Third, the time dependence of the screening within the dynamics window is
