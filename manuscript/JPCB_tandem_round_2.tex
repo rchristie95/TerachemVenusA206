@@ -176,16 +176,10 @@ The simulation of the dimeric Venus (PDB: 1MYW \cite{berman2000protein}) proceed
 
     \item \textbf{TDDFT reference (ORCA):} As a single-excitation reference, excited-state roots were computed via TDDFT (range-separated hybrid $\omega$B97X-D3/6-311G** \cite{mardirossian2017}, Tamm--Dancoff approximation) in ORCA 6.1 \cite{neese2020orca,neese2022orca} on the \emph{same} $44$-atom QM region and MM point-charge field as the DLPNO-STEOM-CCSD calculation, so that the single-excitation and correlated site energies are compared on an identical structure and embedding.
 
-    \item \textbf{Correlated site energy and transition density (ORCA):} Because the anionic chromophore's site energy is strongly method dependent, the site energy and transition density used for the coupling were computed with DLPNO-STEOM-CCSD \cite{nooijen1997steom,dutta2016dlpno,dutta2018ipeom,dutta2019eaeom,riplinger2013dlpno} as implemented in ORCA 6.1 \cite{neese2020orca,neese2022orca}, using the def2-SVPD basis \cite{weigend2005def2,rappoport2010svpd} with the RIJCOSX approximation, TightSCF/TightPNO thresholds and an automatically constructed auxiliary basis. STEOM-CCSD reaches the excited states through a second similarity transformation of the CCSD Hamiltonian $\bar H = e^{-\hat T}\hat H\,e^{\hat T}$, forming $\tilde H = \{e^{-\hat S}\bar H\,e^{\hat S}\}$ with $\hat S = \hat S^{\mathrm{IP}} + \hat S^{\mathrm{EA}}$ built from ionization- and electron-attachment-EOM-CCSD amplitudes; $\tilde H$ is then diagonalised in a compact singles-like excitation space. Correlation effects enter through the CCSD ground state and the two similarity transformations, but standard STEOM-CCSD does not contain the full connected-triples operator $\hat T_3$ and is intended for roots dominated by single excitations. To keep the correlated calculation tractable while retaining the residue that controls the in-protein shift, Tyr203 was included because its $\pi$--$\pi$ stacking interaction with the conjugated CR2 chromophore directly perturbs the chromophore's electronic environment and site energy. Figure~\ref{fig:qm_region} shows the complete QM structure. The hydrogen-capped, net-$-1$ QM region contains 31 atoms from anionic CR2 (including two link hydrogens) and 13 atoms from the Tyr203 phenol (including one link hydrogen), giving exactly 44 atoms; the rest of the protein and solvent is represented by the MM point-charge field. Root-wise convergence, CIS following, root homing, per-root checks, and the double-excitation filter were enabled to make the active-space construction and reported bright state reproducible. All seven printed S$_1$ natural-transition-orbital pairs (99.046\% total occupation) were combined with their signed singular amplitudes. Voxels assigned by a nearest-QM-atom Voronoi construction to the three artificial link hydrogens were removed, and the cap-masked density was scaled by least-squares projection onto the ORCA right transition moment before applying the relative $10^{-6}$ cutoff. The retained grid preserves the source-frame moment norm to within 0.02\%. Because truncation leaves a small residual transition charge ($-0.00155e$, 0.169\% of the total absolute grid weight), PDA and multipole moments are evaluated about each grid centroid to make them translation invariant. Two independent exact-neutrality constructions change the static TDC by only 1.8\% and leave the conclusion unchanged. This correlated single-point was evaluated at the frozen composite geometry defined above; the complete CR2--Tyr203 $44$-atom cluster was not separately reoptimised. The definitive inter-chromophore coupling is then obtained by evaluating this density over the thermally sampled tandem ensemble (below) rather than from any single geometry.
+    \item \textbf{Correlated site energy and transition density (ORCA):} Because the anionic chromophore's site energy is strongly method dependent, the site energy and transition density used for the coupling were computed with DLPNO-STEOM-CCSD \cite{nooijen1997steom,dutta2016dlpno,dutta2018ipeom,dutta2019eaeom,riplinger2013dlpno} as implemented in ORCA 6.1 \cite{neese2020orca,neese2022orca}, using the def2-SVPD basis \cite{weigend2005def2,rappoport2010svpd} with the RIJCOSX approximation, TightSCF/TightPNO thresholds and an automatically constructed auxiliary basis. STEOM-CCSD reaches the excited states through a second similarity transformation of the CCSD Hamiltonian $\bar H = e^{-\hat T}\hat H\,e^{\hat T}$, forming $\tilde H = \{e^{-\hat S}\bar H\,e^{\hat S}\}$ with $\hat S = \hat S^{\mathrm{IP}} + \hat S^{\mathrm{EA}}$ built from ionization- and electron-attachment-EOM-CCSD amplitudes; $\tilde H$ is then diagonalised in a compact singles-like excitation space. Correlation effects enter through the CCSD ground state and the two similarity transformations, but standard STEOM-CCSD does not contain the full connected-triples operator $\hat T_3$ and is intended for roots dominated by single excitations. To keep the correlated calculation tractable while retaining the residue that controls the in-protein shift, Tyr203 was included because its $\pi$--$\pi$ stacking interaction with the conjugated CR2 chromophore directly perturbs the chromophore's electronic environment and site energy. Figure~\ref{fig:qmregion} shows the complete QM structure. The hydrogen-capped, net-$-1$ QM region contains 31 atoms from anionic CR2 (including two link hydrogens) and 13 atoms from the Tyr203 phenol (including one link hydrogen), giving exactly 44 atoms; the rest of the protein and solvent is represented by the MM point-charge field. Root-wise convergence, CIS following, root homing, per-root checks, and the double-excitation filter were enabled to make the active-space construction and reported bright state reproducible. All seven printed S$_1$ natural-transition-orbital pairs (99.046\% total occupation) were combined with their signed singular amplitudes. Voxels assigned by a nearest-QM-atom Voronoi construction to the three artificial link hydrogens were removed, and the cap-masked density was scaled by least-squares projection onto the ORCA right transition moment before applying the relative $10^{-6}$ cutoff. The retained grid preserves the source-frame moment norm to within 0.02\%. Because truncation leaves a small residual transition charge ($-0.00155e$, 0.169\% of the total absolute grid weight), PDA and multipole moments are evaluated about each grid centroid to make them translation invariant. Two independent exact-neutrality constructions change the static TDC by only 1.8\% and leave the conclusion unchanged. This correlated single-point was evaluated at the frozen composite geometry defined above; the complete CR2--Tyr203 $44$-atom cluster was not separately reoptimised. The definitive inter-chromophore coupling is then obtained by evaluating this density over the thermally sampled tandem ensemble (below) rather than from any single geometry.
 
-Figure~\ref{fig:qm_region} gives the atom-resolved chemical structure of the common $44$-atom model used for the embedded and gas-phase electronic-structure comparison.
+Figure~\ref{fig:qmregion} gives the atom-resolved chemical structure of the common $44$-atom model used for the embedded and gas-phase electronic-structure comparison.
 
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=0.96\textwidth]{Fig_QM_Region_44.png}
-  \caption{Chemical structure of the complete QM region used for the embedded TDDFT and DLPNO-STEOM-CCSD calculations. It contains the anionic CR2 chromophore (31 atoms) and the $\pi$-stacked Tyr203 phenol (13 atoms), for 44 atoms in total and net charge $-1$. The three hydrogen atoms added where covalent bonds to the MM region were severed (XYZ atoms 42--44) are highlighted in orange. This deterministic diagram was rendered from the executed ORCA XYZ coordinates with a plotting script developed with OpenAI Codex assistance; no generative image model was used.}
-  \label{fig:qm_region}
-\end{figure*}
 
     \item \textbf{Method calibration (Q-Chem):} STEOM-CCSD was calibrated for this transition on the tractable gas-phase (neutral) chromophore against canonical EOM-CCSD and its non-iterative triples correction EOM-CCSD(fT) \cite{manohar2008ft}, both in Q-Chem \cite{epifanovsky2021qchem} (Table~\ref{tab:ladder}). Agreement with EOM-CCSD(fT) is used here as a numerical calibration; it is not interpreted as formal equivalence to an explicit triples method.
 
@@ -375,26 +369,26 @@ Because protein conformational dynamics modulate the inter-chromophore geometry 
 
 \begin{figure*}[t]
   \centering
-  \begin{subfigure}[b]{0.40\textwidth}
+  \begin{subfigure}[b]{0.32\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Fig_Tandem_Separation.pdf}
     \caption{}
     \label{fig:tandem_sep}
   \end{subfigure}\hfill
-  \begin{subfigure}[b]{0.40\textwidth}
+  \begin{subfigure}[b]{0.32\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{Fig_Tandem_Coupling.pdf}
+    \includegraphics[width=\linewidth]{Fig_Detuning_Histogram.pdf}
     \caption{}
-    \label{fig:tandem_coupling}
-  \end{subfigure}\par\medskip
-  \begin{subfigure}[b]{0.40\textwidth}
+    \label{fig:tandem_detuning}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Fig_Tandem_Histogram.pdf}
     \caption{}
     \label{fig:tandem_hist}
   \end{subfigure}
 
-  \caption{Dynamics of the VenusA206 tandem dimer ($1000$ frames saved every $1$\,ps over a $1$\,ns, $300$\,K unrestrained NVT trajectory; \texttt{run\_nvt.py}, \texttt{coupling\_dcd\_steom.py}). The two anionic CR2 residues use the production AMBER parameters, and every snapshot is evaluated with the complete cap-masked STEOM transition density ($259{,}277\times259{,}277$ mutual Coulomb sum, GPU, $\varepsilon_{\rm opt}=1.77$). (a) Chromophore-centroid separation versus time, $24.69\pm0.32~\text{\AA}$ (mean dashed; shading is one sample standard deviation). (b) TDC coupling per snapshot, $J=32.8\pm1.6~\mathrm{cm^{-1}}$. (c) Distribution of all $1000$ values; the spread is the sample standard deviation, not the uncertainty in the mean.}
+  \caption{Dynamics of the VenusA206 tandem dimer ($1000$ frames saved every $1$\,ps over a $1$\,ns, $300$\,K unrestrained NVT trajectory; \texttt{run\_nvt.py}, \texttt{coupling\_dcd\_steom.py}). The two anionic CR2 residues use the production AMBER parameters, and every snapshot is evaluated with the complete cap-masked STEOM transition density ($259{,}277\times259{,}277$ mutual Coulomb sum, GPU, $\varepsilon_{\rm opt}=1.77$). (a) Chromophore-centroid separation versus time, $24.69\pm0.32~\text{\AA}$ (mean dashed; shading is one sample standard deviation). (b) Distribution of the QM/MM TDDFT site-energy difference $\Delta = E_A - E_B$ over the ensemble ($n=95$; $\langle|\Delta|\rangle = 576~\mathrm{cm^{-1}}$, median $557~\mathrm{cm^{-1}}$), with $\pm2|J|$ marked by the dashed red lines: only $7$ frames ($7.4\%$) fall inside $|\Delta| < 2|J|$, so the two chromophores are almost never near-degenerate. (c) Distribution of all $1000$ values; the spread is the sample standard deviation, not the uncertainty in the mean.}
   \label{fig:tandem}
 \end{figure*}
 
@@ -405,8 +399,93 @@ Nguyen et al.\ analysed the $\mathrm{dVenus\mbox{-}TDX}-\mathrm{dVenus\mbox{-}TD
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=0.92\textwidth]{Fig_FrameDynamics.pdf}
-  \caption{Open-system dynamics on the two extreme members of the site-energy ensemble, rather than on its mean. Top row, frame $465$: $\Delta = +12.9~\mathrm{cm^{-1}}$, the smallest detuning sampled, giving $\Omega = 66.9~\mathrm{cm^{-1}}$, mixing $2|J|/\Omega = 0.981$ and $40.4\%$ of the bright eigenstate on the minor site --- an accidental near-degeneracy, and the only condition under which the delocalised picture holds. Bottom row, frame $1005$: $\Delta = -1825~\mathrm{cm^{-1}}$, the largest detuning sampled, giving $\Omega = 1826~\mathrm{cm^{-1}}$, mixing $0.036$ and $0.03\%$ on the minor site, so the excitation is on one chromophore and the partner is a spectator. Left, site populations from the master equation; centre, the site-basis coherence $|\rho_{AB}|$; right, three individual diffusive trajectories (thin) against the ensemble average (dashed). All panels use $J = 32.82~\mathrm{cm^{-1}}$ and pure dephasing at $T_2^* = 60$\,fs. The near-degenerate frame exchanges population completely and carries a large transient coherence; the detuned frame does neither. Because the median $|\Delta|$ of the ensemble is several hundred $\mathrm{cm^{-1}}$, the lower row is the typical case.}
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_deloc/Fig_Bloch_Grid.pdf}
+    \caption{}
+    \label{fig:fdeloc_a}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_deloc/Fig_SSE_Site.pdf}
+    \caption{}
+    \label{fig:fdeloc_b}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_deloc/Fig_SSE_Adiabatic.pdf}
+    \caption{}
+    \label{fig:fdeloc_c}
+  \end{subfigure}
+
+  \vspace{0.25cm}
+
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_deloc/Fig_Purity_Coupling.pdf}
+    \caption{}
+    \label{fig:fdeloc_d}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_deloc/Fig_ME_Site.pdf}
+    \caption{}
+    \label{fig:fdeloc_e}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_deloc/Fig_ME_Adiabatic.pdf}
+    \caption{}
+    \label{fig:fdeloc_f}
+  \end{subfigure}
+
+  \vspace{0.25cm}
+
+  \vspace{0.35cm}
+
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_loc/Fig_Bloch_Grid.pdf}
+    \caption{}
+    \label{fig:floc_g}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_loc/Fig_SSE_Site.pdf}
+    \caption{}
+    \label{fig:floc_h}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_loc/Fig_SSE_Adiabatic.pdf}
+    \caption{}
+    \label{fig:floc_i}
+  \end{subfigure}
+
+  \vspace{0.25cm}
+
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_loc/Fig_Purity_Coupling.pdf}
+    \caption{}
+    \label{fig:floc_j}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_loc/Fig_ME_Site.pdf}
+    \caption{}
+    \label{fig:floc_k}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{frame_loc/Fig_ME_Adiabatic.pdf}
+    \caption{}
+    \label{fig:floc_l}
+  \end{subfigure}
+
+  \vspace{0.25cm}
+
+  \caption{The same six quantities as Figure~\ref{fig:ExcitonDynamics}, produced by the same generator with only the two site energies changed, evaluated on the extreme members of the site-energy ensemble rather than at its mean. Panels (a)--(f), frame $465$: $\Delta = +12.9~\mathrm{cm^{-1}}$, the smallest detuning sampled, giving $\Omega = 66.9~\mathrm{cm^{-1}}$, mixing $2|J|/\Omega = 0.981$ and $40.4\%$ of the bright eigenstate on the minor site. Panels (g)--(l), frame $1005$: $\Delta = -1825~\mathrm{cm^{-1}}$, the largest sampled, giving $\Omega = 1826~\mathrm{cm^{-1}}$, mixing $0.036$ and $0.03\%$ on the minor site. Panel order matches Figure~\ref{fig:ExcitonDynamics} in both blocks: Bloch sphere, SSE site basis, SSE adiabatic basis, purity with $|J(t)|$, ME site basis, ME adiabatic basis. In the near-degenerate frame the sites exchange population completely and the Bloch vector sweeps the equator, which is what a delocalised exciton picture presumes; in the detuned frame the populations barely move, the adiabatic states are the site states, and the Bloch vector stays near a pole. Only $7$ of $95$ frames ($7.4\%$) have $|\Delta| < 2|J|$, so the lower block is the typical case.}
   \label{fig:framedynamics}
 \end{figure*}
 
