@@ -1,0 +1,14 @@
+! EOM-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF
+# Gas-phase NEUTRAL (protonated) CR2 chromophore, charge 0, closed shell.
+# Canonical EOM-CCSD with transition moments, so the oscillator strength is
+# reported alongside the excitation energy. Same geometry and basis as the
+# TDDFT and STEOM rows, so the whole ladder is method-matched.
+%maxcore 6000
+%pal nprocs 8 end
+%mdci
+  NRoots 3
+  DoRootWise true
+  MaxIter 200
+  NDav 400
+end
+* xyzfile 0 1 neutral_chromophore.xyz

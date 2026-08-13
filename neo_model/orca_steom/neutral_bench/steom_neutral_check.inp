@@ -1,0 +1,22 @@
+! STEOM-DLPNO-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF TightPNO
+# Gas-phase NEUTRAL chromophore. Re-run to pin the tabulated value, with the
+# robust active-space settings (DoDbFilter + NRootsCISNAT), NOT loosened
+# OThresh/VThresh.
+%maxcore 6000
+%pal nprocs 8 end
+%mdci
+  NRoots 5
+  DoRootWise true
+  FollowCIS true
+  RootHoming true
+  CheckEachRoot true
+  DTol 1e-5
+  DoStoreSTEOM true
+  AddL2Term True
+  DoDbFilter true
+  NRootsCISNAT 10
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 400
+end
+* xyzfile 0 1 neutral_chromophore.xyz
