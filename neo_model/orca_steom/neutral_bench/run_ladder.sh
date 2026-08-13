@@ -12,7 +12,7 @@
 #   2  TDDFT wB97X-D3         (ORCA)
 #   3  DLPNO-STEOM-CCSD       (ORCA)   <- method of record
 #   4  canonical EOM-CCSD     (ORCA)
-#   5  ADC(3)                 (adcc)   <- independent hierarchy, replaces the
+#   5  ADC(2)                 (adcc)   <- independent hierarchy, replaces the
 #                                         Q-Chem EOM-CCSD(fT) rung, which cannot
 #                                         be run (licence expired 2026-07-25 and
 #                                         ORCA has no excited-state triples)
@@ -52,12 +52,12 @@ run_orca tddft_wb97xd3
 run_orca steom_neutral_check
 run_orca eomccsd_neutral
 
-if [ -f adc3_neutral.json ]; then
-  note "SKIP  adc3 (adc3_neutral.json exists)"
+if [ -f adc2_neutral.json ]; then
+  note "SKIP  adc2 (adc2_neutral.json exists)"
 else
-  note "START adc3"
-  "$PY" adc3_neutral.py > adc3_neutral.out 2>&1
-  if [ -f adc3_neutral.json ]; then note "OK    adc3"; else note "FAIL  adc3 (see adc3_neutral.out)"; fi
+  note "START adc2"
+  "$PY" adc2_neutral.py > adc2_neutral.out 2>&1
+  if [ -f adc2_neutral.json ]; then note "OK    adc2"; else note "FAIL  adc2 (see adc2_neutral.out)"; fi
 fi
 
 note "===== ladder complete ====="

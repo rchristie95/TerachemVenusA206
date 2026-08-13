@@ -51,12 +51,12 @@ def main():
         best, why = orca_bright(stem)
         rows.append((label, best, why))
 
-    adc = HERE / "adc3_neutral.json"
+    adc = HERE / "adc2_neutral.json"
     if adc.exists():
         d = json.loads(adc.read_text())["bright_state"]
-        rows.append(("ADC(3)", (d["eV"], d["cm-1"], d["nm"], d["fosc"]), "ok"))
+        rows.append(("ADC(2)", (d["eV"], d["cm-1"], d["nm"], d["fosc"]), "ok"))
     else:
-        rows.append(("ADC(3)", None, "pending"))
+        rows.append(("ADC(2)", None, "pending"))
 
     print("\nNeutral gas-phase chromophore, def2-SVP, identical geometry")
     print(f"{'method':<24}{'lambda (nm)':>13}{'cm^-1':>11}{'f':>9}   status")
