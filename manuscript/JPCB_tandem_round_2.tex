@@ -305,13 +305,15 @@ Experiment (absorption)     & 514.46 & n/a   & -- & -- \\
 \centering
 \caption{Method calibration on the gas-phase (neutral) chromophore, def2-SVP. Bare EOM-CCSD predicts the excitation at too short a wavelength; the non-iterative triples correction EOM-CCSD(fT) redshifts it from $333.29$ to $376.85~\mathrm{nm}$ (a shift of $43.56~\mathrm{nm}$), close to the DLPNO-STEOM-CCSD value of $371.21~\mathrm{nm}$. This numerical agreement supports use of STEOM-CCSD for the present predominantly singly excited bright state; it does not imply that standard STEOM-CCSD is an explicit triples treatment.}
 \label{tab:ladder}
-\begin{tabular}{lc}
+\begin{tabular}{lcc}
 \toprule
-Method & $\lambda$ (nm) \\
+Method & $\lambda$ (nm) & $f$ \\
 \midrule
-EOM-CCSD (bare)           & 333.29 \\
-EOM-CCSD(fT) (+triples)   & 376.85 \\
-DLPNO-STEOM-CCSD          & 371.21 \\
+TDDFT, CAM-B3LYP          & 366.9  & 0.801 \\
+TDDFT, $\omega$B97X-D3    & 361.3  & 0.829 \\
+EOM-CCSD (bare)           & 333.29 & --- \\
+EOM-CCSD(fT) (+triples)   & 376.85 & --- \\
+DLPNO-STEOM-CCSD          & 371.21 & --- \\
 \bottomrule
 \end{tabular}
 \end{table*}

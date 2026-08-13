@@ -1,0 +1,13 @@
+! wB97X-D3 def2-SVP def2/J RIJCOSX TightSCF
+# Gas-phase NEUTRAL (protonated) CR2 chromophore, charge 0, closed shell.
+# Method-matched to the correlated ladder (same geometry, same def2-SVP basis)
+# so TDDFT, EOM-CCSD, EOM-CCSD(fT) and STEOM are directly comparable. The
+# neutral form is used because the isolated ANION has no bound electron-attached
+# state in a diffuse basis, which breaks the EA-EOM sector of STEOM.
+%maxcore 4000
+%pal nprocs 8 end
+%tddft
+  NRoots 5
+  TDA false
+end
+* xyzfile 0 1 neutral_chromophore.xyz
