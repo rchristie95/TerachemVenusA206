@@ -17,11 +17,11 @@
 #                                         be run (licence expired 2026-07-25 and
 #                                         ORCA has no excited-state triples)
 #
-# RESILIENCE. Launch with launch.sh, which wraps this in setsid+nohup so it
-# belongs to a new session with no controlling terminal. It then survives the
-# SSH connection dropping, the network going away, and the terminal closing.
-# Nothing here touches the network. Each rung is skipped if its output already
-# shows a normal termination, so re-running after any interruption resumes
+# RESILIENCE. Launch with launch.sh, which runs this as a USER SYSTEMD UNIT.
+# setsid+nohup is NOT enough -- the agent harness kills its whole process tree
+# on exit and a setsid child is still a descendant. systemd reparents the job
+# outside that tree. Nothing here touches the network. Each rung is skipped if
+# its output already shows normal termination, so an interruption resumes
 # rather than restarting.
 
 set -u
