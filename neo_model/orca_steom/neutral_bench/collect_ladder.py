@@ -34,8 +34,17 @@ def orca_bright(stem: str):
     blocks = text.split("ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE")
     if len(blocks) < 2:
         return None, "no absorption block"
+    # Stop at the next section header. ORCA prints VELOCITY DIPOLE and CD
+    # SPECTRUM tables after this one with IDENTICAL row shape but different
+    # column meanings -- the CD table's 4th column is a rotatory strength, which
+    # can be tens or hundreds and is often negative. Scanning to end-of-file
+    # therefore picks a rotatory strength and calls it an oscillator strength.
+    tail = blocks[-1]
+    cut = tail.find("SPECTRUM", 200)
+    if cut > 0:
+        tail = tail[:cut]
     best = None
-    for line in blocks[-1].splitlines():
+    for line in tail.splitlines():
         m = re.match(r"\s*\d+-\d+\w*\s+->\s+\d+-\d+\w*\s+([\d.]+)\s+([\d.]+)\s+"
                      r"([\d.]+)\s+([\d.]+)", line)
         if m:

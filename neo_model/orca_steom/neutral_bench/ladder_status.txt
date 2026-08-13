@@ -2,3 +2,22 @@
 [2026-08-13 18:24:37] SKIP  tddft_camb3lyp (already terminated normally)
 [2026-08-13 18:24:37] SKIP  tddft_wb97xd3 (already terminated normally)
 [2026-08-13 18:24:37] START steom_neutral_check
+[2026-08-13 19:18:22] OK    steom_neutral_check
+[2026-08-13 19:18:22] START eomccsd_neutral
+[2026-08-13 20:19:24] FAIL  eomccsd_neutral (see eomccsd_neutral.out)
+[2026-08-13 20:19:24] START adc2
+[2026-08-13 20:19:35] FAIL  adc2 (see adc2_neutral.out)
+[2026-08-13 20:19:35] ===== ladder complete =====
+
+Neutral gas-phase chromophore, def2-SVP, identical geometry
+method                    lambda (nm)      cm^-1        f   status
+----------------------------------------------------------------------
+TDDFT, CAM-B3LYP               279.80    35741.4  24.6914   ok
+TDDFT, wB97X-D3                268.30    37272.7  31.8026   ok
+DLPNO-STEOM-CCSD               311.10    32143.9   3.8039   ok
+EOM-CCSD (canonical)               --         --       --   did not terminate normally
+ADC(2)                             --         --       --   pending
+
+EOM-CCSD(fT) is absent by necessity: the Q-Chem licence expired
+2026-07-25, ORCA has no excited-state triples correction, and CC3/CCSDT
+are N^7/N^8 -- unreachable at 331 basis functions.
