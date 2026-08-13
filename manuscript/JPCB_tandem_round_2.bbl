@@ -8,7 +8,7 @@
 \providecommand*\mcitethebibliography{\thebibliography}
 \csname @ifundefined\endcsname{endmcitethebibliography}
   {\let\endmcitethebibliography\endthebibliography}{}
-\begin{mcitethebibliography}{51}
+\begin{mcitethebibliography}{52}
 \providecommand*\natexlab[1]{#1}
 \providecommand*\mciteSetBstSublistMode[1]{}
 \providecommand*\mciteSetBstMaxWidthForm[2]{}
@@ -404,6 +404,17 @@ Nguyen,~T.; Puhl,~H.~L.; Chen,~E.; Hines,~K.; Rani,~C.; Blank,~P.~S.;
   Carlotti,~B.; Kim,~Y.; Goodson,~T.; Vogel,~S.~S. Anomalous photophysical
   behaviors attributed to excitonic coupling in fluorescent proteins.
   \emph{Biophysical Journal} \textbf{2025}, \emph{124}, 4293--4309\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Cusick \latin{et~al.}(2026)Cusick, Thuen, Schultz, Puhl, Hines, Kim,
+  Vogel, and Drobizhev]{cusick2026twophoton}
+Cusick,~A.; Thuen,~A.; Schultz,~S.; Puhl,~H.~L.,~III; Hines,~K.; Kim,~Y.;
+  Vogel,~S.~S.; Drobizhev,~M. The Two-Photon Polarization Ratio Explains
+  Unusual Shape of the Two-Photon Absorption Spectra of Dyes and Detects Weak
+  Excitonic Coupling in Fluorescent Protein Dimers. \emph{J. Phys. Chem. A}
+  \textbf{2026}, \emph{130}, 5471--5483\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
