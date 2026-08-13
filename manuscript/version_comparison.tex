@@ -1,0 +1,143 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb,bm,booktabs,microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\setlength{\parskip}{2pt}
+\title{\vspace{-1.6cm}\textbf{From \texttt{JPCB\_tandem.tex} to
+\texttt{tandem\_dimer\_2.tex}:\\ what changed, and how the CD simulation works}}
+\author{}
+\date{\vspace{-1.2cm}}
+
+\begin{document}
+\maketitle
+\vspace{-1.0cm}
+
+\section*{1. What changed between the two manuscripts}
+
+The two documents reach opposite conclusions from the same trajectory. The cause
+is a single unit-conversion error, and the consequence is a different physical
+story.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lll}
+\toprule
+& \textbf{Round 1} (\texttt{JPCB\_tandem.tex}) & \textbf{Round 2} (\texttt{tandem\_dimer\_2.tex}) \\
+\midrule
+Title claim & time-dependent excitonic coupling & site-energy detuning explains the \emph{apparent} coupling \\
+Coupling $J$ & $117.2 \pm 5.5~\mathrm{cm^{-1}}$ & $\bm{32.82 \pm 1.55~\mathrm{cm^{-1}}}$ \\
+Point dipole & $27.6 \pm 1.3~\mathrm{cm^{-1}}$ & $27.6 \pm 1.3~\mathrm{cm^{-1}}$ (unchanged) \\
+TDC/PDA & $4.24$ ``near-field multipolar'' & $\bm{1.187 \pm 0.011}$ \\
+Detuning $\Delta$ & not computed; degeneracy assumed & $\langle|\Delta|\rangle = 603~\mathrm{cm^{-1}}$ \\
+Eigenstates & delocalised exciton & localised, mean mixing $0.18$ \\
+Agreement with CD & $J$ within $10\%$ of $130.79$ & $\Omega$, not $2J$, matches; $J$ is $4\times$ smaller \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{The error.} The Coulomb double sum is evaluated with grid
+coordinates in \AA{}, so the reciprocal distance must be converted with
+$1~\text{\AA}^{-1} = 0.529177\,a_0^{-1}$. Round~1 applied the \emph{coordinate}
+factor $1.8897$ instead, inflating every transition-density coupling by
+$1.8897^{2} = 3.5711$ while leaving the point-dipole values --- evaluated in
+bohr throughout --- untouched. Exactly:
+$117.2/3.5711 = 32.82~\mathrm{cm^{-1}}$. The earlier arXiv preprint carried a
+\emph{different} version of the same mistake (no conversion at all, inflation
+$1.8897$), so its $74.38~\mathrm{cm^{-1}}$ must not be rescaled by $3.5711$.
+
+\paragraph{Why it changes the physics.} At $4.24\times$ the point-dipole value,
+the coupling looked large enough to rival the CD splitting, and delocalisation
+followed. At $1.19\times$ it is an ordinary dipole--quadrupole correction, the
+coupling is $32.8~\mathrm{cm^{-1}}$, and it is an order of magnitude
+\emph{below} the site-energy detuning. Round~2 therefore computes $\Delta$,
+which round~1 never did, and finds the eigenstates localised. Independent
+support has since appeared: a referee's Q-Chem calculation
+($6.02$ and $5.36$~meV, ratio $1.12$) and our matched ORCA control
+($6.087$ and $5.361$~meV, ratio $1.14$); and Cusick \emph{et al.} (\emph{JPCA}
+\textbf{2026}, 130, 5471), from the laboratories that reported the large
+couplings, now compute $26.9$--$36.8~\mathrm{cm^{-1}}$ for this dimer.
+
+\section*{2. How the CD simulation is obtained}
+
+\paragraph{Per-frame Hamiltonian.} Each MD snapshot supplies a two-site
+Hamiltonian $H = \begin{pmatrix} E_A & J \\ J & E_B\end{pmatrix}$, with $E_A$,
+$E_B$ from QM/MM TDDFT (CAM-B3LYP/6-311+G**, full-system embedding) and $J$ from
+the integrated DLPNO-STEOM-CCSD transition densities. Diagonalising gives
+\begin{equation}
+\Omega = \sqrt{\Delta^{2}+4J^{2}}, \qquad
+\tan 2\theta = \frac{2J}{\Delta}, \qquad \Delta = E_A - E_B ,
+\end{equation}
+with eigenstates $|\pm\rangle$ at $\bar{E} \pm \Omega/2$.
+
+\paragraph{Rotational strengths.} The exciton-chirality rotational strength of
+the two bands is equal and opposite,
+\begin{equation}
+R_{\pm} = \mp\,\frac{\pi}{2}\,\bar\nu\,\sin(2\theta)\; T,
+\qquad
+T = \bm{R}_{AB}\cdot(\bm{\mu}_A \times \bm{\mu}_B),
+\label{eq:R}
+\end{equation}
+where $T$ is the chirality triple product, computed per frame from the same
+placed transition densities that give $J$, so that the sign of $J$ and the sign
+of $T$ are guaranteed mutually consistent. \textbf{The key structural feature of
+Eq.~\eqref{eq:R} is the factor $\sin 2\theta = 2J/\Omega$}: the couplet
+\emph{amplitude} carries the coupling, and it is suppressed by $2J/\Omega =
+0.119$ at the computed detuning. The couplet \emph{separation} is $\Omega$,
+which is dominated by $\Delta$. Amplitude and width therefore measure different
+things, and only the amplitude measures $J$.
+
+\paragraph{Lineshape and ensemble.} Each band is broadened with a Voigt profile
+whose homogeneous half-width is $1/(2\pi c\,T_2^{*})$ and whose inhomogeneous
+width comes from the frame-to-frame spread; the spectrum is then averaged over
+all $1000$ frames. Because $\Omega$ enters nonlinearly, this ensemble average is
+\emph{not} the spectrum of the mean Hamiltonian: the rotational-strength-weighted
+mean of $\Omega$ lies close to its harmonic mean ($295.9~\mathrm{cm^{-1}}$)
+rather than its arithmetic mean ($611.2~\mathrm{cm^{-1}}$). Vibronic structure is
+added in the one-particle Holstein approximation ($\omega \approx
+1450~\mathrm{cm^{-1}}$, $S = 0.35$--$0.5$), which supplies the third band.
+
+\paragraph{Comparison protocol.} Simulated spectra are put through Nguyen
+\emph{et al.}'s own analysis rather than compared to it directly: the same
+$\Delta[\theta] = [\theta]_{\mathrm{TDX}} - [\theta]_{\mathrm{TD}}$ subtraction
+order (which carries \emph{minus} the dimer's own couplet, and is the origin of
+an apparent handedness disagreement), and the same constrained three-Lorentzian
+fit with the couplet centres pinned symmetrically about the TDX absorption peak.
+The absolute scale uses the published $\varepsilon_{516}$ and $25~\mu$M
+concentration.
+
+\section*{3. Which experiments the simulation agrees with}
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{llll}
+\toprule
+Observable & Experiment & This work & Status \\
+\midrule
+CD couplet separation & $14.6 \pm 0.3$~nm (Kim 2019) & $\Omega \Rightarrow 14.75$~nm & \textbf{agrees, no free parameter} \\
+Apparent coupling & $130.79~\mathrm{cm^{-1}}$ (constrained fit) & $105$--$159~\mathrm{cm^{-1}}$ & agrees \\
+Couplet handedness & negative (after subtraction order) & negative in every frame & agrees \\
+Third CD band & $481.4$~nm & vibronic, $470$--$495$~nm & agrees \\
+Absorption red shift & $-35~\mathrm{cm^{-1}}$ & $-12$ to $-16$ electrostatic $+$ excitonic & agrees \\
+Radiative shortening & $57 \pm 4$~ps & $42$--$58$~ps at $J \approx 33$ & agrees \\
+Limiting anisotropy & $0.52 \to 0.30$ & requires $\alpha \approx 131^\circ$ vs computed $110^\circ$ & \textbf{open} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The decisive point is the first row. Kim's splitting has been read throughout
+the literature as $2|J|$, giving $J = 274~\mathrm{cm^{-1}}$; at the
+crystallographic $25.4$~\AA{} separation that requires a transition dipole of
+$\approx 29$~D or a separation of $\approx 10$~\AA. Read instead as $\Omega$,
+the computed $J = 32.82$ and $|\Delta| = 550~\mathrm{cm^{-1}}$ give $14.75$~nm
+with nothing adjusted. The result is also robust to the two open systematics
+--- the transition dipole ($7.9$ vs $9.6$~D) and whether optical screening is
+applied --- which together move $J$ between $22$ and $39~\mathrm{cm^{-1}}$ but
+move the predicted splitting only from $14.69$ to $14.79$~nm, precisely because
+$\Delta$ dominates $\Omega$.
+
+The one row that does not yet agree is the limiting anisotropy, which is
+independently corroborated ($49^\circ$ for the eYFP dimer by one-photon
+anisotropy, Kinoshita 2026) and which we therefore treat as an open structural
+question rather than a resolved one.
+
+\end{document}
