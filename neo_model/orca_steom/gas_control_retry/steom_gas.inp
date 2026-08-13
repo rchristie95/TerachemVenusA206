@@ -1,0 +1,21 @@
+! STEOM-DLPNO-CCSD def2-SVPD RIJCOSX TightSCF TightPNO AutoAux
+# GAS-PHASE control: identical 44-atom anion, method, basis and geometry;
+%maxcore 4000
+%pal nprocs 8 end
+%mdci
+  NRoots 5
+  DoRootWise true
+  DoStoreSTEOM true
+  AddL2Term True
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 200
+  DoSTEOMNatTransOrb true
+  # Retry fix: the first attempt died with "Solution of the EA=EOM-DLPNO-CCSD
+  # equations failed" after "high double excitation character, excluding from
+  # the STEOM transformation". Loosening the active-space selection thresholds
+  # is the documented remedy for this failure on this system.
+  OThresh 1e-4
+  VThresh 1e-4
+end
+* xyzfile -1 1 geom_cthrp.xyz

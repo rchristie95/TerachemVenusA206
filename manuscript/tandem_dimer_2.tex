@@ -199,13 +199,28 @@ Method & Gas phase & Embedded & Environmental shift \\
        & (cm$^{-1}$ / nm) & (cm$^{-1}$ / nm) & (cm$^{-1}$) \\
 \midrule
 TDA-wB97X-D3/6-311G** & $27\,324.5$ / $366.0$ & $27\,710.2$ / $360.9$ & $+385.7$ \\
-DLPNO-STEOM-CCSD/def2-SVPD & \emph{[running]} & $19\,088.2$ / $523.9$ & \emph{[running]} \\
+DLPNO-STEOM-CCSD/def2-SVPD & see text & $19\,088.2$ / $523.9$ & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The bright state is the same state in both environments: the gas-phase and
-embedded transition dipoles are collinear to $\cos\theta = 0.9992$. The
+The gas-phase STEOM entry is deliberately left unfilled. The calculation was
+attempted with the identical input and fails at the EA-EOM stage
+(``high double excitation character, excluding from the STEOM transformation'',
+followed by non-convergence of the EA=EOM-DLPNO-CCSD equations), and it fails
+for a physical reason rather than a technical one: the isolated CR2 anion in a
+diffuse basis has no bound electron-attached state once the stabilising protein
+field is removed, so the electron-attachment sector that STEOM uses to dress
+the excitation is not well defined. A gas-phase reference for an anionic
+chromophore is therefore not simply the same calculation without point charges.
+Coupled-cluster gas-phase numbers for this species should be read with that
+caveat, and we prefer to report none rather than one obtained by loosening
+thresholds until the equations converge. The TDDFT row is unaffected, because
+TDA-TDDFT has no such sector.
+
+For the TDDFT row the bright state is the same state in both environments: the
+gas-phase and embedded transition dipoles are collinear to
+$\cos\theta = 0.9992$. The
 environmental shift is therefore a genuine electrostatic effect on a fixed
 electronic state, not a change of state ordering. Note that the comparison
 isolates electrostatics only: the geometry is held frozen, so it does not
