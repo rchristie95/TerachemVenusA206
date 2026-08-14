@@ -1,0 +1,42 @@
+{
+  "method": "DF-ADC(2)/def2-SVP (pyscf.adc, frozen core)",
+  "auxbasis_scf": "def2-universal-jkfit",
+  "auxbasis_adc": "def2-svp-ri",
+  "system": "neutral protonated CR2 chromophore, gas phase, charge 0",
+  "n_basis": 331,
+  "frozen_core": 19,
+  "scf_energy_Eh": -887.0583490085276,
+  "roots": [
+    {
+      "root": 1,
+      "eV": 3.1424939441278164,
+      "cm-1": 25345.922978119328,
+      "nm": 394.54077113396374,
+      "fosc": 0.000990774233951084
+    },
+    {
+      "root": 2,
+      "eV": 3.191140580159352,
+      "cm-1": 25738.284558418924,
+      "nm": 388.5262817027282,
+      "fosc": 0.7504626989119291
+    },
+    {
+      "root": 3,
+      "eV": 4.013353292109158,
+      "cm-1": 32369.877312210006,
+      "nm": 308.92919056932055,
+      "fosc": 0.0021917384916225937
+    }
+  ],
+  "bright_state": {
+    "root": 2,
+    "eV": 3.191140580159352,
+    "cm-1": 25738.284558418924,
+    "nm": 388.5262817027282,
+    "fosc": 0.7504626989119291
+  },
+  "wall_seconds": 15999.43717455864,
+  "convergence_note": "pyscf reported 'Davidson iterations for 1 root(s) did not converge'. Per-root flags in adc2_pyscf.log: root 0 conv=True, root 1 conv=True, root 2 conv=False. The BRIGHT state is root 1 (3.19114055 eV, f=0.7505) and IS converged; the unconverged root is the third, dark state (f=0.0022), which does not enter the benchmark.",
+  "bright_state_converged": true
+}
