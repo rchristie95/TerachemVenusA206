@@ -1,0 +1,14 @@
+! CAM-B3LYP def2-SVP def2/J RIJCOSX TightSCF
+# HBDI-truncated neutral chromophore (C12H12N2O2, 28 atoms, charge 0).
+# Same basis and same parent geometry as the 32-atom CR2 ladder, so the ONLY
+# change is the truncation: the -CH2CHO peptide tail becomes -CH3 and the -NH2
+# becomes -H. Purpose is to test whether truncating to the HBDI core moves the
+# bright state, which decides whether a future CC3 on this smaller model would
+# transfer back to the full chromophore.
+%maxcore 4000
+%pal nprocs 8 end
+%tddft
+  NRoots 5
+  TDA false
+end
+* xyzfile 0 1 hbdi.xyz
