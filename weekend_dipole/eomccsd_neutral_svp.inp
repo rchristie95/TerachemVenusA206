@@ -1,0 +1,14 @@
+! EOM-CCSD def2-SVP def2-SVP/C def2/J RIJCOSX TightSCF
+# Closes a referee-visible hole: the manuscript's ladder quotes EOM-CCSD at
+# 333.29 nm from a 6-31G calculation while every other row is def2-SVP, so the
+# table as printed mixes bases. Same 32-atom neutral model as the rest of the
+# ladder. Previous attempt died on disk exhaustion, not physics.
+%maxcore 5000
+%pal nprocs 8 end
+%mdci
+  NRoots 3
+  DoRootWise true
+  MaxIter 200
+  NDav 400
+end
+* xyzfile 0 1 neutral_chromophore.xyz

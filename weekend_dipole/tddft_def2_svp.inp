@@ -1,0 +1,14 @@
+! wB97X-D3 def2-SVP def2/J RIJCOSX TightSCF
+# Transition-dipole basis convergence, 44-atom anionic QM region in the full
+# protein/solvent point-charge field. |mu| from the spectroscopically normalised
+# STEOM density is 9.6 D; extinction and Strickler-Berg give 7.5-7.9 D. Since
+# J ~ |mu|^2 that is a 48% lever on the coupling and 2.3x on the CD rotational
+# strength, so this sweep tests whether the discrepancy is a basis artefact.
+%maxcore 3500
+%pal nprocs 8 end
+%pointcharges "field.pc"
+%tddft
+  NRoots 5
+  TDA false
+end
+* xyzfile -1 1 geom_cthrp.xyz

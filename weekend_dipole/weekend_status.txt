@@ -1,0 +1,11 @@
+[2026-08-14 11:57:49] ===== weekend queue start (pid 674045) =====
+[2026-08-14 11:57:49] disk 561 GB, RAM 58 GB
+[2026-08-14 11:57:49] START   tddft_def2_svp (timeout 2 h, 561 GB disk, 58 GB RAM)
+[2026-08-14 11:59:54] OK      tddft_def2_svp
+[2026-08-14 11:59:54] START   tddft_def2_svpd (timeout 3 h, 561 GB disk, 58 GB RAM)
+[2026-08-14 12:05:59] OK      tddft_def2_svpd
+[2026-08-14 12:05:59] START   tddft_def2_tzvp (timeout 6 h, 561 GB disk, 58 GB RAM)
+[2026-08-14 12:12:54] OK      tddft_def2_tzvp
+[2026-08-14 12:12:54] START   tddft_def2_tzvpd (timeout 10 h, 561 GB disk, 58 GB RAM)
+[2026-08-14 12:27:34] OK      tddft_def2_tzvpd
+[2026-08-14 12:27:34] START   eomccsd_neutral_svp (timeout 20 h, 561 GB disk, 58 GB RAM)
