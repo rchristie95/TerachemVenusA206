@@ -103,6 +103,7 @@ arXiv-v2/*
 !arXiv-v2/*.tex
 !arXiv-v2/*.md
 !arXiv-v2/*.bib
+!arXiv-v2/*.bbl
 BRIEFING_FOR_LLM.txt
 NEXT_AGENT_INSTRUCTIONS.txt
 STEOM_COUPLING_FINDINGS_*.txt
