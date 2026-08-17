@@ -9,3 +9,29 @@
 [2026-08-14 12:12:54] START   tddft_def2_tzvpd (timeout 10 h, 561 GB disk, 58 GB RAM)
 [2026-08-14 12:27:34] OK      tddft_def2_tzvpd
 [2026-08-14 12:27:34] START   eomccsd_neutral_svp (timeout 20 h, 561 GB disk, 58 GB RAM)
+[2026-08-15 08:27:34] TIMEOUT eomccsd_neutral_svp after 20 h -- moving on
+[2026-08-15 08:27:37] START   steom_def2_svp (timeout 12 h, 561 GB disk, 59 GB RAM)
+[2026-08-15 10:36:40] OK      steom_def2_svp
+[2026-08-15 10:36:40] START   steom_def2_svpd (timeout 16 h, 561 GB disk, 59 GB RAM)
+[2026-08-15 20:42:05] OK      steom_def2_svpd
+[2026-08-15 20:42:05] START   steom_def2_tzvp (timeout 24 h, 561 GB disk, 58 GB RAM)
+[2026-08-15 22:55:22] FAIL    steom_def2_tzvp (rc=0) -- moving on; see steom_def2_tzvp.out
+[2026-08-15 22:55:23] ===== weekend queue complete =====
+
+Transition-dipole basis convergence, 44-atom anion in the MM field
+(the EOM-CCSD row is the 32-atom neutral ladder model)
+
+method                      basis                          nm       f   |mu| D   status
+----------------------------------------------------------------------------------------
+TDDFT wB97X-D3              def2-SVP                   385.50  0.9246     8.71   ok
+TDDFT wB97X-D3              def2-SVPD                  399.30  0.7993     8.24   ok
+TDDFT wB97X-D3              def2-TZVP                  396.10  0.7880     8.15   ok
+TDDFT wB97X-D3              def2-TZVPD                 400.90  0.7206     7.84   ok
+DLPNO-STEOM                 def2-SVP                   501.50  0.9163     9.89   ok
+DLPNO-STEOM                 def2-SVPD *production*     532.80  0.8488     9.81   ok
+DLPNO-STEOM                 def2-TZVP                      --      --       --   aborted
+EOM-CCSD (neutral ladder)   def2-SVP                       --      --       --   error
+
+reference: manuscript uses |mu| = 9.6 D (spec-normalised STEOM density);
+           extinction + Strickler-Berg give 7.5-7.9 D.
+           J scales as |mu|^2, so 9.6 -> 7.9 would move J by x0.68.

@@ -368,13 +368,89 @@ def infer_nonstandard_residue_bonds(topology, positions, residue_names: List[str
     return added
 
 
+def validate_residue_connectivity(topology, residue_name: str) -> list[dict]:
+    """Require every named residue to form one connected covalent graph."""
+    bonds = list(topology.bonds())
+    summaries = []
+    for residue in topology.residues():
+        if residue.name != residue_name:
+            continue
+        atoms = list(residue.atoms())
+        indices = {atom.index for atom in atoms}
+        adjacency = {atom.index: set() for atom in atoms}
+        internal_bonds = 0
+        for bond in bonds:
+            left, right = bond.atom1.index, bond.atom2.index
+            if left in indices and right in indices:
+                adjacency[left].add(right)
+                adjacency[right].add(left)
+                internal_bonds += 1
+        unseen = set(indices)
+        components = []
+        while unseen:
+            seed = unseen.pop()
+            component = {seed}
+            stack = [seed]
+            while stack:
+                current = stack.pop()
+                neighbors = adjacency[current] & unseen
+                unseen.difference_update(neighbors)
+                component.update(neighbors)
+                stack.extend(neighbors)
+            components.append(component)
+        summary = {
+            "chain": residue.chain.id,
+            "residue_id": residue.id,
+            "atoms": len(atoms),
+            "internal_bonds": internal_bonds,
+            "connected_components": len(components),
+            "component_sizes": sorted((len(component) for component in components), reverse=True),
+        }
+        summaries.append(summary)
+        if len(components) != 1:
+            raise RuntimeError(
+                f"Disconnected {residue_name} topology at chain {residue.chain.id} "
+                f"residue {residue.id}: {len(atoms)} atoms, {internal_bonds} internal "
+                f"bonds, component sizes {summary['component_sizes']}. Refusing to "
+                "continue to minimization or dynamics."
+            )
+    return summaries
+
+
 def residue_names_in_forcefield_xml(xml_path: Path) -> set:
     text = Path(xml_path).read_text(errors="replace")
     return set(re.findall(r"<Residue\s+name=\"([^\"]+)\"", text))
 
 
-def write_generic_forcefield_xml(topology, positions, residue_names: List[str], xml_path: Path) -> None:
+def read_reference_residue_charges(prmtop_path: Path) -> Dict[str, Dict[str, float]]:
+    """Per-atom charges for each nonstandard residue in a reference AMBER prmtop.
+
+    Used so the generic template carries the CORRECT TOTAL charge before
+    ``addSolvent(neutralize=True)`` counts ions. Previously the template assigned
+    0.0 to every CR2 atom and the real -1 e per chromophore was transplanted
+    afterwards, so solvation neutralised a system it believed was neutral and the
+    box ended up at net -2 e with the two anionic chromophores unscreened by
+    counterions.
+    """
+    reference = AmberPrmtopFile(str(resolve_path(prmtop_path)))
+    ref_system = reference.createSystem(nonbondedMethod=NoCutoff)
+    nonbonded = next(f for f in ref_system.getForces()
+                     if isinstance(f, openmm.NonbondedForce))
+    charges: Dict[str, Dict[str, float]] = {}
+    for residue in reference.topology.residues():
+        table = {}
+        for atom in residue.atoms():
+            q, _, _ = nonbonded.getParticleParameters(atom.index)
+            table[atom.name] = q.value_in_unit(unit.elementary_charge)
+        if table:
+            charges.setdefault(residue.name, table)
+    return charges
+
+
+def write_generic_forcefield_xml(topology, positions, residue_names: List[str], xml_path: Path,
+                                 reference_charges: Dict[str, Dict[str, float]] | None = None) -> None:
     residue_names = sorted(set(residue_names))
+    reference_charges = reference_charges or {}
     residues_by_name: Dict[str, object] = {}
     for residue in topology.residues():
         residues_by_name.setdefault(residue.name, residue)
@@ -402,7 +478,9 @@ def write_generic_forcefield_xml(topology, positions, residue_names: List[str], 
             type_by_atom_name[atom.name] = type_name
             atom_type_data.append((type_name, class_name, symbol, atom_mass_dalton(atom, symbol)))
             sigma, epsilon = LJ_BY_ELEMENT.get(symbol, (0.340, 0.2000))
-            nonbonded_params.append((type_name, 0.0, sigma, epsilon))
+            # Charge must be right BEFORE addSolvent(neutralize=True) counts ions.
+            charge = reference_charges.get(residue_name, {}).get(atom.name, 0.0)
+            nonbonded_params.append((type_name, charge, sigma, epsilon))
 
         bonds_local = []
         neighbors = {atom.name: set() for atom in atoms}
@@ -515,7 +593,6 @@ def apply_amber_cr2_parameters(system, topology, prmtop_path: Path) -> dict:
         raise RuntimeError(f"Reference topology needs exactly one CR2; found {len(reference_cr2)}")
     reference_cr2 = reference_cr2[0]
     reference_cr2_indices = {atom.index for atom in reference_cr2.atoms()}
-
     target_atoms = list(topology.atoms())
     target_residues = list(topology.residues())
     target_cr2 = [residue for residue in target_residues if residue.name == "CR2"]
@@ -721,6 +798,11 @@ def ensure_amber_cr2_topology(topology, prmtop_path: Path) -> dict:
         raise RuntimeError(f"CR2 bond reaches nonadjacent residue: {atom.residue} {atom.name}")
 
     reference_cr2_indices = {atom.index for atom in reference_cr2.atoms()}
+    reference_hydrogen_names = {
+        atom.name
+        for atom in reference_cr2.atoms()
+        if atom.element is not None and atom.element.symbol == "H"
+    }
     expected_bonds = set()
     hydrogen_variant = []
     for atom1, atom2 in reference.topology.bonds():
@@ -754,14 +836,22 @@ def ensure_amber_cr2_topology(topology, prmtop_path: Path) -> dict:
                 site_map[(label, atom.name)] = atom
         reference_names = {atom.name for atom in reference_cr2.atoms()}
         target_names = {atom.name for atom in residue.atoms()}
-        if target_names != reference_names:
+        missing_names = reference_names - target_names
+        extra_names = target_names - reference_names
+        # The retained tandem PDB intentionally contains only CR2 heavy atoms.
+        # On the first call, restore the AMBER heavy-atom graph and return the
+        # exact hydrogen variant for Modeller.addHydrogens().  The second call
+        # after protonation still requires the complete atom inventory.
+        if extra_names or not missing_names.issubset(reference_hydrogen_names):
             raise RuntimeError(
-                f"CR2 atom-name mismatch before protonation: missing={sorted(reference_names-target_names)}, "
-                f"extra={sorted(target_names-reference_names)}"
+                f"CR2 atom-name mismatch before protonation: missing={sorted(missing_names)}, "
+                f"extra={sorted(extra_names)}"
             )
         expected_index_pairs = set()
         for descriptor_pair in expected_bonds:
             descriptors = tuple(descriptor_pair)
+            if any(value not in site_map for value in descriptors):
+                continue
             atom1, atom2 = site_map[descriptors[0]], site_map[descriptors[1]]
             index_pair = frozenset((atom1.index, atom2.index))
             expected_index_pairs.add(index_pair)
@@ -1458,6 +1548,42 @@ def parse_args(argv=None):
     parser.add_argument("--timestep-fs", type=float, default=2.0, help="NVT timestep (fs)")
     parser.add_argument("--nvt-steps", type=int, default=100000, help="NVT MD steps")
     parser.add_argument(
+        "--protein-forcefield", default="amber14-all.xml",
+        help="Protein force field XML. Default is the legacy ff14SB used for "
+             "v1/v2; 'amber19-all.xml' selects ff19SB (2020), the current "
+             "AMBER standard.",
+    )
+    parser.add_argument(
+        "--water-forcefield", default="amber14/tip3pfb.xml",
+        help="Water force field XML. ff19SB was parameterised against OPC, so "
+             "'amber14/opc.xml' is its matched partner. TIP3P-family models "
+             "carry no electronic polarizability at all.",
+    )
+    parser.add_argument(
+        "--water-model", default="tip3p",
+        help="Water model name passed to Modeller.addSolvent for geometry "
+             "placement, which accepts only tip3p/spce/tip4pew/tip5p/swm4ndp. "
+             "It must supply the right TOPOLOGY for --water-forcefield; the "
+             "force field then sets the geometry and charges. OPC is a 4-site "
+             "model, so use 'tip4pew' placement with amber14/opc.xml. Note "
+             "v1/v2 placed 'tip3p' while parameterising with tip3pfb.",
+    )
+    parser.add_argument(
+        "--npt-steps", type=int, default=0,
+        help="NPT equilibration steps run BEFORE NVT production, with a "
+             "MonteCarloBarostat, to relax the solvent density. The v1 "
+             "trajectory had no NPT stage and ended 5.2%% under-dense "
+             "(water 18%% under-dense), which weakens dielectric screening. "
+             "0 disables (legacy behaviour).",
+    )
+    parser.add_argument("--pressure-bar", type=float, default=1.0,
+                        help="Barostat pressure for the NPT stage (bar)")
+    parser.add_argument(
+        "--max-net-charge-e", type=float, default=1.0e-4,
+        help="Abort if |total system charge| exceeds this after all charge "
+             "transplants. Guards the v1 defect that produced a net -2 e box.",
+    )
+    parser.add_argument(
         "--restrain-interface",
         action="store_true",
         help="Tether the two CR2 chromophore centroids with a flat-bottom restraint "
@@ -1468,6 +1594,14 @@ def parse_args(argv=None):
     parser.add_argument("--restrain-k", type=float, default=5000.0,
                         help="Force constant beyond the flat bottom (kJ/mol/nm^2)")
     parser.add_argument("--minimize-iters", type=int, default=10000, help="Max minimization iterations")
+    parser.add_argument(
+        "--skip-final-minimization",
+        action="store_true",
+        help=(
+            "Do not minimize after NVT. This leaves every NVT trajectory frame "
+            "unchanged and avoids unused post-processing for snapshot campaigns."
+        ),
+    )
     parser.add_argument("--platform", default="CUDA", help="OpenMM platform (default: CUDA)")
     parser.add_argument("--cuda-device", default="0", help="CUDA device index")
     parser.add_argument(
@@ -1706,11 +1840,24 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         )
         if inferred_nonstandard_bonds:
             print(f"    - Inferred nonstandard-residue bonds: {inferred_nonstandard_bonds}")
+        if "CR2" in nonstandard_names:
+            connectivity = validate_residue_connectivity(base_topology, "CR2")
+            print(f"    - CR2 connectivity audit: {connectivity}")
 
     fallback_nonstandard_xml = None
     if nonstandard_names:
         fallback_nonstandard_xml = workdir / "nonstandard_residues_generic.xml"
-        write_generic_forcefield_xml(base_topology, base_positions, nonstandard_names, fallback_nonstandard_xml)
+        reference_charges = None
+        if args.amber_cr2_prmtop is not None:
+            reference_charges = read_reference_residue_charges(args.amber_cr2_prmtop)
+            for name in nonstandard_names:
+                table = reference_charges.get(name)
+                if table:
+                    print(f"    - Template charge for {name} from reference prmtop: "
+                          f"net {sum(table.values()):+.6f} e "
+                          f"(ensures addSolvent neutralises correctly)")
+        write_generic_forcefield_xml(base_topology, base_positions, nonstandard_names,
+                                     fallback_nonstandard_xml, reference_charges)
         if args.amber_cr2_prmtop is None:
             print(
                 f"    - Warning: using generic fallback FF for {nonstandard_names}; "
@@ -1723,7 +1870,7 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
             )
         print(f"    - Wrote fallback nonstandard FF: {fallback_nonstandard_xml}")
 
-    ff_inputs = ["amber14-all.xml", "amber14/tip3pfb.xml"]
+    ff_inputs = [args.protein_forcefield, args.water_forcefield]
     if fallback_nonstandard_xml is not None:
         ff_inputs.append(str(fallback_nonstandard_xml))
     forcefield = ForceField(*ff_inputs)
@@ -1734,7 +1881,7 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     else:
         modeller.addSolvent(
             forcefield,
-            model="tip3p",
+            model=args.water_model,
             padding=args.padding_a * unit.angstroms,
             neutralize=True,
             ionicStrength=args.ionic_strength_m * unit.molar,
@@ -1795,6 +1942,25 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
             f"torsions/site={cr2_parameter_summary['reference_torsions_transplanted_per_site']}"
         )
         print(f"    - CR2 parameter audit: {parameter_summary_path}")
+
+    # Total charge must be verified AFTER every charge transplant. A net-charged
+    # periodic system is compensated by PME's uniform background rather than by
+    # local counterions, which corrupts the electrostatics at precisely the
+    # chromophores. The v1 trajectory shipped at net -2.000000 e because this
+    # check did not exist.
+    _nb = next(f for f in system.getForces()
+               if isinstance(f, openmm.NonbondedForce))
+    _net = sum(_nb.getParticleParameters(i)[0].value_in_unit(unit.elementary_charge)
+               for i in range(system.getNumParticles()))
+    print(f"    - Total system charge after all transplants: {_net:+.6f} e")
+    if abs(_net) > args.max_net_charge_e:
+        raise RuntimeError(
+            f"System net charge {_net:+.6f} e exceeds tolerance "
+            f"{args.max_net_charge_e:g} e. Solvation neutralisation ran against "
+            f"the wrong template charges. Re-run so the nonstandard-residue "
+            f"template carries its true net charge before addSolvent, or relax "
+            f"--max-net-charge-e deliberately."
+        )
 
     # Optional flat-bottom restraint on the CR2-CR2 chromophore-centroid distance.
     # The Venus A206 dimer interface is weak; in unrestrained bulk solvent the
@@ -1866,6 +2032,17 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
             f"    - Resumed checkpoint: {resume_checkpoint} "
             f"(currentStep={simulation.currentStep})"
         )
+    # Checkpoints retain integrator state.  Reapply and verify the requested
+    # timestep explicitly so a high-cadence continuation cannot silently
+    # inherit the source run's timestep.
+    integrator.setStepSize(args.timestep_fs * unit.femtoseconds)
+    actual_timestep_fs = integrator.getStepSize().value_in_unit(unit.femtoseconds)
+    if abs(actual_timestep_fs - args.timestep_fs) > 1.0e-12:
+        raise RuntimeError(
+            f"Integrator timestep mismatch: requested {args.timestep_fs} fs, "
+            f"active {actual_timestep_fs} fs"
+        )
+    print(f"    - Verified active integrator timestep: {actual_timestep_fs:.6f} fs")
 
     class _NvtEnergyReporter:
         def __init__(self, interval: int):
@@ -1974,6 +2151,48 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
             simulation.minimizeEnergy(maxIterations=args.minimize_iters)
         e_after_min1 = potential_kj_per_mol()
 
+    # Seed velocities from a Maxwell-Boltzmann distribution. Without this the
+    # context starts at zero velocity and the thermostat heats the system inside
+    # what is reported as production, with no warm-up discarded.
+    if not resumed:
+        simulation.context.setVelocitiesToTemperature(
+            args.temperature_k * unit.kelvin
+        )
+        print(f"    - Seeded velocities at {args.temperature_k:g} K")
+
+    # NPT equilibration to relax the solvent density before NVT production.
+    if args.npt_steps > 0 and not resumed:
+        if not has_periodic_box:
+            raise RuntimeError("--npt-steps requires a periodic box")
+        barostat = openmm.MonteCarloBarostat(
+            args.pressure_bar * unit.bar, args.temperature_k * unit.kelvin
+        )
+        barostat_index = system.addForce(barostat)
+        simulation.context.reinitialize(preserveState=True)
+
+        def _density_g_per_cm3() -> float:
+            box = simulation.context.getState().getPeriodicBoxVectors()
+            volume_nm3 = float(
+                (box[0][0] * box[1][1] * box[2][2]).value_in_unit(unit.nanometer**3)
+            )
+            total_da = sum(
+                system.getParticleMass(i).value_in_unit(unit.dalton)
+                for i in range(system.getNumParticles())
+            )
+            return total_da / 6.02214076e23 / (volume_nm3 * 1.0e-21)
+
+        rho_before = _density_g_per_cm3()
+        print(f"    - NPT equilibration: {args.npt_steps} steps at "
+              f"{args.pressure_bar:g} bar; density before = {rho_before:.4f} g/cm^3")
+        simulation.step(int(args.npt_steps))
+        rho_after = _density_g_per_cm3()
+        print(f"    - NPT complete: density after = {rho_after:.4f} g/cm^3 "
+              f"({100.0 * (rho_after / rho_before - 1.0):+.2f}%)")
+        # Remove the barostat so production is genuinely NVT at the relaxed box.
+        system.removeForce(barostat_index)
+        simulation.context.reinitialize(preserveState=True)
+        simulation.currentStep = 0
+
     if args.nvt_steps > 0:
         remaining_steps = max(0, int(args.nvt_steps) - int(simulation.currentStep))
         print(
@@ -1987,16 +2206,20 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         print("    - NVT skipped (--nvt-steps=0)")
         e_before_min2 = e_after_min1
 
-    if can_stream_minimization and _MinimizationProgressReporter is not None:
-        reporter = _MinimizationProgressReporter("#2", minimize_report_interval)
-        openmm.LocalEnergyMinimizer.minimize(
-            simulation.context,
-            maxIterations=args.minimize_iters,
-            reporter=reporter,
-        )
+    if args.skip_final_minimization:
+        print("    - Final minimization skipped (--skip-final-minimization)")
+        e_after_min2 = e_before_min2
     else:
-        simulation.minimizeEnergy(maxIterations=args.minimize_iters)
-    e_after_min2 = potential_kj_per_mol()
+        if can_stream_minimization and _MinimizationProgressReporter is not None:
+            reporter = _MinimizationProgressReporter("#2", minimize_report_interval)
+            openmm.LocalEnergyMinimizer.minimize(
+                simulation.context,
+                maxIterations=args.minimize_iters,
+                reporter=reporter,
+            )
+        else:
+            simulation.minimizeEnergy(maxIterations=args.minimize_iters)
+        e_after_min2 = potential_kj_per_mol()
 
     relaxed_state = simulation.context.getState(getPositions=True)
     relaxed_positions = relaxed_state.getPositions()
@@ -2014,7 +2237,10 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     print(f"    - OpenMM potential energy after minimization #1: {e_after_min1:.6f} kJ/mol")
     if args.nvt_steps > 0:
         print(f"    - OpenMM potential energy before minimization #2 (after NVT): {e_before_min2:.6f} kJ/mol")
-    print(f"    - OpenMM potential energy after minimization #2: {e_after_min2:.6f} kJ/mol")
+    if args.skip_final_minimization:
+        print(f"    - OpenMM final NVT potential energy: {e_after_min2:.6f} kJ/mol")
+    else:
+        print(f"    - OpenMM potential energy after minimization #2: {e_after_min2:.6f} kJ/mol")
     print(f"    - Saved: {relaxed_pdb}")
     if openmm_traj_path is not None:
         print(
