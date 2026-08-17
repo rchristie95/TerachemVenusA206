@@ -1,0 +1,90 @@
+{
+  "structures": {
+    "venus_dimer.pdb": {
+      "description": "crystal / vdW dimer, built from 1myw symmetry",
+      "delta_from_transition_dipole_deg": 38.157,
+      "delta_from_structural_proxy": {
+        "OH->CB2": {
+          "theta_ab_deg": 125.19456066710426,
+          "delta_closed_form_deg": 27.402719666447872,
+          "delta_cusick_frame_deg": 27.402266643223427,
+          "offset_vs_transition_dipole_deg": 10.754733356776569
+        },
+        "OH->CG2": {
+          "theta_ab_deg": 122.75753462560476,
+          "delta_closed_form_deg": 28.62123268719762,
+          "delta_cusick_frame_deg": 28.62174984672246,
+          "offset_vs_transition_dipole_deg": 9.535250153277538
+        },
+        "CZ->CB2": {
+          "theta_ab_deg": 126.05019832860047,
+          "delta_closed_form_deg": 26.974900835699763,
+          "delta_cusick_frame_deg": 26.97331868648625,
+          "offset_vs_transition_dipole_deg": 11.183681313513745
+        }
+      },
+      "separations": {
+        "R_CB2_CB2_A": 25.377458856236963,
+        "R_CG2_CG2_A": 22.646659731624883,
+        "R_CZ_CZ_A": 17.639099155002217
+      },
+      "cusick_published_delta_deg": 31.0
+    },
+    "tandem_dimer_production_cr2.pdb": {
+      "description": "tandem dimer, MD starting structure",
+      "delta_from_transition_dipole_deg": 39.611,
+      "delta_from_structural_proxy": {
+        "OH->CB2": {
+          "theta_ab_deg": 129.33785060869064,
+          "delta_closed_form_deg": 25.331074695654678,
+          "delta_cusick_frame_deg": 25.331502089599,
+          "offset_vs_transition_dipole_deg": 14.279497910400998
+        },
+        "OH->CG2": {
+          "theta_ab_deg": 127.71598308448905,
+          "delta_closed_form_deg": 26.142008457755473,
+          "delta_cusick_frame_deg": 26.14141782994067,
+          "offset_vs_transition_dipole_deg": 13.469582170059326
+        },
+        "CZ->CB2": {
+          "theta_ab_deg": 129.0558822181641,
+          "delta_closed_form_deg": 25.47205889091795,
+          "delta_cusick_frame_deg": 25.472718104971726,
+          "offset_vs_transition_dipole_deg": 14.138281895028271
+        }
+      },
+      "separations": {
+        "R_CB2_CB2_A": 25.533481646653673,
+        "R_CG2_CG2_A": 22.854716165378203,
+        "R_CZ_CZ_A": 17.733120509374537
+      },
+      "cusick_published_delta_deg": null
+    }
+  },
+  "cusick_table_s2": {
+    "vdw_R_CB2_CB2_A": 25.4,
+    "vdw_delta_deg": 31.0,
+    "alphafold_delta_deg": [
+      9.0,
+      9.0,
+      8.0,
+      15.0,
+      9.0
+    ],
+    "alphafold_R_CG_CG_A": [
+      26.0,
+      27.2,
+      24.3,
+      27.5,
+      27.5
+    ],
+    "alphafold_nu_bar_cm": [
+      35.3,
+      30.8,
+      43.3,
+      29.2,
+      29.8
+    ],
+    "mu_debye": 7.9
+  }
+}

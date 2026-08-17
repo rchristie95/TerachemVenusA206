@@ -1,0 +1,75 @@
+{
+  "prefactor_cm_per_debye2_per_angstrom3": 5034.11665480368,
+  "prefactor_self_check_max_rel_err": 7.1214527222978e-09,
+  "ours": {
+    "multipolar_enhancement_f": 1.187188716172917,
+    "multipolar_enhancement_f_std": 0.0113762785359554,
+    "delta_deg_mean": 39.61101619633691,
+    "delta_deg_std": 1.3604705592568997,
+    "mu_debye_steom": 9.805088105636631,
+    "R_A_mean": 24.686708869803308
+  },
+  "cusick_corrected": {
+    "tandem": {
+      "label": "dVenus-TD (tandem, linkered)",
+      "route": "spectroscopic: intersection of eq 15 (point-dipole), eq 19 (1PA shift) and eq 34 (2PA intensity ratios), their Figure 8",
+      "delta_is_inferred": true,
+      "published_delta_deg": [
+        14.0,
+        20.0
+      ],
+      "kappa_apparent": [
+        1.883022221559489,
+        1.9414737964294635
+      ],
+      "kappa_after_removing_multipolar": [
+        1.58611869865955,
+        1.635353983727287
+      ],
+      "delta_corrected_deg": [
+        37.14680031345537,
+        40.041034192113784
+      ],
+      "implied_mu_debye": 7.639585745141493
+    },
+    "vdw": {
+      "label": "dVenus-vdW (crystal contact)",
+      "route": "structural, from the dVenus-vdW crystal structure (1myw)",
+      "delta_is_inferred": false,
+      "published_delta_deg": [
+        31.0,
+        31.0
+      ],
+      "kappa_apparent": [
+        1.7347357813929456,
+        1.7347357813929456
+      ],
+      "kappa_after_removing_multipolar": [
+        1.461213164984527,
+        1.461213164984527
+      ],
+      "delta_corrected_deg": [
+        47.224556872707936,
+        47.224556872707936
+      ],
+      "implied_mu_debye": 7.869175642782957
+    }
+  },
+  "precision_argument": {
+    "their_delta_range_deg": [
+      14.0,
+      20.0
+    ],
+    "implied_kappa_precision_fraction": 0.01528347123256003,
+    "neglected_multipolar_fraction": 0.1871887161729171,
+    "ratio_neglected_to_quoted": 12.247788040070946
+  },
+  "reference_mu_debye": {
+    "steom_ours": 9.805088105636631,
+    "tddft_basis_converged_weekend": 7.84,
+    "experimental_extinction_strickler_berg": [
+      7.5,
+      7.9
+    ]
+  }
+}

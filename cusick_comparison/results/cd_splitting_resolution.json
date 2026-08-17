@@ -1,0 +1,200 @@
+{
+  "inputs": {
+    "centre_cm": 19322.0,
+    "hwhm_low_cm": 293.51,
+    "hwhm_high_cm": 439.25,
+    "source": "terachem_site_energy_cd/results/splitting_profile_investigation/summary.json",
+    "J_mean_cm": 32.81648511581466
+  },
+  "observations": {
+    "repo_reconstruction_extrema_cm": 505.0,
+    "published_latent_gap_cm": 261.58,
+    "kim_splitting_nm": 14.6,
+    "kim_splitting_cm": 548.0,
+    "jpcb_round2_omega_cm": 553.9
+  },
+  "analytic_floors": {
+    "low": {
+      "hwhm_cm": 293.51,
+      "fwhm_cm": 587.02,
+      "gaussian_sigma_cm": 249.28444160253648,
+      "gaussian_2sigma_floor_cm": 498.56888320507295,
+      "lorentzian_2gamma_over_sqrt3_floor_cm": 338.91615501969414
+    },
+    "high": {
+      "hwhm_cm": 439.25,
+      "fwhm_cm": 878.5,
+      "gaussian_sigma_cm": 373.06460077651235,
+      "gaussian_2sigma_floor_cm": 746.1292015530247,
+      "lorentzian_2gamma_over_sqrt3_floor_cm": 507.2022114830863
+    }
+  },
+  "numerical": {
+    "lorentzian": {
+      "separation_at_zero_gap_cm": 689.8199999999997,
+      "separation_at_latent_gap_261_58": 500.2199999999975,
+      "separation_at_JPCB_omega_553_9": 651.5400000000009,
+      "invert_kim_548": {
+        "solutions_cm": [
+          69.2950819672133,
+          384.8800000000038
+        ],
+        "n_solutions": 2,
+        "min_separation_cm": 490.5600000000013,
+        "omega_at_min_separation_cm": 190.0,
+        "separation_at_zero_gap_cm": 689.8199999999997
+      },
+      "invert_repo_505": {
+        "solutions_cm": [
+          122.16666666666919,
+          278.9999999999879
+        ],
+        "n_solutions": 2,
+        "min_separation_cm": 490.5600000000013,
+        "omega_at_min_separation_cm": 190.0,
+        "separation_at_zero_gap_cm": 689.8199999999997
+      },
+      "curve": [
+        {
+          "omega_cm": 0.0,
+          "extrema_separation_cm": 689.8199999999997
+        },
+        {
+          "omega_cm": 100.0,
+          "extrema_separation_cm": 518.3400000000001
+        },
+        {
+          "omega_cm": 200.0,
+          "extrema_separation_cm": 490.7400000000016
+        },
+        {
+          "omega_cm": 300.0,
+          "extrema_separation_cm": 511.7199999999975
+        },
+        {
+          "omega_cm": 400.0,
+          "extrema_separation_cm": 555.7599999999984
+        },
+        {
+          "omega_cm": 500.0,
+          "extrema_separation_cm": 614.880000000001
+        },
+        {
+          "omega_cm": 600.0,
+          "extrema_separation_cm": 685.0799999999981
+        },
+        {
+          "omega_cm": 700.0,
+          "extrema_separation_cm": 763.5
+        },
+        {
+          "omega_cm": 800.0,
+          "extrema_separation_cm": 847.9199999999983
+        },
+        {
+          "omega_cm": 900.0,
+          "extrema_separation_cm": 936.640000000003
+        },
+        {
+          "omega_cm": 1000.0,
+          "extrema_separation_cm": 1028.4199999999983
+        },
+        {
+          "omega_cm": 1100.0,
+          "extrema_separation_cm": 1122.3600000000006
+        },
+        {
+          "omega_cm": 1200.0,
+          "extrema_separation_cm": 1217.8400000000001
+        }
+      ]
+    },
+    "gaussian": {
+      "separation_at_zero_gap_cm": 532.9000000000015,
+      "separation_at_latent_gap_261_58": 588.3600000000006,
+      "separation_at_JPCB_omega_553_9": 687.2799999999988,
+      "invert_kim_548": {
+        "solutions_cm": [
+          111.45454545454395
+        ],
+        "n_solutions": 1,
+        "min_separation_cm": 532.8400000000001,
+        "omega_at_min_separation_cm": 5.0,
+        "separation_at_zero_gap_cm": 532.9000000000015
+      },
+      "invert_repo_505": {
+        "solutions_cm": [],
+        "n_solutions": 0,
+        "min_separation_cm": 532.8400000000001,
+        "omega_at_min_separation_cm": 5.0,
+        "separation_at_zero_gap_cm": 532.9000000000015
+      },
+      "curve": [
+        {
+          "omega_cm": 0.0,
+          "extrema_separation_cm": 532.9000000000015
+        },
+        {
+          "omega_cm": 100.0,
+          "extrema_separation_cm": 545.3600000000006
+        },
+        {
+          "omega_cm": 200.0,
+          "extrema_separation_cm": 571.2000000000007
+        },
+        {
+          "omega_cm": 300.0,
+          "extrema_separation_cm": 599.3199999999997
+        },
+        {
+          "omega_cm": 400.0,
+          "extrema_separation_cm": 629.5200000000004
+        },
+        {
+          "omega_cm": 500.0,
+          "extrema_separation_cm": 664.880000000001
+        },
+        {
+          "omega_cm": 600.0,
+          "extrema_separation_cm": 708.8199999999997
+        },
+        {
+          "omega_cm": 700.0,
+          "extrema_separation_cm": 764.7000000000007
+        },
+        {
+          "omega_cm": 800.0,
+          "extrema_separation_cm": 834.6399999999994
+        },
+        {
+          "omega_cm": 900.0,
+          "extrema_separation_cm": 917.3600000000006
+        },
+        {
+          "omega_cm": 1000.0,
+          "extrema_separation_cm": 1008.5399999999972
+        },
+        {
+          "omega_cm": 1100.0,
+          "extrema_separation_cm": 1104.1399999999994
+        },
+        {
+          "omega_cm": 1200.0,
+          "extrema_separation_cm": 1201.9400000000023
+        }
+      ]
+    }
+  },
+  "amplitude_channel": {
+    "note": "For a detuned dimer the couplet amplitude is suppressed by 2|J|/Omega relative to the degenerate case. This is the observable that actually carries the coupling.",
+    "2J_over_omega_at_JPCB_553_9": 0.11849245392964311,
+    "2J_over_omega_at_latent_261_58": 0.25090974169137287
+  },
+  "model_validation": {
+    "repo_couplet_only_extrema_cm": 500.0,
+    "model_lorentzian_at_latent_gap_cm": 500.2199999999975,
+    "abs_error_cm": 0.21999999999752617,
+    "passed": true,
+    "amplitude_ratio_used": 1.581497797356828
+  }
+}

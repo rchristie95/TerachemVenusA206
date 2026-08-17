@@ -1,0 +1,69 @@
+{
+  "epsilon": 1.77,
+  "ours_production_tandem": {
+    "n_frames": 1000,
+    "R_A_mean": 24.686708869803308,
+    "R_A_std": 0.3196775706955739,
+    "tdc_screened_cm": 32.81648511581466,
+    "tdc_screened_std_cm": 1.553257010738416,
+    "tdc_unscreened_cm": 58.08517865499194,
+    "pda_screened_cm": 27.642357398020234,
+    "pda_screened_std_cm": 1.282541507677151,
+    "pda_unscreened_cm": 48.926972594495815,
+    "tdc_over_pda": 1.1871811308743514,
+    "sigma_over_mean": 0.04733160803957895
+  },
+  "cusick": {
+    "vdw": {
+      "label": "dVenus-vdW (crystal contact)",
+      "method": "point-dipole from structure",
+      "R_A": 25.4,
+      "delta_deg": [
+        31.0,
+        31.0
+      ],
+      "unscreened_cm": [
+        28.0,
+        38.0
+      ],
+      "screened_cm": [
+        15.819209039548022,
+        21.468926553672315
+      ]
+    },
+    "tandem": {
+      "label": "dVenus-TD (tandem, linkered)",
+      "method": "from the Omega two-photon analysis",
+      "R_A": 26.0,
+      "delta_deg": [
+        14.0,
+        20.0
+      ],
+      "unscreened_cm": [
+        32.0,
+        40.0
+      ],
+      "screened_cm": [
+        18.07909604519774,
+        22.598870056497177
+      ]
+    }
+  },
+  "cusick_table_s2_unscreened_cm": [
+    27.0,
+    43.0
+  ],
+  "cusick_table_s2_screened_cm": [
+    15.254237288135593,
+    24.293785310734464
+  ],
+  "superseded_pair": {
+    "J_tdc_cm": 74.38,
+    "J_pda_cm": 13.31,
+    "J_tdc_corrected_cm": 20.8285213577,
+    "structure": "venus_dimer.pdb (crystal)",
+    "density": "TDDFT S2 cube",
+    "frames": 1
+  },
+  "verdict": "The 32.82-vs-32-40 agreement compares a screened number to an unscreened one. In a single convention the methods differ by roughly the screening factor itself. epsilon is now the dominant systematic."
+}
