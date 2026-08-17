@@ -10,11 +10,12 @@ the observed CD couplet:
       Delta ~ 550 and J = 32.8 this gives Omega = 553.9 cm^-1 against Kim's
       measured 14.6 +/- 0.3 nm = 548 cm^-1, "with no adjustable parameter".
 
-  (2) manuscript/tandem_dimer_2.tex:619-647 and notes/J_apparent_derivation.tex
-      -- untracked, later. For 2J << linewidth the couplet collapses to the
-      DERIVATIVE of the lineshape, whose extrema sit at +/- sigma (Gaussian) or
-      +/- gamma/sqrt(3) (Lorentzian) INDEPENDENTLY of Omega. The separation is
-      then the linewidth in disguise and carries no coupling information at all.
+  (2) notes/J_apparent_derivation.tex (and the retired manuscript/tandem_dimer_2.tex,
+      deleted 2026-08-17, recoverable via `git show`). For 2J << linewidth the
+      couplet collapses to the DERIVATIVE of the lineshape, whose extrema sit at
+      +/- sigma (Gaussian) or +/- gamma/sqrt(3) (Lorentzian) INDEPENDENTLY of
+      Omega. The separation is then the linewidth in disguise and carries no
+      coupling information at all.
 
 These cannot both be right, and the difference is not cosmetic: (1) reads a
 coupling off the separation, (2) says that reading is meaningless.
