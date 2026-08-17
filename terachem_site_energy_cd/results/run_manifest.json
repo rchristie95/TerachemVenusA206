@@ -1,26 +1,26 @@
 {
-  "status": "smoke_only_production_identity_mismatch",
-  "production_join_allowed": false,
-  "starting_commit": "e1c42f8cae66d1763b4fbe91e24fbe9288e99745",
-  "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/tandem_nvt_1000.dcd",
-  "trajectory_sha256": "d854e18b90db301793f1550fcf28b8c1ccb4450732729ffe24deb1880c7fbab0",
-  "expected_archive_trajectory_sha256": "5da1f8b2ce814dd04467b4d121c3ba70ccc8619852d045120d2e73086df53e5e",
-  "topology": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/solvated_protonated.pdb",
-  "topology_sha256": "7bbf5cf963fa437ed0d52e301b5b50ba9bb626b38edd505153cc8de9b75511c1",
-  "topology_descriptor_sha256": "0dd7c310f5b1c92b360eb476b96d9a8c28c59e3731dade04c149abdbd3ecd891",
+  "status": "production_identity_validated",
+  "production_join_allowed": true,
+  "starting_commit": "3c32f065528439e900460a6a412a5bde08ef3043",
+  "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_v2/tandem_nvt_v2_1000.dcd",
+  "trajectory_sha256": "397435de72a189641e73f65883cbe60a5006306aff966799eab5c32b98d1bd19",
+  "expected_archive_trajectory_sha256": "397435de72a189641e73f65883cbe60a5006306aff966799eab5c32b98d1bd19",
+  "topology": "/home/robson/PetaChem/tc_tandem_nvt_v2/solvated_protonated.pdb",
+  "topology_sha256": "c4dd8d8562565f72950a7faa6be5087b27d2ad03fe963e5439549537c75804db",
+  "topology_descriptor_sha256": "4b026db1160a339e12ef4d407f4306c81d0a887503b530d4f18d3f6f2430c29b",
   "amber_cr2_prmtop": "/home/robson/PetaChem/anionic_build/monomer_solv.prmtop",
   "amber_cr2_prmtop_sha256": "81b99ef639c8df19a044f4d61ec1703ffc44a4dcbdb2478ffa9e4286aeb578d3",
   "dcd": {
-    "frame_count": 1000,
+    "frame_count": 1200,
     "start_step": 500,
     "save_interval_steps": 500,
-    "atom_count": 69456
+    "atom_count": 69418
   },
   "frame_time_convention_ps": "(zero_based_frame + 1) ps",
   "box_frame0_A": [
-    90.7521749130615,
-    90.7521749130615,
-    90.7521749130615
+    89.82794796401208,
+    89.82794796401208,
+    89.82794796401208
   ],
   "site_mapping": {
     "A": {
@@ -67,7 +67,7 @@
     "version": "3.12.12",
     "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39"
   },
-  "gpu": "NVIDIA GeForce RTX 4080, 580.173.02, 16376 MiB",
+  "gpu": "Failed to initialize NVML: Driver/library version mismatch\nNVML library version: 580.178",
   "settings": {
     "method": "wB97X-D3",
     "basis_smoke": "6-31G*",

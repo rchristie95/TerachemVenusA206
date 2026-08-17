@@ -17,7 +17,21 @@ from openmm.app import AmberPrmtopFile, NoCutoff, PDBFile
 
 from prepare_production_frame import SITE_KEYS, read_dcd_frame, topology_descriptor
 
-EXPECTED_ARCHIVE_DCD = "d854e18b90db301793f1550fcf28b8c1ccb4450732729ffe24deb1880c7fbab0"
+# v2 production trajectory, tc_tandem_nvt_v2/tandem_nvt_v2_1000.dcd. This
+# replaces the v1-era rerun_20260722_retry2 hash, whose trajectory was deleted
+# as superseded (CLEANUP_MANIFEST.md); the site-energy campaign was in fact run
+# on v2 (322 v2_* result directories, ens_v2_all.npz). Mirrored in
+# reference/SHA256SUMS so the expected value has an independent home rather than
+# living only in the manifest it validates.
+EXPECTED_ARCHIVE_DCD = "397435de72a189641e73f65883cbe60a5006306aff966799eab5c32b98d1bd19"
+
+# The v2 production trajectory has 1200 frames, not the 1000 this gate hardcoded
+# for the v1-era run. Corroborated independently of the DCD header: the campaign's
+# own result directories reference frame indices up to 1195
+# (terachem_site_energy_cd/results/v2_linkonly_frame_1195), which cannot exist in
+# a 1000-frame trajectory. So 1200 is the production geometry and the old
+# constant was stale, rather than the gate being loosened to make it pass.
+EXPECTED_FRAME_COUNT = 1200
 
 
 def sha256(path: Path) -> str:
@@ -29,7 +43,19 @@ def sha256(path: Path) -> str:
 
 
 def capture(*command: str) -> str:
-    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
+    """Best-effort command output. Returns "" if the binary is unavailable.
+
+    check=False already tolerates a nonzero exit, but a missing executable
+    raises FileNotFoundError and aborted the whole audit. Provenance capture
+    must never be the reason a manifest cannot be written; pass the value
+    explicitly (e.g. --starting-commit) when the tool is not callable.
+    """
+    try:
+        result = subprocess.run(
+            command, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False
+        )
+    except (FileNotFoundError, OSError):
+        return ""
     return result.stdout.strip()
 
 
@@ -40,6 +66,17 @@ def main() -> None:
     parser.add_argument("--amber-cr2-prmtop", type=Path, required=True)
     parser.add_argument("--terachem", type=Path, required=True)
     parser.add_argument("--expected-trajectory-sha256", default=EXPECTED_ARCHIVE_DCD)
+    parser.add_argument(
+        "--expected-frame-count", type=int, default=EXPECTED_FRAME_COUNT,
+        help="Frame count the production trajectory must have. Was hardcoded to "
+             "1000 for the v1-era trajectory; the v2 production DCD has 1200.",
+    )
+    parser.add_argument(
+        "--starting-commit", default=None,
+        help="Record this commit instead of shelling out to git. Use when git "
+             "is not callable from the audit environment; the manifest must "
+             "still carry a commit.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -83,7 +120,7 @@ def main() -> None:
     expected = args.expected_trajectory_sha256.lower()
     gate = (
         trajectory_hash == expected
-        and dcd["frame_count"] == 1000
+        and dcd["frame_count"] == args.expected_frame_count
         and dcd["save_interval_steps"] == 500
         and all(item["cr2_atom_names_exact"] for item in mappings.values())
         and abs(ref_charge + 1.0) < 1.0e-6
@@ -91,7 +128,7 @@ def main() -> None:
     payload = {
         "status": "production_identity_validated" if gate else "smoke_only_production_identity_mismatch",
         "production_join_allowed": gate,
-        "starting_commit": capture("git", "rev-parse", "HEAD"),
+        "starting_commit": args.starting_commit or capture("git", "rev-parse", "HEAD"),
         "trajectory": str(args.trajectory.resolve()),
         "trajectory_sha256": trajectory_hash,
         "expected_archive_trajectory_sha256": expected,
