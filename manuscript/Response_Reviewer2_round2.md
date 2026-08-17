@@ -49,19 +49,47 @@ source for the wrong constant, so this class of error cannot recur.
 
 **Consequences, which we now make the centrepiece of the paper.** The corrected
 coupling is 4–8$\times$ smaller than the values inferred from CD couplet
-splittings. We show in the revised Results (new §"Kim's Davydov splitting is
-$\Omega$, not $2|J|$") that this is not a conflict: for a *detuned* dimer the
-exciton gap is $\Omega = \sqrt{\Delta^2 + 4J^2}$, and with the computed
-$J = 32.82$ and $|\Delta| = 550$ cm$^{-1}$ this gives 14.75 nm against the
-measured $14.6 \pm 0.3$ nm, with no adjustable parameter. Reading the same
-splitting as $2|J|$ would require a 29 D transition dipole or a 10 Å
-separation.
+splittings. The revised Results show that this is not a conflict, but for a
+different reason than we gave in the previous version, and we are grateful to
+have been pushed to check it numerically rather than argue it analytically.
+
+We had proposed that the couplet separation reports the detuned exciton gap
+$\Omega = \sqrt{\Delta^2 + 4J^2}$, and that the computed $J$ and $\Delta$
+reproduce the measured $14.6 \pm 0.3$ nm with no adjustable parameter. **That
+argument does not survive simulation and has been withdrawn.** $\Omega$ is a
+Hamiltonian gap; the measurement is the peak-to-peak separation of a bisignate
+lineshape, and for bands this broad the two are not equal. Propagating
+$\Omega = 553.9$ cm$^{-1}$ through the lineshape of the published constrained
+fit gives a couplet separated by **652 cm$^{-1}$, not the observed 548**.
+
+What replaces it is stronger, and does not rely on a numerical coincidence. On
+that same lineshape the peak-to-peak separation is a **non-monotonic,
+two-valued and linewidth-dominated** function of the gap: the published latent
+gap of 261.58 cm$^{-1}$ yields extrema 500 cm$^{-1}$ apart (a 1.93$\times$
+inflation), a gap of *zero* still yields 690 cm$^{-1}$, and the function passes
+through a minimum near $\Omega \approx 190$ cm$^{-1}$. The couplet separation is
+therefore not an estimator of the exciton gap in either direction, and the
+factor of four never required a physical explanation. The detuning remains
+real and consequential — it localises the eigenstates and suppresses the
+couplet *amplitude* by $2|J|/\Omega = 0.12$ — but it is the amplitude, not the
+separation, that carries $J$. The same artefact is visible in the two-photon
+data of Cusick et al., whose $\Omega$ spectrum shows extrema 750 cm$^{-1}$
+apart against an H–J splitting of only 60–90 cm$^{-1}$, and who correctly
+analyse it by fitting amplitudes rather than separations.
 
 We also note that Cusick et al. (*J. Phys. Chem. A* **2026**, 130, 5471), from
-the laboratories that reported the larger couplings, now compute 26.9–36.8
-cm$^{-1}$ for this dimer. Repeating our point-dipole evaluation under their
-conventions ($\mu = 7.9$ D, no screening) gives 31.1 cm$^{-1}$ against their
-32.1.
+the laboratories that reported the larger couplings, now measure 32–40
+cm$^{-1}$ for this dimer. **We have corrected our comparison to this work.**
+Their values carry no dielectric screening, which they omit explicitly, whereas
+ours are screened by $\varepsilon_{\rm opt} = 1.77$; the previous version
+compared the two directly and reported agreement that the conventions do not
+support. Like for like we obtain 58 cm$^{-1}$ unscreened against their 32–40,
+or 32.8 against 18–23 screened — a ratio of 1.6 in either convention, since the
+screening factor cancels from it. Inverting their point-dipole expression for
+the transition dipole implied by their own parameters returns 7.6–7.9 D against
+the 9.8 D of our spectroscopically normalised density; as $J \propto |\mu|^2$
+this accounts for a factor of 1.5 and is now identified in the Discussion as
+the dominant remaining systematic in the calculation.
 
 ---
 

@@ -131,7 +131,7 @@ concentration.
 \toprule
 Observable & Experiment & This work & Status \\
 \midrule
-CD couplet separation & $14.6 \pm 0.3$~nm (Kim 2019) & $\Omega \Rightarrow 14.75$~nm & \textbf{agrees, no free parameter} \\
+CD couplet separation & $14.6 \pm 0.3$~nm (Kim 2019) & lineshape-dominated; not a gap estimator & \textbf{not comparable} \\
 Apparent coupling & $130.79~\mathrm{cm^{-1}}$ (constrained fit) & $105$--$159~\mathrm{cm^{-1}}$ & agrees \\
 Couplet handedness & negative (after subtraction order) & negative in every frame & agrees \\
 Third CD band & $481.4$~nm & vibronic, $470$--$495$~nm & agrees \\
@@ -142,16 +142,23 @@ Limiting anisotropy & $0.52 \to 0.30$ & requires $\alpha \approx 131^\circ$ vs c
 \end{tabular}
 \end{table}
 
-The decisive point is the first row. Kim's splitting has been read throughout
-the literature as $2|J|$, giving $J = 274~\mathrm{cm^{-1}}$; at the
+The first row is the one that changed most between versions, and it is now a
+negative result rather than a positive one. Kim's splitting has been read
+throughout the literature as $2|J|$, giving $J = 274~\mathrm{cm^{-1}}$; at the
 crystallographic $25.4$~\AA{} separation that requires a transition dipole of
-$\approx 29$~D or a separation of $\approx 10$~\AA. Read instead as $\Omega$,
-the computed $J = 32.82$ and $|\Delta| = 550~\mathrm{cm^{-1}}$ give $14.75$~nm
-with nothing adjusted. The result is also robust to the two open systematics
---- the transition dipole ($7.9$ vs $9.6$~D) and whether optical screening is
-applied --- which together move $J$ between $22$ and $39~\mathrm{cm^{-1}}$ but
-move the predicted splitting only from $14.69$ to $14.79$~nm, precisely because
-$\Delta$ dominates $\Omega$.
+$\approx 29$~D or a separation of $\approx 10$~\AA. An earlier version of this
+work proposed reading it instead as the detuned exciton gap $\Omega$, which
+appeared to reproduce $14.6$~nm with nothing adjusted. Direct simulation of the
+couplet withdraws that claim: propagating $\Omega = 553.9~\mathrm{cm^{-1}}$
+through the lineshape of the published constrained fit gives extrema separated
+by $652~\mathrm{cm^{-1}}$, not the observed $548$. On that lineshape the
+separation is a non-monotonic, two-valued and linewidth-dominated function of
+the gap --- a gap of \emph{zero} still gives $690~\mathrm{cm^{-1}}$ --- so it
+estimates the gap in neither direction, and the observable was never comparable
+with a computed $J$ or $\Omega$ in the first place. The detuning survives as the
+explanation of the couplet \emph{amplitude} and of the localisation of the
+eigenstates, and the same artefact is visible and correctly handled in the
+two-photon $\Omega$ spectrum of Cusick et al.
 
 The one row that does not yet agree is the limiting anisotropy, which is
 independently corroborated ($49^\circ$ for the eYFP dimer by one-photon
