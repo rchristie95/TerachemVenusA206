@@ -94,6 +94,15 @@ coupling_nvt_production_cr2_1000_*/spectra_ensemble_nguyen_convention.csv
 # Local manuscript mirrors and working notes
 UoP_Surrey_Venus_Collaboration/
 arXiv-*/
+# ...but the v2 correction SOURCE is a deliverable and must be versioned: v1 is
+# live and citable with a retracted headline, so the text that corrects it
+# cannot live only in the working tree. Directory stays ignored; only source
+# files are tracked (not the 8 MB PDFs, figures or LaTeX build artefacts).
+!arXiv-v2/
+arXiv-v2/*
+!arXiv-v2/*.tex
+!arXiv-v2/*.md
+!arXiv-v2/*.bib
 BRIEFING_FOR_LLM.txt
 NEXT_AGENT_INSTRUCTIONS.txt
 STEOM_COUPLING_FINDINGS_*.txt
