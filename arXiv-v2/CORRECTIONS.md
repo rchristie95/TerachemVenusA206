@@ -6,6 +6,16 @@ effects — is an artefact of a unit-conversion error. This document catalogues
 every claim that changes, the corrected value, and the artefact in the repository
 that establishes it.
 
+> **v2 source: `Submit-arXiv-v2.tex` is `manuscript/JPCB_tandem_round_2.tex`
+> plus a correction note in the abstract.** An earlier attempt patched the v1
+> JPCL letter instead; that was abandoned because the round-2 revision already
+> contained the corrected analysis in fuller form — 18 of the 18 claims below
+> against 3, at 24 pages against 10 — and because the v1 letter is organised
+> around a headline that no longer stands. Same title, same author list, so the
+> replacement is the same paper revised rather than a different one. Keeping a
+> separately patched arXiv text would have recreated exactly the two-divergent-
+> drafts problem that produced the contradiction this correction resolves.
+
 **Every number below is reproducible from committed scripts.** The production
 ensemble is `coupling_nvt_production_cr2_1000_20260721/` (1000 frames); the
 derived-parameter comparison is `cusick_comparison/` (six scripts).
