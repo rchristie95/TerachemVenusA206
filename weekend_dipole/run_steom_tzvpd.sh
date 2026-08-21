@@ -11,7 +11,7 @@ export PATH=/home/robson/anaconda3/envs/openmpi416/bin:$PATH
 
 STATUS=steom_tzvpd_status.txt
 JOB=steom_def2_tzvpd
-HOURS=24
+HOURS=96
 
 note() { echo "[$(date '+%F %H:%M:%S')] $*" | tee -a "$STATUS"; }
 
