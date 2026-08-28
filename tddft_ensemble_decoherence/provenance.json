@@ -1,0 +1,33 @@
+{
+  "repository_path": "/home/robson/PetaChem",
+  "repository_branch": "main",
+  "repository_commit": "34775aa82847f654d77f8720182ddc36782095c7",
+  "gpu": "NVIDIA GeForce RTX 4080",
+  "gpu_memory_MiB": 16376,
+  "driver": "580.126.09",
+  "cuda_reported_by_driver": "13.0",
+  "terachem_version": "1.97B-beta-251105",
+  "terachem_git_version": "3fcf25291f21a40754a20c9c6450f71e006a2729",
+  "orca_version": "6.1.1",
+  "openmm_version": "8.4",
+  "dielectric_convention": {
+    "vacuum": 1.0,
+    "optical_screening": 1.77,
+    "source": "manuscript/JPCB_tandem.tex and audited July 21 production coupling"
+  },
+  "input_template_sha256": {
+    "retained_terachem_energy": "17514a0325164d0ea43cc51c463873a98ca681b4671dd8cb328e6f5de70515e7",
+    "retained_terachem_density": "b0f32739b67729315f3777ddfa365ac816684e36fa488193b73d58973a119d43",
+    "ensemble_energy_template": "17514a0325164d0ea43cc51c463873a98ca681b4671dd8cb328e6f5de70515e7",
+    "ensemble_density_template": "e93b4d8a7397f0074fe518371565333bf173823de9411f15598b4f080b837594",
+    "orca_steom": "034e8423dd1fba442c5075babab90aac9af1e9308a95e916b739548f7c910dc8",
+    "orca_tddft": "48dfc42cd8639e882e67d3b819438c63be84357b1e14067f68940de718e1e64b"
+  },
+  "state_tracking_priority": [
+    "physical transition-density overlap after link-atom masking",
+    "orbital/configuration character",
+    "oscillator strength and transition-dipole orientation",
+    "adjacent-frame energy continuity for the short window"
+  ],
+  "status": "blocked_before_trajectory_pilot_missing_exact_raw_coordinates"
+}

@@ -1,0 +1,26 @@
+# BASIS CHOICE. Everything here is 6-31G*, not the 6-311+G** of the QM/MM site
+# energies. A mixed-basis attempt (opt at 6-311+G**, Hessian at 6-31G*) FAILED:
+# TeraChem refused the Hessian with "maximum component of gradient is too large"
+# because a geometry stationary in one basis is not stationary in another
+# (Grad-Max 2.20e-4 at 6-311+G** vs 6.45e-3 at 6-31G*). A Hessian requires a
+# stationary point IN ITS OWN BASIS, so the whole chain must share one.
+# 6-31G* is chosen for speed; omega and the Huang-Rhys factor S are far less
+# basis sensitive than excitation energies. This must be stated wherever the
+# resulting S and omega are used.
+# Stage 2: numerical Hessian (6N displacements) at the optimised geometry.
+coordinates optim.xyz
+run frequencies
+method camb3lyp
+basis 6-31gs
+# SPEED: Hessian at 6-31G* rather than 6-311+G**. 264 finite-difference
+# gradients dominate the wall time, and mode frequencies / Huang-Rhys factors
+# are far less basis sensitive than excitation energies. The optimisation and
+# the excited-state gradient stay at 6-311+G**.
+charge -1
+spinmult 1
+scrdir scr_freq
+scf diis+a
+threall 1.0e-13
+convthre 1.0e-6
+gpus 1
+end

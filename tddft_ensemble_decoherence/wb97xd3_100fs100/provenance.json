@@ -1,0 +1,383 @@
+{
+  "status": "complete",
+  "scope": "100 consecutive full-dimer NVT frames spanning 1--100 fs; two independently embedded chromophore-plus-Tyr site TDDFTs per frame",
+  "repository": {
+    "path": "/home/robson/PetaChem",
+    "branch": "main",
+    "commit": "34775aa82847f654d77f8720182ddc36782095c7",
+    "status_short_branch": [
+      "## main...origin/main",
+      " M run_nvt.py",
+      "?? neo_model/GPU_ENGINE_README.md",
+      "?? neo_model/avas_test.py",
+      "?? neo_model/fno_adc.py",
+      "?? neo_model/geom_cl.xyz",
+      "?? neo_model/geom_neo.xyz",
+      "?? neo_model/geom_neoepc.xyz",
+      "?? neo_model/gpu_accel.py",
+      "?? neo_model/gpu_neo.py",
+      "?? neo_model/mm_chr.dat",
+      "?? neo_model/mm_cthr.dat",
+      "?? neo_model/mm_field.dat",
+      "?? neo_model/mm_light_cthrp.dat",
+      "?? neo_model/opt_cl.dat",
+      "?? neo_model/opt_neo.dat",
+      "?? neo_model/opt_neoepc.dat",
+      "?? neo_model/orca_steom/steom_transition_density.png",
+      "?? neo_model/orca_steom/steom_transition_density_side.png",
+      "?? neo_model/pi_active_idx.npy",
+      "?? neo_model/run_adc2.py",
+      "?? neo_model/run_adc2_cthrp.py",
+      "?? neo_model/run_adc2_cthrp_mm.py",
+      "?? neo_model/run_adc2_cthrp_relaxed.py",
+      "?? neo_model/run_adc2_mm.py",
+      "?? neo_model/run_adcc.py",
+      "?? neo_model/run_bias.py",
+      "?? neo_model/run_casscf.py",
+      "?? neo_model/run_neo.py",
+      "?? neo_model/run_opt.py",
+      "?? neo_model/run_tddft_screen.py",
+      "?? neo_model/select_pi.py",
+      "?? tddft_ensemble_decoherence/"
+    ],
+    "note": "Pre-existing and campaign worktree changes were preserved; no commit or push was made."
+  },
+  "software": {
+    "terachem": "TeraChem v1.97B-beta-251105",
+    "orca_retained_steom": "6.1.1 RELEASE",
+    "cuda_gpu_driver_memory_mib": "NVIDIA GeForce RTX 4080, 580.126.09, 16376",
+    "python": "3.12.12",
+    "numpy": "2.3.5"
+  },
+  "trajectory": {
+    "path": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/tandem_nvt_100fs_100frames.dcd",
+    "sha256": "95f92cca4e307b425f989a09fe1828e7f49d4e3f79175447924660a0722e256e",
+    "frames": 100,
+    "time_fs": [
+      1.0,
+      100.0
+    ],
+    "sampling_interval_fs": 1.0,
+    "atoms": 69456,
+    "periodic_box_A": [
+      90.7521749130615,
+      90.7521749130615,
+      90.7521749130615
+    ],
+    "topology": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/solvated_protonated.pdb",
+    "topology_sha256": "a88ca179bd5fe00455205a4eb7698a696ba0e14970f22bf375b89c738ab06bca",
+    "interpolated_frames": 0
+  },
+  "electronic_structure": {
+    "method": "wB97X-D3",
+    "basis": "6-311G**",
+    "charge": -1,
+    "multiplicity": 1,
+    "roots_computed": 7,
+    "target": "bright anionic chromophore pi-pi*, dominant 93 -> 95 configuration",
+    "qm_atoms_per_site": 44,
+    "physical_density_atoms": 41,
+    "link_atoms_excluded_one_based": [
+      42,
+      43,
+      44
+    ],
+    "embedding": "validated fixed frame-0 local MM point-charge identities in the instantaneous full-dimer NVT geometry"
+  },
+  "campaign": {
+    "frames_complete": 100,
+    "site_jobs_complete": 200,
+    "site_jobs_failed": 0,
+    "failure_fraction": 0.0,
+    "retry_count": 0,
+    "selected_concurrent_workers": 3,
+    "summed_terachem_runtime_seconds": 36826.78356
+  },
+  "state_tracking": {
+    "required_configuration": "93 -> 95",
+    "site_A_root_counts": {
+      "3": 50,
+      "2": 50
+    },
+    "site_B_root_counts": {
+      "2": 100
+    },
+    "changes_from_static_assignment": {
+      "A": 0,
+      "B": 53
+    },
+    "minimum_adjacent_full_density_overlap": {
+      "A": 0.9168318489685867,
+      "B": 0.9790885856976136
+    },
+    "tracking_sensitivity_consensus": "12/12 paths at every frame for both sites",
+    "exact_all_root_density_edges": {
+      "A": [
+        1,
+        2,
+        3,
+        12,
+        13,
+        14,
+        36,
+        37,
+        38,
+        41,
+        42,
+        43,
+        72,
+        73,
+        74,
+        81,
+        82,
+        83
+      ],
+      "B": [
+        13,
+        14,
+        15,
+        26,
+        27,
+        28,
+        90,
+        91,
+        92
+      ]
+    }
+  },
+  "tdc": {
+    "dielectric_convention": "J_screened = J_vacuum / epsilon_opt",
+    "epsilon_opt": 1.77,
+    "mean_vacuum_cm-1": 125.21521196730001,
+    "mean_screened_cm-1": 70.74305760850001,
+    "mean_pda_screened_cm-1": 18.460383515900002,
+    "maximum_AB_BA_relative_error": 1.2152442554824674e-14,
+    "maximum_cpu_gpu_subset_relative_error": 4.954253619748871e-16,
+    "cpu_subset_points_per_frame": 1000,
+    "coupling_energy_shift_or_scaling": "none"
+  },
+  "calibration": {
+    "status": "retained_same_geometry_calibration",
+    "profile": "validated",
+    "production_profile": "validated",
+    "roots": 7,
+    "production_roots": 7,
+    "method": "wB97X-D3",
+    "basis": "6-311G**",
+    "charge": -1,
+    "multiplicity": 1,
+    "state_tracking_reference": "/home/robson/PetaChem/tddft_ensemble_decoherence/calibration/reference_tddft_root2_density_neutral.npz",
+    "reference_tddft_root": 2,
+    "reference_tddft_energy_eV": 3.43441587,
+    "steom_reference_energy_eV": 2.366633,
+    "steom_reference_wavelength_nm": 523.9,
+    "steom_reference_oscillator_strength": 0.885045,
+    "steom_constant_shift_eV": -1.06778287,
+    "affine_calibration": {
+      "status": "not_fitted",
+      "reason": "Only one matched final STEOM/TDDFT reference geometry is retained."
+    },
+    "coupling_scaling": {
+      "applied": false,
+      "reason": "An additive site-energy correction does not alter a transition density."
+    },
+    "constant_shift_T2_invariant_expected": true
+  },
+  "decoherence": {
+    "cumulant_T2star_raw_TDDFT_fs": 41.47717204904804,
+    "cumulant_T2star_shifted_STEOM_fs": 41.47717204904799,
+    "constant_shift_gap_invariance_max_abs_eV": 4.440892098500626e-16,
+    "bath_positive_correlation_time_fs": 3.604519046580666,
+    "direct_full_signed_J_fs": 63.51362193235594,
+    "direct_gap_only_fs": 64.07474337637716,
+    "stride_sensitivity": {
+      "1": {
+        "sampling_interval_fs": 1.0,
+        "samples": 100,
+        "T2star_fs": 41.47717204904804
+      },
+      "2": {
+        "sampling_interval_fs": 2.0,
+        "samples": 50,
+        "T2star_fs": 40.851520856724214
+      },
+      "4": {
+        "sampling_interval_fs": 4.0,
+        "samples": 25,
+        "T2star_fs": 38.718353298028504
+      }
+    },
+    "segment_sensitivity": {
+      "first_half": {
+        "samples": 50,
+        "T2star_fs": 9.262375332182687,
+        "censored_at_fs": null
+      },
+      "last_half": {
+        "samples": 50,
+        "T2star_fs": null,
+        "censored_at_fs": 49.0
+      }
+    },
+    "bootstrap": {
+      "method": "circular moving-block bootstrap",
+      "random_seed": 206,
+      "replicates": 1000,
+      "block_samples": 8,
+      "block_duration_fs": 8.0,
+      "finite_estimate_count": 707,
+      "right_censored_count": 293,
+      "finite_percentile_95_CI_fs": [
+        10.060923280133611,
+        62.57280582786099
+      ],
+      "finite_median_fs": 17.19672997875677
+    },
+    "limitation": "The 100-fs record is sufficient for a prototype ultrafast estimate but not a stationary 1-ps block analysis or slow inhomogeneous broadening."
+  },
+  "movie": {
+    "status": "complete",
+    "output": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/tddft_density_wb97xd3_100fs_50s_fixed_camera_isosurfaces.mp4",
+    "output_sha256": "9285abb4fa242b71725963f619816c217547bc884773ddc88b14fca94ab7a724",
+    "frames": 100,
+    "fps": 2.0,
+    "duration_seconds": 50.0,
+    "resolution": [
+      1600,
+      1200
+    ],
+    "orbit_degrees": 0.0,
+    "density_representation": "surface",
+    "density_points_per_site": null,
+    "density_radius_A": null,
+    "density_transparency": 0.3,
+    "surface_grid_spacing_A": 0.3,
+    "surface_gaussian_smear_A": 0.4,
+    "surface_padding_A": 1.0,
+    "surface_normalized_iso_level": 0.06,
+    "surface_triangle_counts_by_site": {
+      "A": {
+        "mean": 12840.1,
+        "minimum": 12076,
+        "maximum": 13480
+      },
+      "B": {
+        "mean": 12862.92,
+        "minimum": 10990,
+        "maximum": 14672
+      }
+    },
+    "cartoon_transparency": 0.9,
+    "transparency_mode": 2,
+    "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/tandem_nvt_100fs_100frames.dcd",
+    "trajectory_sha256": "95f92cca4e307b425f989a09fe1828e7f49d4e3f79175447924660a0722e256e",
+    "topology": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/solvated_protonated.pdb",
+    "topology_sha256": "a88ca179bd5fe00455205a4eb7698a696ba0e14970f22bf375b89c738ab06bca",
+    "tracking": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/global_state_tracking.json",
+    "tracking_sha256": "28c537eec2a89431781fad0de1216f5625c2d6f4782a4d600c06ead82a21d2be",
+    "density_phase": "Every compact density is phase-aligned to the retained reference; red is positive and blue is negative.",
+    "link_atoms": "Excluded upstream from every displayed compact density.",
+    "placement_rmsd_by_site_A": {
+      "A": {
+        "mean": 8.258546805380425e-06,
+        "maximum": 1.1199938875564415e-05
+      },
+      "B": {
+        "mean": 8.88654576730034e-06,
+        "maximum": 1.1657747921938763e-05
+      }
+    },
+    "camera": {
+      "reference_state": 1,
+      "protein_alignment": "traj and resi 1-229 and name CA",
+      "alignment_method": "PyMOL intra_fit to state 1",
+      "fixed": true,
+      "applied_y_orbit_degrees": 0.0
+    },
+    "render_style": "Existing paper transition-density movie: black background, dim high-transparency rainbow cartoon, gray/white CR2 ball-and-stick, slightly transparent red/blue volumetric isosurfaces visible through the beta-barrel ribbon, barrel-A stabilization, fixed reference-state camera."
+  },
+  "inputs": {
+    "tddft_template": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/input_templates/tddft_density_7roots.in",
+      "bytes": 271,
+      "sha256": "7543e56ea9763ae99c4ef05d41a3344220b075d645150cbcea46a8d7d938defd"
+    },
+    "state_tracker": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/scripts/global_state_tracking_100fs.py",
+      "bytes": 21477,
+      "sha256": "1738145319c14af6cc048bdd54333a3c2d9878300fc2032e1e3c9c23cd65955f"
+    },
+    "analysis_script": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/scripts/summarize_100fs50.py",
+      "bytes": 18865,
+      "sha256": "1d613ecea0717bfe6bc2c0b210d45d828815d0ba7e523354337f703d2e9b9b1b"
+    },
+    "fixed_embedding_selection": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/fixed_embedding_selection.json",
+      "bytes": 69669,
+      "sha256": "caab06d35fdf5449c772aa43f85ccfb546ece9a90a5bebbfd1954f895283e489"
+    },
+    "source_checkpoint": {
+      "path": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/nvt.chk",
+      "bytes": 10748955,
+      "sha256": "768a0ac7361af6f820c2950c06c74bbb4eccc5648c77b23f1bab077bb22a04cc"
+    },
+    "final_checkpoint": {
+      "path": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/nvt.chk",
+      "bytes": 10748955,
+      "sha256": "e8eec5a9e4a6a0ab67370ac67900feb725d135f54ae1d5aca434ec0109810e75"
+    }
+  },
+  "outputs": {
+    "frame_manifest": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/frame_manifest.csv",
+      "bytes": 72965,
+      "sha256": "784c8efb78ff758c33b0103e4558349e4a7e1890806ea0f108f297c11a460769"
+    },
+    "paired_site_manifest": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/paired_site_qmmm_manifest.csv",
+      "bytes": 139084,
+      "sha256": "9170bb50a6e1362585fad03fdbaaae0848e3a788b06d4e728dba49b40580d865"
+    },
+    "global_state_tracking": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/global_state_tracking.json",
+      "bytes": 242810,
+      "sha256": "28c537eec2a89431781fad0de1216f5625c2d6f4782a4d600c06ead82a21d2be"
+    },
+    "summary": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/summary.json",
+      "bytes": 37750,
+      "sha256": "9efb0546d1f71bd7047b6c43e94a30820e11cacddf468e0def8def492a96d135"
+    },
+    "numerical_report": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/NUMERICAL_REPORT.md",
+      "bytes": 6229,
+      "sha256": "b2bc13d686132dafaccf0c5669f35973cceaf88f42527b006ffb0fd2ad22a25a"
+    },
+    "histograms": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/energy_coupling_histograms.png",
+      "bytes": 107985,
+      "sha256": "1bb9456a97b202a4a9940e5434587839b7ec997066592273ae614c4620319a24"
+    },
+    "coherence_plot": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/correlation_and_coherence.png",
+      "bytes": 198945,
+      "sha256": "b8cf135444c9410e789f1715580550756ced70669c13508ec02344311224160e"
+    },
+    "movie": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/tddft_density_wb97xd3_100fs_50s_fixed_camera_isosurfaces.mp4",
+      "bytes": 1305283,
+      "sha256": "9285abb4fa242b71725963f619816c217547bc884773ddc88b14fca94ab7a724"
+    },
+    "movie_montage": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/video_isosurfaces_first_middle_last.png",
+      "bytes": 292174,
+      "sha256": "522176de74ef696336c883dbe0e6197466fc30428a9bff64c13bc3e06629c396"
+    },
+    "legacy_sphere_movie": {
+      "path": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/tddft_density_wb97xd3_100fs_50s_fixed_camera_visible.mp4",
+      "bytes": 1473291,
+      "sha256": "43f22e03a835079bd844931fded71f6da538d47419bc397d5aebd47509ca7aec"
+    }
+  }
+}

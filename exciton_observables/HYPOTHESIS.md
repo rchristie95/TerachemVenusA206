@@ -1,5 +1,7 @@
 # Working hypothesis: J ≈ 30 cm⁻¹, and how every Nguyen observable follows
 
+> **Superseded in part, 2026-08-27.** This hypothesis (J ~= 30) is DEAD -- the killer test gave <|Delta|> = 463.5 against the >=1000 required. Retained as a record of the argument. See `CORRECTIONS_2026-08-27.md`.
+
 2026-08-12. Standing assumption (fixed by decision, and well supported): the
 tandem coupling is **J ≈ 30 cm⁻¹**. The TDC production ensemble gives
 32.82 ± 1.55, the candidate-2 ensemble 32.25 ± 1.80, and the two registers are

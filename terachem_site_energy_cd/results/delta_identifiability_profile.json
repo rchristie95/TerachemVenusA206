@@ -1,0 +1,31 @@
+{
+  "note": "profile of R^2 vs FIXED delta in Nguyen's constrained 3-Lorentzian fit",
+  "experimental_TableS3_reconstruction": {
+    "r2_vs_delta": {
+      "100": 0.998749,
+      "130.79": 1.0,
+      "180": 0.990657,
+      "230": 0.948014,
+      "275": 0.911392,
+      "320": 0.831602,
+      "370": 0.751982,
+      "420": 0.666404
+    },
+    "r2_range": 0.333596,
+    "caveat": "tautological: this spectrum IS two Lorentzians generated at delta=130.79, so exact recovery is guaranteed and says nothing about the raw data"
+  },
+  "our_vibronic_S0.35": {
+    "r2_vs_delta": {
+      "100": 0.998926,
+      "130.79": 0.998904,
+      "180": 0.998874,
+      "230": 0.998911,
+      "275": 0.999003,
+      "320": 0.999161,
+      "370": 0.999284,
+      "420": 0.998965
+    },
+    "r2_range": 0.00040999999999991044,
+    "conclusion": "delta is NOT identifiable: R^2 varies by 3.8e-4 over delta in [100,420]"
+  }
+}

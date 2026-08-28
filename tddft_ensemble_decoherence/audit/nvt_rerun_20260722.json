@@ -1,0 +1,96 @@
+{
+  "date": "2026-07-22",
+  "authorization": "User explicitly requested a new NVT run after the retained coordinate trajectories were found absent/corrupt.",
+  "repository_commit": "34775aa82847f654d77f8720182ddc36782095c7",
+  "environment": {
+    "conda_environment": "TeraChem",
+    "openmm_version": "8.4",
+    "platform": "CUDA",
+    "gpu": "NVIDIA GeForce RTX 4080",
+    "integrator_seed": 20260618,
+    "temperature_K": 300.0,
+    "friction_ps_inverse": 1.0,
+    "timestep_fs": 2.0,
+    "nonbonded_method": "PME",
+    "nonbonded_cutoff_nm": 1.0
+  },
+  "inputs": {
+    "tandem_pdb": {
+      "path": "/home/robson/PetaChem/tandem_dimer.pdb",
+      "sha256": "636ca61027477971e88bf7b1e0c4a0fb8bb83d33c58a1bd5a535bda73d862bfd"
+    },
+    "amber_cr2_prmtop": {
+      "path": "/home/robson/PetaChem/anionic_build/monomer_solv.prmtop",
+      "sha256": "81b99ef639c8df19a044f4d61ec1703ffc44a4dcbdb2478ffa9e4286aeb578d3"
+    }
+  },
+  "long_window": {
+    "command": "conda run --no-capture-output -n TeraChem python -u run_nvt.py --pdb tandem_dimer.pdb --amber-cr2-prmtop anionic_build/monomer_solv.prmtop --workdir tc_tandem_nvt_rerun_20260722_retry2 --no-overwrite-workdir --nvt-steps 500000 --openmm-trajectory-interval 500 --openmm-trajectory-file tandem_nvt_1000.dcd --checkpoint-file nvt.chk --checkpoint-interval 5000 --seed 20260618 --no-video",
+    "workdir": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2",
+    "trajectory": {
+      "path": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/tandem_nvt_1000.dcd",
+      "sha256": "d854e18b90db301793f1550fcf28b8c1ccb4450732729ffe24deb1880c7fbab0",
+      "frames": 1000,
+      "atoms": 69456,
+      "first_time_ps": 1.0,
+      "last_time_ps": 1000.0,
+      "sampling_interval_ps": 1.0
+    },
+    "topology": {
+      "path": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry2/solvated_protonated.pdb",
+      "sha256": "7bbf5cf963fa437ed0d52e301b5b50ba9bb626b38edd505153cc8de9b75511c1"
+    },
+    "checkpoint_sha256": "768a0ac7361af6f820c2950c06c74bbb4eccc5648c77b23f1bab077bb22a04cc"
+  },
+  "short_window": {
+    "command": "conda run --no-capture-output -n TeraChem python -u run_nvt.py --pdb tc_tandem_nvt_rerun_20260722_retry2/solvated_protonated.pdb --skip-solvation --amber-cr2-prmtop anionic_build/monomer_solv.prmtop --workdir tc_tandem_nvt_highcadence_20260722_retry1 --no-overwrite-workdir --resume-checkpoint tc_tandem_nvt_rerun_20260722_retry2/nvt.chk --nvt-steps 504000 --openmm-trajectory-interval 2 --openmm-trajectory-file tandem_nvt_8ps_4fs.dcd --checkpoint-file nvt.chk --checkpoint-interval 1000 --seed 20260618 --no-video",
+    "workdir": "/home/robson/PetaChem/tc_tandem_nvt_highcadence_20260722_retry1",
+    "trajectory": {
+      "path": "/home/robson/PetaChem/tc_tandem_nvt_highcadence_20260722_retry1/tandem_nvt_8ps_4fs.dcd",
+      "sha256": "48dbcc1cf3d39bb6cc070e547656ce6a4ce96740ecbf0495cf9fa24696f25396",
+      "frames": 2000,
+      "atoms": 69456,
+      "sampling_interval_fs": 4.0,
+      "absolute_simulation_steps": [500002, 504000],
+      "relative_times_ps": [0.004, 8.0],
+      "segment_1_frames": [0, 999],
+      "segment_2_frames": [1000, 1999],
+      "dcd_header_note": "The resumed DCD uses a local start step of 2; the live simulation resumed at absolute step 500000."
+    },
+    "topology": {
+      "path": "/home/robson/PetaChem/tc_tandem_nvt_highcadence_20260722_retry1/solvated_protonated.pdb",
+      "sha256": "1e77fcccddbb430338362e7430796d847b4edd0464e0c01c8b7ca12250944578"
+    },
+    "checkpoint_sha256": "af650d36fecbf36a8a0401c3dec341a52348a908887fa5b99e955dcfafa554b2"
+  },
+  "cr2_parameter_audit": {
+    "charge_per_site_e": [-0.9999999985182989, -0.9999999985182989],
+    "atoms_per_site": 29,
+    "bonds_per_site_including_peptide_edges": 32,
+    "torsions_transplanted_per_site": 119,
+    "parameter_audit_sha256": "76daa965fee650e02725f0b86726259883dd5a187296acb059516bc7d4dad5dd"
+  },
+  "trajectory_validation": {
+    "topology_trajectory_atom_counts_match": true,
+    "periodic_box_A": [90.7521749130615, 90.7521749130615, 90.7521749130615],
+    "periodic_box_present_every_frame": true,
+    "all_coordinates_finite": true,
+    "long_cr2_touching_bond_range_A": [1.0099934339523315, 1.5964926481246948],
+    "short_cr2_touching_bond_range_A": [1.0099936723709106, 1.6109815835952759],
+    "no_frames_interpolated_or_replaced": true
+  },
+  "failed_attempts_retained": [
+    {
+      "workdir": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722",
+      "failure": "Initial runner used the base Python environment without pdbfixer; no MD started."
+    },
+    {
+      "workdir": "/home/robson/PetaChem/tc_tandem_nvt_rerun_20260722_retry1",
+      "failure": "Hydrogen topology patch scoping error; no solvation or MD started."
+    },
+    {
+      "workdir": "/home/robson/PetaChem/tc_tandem_nvt_highcadence_20260722",
+      "failure": "Regenerated solvent box had 69060 rather than 69456 particles, so checkpoint loading failed before MD."
+    }
+  ]
+}

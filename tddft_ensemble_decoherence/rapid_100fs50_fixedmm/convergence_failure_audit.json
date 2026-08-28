@@ -1,0 +1,58 @@
+{
+  "status": "complete",
+  "requested_frames": 50,
+  "final_complete_frames": 50,
+  "final_failed_frames": 0,
+  "interpolated_or_replaced_frames": 0,
+  "seven_root_boundary_retry_frames": [
+    31,
+    32,
+    33,
+    42,
+    43,
+    44
+  ],
+  "retry_count": 6,
+  "retry_policy": "Original seven-root directories retained as attempt0; rerun serially with nine roots; no energy or coupling interpolation.",
+  "final_failure_classes": {},
+  "runtime_sum_seconds": 11584.595492,
+  "runtime_mean_seconds_per_frame": 231.69190984,
+  "adaptive_selected_workers": 3,
+  "adaptive_three_worker_throughput_frames_per_hour": 38.18946967909398,
+  "adaptive_peak_gpu_memory_MiB": 7796,
+  "tdc_maximum_AB_BA_relative_error": 9.277135123604568e-15,
+  "tdc_maximum_CPU_GPU_subset_relative_error": 8.522271967905092e-16,
+  "maximum_pre_neutralization_grid_charge_error": 0.02717002218233,
+  "median_pre_neutralization_grid_charge_error": 0.02298956634520001,
+  "minimum_link_cap_direction_dot_product": 1.0,
+  "fixed_MM_selection_observed": {
+    "A": [
+      {
+        "point_charges": 2510,
+        "net_charge_e": -1.332
+      }
+    ],
+    "B": [
+      {
+        "point_charges": 2439,
+        "net_charge_e": -0.8158
+      }
+    ]
+  },
+  "state_tracking": {
+    "site_A_changed_from_static_frames": [],
+    "site_B_changed_from_static_frames": [
+      9,
+      13,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "site_A_minimum_adjacent_full_density_overlap": 0.9719090892145,
+    "site_B_minimum_adjacent_full_density_overlap": 0.46442168864342787
+  }
+}

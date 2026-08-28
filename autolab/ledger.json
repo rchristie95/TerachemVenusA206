@@ -1,0 +1,79 @@
+[
+  {
+    "id": "h001",
+    "status": "done",
+    "branch": "detuning-split",
+    "claim": "The four-observable inconsistency (chi2=45.95, 2 dof) is carried by a single observable, not by the two-state model itself",
+    "predicts": "leave-one-out chi2 for at least one removal falls below 4.0 on 1 dof",
+    "falsifies": "every removal leaves chi2 > 4 -> the two-state model is what is broken, not a measurement",
+    "cmd": "/home/robson/anaconda3/envs/TeraChem/bin/python autolab/probe_loo.py",
+    "precheck": "/home/robson/anaconda3/envs/TeraChem/bin/python -c 'import sys; sys.path.insert(0,\"exciton_observables\"); import joint_constraints'",
+    "max_hours": 0.2,
+    "monitor_csv": "",
+    "depends_on": [],
+    "created": "2026-08-12T11:14:32+00:00",
+    "started": "2026-08-12T11:17:26+00:00",
+    "finished": "2026-08-12T11:17:26+00:00",
+    "exit_code": 0,
+    "failure_kind": null,
+    "failure_note": null,
+    "result": {
+      "elapsed_hours": 0.0,
+      "log": "/home/robson/PetaChem/autolab/runs/h001.log",
+      "monitor_csv": null
+    },
+    "verdict": null
+  },
+  {
+    "id": "h002",
+    "status": "done",
+    "branch": "anisotropy-model",
+    "claim": "The anisotropy constraint |cos a|=0.66 is soft: it rests on the assumption that both chromophores are excited with equal probability (w=1/2), not on the detuning",
+    "predicts": "the crystal register alpha=110.4 deg is reachable at some w in [0,1]; report the w that reaches it",
+    "falsifies": "alpha stays above 125 deg for all w -> the anisotropy genuinely demands 131.3 and the geometry is wrong",
+    "cmd": "/home/robson/anaconda3/envs/TeraChem/bin/python autolab/probe_anisotropy.py",
+    "precheck": "/home/robson/anaconda3/envs/TeraChem/bin/python -c 'import sys; sys.path.insert(0,\"exciton_observables\"); import joint_constraints'",
+    "max_hours": 0.2,
+    "monitor_csv": "",
+    "depends_on": [],
+    "created": "2026-08-12T11:14:32+00:00",
+    "started": "2026-08-12T11:17:26+00:00",
+    "finished": "2026-08-12T11:17:27+00:00",
+    "exit_code": 0,
+    "failure_kind": null,
+    "failure_note": null,
+    "result": {
+      "elapsed_hours": 0.0,
+      "log": "/home/robson/PetaChem/autolab/runs/h002.log",
+      "monitor_csv": null
+    },
+    "verdict": null
+  },
+  {
+    "id": "h003",
+    "status": "done",
+    "branch": "detuning-split",
+    "claim": "CD splitting and superradiance demand incompatible detunings (253 vs 1281 cm-1) only because the apparent->true splitting inversion saturates: a large true Delta can still produce the observed apparent 261.58 cm-1",
+    "predicts": "the apparent-splitting curve is flat to within 30 cm-1 across true Delta = 250-1300, i.e. apparent splitting does not discriminate them",
+    "falsifies": "apparent splitting tracks true Delta monotonically over that range -> the two observables are genuinely contradictory and one is wrong",
+    "cmd": "/home/robson/anaconda3/envs/TeraChem/bin/python terachem_site_energy_cd/investigate_splitting_profile.py --output-dir autolab/results/splitting_profile",
+    "precheck": "test -f terachem_site_energy_cd/investigate_splitting_profile.py",
+    "max_hours": 1.0,
+    "monitor_csv": "",
+    "depends_on": [
+      "h001"
+    ],
+    "created": "2026-08-12T11:14:50+00:00",
+    "started": "2026-08-12T11:17:27+00:00",
+    "finished": "2026-08-12T11:17:31+00:00",
+    "exit_code": 0,
+    "failure_kind": null,
+    "failure_note": null,
+    "result": {
+      "elapsed_hours": 0.001,
+      "log": "/home/robson/PetaChem/autolab/runs/h003.log",
+      "monitor_csv": null
+    },
+    "verdict": null
+  }
+]

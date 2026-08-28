@@ -1,5 +1,7 @@
 # TerachemVenusA206
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now quoted as a range 21-26 cm^-1; |mu| = 9.81 D fails a gauge consistency test. See `CORRECTIONS_2026-08-27.md`.
+
 > **ORCA-only reconstruction:** The recovered original source, templates,
 > scientific inputs, exact execution order, manuscript-result map, validation
 > values, and external-file contract are documented in

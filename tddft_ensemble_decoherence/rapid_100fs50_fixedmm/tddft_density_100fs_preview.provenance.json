@@ -1,0 +1,35 @@
+{
+  "status": "complete",
+  "output": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/tddft_density_100fs_preview.mp4",
+  "output_sha256": "0a68fab567b7373b77085ad0dbed1ccba984124b600080539ec64ff2d81576d1",
+  "frames": 3,
+  "fps": 3.0,
+  "duration_seconds": 1.0,
+  "resolution": [
+    800,
+    600
+  ],
+  "orbit_degrees": 4.0,
+  "density_points_per_site": 1600,
+  "density_radius_A": 0.2,
+  "density_transparency": 0.18,
+  "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_100fs_50frames_20260723/tandem_nvt_100fs_50frames.dcd",
+  "trajectory_sha256": "a0dd04a84d6933702fe29ade4c12b1928ec78efa1716d4b0f49275bcca6b1db9",
+  "topology": "/home/robson/PetaChem/tc_tandem_nvt_100fs_50frames_20260723/solvated_protonated.pdb",
+  "topology_sha256": "f6a0b9479100e3624b5add2f8802a3db142f5c3c6f65cb40f6122b9b93bc5b84",
+  "tracking": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/global_state_tracking.json",
+  "tracking_sha256": "9b397c3d9c977d5c069cf292902bdfd7abf44bfcc441d08a494708b6ad59ca38",
+  "density_phase": "Every compact density is phase-aligned to the retained reference; red is positive and blue is negative.",
+  "link_atoms": "Excluded upstream from every displayed compact density.",
+  "placement_rmsd_A": {
+    "A": {
+      "mean": 6.122425205613036e-06,
+      "maximum": 7.368207931608053e-06
+    },
+    "B": {
+      "mean": 6.801702941488006e-06,
+      "maximum": 8.058361816915346e-06
+    }
+  },
+  "render_style": "Existing paper transition-density movie: black background, dim rainbow cartoon, gray/white CR2 ball-and-stick, red/blue lobes, barrel-A stabilization, slow y orbit."
+}

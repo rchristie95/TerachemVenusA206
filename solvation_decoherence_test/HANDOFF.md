@@ -1,5 +1,7 @@
 # Handoff: tandem-Venus solvation and decoherence investigation
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1. See `CORRECTIONS_2026-08-27.md`.
+
 > **Coupling correction (8 August 2026):** The shared-scale spectral example
 > below has been regenerated with the corrected production J = 32.82 +/- 1.55
 > cm-1 in `reference/orca_validation.json`. The electrostatic-gap traces and

@@ -1,0 +1,41 @@
+! STEOM-DLPNO-CCSD def2-SVPD AutoAux RIJCOSX TightSCF TightPNO
+# ITEM 1 of the revision compute list: GAS-PHASE control for Table 1
+# (Reviewer 2, minor point 3). Identical geometry, method, basis and %mdci block
+# to the SUCCESSFUL embedded run weekend_dipole/steom_def2_svpd.inp
+# (532.8 nm), with %pointcharges removed. Nothing else differs, so the
+# embedded-minus-gas shift is method-matched.
+#
+# Geometry md5 6d55e271fea4a37f19c9a803406e5c48 -- byte-identical to the
+# embedded run and to dipole_gauge/.
+#
+# Why the three earlier attempts failed (neo_model/orca_steom/, 12-13 Aug):
+#   gas_control       MPI rank abort (signal 6) in MDCI
+#   gas_control_retry stalled in the PNO stage
+#   gas_robust        "Not enough memory for ABMV!" at %maxcore 4000 x 8
+# All three are memory/MPI, NOT active-space failures. The embedded run cleared
+# the same basis and geometry at 5000 x 8, so this asks for 6000 x 8 = 48 GB of
+# the 53 GB free.
+#
+# OThresh/VThresh are deliberately LEFT AT DEFAULT 1e-3. The 2026-06-30
+# diagnosis in neo_model/orca_steom/gas_robust/steom_gas.inp records that the
+# ORCA 6.1 manual warns against lowering them -- a larger active space pulls in
+# MORE doubles-polluted states. DoDbFilter + NRootsCISNAT are the reproducibility
+# fix, and both are already on and already matched to the embedded run.
+%maxcore 5000
+%pal nprocs 8 end
+%mdci
+  NRoots 5
+  DoRootWise true
+  FollowCIS true
+  RootHoming true
+  CheckEachRoot true
+  DTol 1e-5
+  DoStoreSTEOM true
+  AddL2Term True
+  DoDbFilter true
+  NRootsCISNAT 10
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 400
+end
+* xyzfile -1 1 geom_cthrp.xyz

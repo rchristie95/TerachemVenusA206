@@ -1,0 +1,37 @@
+{
+  "status": "complete",
+  "policy": "Two separate chromophore-plus-stacked-Tyr QM/MM TDDFTs are required for every retained dimer/MM frame. Archived retry directories are preserved but excluded from the retained count. This audit never launches or replaces a calculation.",
+  "window": "short100fs50_fixedmm",
+  "source_frame_manifest": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/frame_manifest.csv",
+  "site_manifest": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/paired_site_qmmm_manifest.csv",
+  "expected_frames": 50,
+  "expected_site_calculations": 100,
+  "retained_site_rows": 100,
+  "complete_site_calculations": 100,
+  "complete_by_site": {
+    "A": 50,
+    "B": 50
+  },
+  "paired_complete_frames": 50,
+  "failed_site_calculations": 0,
+  "failures": [],
+  "method_profiles": {
+    "rapid_cam:7roots": 88,
+    "rapid_cam:9roots": 12
+  },
+  "summed_terachem_runtime_seconds": 10703.758645,
+  "topologies": [
+    "/home/robson/PetaChem/tc_tandem_nvt_100fs_50frames_20260723/solvated_protonated.pdb"
+  ],
+  "trajectories": [
+    "/home/robson/PetaChem/tc_tandem_nvt_100fs_50frames_20260723/tandem_nvt_100fs_50frames.dcd"
+  ],
+  "qm_region": {
+    "per_site_atoms": 44,
+    "physical_atoms": 41,
+    "composition": "29-atom anionic CR2 chromophore + 12-atom stacked Tyr phenol + 3 link hydrogens",
+    "link_atom_density_policy": "Atoms 42-44 are retained in QM electronic-structure jobs and excluded from compact transition densities and TDC."
+  },
+  "environment": "Both site jobs use the same instantaneous full-dimer NVT frame with the validated fixed frame-0 local MM point-charge identities; only one chromophore-plus-Tyr region is QM in each job.",
+  "restart_semantics": "The production worker skips a site whose retained td_density.out contains 'Job finished:' and resumes only a missing/incomplete site; a complete frame manifest prevents duplicate paired jobs."
+}

@@ -9,7 +9,13 @@
 # CAM-B3LYP/6-311+G** on the one GPU. Resumable: completed sites are skipped.
 
 set -u
+# SetTCVars.sh references several variables (LD_LIBRARY_PATH, FI_PROVIDER_PATH,
+# ...) that are unset in a clean systemd environment; with `set -u` that aborts
+# the run before it starts. It works interactively only because a login shell
+# has already defined them. Relax nounset across the source, then restore it.
+set +u
 source /home/robson/Desktop/TeraChemPython/TeraChem/SetTCVars.sh
+set -u
 
 REPO=/home/robson/PetaChem
 SED=$REPO/terachem_site_energy_cd

@@ -1,0 +1,6 @@
+[2026-08-26 21:24:08] ===== short (4 fs, fixed MM) campaign start (pid 93890) =====
+[2026-08-26 21:24:08] GPU NVIDIA GeForce RTX 4080, 482 MiB
+[2026-08-26 21:26:20] ===== short (4 fs, fixed MM) campaign start (pid 95383) =====
+[2026-08-26 21:26:20] GPU NVIDIA GeForce RTX 4080, 466 MiB
+[2026-08-26 23:20:11] ===== short (4 fs, fixed MM) campaign start (pid 146446) =====
+[2026-08-26 23:20:11] GPU NVIDIA GeForce RTX 4080, 530 MiB

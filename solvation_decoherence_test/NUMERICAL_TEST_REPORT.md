@@ -1,5 +1,7 @@
 # Tandem-Venus solvation and decoherence numerical test
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1. See `CORRECTIONS_2026-08-27.md`.
+
 > **Coupling correction (8 August 2026):** The shared-scale spectral sensitivity
 > values in this report have been regenerated with the corrected production
 > J = 32.82 +/- 1.55 cm-1 documented in `reference/orca_validation.json`.

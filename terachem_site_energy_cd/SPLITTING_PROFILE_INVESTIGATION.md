@@ -1,5 +1,7 @@
 # Site-energy detuning and the Venus CD splitting profile
 
+> **Superseded in part, 2026-08-27.** <|Delta|> = 576 is the instantaneous detuning; the static value is 189-324. The couplet width is silent on the mechanism. See `CORRECTIONS_2026-08-27.md`.
+
 ## Outcome
 
 The corrected coupling does **not** rule out the experimental CD profile, but

@@ -1,5 +1,7 @@
 # Frame-resolved TeraChem site energies and nondegenerate CD
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1; the homogeneous HWHM is 346 cm^-1 from the measured C(t). See `CORRECTIONS_2026-08-27.md`.
+
 This directory is a restartable, fail-closed workflow for two equivalent
 44-atom site calculations per MD frame. It does not edit either manuscript and
 does not permit a compact `J_i` table to be joined to a trajectory unless the

@@ -1,5 +1,7 @@
 # Deep audit of the tandem-dimer geometry
 
+> **Superseded in part, 2026-08-27.** The linker-tension premise used a 33-residue tether; the real construct has 41 flexible residues. Finding (a)'s resolution is also withdrawn: the MD cannot test the register, having been built in it. See `CORRECTIONS_2026-08-27.md`.
+
 The inter-chromophore transition-dipole angle computed here (~100 deg,
 |cos alpha| = 0.19) disagrees with what Nguyen's limiting-anisotropy drop
 requires (|cos alpha| = 0.660). Because the absorption first-moment shift is

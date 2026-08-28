@@ -1,5 +1,7 @@
 # Original ORCA-only tandem-paper pipeline
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1. See `CORRECTIONS_2026-08-27.md`.
+
 This manifest records the original scientific workflow behind
 `manuscript/JPCB_tandem_round_2.tex`. It is an inventory and execution map, not an
 installation guide or a Windows port. Paths are repository-relative. Several

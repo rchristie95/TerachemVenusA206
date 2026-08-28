@@ -1,0 +1,12 @@
+2026-08-27 14:28:30,124 Running colabfold 1.6.2 (0c788a0e8dca909f2c669784f9dd38e8c9682ff0)
+2026-08-27 14:28:30,333 Running on GPU
+2026-08-27 14:28:30,374 Found 4 citations for tools or databases
+2026-08-27 14:28:30,374 Query 1/1: venusdimer (length 478)
+2026-08-27 14:28:31,019 Sleeping for 7s. Reason: PENDING
+2026-08-27 14:28:38,693 Sleeping for 5s. Reason: RUNNING
+2026-08-27 14:28:44,369 Sleeping for 6s. Reason: RUNNING
+2026-08-27 14:28:51,024 Sleeping for 9s. Reason: RUNNING
+2026-08-27 14:29:00,651 Sleeping for 6s. Reason: RUNNING
+2026-08-27 14:29:07,821 Sleeping for 6s. Reason: RUNNING
+2026-08-27 14:29:16,648 Saved msa_dimer/venusdimer.pickle
+2026-08-27 14:29:17,023 Done

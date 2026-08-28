@@ -1,0 +1,589 @@
+#!/usr/bin/env python3
+"""Restartable TDDFT/TDC frame worker.
+
+The command-line entry point remains deliberately sequential.  The adaptive
+campaign driver imports ``process_frame`` and is the sole manifest writer when
+running independent frames concurrently.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import gzip
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import time
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+REPO = ROOT.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from parse_terachem_tddft import parse as parse_tddft  # noqa: E402
+
+REFERENCE = ROOT / "calibration/reference_tddft_root2_density_neutral.npz"
+DELTA_STEOM_EV = -1.06778287
+BOX_A = [90.7521749130615] * 3
+WINDOWS = {
+    "short": {
+        "topology": REPO / "tc_tandem_nvt_highcadence_20260722_retry1/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_nvt_highcadence_20260722_retry1/tandem_nvt_8ps_4fs.dcd",
+        "frames": 2000,
+    },
+    "long": {
+        "topology": REPO / "tc_tandem_nvt_rerun_20260722_retry2/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_nvt_rerun_20260722_retry2/tandem_nvt_1000.dcd",
+        "frames": 1000,
+    },
+    "long100ns50": {
+        "topology": REPO / "tc_tandem_nvt_100ns_50frames_20260723/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_nvt_100ns_50frames_20260723/tandem_nvt_100ns_50frames.dcd",
+        "frames": 50,
+    },
+    "short100fs50": {
+        "topology": REPO / "tc_tandem_nvt_100fs_50frames_20260723/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_nvt_100fs_50frames_20260723/tandem_nvt_100fs_50frames.dcd",
+        "frames": 50,
+    },
+    "short100fs50_fixedmm": {
+        "topology": REPO / "tc_tandem_nvt_100fs_50frames_20260723/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_nvt_100fs_50frames_20260723/tandem_nvt_100fs_50frames.dcd",
+        "frames": 50,
+    },
+    "short100fs100_wb97xd3": {
+        "topology": REPO / "tc_tandem_nvt_100fs_100frames_20260724/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_nvt_100fs_100frames_20260724/tandem_nvt_100fs_100frames.dcd",
+        "frames": 100,
+    },
+}
+
+
+class FrameFailure(RuntimeError):
+    def __init__(self, failure_class: str, message: str):
+        super().__init__(message)
+        self.failure_class = failure_class
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def run_checked(command: list[str], cwd: Path | None = None, accepted=(0,)) -> subprocess.CompletedProcess:
+    process = subprocess.run(command, cwd=cwd, text=True, capture_output=True)
+    if process.returncode not in accepted:
+        raise RuntimeError(
+            f"Command failed ({process.returncode}): {' '.join(command)}\n"
+            f"stdout:\n{process.stdout[-4000:]}\nstderr:\n{process.stderr[-4000:]}"
+        )
+    return process
+
+
+def load_manifest(path: Path) -> tuple[list[str], list[dict[str, str]]]:
+    with path.open(newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise RuntimeError(f"No manifest header: {path}")
+        return reader.fieldnames, list(reader)
+
+
+def save_manifest(path: Path, columns: list[str], rows: list[dict[str, str]]) -> None:
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=columns)
+        writer.writeheader()
+        writer.writerows(rows)
+    temporary.replace(path)
+
+
+def classify_tddft(parsed: dict, expected_roots: int) -> str:
+    errors = set(parsed.get("detected_errors", []))
+    if "gpu_memory_failure" in errors:
+        return "gpu_memory_or_numerical_failure"
+    if "scf_failure" in errors or parsed.get("scf_final_energy_au") is None:
+        return "ground_state_scf_convergence"
+    if "excited_state_failure" in errors or parsed.get("parsed_roots", 0) < expected_roots:
+        return "excited_state_eigensolver_convergence"
+    return "gpu_memory_or_numerical_failure"
+
+
+def prepare(window: str, frame: int, frame_dir: Path) -> dict:
+    preparation = frame_dir / "preparation.json"
+    if not preparation.exists():
+        if frame_dir.exists() and any(frame_dir.iterdir()):
+            raise FrameFailure("malformed_coordinate_or_point_charge_input", "Partial preparation directory")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/prepare_production_frame.py"),
+            "--topology", str(WINDOWS[window]["topology"]),
+            "--trajectory", str(WINDOWS[window]["trajectory"]),
+            "--frame-index", str(frame),
+            "--output-dir", str(frame_dir),
+            "--embedding-cache", str(ROOT / "cache/embedding_charges.npz"),
+        ]
+        # The 4 fs "short" window originally ran with a per-frame MM charge set.
+        # That is the cause of its noise, not TDDFT convergence: on the matched
+        # 100 fs pair, fixing the embedding took site-A sd from 1028.6 to 291.9
+        # cm^-1 and root switches from 13/49 to 0/49. It gets a fixed selection
+        # too, built from its own frame 0 (the topology differs per window, so
+        # the other windows' selection files cannot be reused).
+        if window in {"short", "short100fs50_fixedmm", "short100fs100_wb97xd3"}:
+            command.extend(
+                [
+                    "--fixed-embedding-selection",
+                    str(
+                        ROOT
+                        / (
+                            "wb97xd3_100fs100/fixed_embedding_selection.json"
+                            if window == "short100fs100_wb97xd3"
+                            else "short_fixedmm/fixed_embedding_selection.json"
+                            if window == "short"
+                            else "rapid_100fs50_fixedmm/fixed_embedding_selection.json"
+                        )
+                    ),
+                ]
+            )
+        run_checked(command)
+    return json.loads(preparation.read_text())
+
+
+def resolve_assignment(
+    site_dir: Path,
+    window: str,
+    previous_dipole: np.ndarray | None,
+    roots_count: int,
+    reference_path: Path = REFERENCE,
+) -> dict:
+    assignment_path = site_dir / "state_assignment.json"
+    command = [
+        sys.executable,
+        str(ROOT / "scripts/select_state_by_overlap.py"),
+        "--reference", str(reference_path),
+        "--candidates",
+        *[str(site_dir / f"root{root}_density.npz") for root in range(1, roots_count + 1)],
+        "--out", str(assignment_path),
+    ]
+    run_checked(command, accepted=(0, 2))
+    assignment = json.loads(assignment_path.read_text())
+    energy = json.loads((site_dir / "density_summary.json").read_text())
+    roots = {item["root"]: item for item in energy["roots"]}
+    candidates = assignment["candidates"]
+    top_score = candidates[0]["spatial_overlap_absolute"]
+    pool = [candidate for candidate in candidates if top_score - candidate["spatial_overlap_absolute"] < 0.10]
+    physical = [
+        candidate for candidate in pool
+        if roots[candidate["root"]]["largest_excitation"]["occupied"] == 93
+        and candidate["oscillator_strength"] >= 0.10
+    ]
+    basis = "spatial_transition_density_overlap"
+    selected = candidates[0]
+    # ALWAYS require the pick to be a physical bright pi-pi* state, not only when
+    # the overlap margin is ambiguous. With the old guard, a "clearly selected"
+    # top-overlap root was taken even if it was dark: site B was choosing states
+    # with f = 0.254 and spanning 4743 cm^-1, against site A's 0.802-1.103 over
+    # 1105 cm^-1. Brightness is checked over ALL candidates, not just the
+    # near-tied pool, because the bright state can sit outside the 0.10 window.
+    physical_all = [
+        candidate for candidate in candidates
+        if roots[candidate["root"]]["largest_excitation"]["occupied"] == 93
+        and candidate["oscillator_strength"] >= 0.50
+    ]
+    if physical_all and selected not in physical_all:
+        selected = max(physical_all, key=lambda item: item["spatial_overlap_absolute"])
+        basis = "overlap_restricted_to_physical_bright_state"
+    if assignment["status"] != "selected" and physical:
+        selected = max(physical, key=lambda item: item["oscillator_strength"])
+        basis = "overlap_tie_resolved_by_configuration_and_oscillator_strength"
+        if window == "short" and previous_dipole is not None and len(physical) > 1:
+            strongest = sorted(physical, key=lambda item: item["oscillator_strength"], reverse=True)
+            if strongest[0]["oscillator_strength"] - strongest[1]["oscillator_strength"] < 0.05:
+                def continuity(candidate):
+                    mu = np.asarray(roots[candidate["root"]]["transition_dipole_au"], float)
+                    return abs(float(np.dot(mu, previous_dipole))) / (
+                        np.linalg.norm(mu) * np.linalg.norm(previous_dipole)
+                    )
+                selected = max(physical, key=continuity)
+                basis = "overlap_tie_resolved_by_dipole_orientation_continuity"
+    selected_root = int(selected["root"])
+    if selected["spatial_overlap_absolute"] < 0.25:
+        raise FrameFailure("missing_target_state_or_root_flipping", "No candidate has adequate density overlap")
+    if selected_root == roots_count:
+        if roots_count == 7:
+            message = "Selected state is root 7 boundary; nine-root retry required"
+        else:
+            message = f"Selected state is root {roots_count} boundary after stronger-root retry"
+        raise FrameFailure("missing_target_state_or_root_flipping", message)
+    assignment.update(
+        {
+            "final_status": "selected",
+            "selection_basis": basis,
+            "selected_root": selected_root,
+            "selected_energy_eV": roots[selected_root]["energy_eV"],
+            "selected_oscillator_strength": roots[selected_root]["oscillator_strength"],
+            "selected_assignment_score": selected["spatial_overlap_absolute"],
+            "initial_overlap_status": assignment["status"],
+            # Mixing-robust alternative: when pi-pi* character splits across two
+            # near-degenerate roots, no single pick is well defined. On site B the
+            # f*overlap centroid cut sd from 1237 to 494 cm^-1. Recorded, not
+            # substituted, so existing analyses are unaffected.
+            "centroid_energy_eV": (
+                sum(c["oscillator_strength"] * c["spatial_overlap_absolute"]
+                    * roots[c["root"]]["energy_eV"] for c in candidates)
+                / max(1e-12, sum(c["oscillator_strength"] * c["spatial_overlap_absolute"]
+                                 for c in candidates))
+            ),
+            "n_bright_roots": len(physical_all),
+            # Site B splits its bright pi-pi* across two adiabatic roots in
+            # 51/149 frames of the 4 fs window (site A: 4/149), which makes any
+            # single-root pick ill-defined and inflates its sd to 953 against
+            # site A's 494 -- while the 1 ns production ensemble has the two
+            # sites equal (519/516). Seven candidate causes were tested and
+            # rejected (see audit/SITE_B_DIAGNOSIS.md); the intensity is simply
+            # shared with a dark state.
+            #
+            # When a diabatic bright state |B> mixes with a dark state, the
+            # oscillator-strength-weighted first moment recovers <B|H|B>
+            # EXACTLY, because the dark partner contributes no intensity:
+            #     sum_k f_k E_k / sum_k f_k  =  |c1|^2 E1 + |c2|^2 E2  =  E_B
+            # Windowed to +-4000 cm^-1 of the brightest root and f > 0.20 so it
+            # targets the splitting rather than averaging in unrelated states:
+            # an unwindowed moment over all 7 roots shifts site A's absolute
+            # energy by +884 cm^-1 and depends on the arbitrary root count.
+            # Recorded, not substituted, so existing analyses are unaffected.
+            "bright_moment_energy_eV": _bright_moment(roots, window_cm=4000.0, f_min=0.20),
+        }
+    )
+    assignment_path.write_text(json.dumps(assignment, indent=2) + "\n")
+    return assignment
+
+
+def _bright_moment(roots: dict, window_cm: float = 4000.0, f_min: float = 0.20) -> float:
+    """Oscillator-strength-weighted first moment of the bright manifold, in eV.
+
+    Exact for a diabatic bright state whose intensity is shared with dark
+    states. See the comment at the call site for why it is windowed.
+    """
+    ev_to_cm = 8065.544
+    items = [(item["energy_eV"], item["oscillator_strength"]) for item in roots.values()]
+    brightest = max(items, key=lambda pair: pair[1])[0]
+    kept = [
+        (energy, strength) for energy, strength in items
+        if strength > f_min and abs(energy - brightest) * ev_to_cm < window_cm
+    ]
+    if not kept:
+        return brightest
+    total = sum(strength for _, strength in kept)
+    return sum(strength * energy for energy, strength in kept) / total
+
+
+def process_site(
+    site_dir: Path,
+    window: str,
+    gpu: str,
+    previous_dipole: np.ndarray | None,
+    roots_count: int,
+    profile: str = "validated",
+    reference_path: Path = REFERENCE,
+) -> dict:
+    output = site_dir / "td_density.out"
+    runtime_path = site_dir / "runtime_seconds.txt"
+    if profile == "rapid_cam_retry":
+        template_stem = f"tddft_density_rapid_cam_retry_{roots_count}roots.in"
+    elif profile == "rapid_cam":
+        template_stem = f"tddft_density_rapid_cam_{roots_count}roots.in"
+    elif profile == "rapid_retry":
+        template_stem = f"tddft_density_rapid_retry_{roots_count}roots.in"
+    elif profile == "rapid":
+        template_stem = f"tddft_density_rapid_{roots_count}roots.in"
+    else:
+        template_stem = f"tddft_density_{roots_count}roots.in"
+    template = ROOT / "input_templates" / template_stem
+    input_path = site_dir / "td_density.in"
+    profile_path = site_dir / "method_profile.json"
+    expected_profile = {
+        "profile": profile,
+        "template": str(template.resolve()),
+        "template_sha256": sha256(template),
+        "roots": roots_count,
+        "state_tracking_reference": str(reference_path.resolve()),
+        "state_tracking_reference_sha256": sha256(reference_path),
+    }
+    if profile_path.exists():
+        retained_profile = json.loads(profile_path.read_text())
+        if retained_profile != expected_profile:
+            raise FrameFailure(
+                "malformed_coordinate_or_point_charge_input",
+                "Existing site output belongs to a different TDDFT method/root profile",
+            )
+    else:
+        profile_path.write_text(json.dumps(expected_profile, indent=2) + "\n")
+    if not input_path.exists():
+        shutil.copy2(template, input_path)
+    if not output.exists() or "Job finished:" not in output.read_text(errors="replace"):
+        started = time.time()
+        with output.open("w") as handle:
+            process = subprocess.run(
+                [str(Path("/home/robson/Desktop/TeraChemPython/TeraChem/bin/terachem")), input_path.name],
+                cwd=site_dir,
+                stdout=handle,
+                stderr=subprocess.STDOUT,
+                env={**dict(__import__("os").environ), "CUDA_VISIBLE_DEVICES": gpu},
+            )
+        runtime_path.write_text(f"{time.time() - started:.6f}\n")
+        if process.returncode:
+            parsed = parse_tddft(output)
+            (site_dir / "density_summary.json").write_text(json.dumps(parsed, indent=2) + "\n")
+            raise FrameFailure(classify_tddft(parsed, roots_count), f"TeraChem exit {process.returncode}")
+    parsed = parse_tddft(output)
+    (site_dir / "density_summary.json").write_text(json.dumps(parsed, indent=2) + "\n")
+    if parsed["status"] != "converged":
+        raise FrameFailure(classify_tddft(parsed, roots_count), "Incomplete TeraChem output")
+
+    scratch = site_dir / "scr_density"
+    for root in parsed["roots"]:
+        compact = site_dir / f"root{root['root']}_density.npz"
+        if compact.exists():
+            continue
+        mu = root["transition_dipole_au"]
+        run_checked(
+            [
+                sys.executable, str(ROOT / "scripts/compact_tddft_density.py"),
+                "--dx", str(scratch / f"transdens_{root['root']}.dx"),
+                "--xyz", str(site_dir / "geometry.xyz"),
+                "--out", str(compact), "--root", str(root["root"]),
+                "--energy-ev", str(root["energy_eV"]),
+                "--oscillator-strength", str(root["oscillator_strength"]),
+                "--target-mu-au", *[str(value) for value in mu],
+                "--reference", str(reference_path),
+            ]
+        )
+    assignment = resolve_assignment(
+        site_dir, window, previous_dipole, roots_count, reference_path
+    )
+    selected_root = assignment["selected_root"]
+    selected_dx = scratch / f"transdens_{selected_root}.dx"
+    selected_gzip = site_dir / "selected_transdens.dx.gz"
+    if not selected_gzip.exists():
+        with selected_dx.open("rb") as source, gzip.open(selected_gzip, "wb", compresslevel=1) as target:
+            shutil.copyfileobj(source, target, length=1024 * 1024)
+    with gzip.open(selected_gzip, "rb") as handle:
+        handle.read(1)
+    if (scratch / "results.dat").exists() and not (site_dir / "results.dat").exists():
+        shutil.copy2(scratch / "results.dat", site_dir / "results.dat")
+    compact_hashes = {}
+    for root in range(1, roots_count + 1):
+        data = np.load(site_dir / f"root{root}_density.npz")
+        compact_hashes[str(root)] = str(data["source_dx_sha256"])
+    audit = {
+        "raw_selected_root_retained_gzip": selected_root,
+        "selected_gzip_sha256": sha256(selected_gzip),
+        "all_raw_dx_sha256_from_compact_outputs": compact_hashes,
+        "scratch_pruned_after_verified_compaction": True,
+    }
+    (site_dir / "scratch_audit.json").write_text(json.dumps(audit, indent=2) + "\n")
+    if scratch.exists():
+        shutil.rmtree(scratch)
+    chosen = next(item for item in parsed["roots"] if item["root"] == selected_root)
+    compact = np.load(site_dir / f"root{selected_root}_density.npz")
+    return {
+        "assignment": assignment,
+        "root": chosen,
+        "runtime_seconds": float(runtime_path.read_text()),
+        "compact_path": site_dir / f"root{selected_root}_density.npz",
+        "grid_normalization_error": abs(float(compact["net_charge_before_neutralization"])),
+    }
+
+
+def process_frame(
+    window: str,
+    frame: int,
+    row: dict[str, str],
+    gpu: str,
+    previous: dict,
+    roots_count: int,
+    profile: str = "validated",
+    delta_steom_ev: float = DELTA_STEOM_EV,
+    reference_path: Path = REFERENCE,
+) -> dict:
+    frame_dir = ROOT / "frames" / window / f"frame_{frame:04d}"
+    prep = prepare(window, frame, frame_dir)
+    if prep["coordinate_sha256"] != row["coordinate_sha256"]:
+        raise FrameFailure("malformed_coordinate_or_point_charge_input", "Manifest coordinate checksum mismatch")
+    site_a = process_site(
+        frame_dir / "site_A",
+        window,
+        gpu,
+        previous.get("A"),
+        roots_count,
+        profile,
+        reference_path,
+    )
+    previous["A"] = np.asarray(site_a["root"]["transition_dipole_au"], float)
+    site_b = process_site(
+        frame_dir / "site_B",
+        window,
+        gpu,
+        previous.get("B"),
+        roots_count,
+        profile,
+        reference_path,
+    )
+    previous["B"] = np.asarray(site_b["root"]["transition_dipole_au"], float)
+    tdc_path = frame_dir / "tdc/summary.json"
+    if not tdc_path.exists():
+        run_checked(
+            [
+                sys.executable, str(ROOT / "scripts/mutual_tdc.py"),
+                "--site-a", str(site_a["compact_path"]),
+                "--site-b", str(site_b["compact_path"]),
+                "--out", str(tdc_path), "--epsilon", "1.77",
+                "--box-lengths", *[str(value) for value in BOX_A],
+            ]
+        )
+    tdc = json.loads(tdc_path.read_text())
+    if tdc["status"] != "complete":
+        raise FrameFailure("gpu_memory_or_numerical_failure", "TDC validation failed")
+    result = {
+        "window": window,
+        "frame_index": frame,
+        "preparation": prep,
+        "site_A": {**site_a["root"], **site_a["assignment"]},
+        "site_B": {**site_b["root"], **site_b["assignment"]},
+        "tdc": tdc,
+        "steom_constant_shift_eV": delta_steom_ev,
+        "method_profile": profile,
+    }
+    summary_path = frame_dir / "frame_summary.json"
+    summary_path.write_text(json.dumps(result, indent=2) + "\n")
+    a, b = site_a["root"], site_b["root"]
+    row.update(
+        {
+            "site_A_energy_eV": f"{a['energy_eV']:.10f}",
+            "site_A_energy_cm-1": f"{a['energy_cm-1']:.6f}",
+            "site_A_wavelength_nm": f"{a['wavelength_nm']:.6f}",
+            "site_B_energy_eV": f"{b['energy_eV']:.10f}",
+            "site_B_energy_cm-1": f"{b['energy_cm-1']:.6f}",
+            "site_B_wavelength_nm": f"{b['wavelength_nm']:.6f}",
+            "site_A_corrected_eV": f"{a['energy_eV'] + delta_steom_ev:.10f}",
+            "site_B_corrected_eV": f"{b['energy_eV'] + delta_steom_ev:.10f}",
+            "site_A_oscillator_strength": f"{a['oscillator_strength']:.8f}",
+            "site_B_oscillator_strength": f"{b['oscillator_strength']:.8f}",
+            "site_A_selected_root": str(a["root"]),
+            "site_B_selected_root": str(b["root"]),
+            "site_A_assignment_score": f"{site_a['assignment']['selected_assignment_score']:.8f}",
+            "site_B_assignment_score": f"{site_b['assignment']['selected_assignment_score']:.8f}",
+            "J_vacuum_cm-1": f"{tdc['J_vacuum_cm-1']:.8f}",
+            "J_screened_cm-1": f"{tdc['J_screened_cm-1']:.8f}",
+            "J_pda_vacuum_cm-1": f"{tdc['J_pda_vacuum_cm-1']:.8f}",
+            "J_pda_screened_cm-1": f"{tdc['J_pda_screened_cm-1']:.8f}",
+            "separation_A": f"{tdc['separation_A']:.8f}",
+            "dipole_angle_deg": f"{tdc['dipole_angle_deg']:.8f}",
+            "grid_normalization_error_A": f"{site_a['grid_normalization_error']:.8e}",
+            "grid_normalization_error_B": f"{site_b['grid_normalization_error']:.8e}",
+            "convergence_status": "complete",
+            "failure_class": "",
+            "runtime_seconds": f"{site_a['runtime_seconds'] + site_b['runtime_seconds'] + tdc['runtime_seconds']:.6f}",
+            "gpu": gpu,
+            "compact_output_path": str(summary_path.resolve()),
+            "notes": (
+                f"{profile} profile; {roots_count}-root density-overlap tracking; "
+                "signed TDC; no interpolation"
+            ),
+        }
+    )
+    return result
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--window",
+        choices=(
+            "short",
+            "long",
+            "long100ns50",
+            "short100fs50",
+            "short100fs50_fixedmm",
+            "short100fs100_wb97xd3",
+            "both",
+        ),
+        default="both",
+    )
+    parser.add_argument("--start", type=int, default=0)
+    parser.add_argument("--stop", type=int)
+    parser.add_argument("--gpu", default="0")
+    parser.add_argument("--roots", type=int, choices=(4, 7, 9), default=7)
+    parser.add_argument(
+        "--profile",
+        choices=("validated", "rapid", "rapid_retry", "rapid_cam", "rapid_cam_retry"),
+        default="validated",
+    )
+    parser.add_argument("--delta-steom-ev", type=float, default=DELTA_STEOM_EV)
+    parser.add_argument("--state-reference", type=Path, default=REFERENCE)
+    parser.add_argument(
+        "--retry-failed-only",
+        action="store_true",
+        help="Process only rows currently classified failed; completed/pending rows are untouched.",
+    )
+    args = parser.parse_args()
+    windows = ["short", "long"] if args.window == "both" else [args.window]
+    for window in windows:
+        manifest = ROOT / "manifests" / f"{window}_frames.csv"
+        columns, rows = load_manifest(manifest)
+        stop = min(len(rows), args.stop if args.stop is not None else len(rows))
+        previous: dict[str, np.ndarray] = {}
+        for frame in range(args.start, stop):
+            row = rows[frame]
+            if args.retry_failed_only and row["convergence_status"] != "failed":
+                continue
+            if row["convergence_status"] == "complete":
+                print(f"[skip] {window} frame={frame} complete", flush=True)
+                continue
+            print(f"[start] {window} frame={frame} time={row['time_ps']} ps", flush=True)
+            try:
+                if args.retry_failed_only:
+                    row["retry_count"] = str(int(row.get("retry_count") or 0) + 1)
+                result = process_frame(
+                    window,
+                    frame,
+                    row,
+                    args.gpu,
+                    previous,
+                    args.roots,
+                    args.profile,
+                    args.delta_steom_ev,
+                    args.state_reference,
+                )
+                print(
+                    f"[done] {window} frame={frame} roots="
+                    f"{result['site_A']['root']}/{result['site_B']['root']} "
+                    f"EA={result['site_A']['energy_eV']:.6f} "
+                    f"EB={result['site_B']['energy_eV']:.6f} "
+                    f"J={result['tdc']['J_screened_cm-1']:.3f} cm-1",
+                    flush=True,
+                )
+            except FrameFailure as error:
+                row["convergence_status"] = "failed"
+                row["failure_class"] = error.failure_class
+                row["retry_count"] = str(int(row.get("retry_count") or 0))
+                row["notes"] = str(error)
+                print(f"[failed] {window} frame={frame} class={error.failure_class}: {error}", flush=True)
+            except Exception as error:
+                row["convergence_status"] = "failed"
+                row["failure_class"] = "gpu_memory_or_numerical_failure"
+                row["notes"] = repr(error)
+                print(f"[failed] {window} frame={frame} unexpected: {error!r}", flush=True)
+            finally:
+                save_manifest(manifest, columns, rows)
+
+
+if __name__ == "__main__":
+    main()

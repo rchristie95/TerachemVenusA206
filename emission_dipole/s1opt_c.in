@@ -1,0 +1,34 @@
+# beta, attempt 2. Attempt 1 (s1opt_FAILED_dark_state.out) followed cistarget 1
+# by INDEX and lost the bright state at cycle 12: root 1 went from f = 1.559
+# (93->94) to f = 0.0001 while the bright 93->95 state moved to root 3. It then
+# spent 130 cycles relaxing onto a DARK state. That is not a tracking slip alone
+# -- a gas-phase GFP chromophore genuinely relaxes on S1 by twisting toward a
+# dark TICT state, which the protein prevents (MD inter-ring twist is only
+# 7.2 +/- 3.1 deg).
+#
+# Fix, both parts:
+#   (a) freeze the two bridge dihedrals at their planar ground-state values, so
+#       the chromophore relaxes IN PLANE as it does in the protein and the dark
+#       twisted state never comes down;
+#   (b) target root 3, which is the bright 93->95 state once the dark state is
+#       out of the way -- verified against the character each cycle afterwards.
+coordinates s0_geom.xyz
+run minimize
+cis yes
+cisnumstates 5
+cistarget 3
+cismaxiter 300
+method camb3lyp
+basis 6-31gs
+charge -1
+spinmult 1
+scf diis+a
+threall 1.0e-13
+new_minimizer yes
+nstep 120
+gpus 1
+$constraint_freeze
+dihedral 16_15_14_5
+dihedral 15_14_5_4
+$end
+end

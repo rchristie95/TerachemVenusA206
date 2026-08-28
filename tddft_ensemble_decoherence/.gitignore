@@ -1,0 +1,13 @@
+reference_pilot/scr_energy/
+reference_pilot/scr_density/
+surrogate_pilot/source_frames/
+surrogate_pilot/**/scr_energy/
+surrogate_pilot/**/scr_density/
+surrogate_pilot/**/scr_*/
+work/
+raw/
+*.dx
+*.cube
+*.cub
+*.dcd
+*.chk

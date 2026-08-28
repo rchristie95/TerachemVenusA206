@@ -1,5 +1,7 @@
 # Explaining the Nguyen/Kim experiments without a coherent exciton
 
+> **Superseded in part, 2026-08-27.** <|Delta|> = 576 is the instantaneous detuning, not the static one (189-324). AlphaFold's delta = 15 is not structural evidence. See `CORRECTIONS_2026-08-27.md`.
+
 2026-08-12. Literature deep dive plus direct calculation. Working assumption
 J ~ 30 cm^-1; computed detuning |Delta| ~ 455-576 cm^-1 on two independent
 registers, so Delta/2J ~ 8, and the dimer is ~99% localized.

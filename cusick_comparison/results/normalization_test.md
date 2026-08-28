@@ -1,5 +1,7 @@
 # Is the transition-dipole discrepancy introduced by normalisation?
 
+> **Superseded in part, 2026-08-27.** The normalisation question is settled elsewhere: left/right asymmetry accounts for only 1.3%, but the STEOM moment fails a length/velocity gauge check (1.51x, worsening with basis). See `CORRECTIONS_2026-08-27.md`.
+
 ## ORCA's own printed dipole, by convention
 
 EOM-CC left and right eigenvectors differ, so the transition moment is

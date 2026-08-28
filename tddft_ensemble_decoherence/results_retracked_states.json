@@ -1,0 +1,2352 @@
+{
+ "site_A": [
+  {
+   "frame": 0,
+   "root": 3,
+   "energy_cm": 26036.020643384127,
+   "anchor_overlap": 0.9999999999999998
+  },
+  {
+   "frame": 1,
+   "root": 3,
+   "energy_cm": 25713.173131329328,
+   "anchor_overlap": 0.9734261738493781
+  },
+  {
+   "frame": 2,
+   "root": 4,
+   "energy_cm": 25941.142262524743,
+   "anchor_overlap": 0.9823862545973566
+  },
+  {
+   "frame": 3,
+   "root": 3,
+   "energy_cm": 25709.64235881547,
+   "anchor_overlap": 0.9805568572668332
+  },
+  {
+   "frame": 4,
+   "root": 4,
+   "energy_cm": 25290.69179370989,
+   "anchor_overlap": 0.938104805300324
+  },
+  {
+   "frame": 5,
+   "root": 4,
+   "energy_cm": 24824.65538965451,
+   "anchor_overlap": 0.9223922690039171
+  },
+  {
+   "frame": 6,
+   "root": 3,
+   "energy_cm": 24939.512768089357,
+   "anchor_overlap": 0.9559018471526994
+  },
+  {
+   "frame": 7,
+   "root": 3,
+   "energy_cm": 24294.623653129947,
+   "anchor_overlap": 0.9485235253555582
+  },
+  {
+   "frame": 8,
+   "root": 3,
+   "energy_cm": 24257.814204365706,
+   "anchor_overlap": 0.9406491672305122
+  },
+  {
+   "frame": 9,
+   "root": 3,
+   "energy_cm": 24103.116103788772,
+   "anchor_overlap": 0.9362009614066676
+  },
+  {
+   "frame": 10,
+   "root": 3,
+   "energy_cm": 24326.836387093612,
+   "anchor_overlap": 0.9555480775944131
+  },
+  {
+   "frame": 11,
+   "root": 3,
+   "energy_cm": 23287.045578074703,
+   "anchor_overlap": 0.9187043400034411
+  },
+  {
+   "frame": 12,
+   "root": 3,
+   "energy_cm": 23758.548081911635,
+   "anchor_overlap": 0.936845458978314
+  },
+  {
+   "frame": 13,
+   "root": 4,
+   "energy_cm": 23316.30116100931,
+   "anchor_overlap": 0.932106863932003
+  },
+  {
+   "frame": 14,
+   "root": 4,
+   "energy_cm": 24887.36362262221,
+   "anchor_overlap": 0.9662167706790109
+  },
+  {
+   "frame": 15,
+   "root": 4,
+   "energy_cm": 25622.23960800953,
+   "anchor_overlap": 0.9633946711147217
+  },
+  {
+   "frame": 16,
+   "root": 4,
+   "energy_cm": 25731.155906780386,
+   "anchor_overlap": 0.9747248437166476
+  },
+  {
+   "frame": 17,
+   "root": 4,
+   "energy_cm": 26319.710746179182,
+   "anchor_overlap": 0.9722179918111259
+  },
+  {
+   "frame": 18,
+   "root": 4,
+   "energy_cm": 25245.435381435873,
+   "anchor_overlap": 0.9240555068710897
+  },
+  {
+   "frame": 19,
+   "root": 4,
+   "energy_cm": 26030.576723848408,
+   "anchor_overlap": 0.9754598060345944
+  },
+  {
+   "frame": 20,
+   "root": 6,
+   "energy_cm": 26423.575030194217,
+   "anchor_overlap": 0.9600987807346915
+  },
+  {
+   "frame": 21,
+   "root": 5,
+   "energy_cm": 25868.05173877957,
+   "anchor_overlap": 0.9465063598702285
+  },
+  {
+   "frame": 22,
+   "root": 6,
+   "energy_cm": 26287.161437067025,
+   "anchor_overlap": 0.939213394587109
+  },
+  {
+   "frame": 23,
+   "root": 6,
+   "energy_cm": 28274.80270993539,
+   "anchor_overlap": 0.9698101003064759
+  },
+  {
+   "frame": 24,
+   "root": 6,
+   "energy_cm": 31263.827074871868,
+   "anchor_overlap": 0.9122486422585723
+  },
+  {
+   "frame": 25,
+   "root": 3,
+   "energy_cm": 25504.27546270559,
+   "anchor_overlap": 0.9859930466256465
+  },
+  {
+   "frame": 26,
+   "root": 3,
+   "energy_cm": 25322.514477968765,
+   "anchor_overlap": 0.9844693638393042
+  },
+  {
+   "frame": 27,
+   "root": 3,
+   "energy_cm": 25526.985614769,
+   "anchor_overlap": 0.9756755687233004
+  },
+  {
+   "frame": 28,
+   "root": 3,
+   "energy_cm": 24953.832415450546,
+   "anchor_overlap": 0.9449708806494233
+  },
+  {
+   "frame": 29,
+   "root": 3,
+   "energy_cm": 26234.44762286885,
+   "anchor_overlap": 0.9816185908969907
+  },
+  {
+   "frame": 30,
+   "root": 3,
+   "energy_cm": 26370.3782512251,
+   "anchor_overlap": 0.982288145408651
+  },
+  {
+   "frame": 31,
+   "root": 3,
+   "energy_cm": 26549.280161947136,
+   "anchor_overlap": 0.9709813399496131
+  },
+  {
+   "frame": 32,
+   "root": 4,
+   "energy_cm": 26278.316438963953,
+   "anchor_overlap": 0.9707165227188486
+  },
+  {
+   "frame": 33,
+   "root": 4,
+   "energy_cm": 26256.541809341797,
+   "anchor_overlap": 0.9788771913659815
+  },
+  {
+   "frame": 34,
+   "root": 4,
+   "energy_cm": 26187.438083964687,
+   "anchor_overlap": 0.9824275457533236
+  },
+  {
+   "frame": 35,
+   "root": 4,
+   "energy_cm": 26367.298745894514,
+   "anchor_overlap": 0.9797400901592048
+  },
+  {
+   "frame": 36,
+   "root": 4,
+   "energy_cm": 26780.681827331256,
+   "anchor_overlap": 0.959772286686683
+  },
+  {
+   "frame": 37,
+   "root": 3,
+   "energy_cm": 25763.145225177,
+   "anchor_overlap": 0.9846424472240574
+  },
+  {
+   "frame": 38,
+   "root": 3,
+   "energy_cm": 25630.573653904194,
+   "anchor_overlap": 0.9892255623191464
+  },
+  {
+   "frame": 39,
+   "root": 3,
+   "energy_cm": 25257.262775720526,
+   "anchor_overlap": 0.9830819265547852
+  },
+  {
+   "frame": 40,
+   "root": 4,
+   "energy_cm": 26572.699920566123,
+   "anchor_overlap": 0.9881350414272444
+  },
+  {
+   "frame": 41,
+   "root": 4,
+   "energy_cm": 26742.346135687814,
+   "anchor_overlap": 0.9590834710837833
+  },
+  {
+   "frame": 42,
+   "root": 4,
+   "energy_cm": 26599.455910779212,
+   "anchor_overlap": 0.9506598220065452
+  },
+  {
+   "frame": 43,
+   "root": 4,
+   "energy_cm": 26974.902706308276,
+   "anchor_overlap": 0.98635566767092
+  },
+  {
+   "frame": 44,
+   "root": 4,
+   "energy_cm": 27134.267369296274,
+   "anchor_overlap": 0.9840364249552654
+  },
+  {
+   "frame": 45,
+   "root": 4,
+   "energy_cm": 27535.883144750696,
+   "anchor_overlap": 0.9657232191071266
+  },
+  {
+   "frame": 46,
+   "root": 4,
+   "energy_cm": 25797.267637978628,
+   "anchor_overlap": 0.9462339024020492
+  },
+  {
+   "frame": 47,
+   "root": 4,
+   "energy_cm": 26482.099423555483,
+   "anchor_overlap": 0.964853286139863
+  },
+  {
+   "frame": 48,
+   "root": 4,
+   "energy_cm": 26963.217991495865,
+   "anchor_overlap": 0.9790251469465561
+  },
+  {
+   "frame": 49,
+   "root": 4,
+   "energy_cm": 26946.981728928928,
+   "anchor_overlap": 0.9759821028558822
+  },
+  {
+   "frame": 50,
+   "root": 4,
+   "energy_cm": 26173.848045708037,
+   "anchor_overlap": 0.9608717218393042
+  },
+  {
+   "frame": 51,
+   "root": 4,
+   "energy_cm": 24895.614109481685,
+   "anchor_overlap": 0.969311552299743
+  },
+  {
+   "frame": 52,
+   "root": 4,
+   "energy_cm": 25333.128088546342,
+   "anchor_overlap": 0.9682916278145046
+  },
+  {
+   "frame": 53,
+   "root": 4,
+   "energy_cm": 26146.26686969475,
+   "anchor_overlap": 0.967781870873786
+  },
+  {
+   "frame": 54,
+   "root": 4,
+   "energy_cm": 26029.013379467102,
+   "anchor_overlap": 0.9532820229603571
+  },
+  {
+   "frame": 55,
+   "root": 4,
+   "energy_cm": 25150.547241268323,
+   "anchor_overlap": 0.9509336815165848
+  },
+  {
+   "frame": 56,
+   "root": 4,
+   "energy_cm": 25416.375148494182,
+   "anchor_overlap": 0.9596298642061944
+  },
+  {
+   "frame": 57,
+   "root": 4,
+   "energy_cm": 27601.47093821479,
+   "anchor_overlap": 0.9577554296901002
+  },
+  {
+   "frame": 58,
+   "root": 4,
+   "energy_cm": 27365.175342736016,
+   "anchor_overlap": 0.9612608593819566
+  },
+  {
+   "frame": 59,
+   "root": 3,
+   "energy_cm": 26091.985517032426,
+   "anchor_overlap": 0.9579874109982724
+  },
+  {
+   "frame": 60,
+   "root": 3,
+   "energy_cm": 24926.19260293284,
+   "anchor_overlap": 0.9593055818930025
+  },
+  {
+   "frame": 61,
+   "root": 4,
+   "energy_cm": 23451.091321452863,
+   "anchor_overlap": 0.969547578333147
+  },
+  {
+   "frame": 62,
+   "root": 4,
+   "energy_cm": 26187.73667040123,
+   "anchor_overlap": 0.9665593666167822
+  },
+  {
+   "frame": 63,
+   "root": 4,
+   "energy_cm": 27285.59826659039,
+   "anchor_overlap": 0.9723159845983063
+  },
+  {
+   "frame": 64,
+   "root": 4,
+   "energy_cm": 27543.668975623958,
+   "anchor_overlap": 0.9684460457434095
+  },
+  {
+   "frame": 65,
+   "root": 4,
+   "energy_cm": 26938.338127457962,
+   "anchor_overlap": 0.9451925620337336
+  },
+  {
+   "frame": 66,
+   "root": 3,
+   "energy_cm": 29397.894860012835,
+   "anchor_overlap": 0.9295097344080735
+  },
+  {
+   "frame": 67,
+   "root": 3,
+   "energy_cm": 27839.565391957833,
+   "anchor_overlap": 0.9638795585617573
+  },
+  {
+   "frame": 68,
+   "root": 3,
+   "energy_cm": 27354.63940334655,
+   "anchor_overlap": 0.9682133644261879
+  },
+  {
+   "frame": 69,
+   "root": 3,
+   "energy_cm": 27139.02708873982,
+   "anchor_overlap": 0.9599811686613066
+  },
+  {
+   "frame": 70,
+   "root": 3,
+   "energy_cm": 27841.672112034175,
+   "anchor_overlap": 0.9008615427823786
+  },
+  {
+   "frame": 71,
+   "root": 3,
+   "energy_cm": 28298.53855722127,
+   "anchor_overlap": 0.9203346147072304
+  },
+  {
+   "frame": 72,
+   "root": 4,
+   "energy_cm": 26772.81768002636,
+   "anchor_overlap": 0.9733593252952426
+  },
+  {
+   "frame": 73,
+   "root": 4,
+   "energy_cm": 26990.805539288856,
+   "anchor_overlap": 0.9290149339046596
+  },
+  {
+   "frame": 74,
+   "root": 4,
+   "energy_cm": 27119.191254569236,
+   "anchor_overlap": 0.8947602238098106
+  },
+  {
+   "frame": 75,
+   "root": 4,
+   "energy_cm": 26976.433465892078,
+   "anchor_overlap": 0.9468752597487763
+  },
+  {
+   "frame": 76,
+   "root": 4,
+   "energy_cm": 26588.702282358885,
+   "anchor_overlap": 0.9719071958004752
+  },
+  {
+   "frame": 77,
+   "root": 4,
+   "energy_cm": 26691.4684425669,
+   "anchor_overlap": 0.9620151645940754
+  },
+  {
+   "frame": 78,
+   "root": 4,
+   "energy_cm": 27836.59557802479,
+   "anchor_overlap": 0.86468755654114
+  },
+  {
+   "frame": 79,
+   "root": 1,
+   "energy_cm": 24712.684830705588,
+   "anchor_overlap": 0.9613885758280417
+  },
+  {
+   "frame": 80,
+   "root": 2,
+   "energy_cm": 24634.8313612993,
+   "anchor_overlap": 0.9758144963909985
+  },
+  {
+   "frame": 81,
+   "root": 2,
+   "energy_cm": 24699.26005544421,
+   "anchor_overlap": 0.9770690986447355
+  },
+  {
+   "frame": 82,
+   "root": 2,
+   "energy_cm": 24892.065270149407,
+   "anchor_overlap": 0.9790895964666502
+  },
+  {
+   "frame": 83,
+   "root": 2,
+   "energy_cm": 24746.32677905489,
+   "anchor_overlap": 0.9733895056351604
+  },
+  {
+   "frame": 84,
+   "root": 3,
+   "energy_cm": 24555.48608888643,
+   "anchor_overlap": 0.9646700595242881
+  },
+  {
+   "frame": 85,
+   "root": 3,
+   "energy_cm": 25083.584675840168,
+   "anchor_overlap": 0.9737490946770689
+  },
+  {
+   "frame": 86,
+   "root": 3,
+   "energy_cm": 25643.612815509947,
+   "anchor_overlap": 0.9777737100623449
+  },
+  {
+   "frame": 87,
+   "root": 3,
+   "energy_cm": 24657.787351141913,
+   "anchor_overlap": 0.842720441981103
+  },
+  {
+   "frame": 88,
+   "root": 2,
+   "energy_cm": 22218.695887806465,
+   "anchor_overlap": 0.6046284489492596
+  },
+  {
+   "frame": 89,
+   "root": 2,
+   "energy_cm": 23304.865994126307,
+   "anchor_overlap": 0.809289581653817
+  },
+  {
+   "frame": 90,
+   "root": 2,
+   "energy_cm": 23146.324903829714,
+   "anchor_overlap": 0.8305911380455882
+  },
+  {
+   "frame": 91,
+   "root": 2,
+   "energy_cm": 25114.068963738137,
+   "anchor_overlap": 0.9665185520601937
+  },
+  {
+   "frame": 92,
+   "root": 2,
+   "energy_cm": 25791.030068919506,
+   "anchor_overlap": 0.9741059056461857
+  },
+  {
+   "frame": 93,
+   "root": 4,
+   "energy_cm": 25991.59336902683,
+   "anchor_overlap": 0.9587632806283597
+  },
+  {
+   "frame": 94,
+   "root": 4,
+   "energy_cm": 26905.761960084496,
+   "anchor_overlap": 0.9585669236771589
+  },
+  {
+   "frame": 95,
+   "root": 4,
+   "energy_cm": 27648.389578438786,
+   "anchor_overlap": 0.9578394657220054
+  },
+  {
+   "frame": 96,
+   "root": 4,
+   "energy_cm": 27860.101073375827,
+   "anchor_overlap": 0.95797928861236
+  },
+  {
+   "frame": 97,
+   "root": 4,
+   "energy_cm": 27432.95696415097,
+   "anchor_overlap": 0.9625660884746926
+  },
+  {
+   "frame": 98,
+   "root": 4,
+   "energy_cm": 26989.068543746587,
+   "anchor_overlap": 0.9542044214197102
+  },
+  {
+   "frame": 99,
+   "root": 4,
+   "energy_cm": 27359.213131346904,
+   "anchor_overlap": 0.9173503505331724
+  },
+  {
+   "frame": 100,
+   "root": 4,
+   "energy_cm": 27888.69455580864,
+   "anchor_overlap": 0.9142992704490986
+  },
+  {
+   "frame": 101,
+   "root": 4,
+   "energy_cm": 27909.507127349996,
+   "anchor_overlap": 0.9396040690407919
+  },
+  {
+   "frame": 102,
+   "root": 4,
+   "energy_cm": 26265.54126261126,
+   "anchor_overlap": 0.9852533680510277
+  },
+  {
+   "frame": 103,
+   "root": 3,
+   "energy_cm": 25635.926352137983,
+   "anchor_overlap": 0.976377587049341
+  },
+  {
+   "frame": 104,
+   "root": 3,
+   "energy_cm": 25371.032838177227,
+   "anchor_overlap": 0.9633511921489005
+  },
+  {
+   "frame": 105,
+   "root": 3,
+   "energy_cm": 25406.538330453175,
+   "anchor_overlap": 0.9631373041018734
+  },
+  {
+   "frame": 106,
+   "root": 3,
+   "energy_cm": 25839.85459717582,
+   "anchor_overlap": 0.9719451270250025
+  },
+  {
+   "frame": 107,
+   "root": 3,
+   "energy_cm": 26422.95591904161,
+   "anchor_overlap": 0.977059473863175
+  },
+  {
+   "frame": 108,
+   "root": 4,
+   "energy_cm": 27510.712356542983,
+   "anchor_overlap": 0.9747293310843776
+  },
+  {
+   "frame": 109,
+   "root": 4,
+   "energy_cm": 26930.899437595745,
+   "anchor_overlap": 0.9666333282899505
+  },
+  {
+   "frame": 110,
+   "root": 4,
+   "energy_cm": 26306.303150526386,
+   "anchor_overlap": 0.9623523727249192
+  },
+  {
+   "frame": 111,
+   "root": 4,
+   "energy_cm": 26775.6528800311,
+   "anchor_overlap": 0.9818605788712695
+  },
+  {
+   "frame": 112,
+   "root": 4,
+   "energy_cm": 26721.634786722872,
+   "anchor_overlap": 0.9700848453057959
+  },
+  {
+   "frame": 113,
+   "root": 5,
+   "energy_cm": 27066.603827444556,
+   "anchor_overlap": 0.9810048182561469
+  },
+  {
+   "frame": 114,
+   "root": 6,
+   "energy_cm": 24766.788418779546,
+   "anchor_overlap": 0.9321455880402005
+  },
+  {
+   "frame": 115,
+   "root": 6,
+   "energy_cm": 24937.344991845406,
+   "anchor_overlap": 0.9586132992915632
+  },
+  {
+   "frame": 116,
+   "root": 3,
+   "energy_cm": 23150.617950901058,
+   "anchor_overlap": 0.9271716513287822
+  },
+  {
+   "frame": 117,
+   "root": 3,
+   "energy_cm": 23339.208676932856,
+   "anchor_overlap": 0.8741776630115006
+  },
+  {
+   "frame": 118,
+   "root": 4,
+   "energy_cm": 26273.32515775398,
+   "anchor_overlap": 0.9711210829262558
+  },
+  {
+   "frame": 119,
+   "root": 4,
+   "energy_cm": 26051.32670676881,
+   "anchor_overlap": 0.8195026279407579
+  },
+  {
+   "frame": 120,
+   "root": 4,
+   "energy_cm": 25782.14635620554,
+   "anchor_overlap": 0.7404153194246151
+  },
+  {
+   "frame": 121,
+   "root": 4,
+   "energy_cm": 25844.643917165613,
+   "anchor_overlap": 0.3079063748536571
+  },
+  {
+   "frame": 122,
+   "root": 4,
+   "energy_cm": 25842.175618754572,
+   "anchor_overlap": 0.03188797371370251
+  },
+  {
+   "frame": 123,
+   "root": 3,
+   "energy_cm": 24639.172237046194,
+   "anchor_overlap": 0.016358513789729374
+  },
+  {
+   "frame": 124,
+   "root": 3,
+   "energy_cm": 24438.690721554398,
+   "anchor_overlap": 0.14469786453907207
+  },
+  {
+   "frame": 125,
+   "root": 3,
+   "energy_cm": 24764.253579631026,
+   "anchor_overlap": 0.29524718969849834
+  },
+  {
+   "frame": 126,
+   "root": 7,
+   "energy_cm": 32865.81315456099,
+   "anchor_overlap": 0.43257471860121965
+  },
+  {
+   "frame": 127,
+   "root": 3,
+   "energy_cm": 24663.273614783302,
+   "anchor_overlap": 0.09139376996046525
+  },
+  {
+   "frame": 128,
+   "root": 2,
+   "energy_cm": 22453.527990337872,
+   "anchor_overlap": 0.06789947172054452
+  },
+  {
+   "frame": 129,
+   "root": 2,
+   "energy_cm": 21122.839869772684,
+   "anchor_overlap": 0.07295160715724099
+  },
+  {
+   "frame": 130,
+   "root": 3,
+   "energy_cm": 22548.039066326368,
+   "anchor_overlap": 0.03594983344607951
+  },
+  {
+   "frame": 131,
+   "root": 3,
+   "energy_cm": 23223.58499116855,
+   "anchor_overlap": 0.04800238632192764
+  },
+  {
+   "frame": 132,
+   "root": 3,
+   "energy_cm": 22970.252708542535,
+   "anchor_overlap": 0.06557079594164851
+  },
+  {
+   "frame": 133,
+   "root": 3,
+   "energy_cm": 21722.420711010553,
+   "anchor_overlap": 0.06945437212114645
+  },
+  {
+   "frame": 134,
+   "root": 2,
+   "energy_cm": 22374.01358346864,
+   "anchor_overlap": 0.24865706919293215
+  },
+  {
+   "frame": 135,
+   "root": 3,
+   "energy_cm": 24090.322537995904,
+   "anchor_overlap": 0.06608710325482667
+  },
+  {
+   "frame": 136,
+   "root": 4,
+   "energy_cm": 27449.038771551513,
+   "anchor_overlap": 0.6650621297882575
+  },
+  {
+   "frame": 137,
+   "root": 4,
+   "energy_cm": 28813.73106404422,
+   "anchor_overlap": 0.3222000970445434
+  },
+  {
+   "frame": 138,
+   "root": 4,
+   "energy_cm": 25738.625407020445,
+   "anchor_overlap": 0.9432350884642041
+  },
+  {
+   "frame": 139,
+   "root": 4,
+   "energy_cm": 25812.781873052325,
+   "anchor_overlap": 0.975238195672585
+  },
+  {
+   "frame": 140,
+   "root": 4,
+   "energy_cm": 26679.566200034507,
+   "anchor_overlap": 0.9617382873390725
+  },
+  {
+   "frame": 141,
+   "root": 2,
+   "energy_cm": 25393.327372761567,
+   "anchor_overlap": 0.9659910607707587
+  },
+  {
+   "frame": 142,
+   "root": 2,
+   "energy_cm": 25187.938377061302,
+   "anchor_overlap": 0.9613930892762629
+  },
+  {
+   "frame": 143,
+   "root": 2,
+   "energy_cm": 24042.342875466995,
+   "anchor_overlap": 0.9224601322937142
+  },
+  {
+   "frame": 144,
+   "root": 2,
+   "energy_cm": 22804.48545546646,
+   "anchor_overlap": 0.842992019605287
+  },
+  {
+   "frame": 145,
+   "root": 2,
+   "energy_cm": 23165.302080192763,
+   "anchor_overlap": 0.8676257106208948
+  },
+  {
+   "frame": 146,
+   "root": 1,
+   "energy_cm": 23605.097479015436,
+   "anchor_overlap": 0.880357424389481
+  },
+  {
+   "frame": 147,
+   "root": 2,
+   "energy_cm": 24565.34113505673,
+   "anchor_overlap": 0.9176547301850339
+  },
+  {
+   "frame": 148,
+   "root": 2,
+   "energy_cm": 24336.534074501706,
+   "anchor_overlap": 0.8876816674543018
+  },
+  {
+   "frame": 149,
+   "root": 2,
+   "energy_cm": 23968.798745530807,
+   "anchor_overlap": 0.888793856631675
+  },
+  {
+   "frame": 150,
+   "root": 2,
+   "energy_cm": 23938.14266154698,
+   "anchor_overlap": 0.9171678052855413
+  },
+  {
+   "frame": 151,
+   "root": 1,
+   "energy_cm": 23871.746216647764,
+   "anchor_overlap": 0.9418140207884541
+  },
+  {
+   "frame": 152,
+   "root": 1,
+   "energy_cm": 23178.266877483416,
+   "anchor_overlap": 0.9217972601253738
+  },
+  {
+   "frame": 153,
+   "root": 2,
+   "energy_cm": 23136.017219333666,
+   "anchor_overlap": 0.921440171555175
+  },
+  {
+   "frame": 154,
+   "root": 1,
+   "energy_cm": 23796.224415338223,
+   "anchor_overlap": 0.919058016866721
+  },
+  {
+   "frame": 155,
+   "root": 2,
+   "energy_cm": 26552.576953031385,
+   "anchor_overlap": 0.9786838664366252
+  },
+  {
+   "frame": 156,
+   "root": 2,
+   "energy_cm": 25274.63127934534,
+   "anchor_overlap": 0.9733476003279525
+  },
+  {
+   "frame": 157,
+   "root": 2,
+   "energy_cm": 24413.407419008767,
+   "anchor_overlap": 0.9431988446636543
+  },
+  {
+   "frame": 158,
+   "root": 2,
+   "energy_cm": 26582.67304629966,
+   "anchor_overlap": 0.9549099723645423
+  },
+  {
+   "frame": 159,
+   "root": 3,
+   "energy_cm": 26838.77358491574,
+   "anchor_overlap": 0.9727640944306598
+  },
+  {
+   "frame": 160,
+   "root": 2,
+   "energy_cm": 25342.143672903683,
+   "anchor_overlap": 0.9716881947970104
+  },
+  {
+   "frame": 161,
+   "root": 3,
+   "energy_cm": 25273.980389949626,
+   "anchor_overlap": 0.9877506215387839
+  },
+  {
+   "frame": 162,
+   "root": 5,
+   "energy_cm": 28653.79915135113,
+   "anchor_overlap": 0.9488579197612321
+  },
+  {
+   "frame": 163,
+   "root": 5,
+   "energy_cm": 29414.134671419102,
+   "anchor_overlap": 0.9431402549765204
+  },
+  {
+   "frame": 164,
+   "root": 5,
+   "energy_cm": 29423.506268885823,
+   "anchor_overlap": 0.9289685946226388
+  },
+  {
+   "frame": 165,
+   "root": 5,
+   "energy_cm": 28318.65757263948,
+   "anchor_overlap": 0.943544939511175
+  },
+  {
+   "frame": 166,
+   "root": 4,
+   "energy_cm": 28092.931953145584,
+   "anchor_overlap": 0.8969666894028938
+  },
+  {
+   "frame": 167,
+   "root": 3,
+   "energy_cm": 26435.138842503013,
+   "anchor_overlap": 0.8800781092619072
+  },
+  {
+   "frame": 168,
+   "root": 4,
+   "energy_cm": 26690.12577146771,
+   "anchor_overlap": 0.893305932080368
+  },
+  {
+   "frame": 169,
+   "root": 4,
+   "energy_cm": 27065.435533405285,
+   "anchor_overlap": 0.9336711162657642
+  },
+  {
+   "frame": 170,
+   "root": 4,
+   "energy_cm": 27119.948931766678,
+   "anchor_overlap": 0.9435194659754543
+  },
+  {
+   "frame": 171,
+   "root": 4,
+   "energy_cm": 26649.583508313986,
+   "anchor_overlap": 0.9501149001968564
+  },
+  {
+   "frame": 172,
+   "root": 4,
+   "energy_cm": 26370.166208074992,
+   "anchor_overlap": 0.9548146398442109
+  },
+  {
+   "frame": 173,
+   "root": 4,
+   "energy_cm": 26639.1964588656,
+   "anchor_overlap": 0.9555530127658146
+  },
+  {
+   "frame": 174,
+   "root": 4,
+   "energy_cm": 27174.413452931814,
+   "anchor_overlap": 0.9433308901265579
+  },
+  {
+   "frame": 175,
+   "root": 4,
+   "energy_cm": 26888.323931470943,
+   "anchor_overlap": 0.9287584839071068
+  },
+  {
+   "frame": 176,
+   "root": 3,
+   "energy_cm": 27200.221096488793,
+   "anchor_overlap": 0.9051908940190809
+  },
+  {
+   "frame": 177,
+   "root": 7,
+   "energy_cm": 26621.819809041408,
+   "anchor_overlap": 0.9335775679359584
+  },
+  {
+   "frame": 178,
+   "root": 7,
+   "energy_cm": 27034.330440590486,
+   "anchor_overlap": 0.9487877323088002
+  },
+  {
+   "frame": 179,
+   "root": 7,
+   "energy_cm": 30148.32565015985,
+   "anchor_overlap": 0.9134042231416091
+  },
+  {
+   "frame": 180,
+   "root": 3,
+   "energy_cm": 27078.31862673585,
+   "anchor_overlap": 0.9246797877970754
+  },
+  {
+   "frame": 181,
+   "root": 3,
+   "energy_cm": 26569.398935399026,
+   "anchor_overlap": 0.8567727916624325
+  },
+  {
+   "frame": 182,
+   "root": 2,
+   "energy_cm": 24045.364147570355,
+   "anchor_overlap": 0.9630230818667525
+  },
+  {
+   "frame": 183,
+   "root": 3,
+   "energy_cm": 24755.814923631497,
+   "anchor_overlap": 0.9917220345697384
+  },
+  {
+   "frame": 184,
+   "root": 4,
+   "energy_cm": 26865.158721418604,
+   "anchor_overlap": 0.9786123336536041
+  },
+  {
+   "frame": 185,
+   "root": 4,
+   "energy_cm": 26675.16330025474,
+   "anchor_overlap": 0.984697274743888
+  },
+  {
+   "frame": 186,
+   "root": 4,
+   "energy_cm": 26670.97195969244,
+   "anchor_overlap": 0.9881440688137294
+  },
+  {
+   "frame": 187,
+   "root": 4,
+   "energy_cm": 26829.99367575224,
+   "anchor_overlap": 0.9834054422490909
+  },
+  {
+   "frame": 188,
+   "root": 4,
+   "energy_cm": 26883.10068521734,
+   "anchor_overlap": 0.9773695779086706
+  },
+  {
+   "frame": 189,
+   "root": 2,
+   "energy_cm": 25223.098986678502,
+   "anchor_overlap": 0.9737333521570161
+  },
+  {
+   "frame": 190,
+   "root": 2,
+   "energy_cm": 25130.531222846188,
+   "anchor_overlap": 0.9769392989714614
+  },
+  {
+   "frame": 191,
+   "root": 2,
+   "energy_cm": 25417.44697862797,
+   "anchor_overlap": 0.9884832058632103
+  },
+  {
+   "frame": 192,
+   "root": 2,
+   "energy_cm": 25876.087682170324,
+   "anchor_overlap": 0.9752969221923311
+  },
+  {
+   "frame": 193,
+   "root": 2,
+   "energy_cm": 26576.917958078855,
+   "anchor_overlap": 0.9710491943994548
+  },
+  {
+   "frame": 194,
+   "root": 2,
+   "energy_cm": 26483.056561654485,
+   "anchor_overlap": 0.9867213800651045
+  },
+  {
+   "frame": 195,
+   "root": 2,
+   "energy_cm": 26397.222559144295,
+   "anchor_overlap": 0.9864954421817151
+  },
+  {
+   "frame": 196,
+   "root": 2,
+   "energy_cm": 26353.770167082665,
+   "anchor_overlap": 0.9881605034552636
+  },
+  {
+   "frame": 197,
+   "root": 2,
+   "energy_cm": 26339.090635151006,
+   "anchor_overlap": 0.9881303268933921
+  }
+ ],
+ "site_B": [
+  {
+   "frame": 0,
+   "root": 3,
+   "energy_cm": 26572.89591328379,
+   "anchor_overlap": 0.9999999999999998
+  },
+  {
+   "frame": 1,
+   "root": 3,
+   "energy_cm": 26941.496997740887,
+   "anchor_overlap": 0.9143940133824127
+  },
+  {
+   "frame": 2,
+   "root": 3,
+   "energy_cm": 24593.85855941022,
+   "anchor_overlap": 0.9244688565247987
+  },
+  {
+   "frame": 3,
+   "root": 3,
+   "energy_cm": 24888.28067496785,
+   "anchor_overlap": 0.9428793719889975
+  },
+  {
+   "frame": 4,
+   "root": 3,
+   "energy_cm": 26162.921330714827,
+   "anchor_overlap": 0.9610730306224741
+  },
+  {
+   "frame": 5,
+   "root": 3,
+   "energy_cm": 27022.66290538666,
+   "anchor_overlap": 0.9646642365031862
+  },
+  {
+   "frame": 6,
+   "root": 3,
+   "energy_cm": 27405.34336465106,
+   "anchor_overlap": 0.9766449993074172
+  },
+  {
+   "frame": 7,
+   "root": 2,
+   "energy_cm": 25958.513750400813,
+   "anchor_overlap": 0.9703837536784174
+  },
+  {
+   "frame": 8,
+   "root": 2,
+   "energy_cm": 25089.599393920307,
+   "anchor_overlap": 0.9803748479151912
+  },
+  {
+   "frame": 9,
+   "root": 2,
+   "energy_cm": 24428.58540155573,
+   "anchor_overlap": 0.9752778450951006
+  },
+  {
+   "frame": 10,
+   "root": 2,
+   "energy_cm": 24368.892391533434,
+   "anchor_overlap": 0.9470395585308814
+  },
+  {
+   "frame": 11,
+   "root": 2,
+   "energy_cm": 24838.134042749385,
+   "anchor_overlap": 0.95142956670319
+  },
+  {
+   "frame": 12,
+   "root": 2,
+   "energy_cm": 24639.269668816956,
+   "anchor_overlap": 0.9482552170795041
+  },
+  {
+   "frame": 13,
+   "root": 2,
+   "energy_cm": 24252.31947190318,
+   "anchor_overlap": 0.9202109032587208
+  },
+  {
+   "frame": 14,
+   "root": 2,
+   "energy_cm": 23662.56835102765,
+   "anchor_overlap": 0.7600276195181794
+  },
+  {
+   "frame": 15,
+   "root": 2,
+   "energy_cm": 22023.850090485208,
+   "anchor_overlap": 0.4213002158238002
+  },
+  {
+   "frame": 16,
+   "root": 2,
+   "energy_cm": 21212.617358679992,
+   "anchor_overlap": 0.47906516012243594
+  },
+  {
+   "frame": 17,
+   "root": 3,
+   "energy_cm": 23853.768764455708,
+   "anchor_overlap": 0.8628940969769838
+  },
+  {
+   "frame": 18,
+   "root": 2,
+   "energy_cm": 26276.586783066665,
+   "anchor_overlap": 0.7715050225642257
+  },
+  {
+   "frame": 19,
+   "root": 1,
+   "energy_cm": 26208.77144767805,
+   "anchor_overlap": 0.9456785227092575
+  },
+  {
+   "frame": 20,
+   "root": 1,
+   "energy_cm": 26448.66846983557,
+   "anchor_overlap": 0.9658836745427929
+  },
+  {
+   "frame": 21,
+   "root": 1,
+   "energy_cm": 25766.219407248587,
+   "anchor_overlap": 0.959757165851973
+  },
+  {
+   "frame": 22,
+   "root": 1,
+   "energy_cm": 25093.348823330303,
+   "anchor_overlap": 0.952505857763988
+  },
+  {
+   "frame": 23,
+   "root": 1,
+   "energy_cm": 25232.733278911248,
+   "anchor_overlap": 0.9570798056894252
+  },
+  {
+   "frame": 24,
+   "root": 3,
+   "energy_cm": 24535.58476249908,
+   "anchor_overlap": 0.9690918871438404
+  },
+  {
+   "frame": 25,
+   "root": 3,
+   "energy_cm": 25238.353511237427,
+   "anchor_overlap": 0.9741286937697992
+  },
+  {
+   "frame": 26,
+   "root": 3,
+   "energy_cm": 23793.34824237029,
+   "anchor_overlap": 0.938139475990492
+  },
+  {
+   "frame": 27,
+   "root": 2,
+   "energy_cm": 23492.883098673305,
+   "anchor_overlap": 0.9119710314673126
+  },
+  {
+   "frame": 28,
+   "root": 2,
+   "energy_cm": 23894.259569439113,
+   "anchor_overlap": 0.9343454936948132
+  },
+  {
+   "frame": 29,
+   "root": 2,
+   "energy_cm": 23679.427596208283,
+   "anchor_overlap": 0.9116630512523154
+  },
+  {
+   "frame": 30,
+   "root": 2,
+   "energy_cm": 23020.713251731027,
+   "anchor_overlap": 0.8374798423137911
+  },
+  {
+   "frame": 31,
+   "root": 2,
+   "energy_cm": 22951.3323136088,
+   "anchor_overlap": 0.847748898196807
+  },
+  {
+   "frame": 32,
+   "root": 2,
+   "energy_cm": 22815.162219253067,
+   "anchor_overlap": 0.8464547687605513
+  },
+  {
+   "frame": 33,
+   "root": 2,
+   "energy_cm": 22546.813990857776,
+   "anchor_overlap": 0.7867190728464498
+  },
+  {
+   "frame": 34,
+   "root": 2,
+   "energy_cm": 22903.2004542658,
+   "anchor_overlap": 0.8912668255079534
+  },
+  {
+   "frame": 35,
+   "root": 2,
+   "energy_cm": 23718.111880660683,
+   "anchor_overlap": 0.9512616449352449
+  },
+  {
+   "frame": 36,
+   "root": 2,
+   "energy_cm": 25634.761284316286,
+   "anchor_overlap": 0.9709864800476427
+  },
+  {
+   "frame": 37,
+   "root": 2,
+   "energy_cm": 26325.544312142498,
+   "anchor_overlap": 0.9667071351935769
+  },
+  {
+   "frame": 38,
+   "root": 2,
+   "energy_cm": 26298.989315284318,
+   "anchor_overlap": 0.8872287031699325
+  },
+  {
+   "frame": 39,
+   "root": 2,
+   "energy_cm": 25061.484117587515,
+   "anchor_overlap": 0.9661124790245899
+  },
+  {
+   "frame": 40,
+   "root": 2,
+   "energy_cm": 24726.79324147107,
+   "anchor_overlap": 0.9535412294211263
+  },
+  {
+   "frame": 41,
+   "root": 2,
+   "energy_cm": 24870.901847446796,
+   "anchor_overlap": 0.940681944453824
+  },
+  {
+   "frame": 42,
+   "root": 3,
+   "energy_cm": 26196.367367001898,
+   "anchor_overlap": 0.9768956790262548
+  },
+  {
+   "frame": 43,
+   "root": 3,
+   "energy_cm": 27128.62882818536,
+   "anchor_overlap": 0.9815938289632515
+  },
+  {
+   "frame": 44,
+   "root": 3,
+   "energy_cm": 27417.035257797575,
+   "anchor_overlap": 0.894005707975621
+  },
+  {
+   "frame": 45,
+   "root": 3,
+   "energy_cm": 27215.511109441042,
+   "anchor_overlap": 0.9055420199126822
+  },
+  {
+   "frame": 46,
+   "root": 3,
+   "energy_cm": 28485.91025694243,
+   "anchor_overlap": 0.937515934588071
+  },
+  {
+   "frame": 47,
+   "root": 3,
+   "energy_cm": 29694.74325249759,
+   "anchor_overlap": 0.9013299516789346
+  },
+  {
+   "frame": 48,
+   "root": 2,
+   "energy_cm": 25903.658614942804,
+   "anchor_overlap": 0.9683702977279157
+  },
+  {
+   "frame": 49,
+   "root": 2,
+   "energy_cm": 25804.350314731466,
+   "anchor_overlap": 0.9777598725698368
+  },
+  {
+   "frame": 50,
+   "root": 2,
+   "energy_cm": 25650.81986295029,
+   "anchor_overlap": 0.9259369570944984
+  },
+  {
+   "frame": 51,
+   "root": 1,
+   "energy_cm": 25235.302154655183,
+   "anchor_overlap": 0.9646561765382721
+  },
+  {
+   "frame": 52,
+   "root": 1,
+   "energy_cm": 24932.1407802755,
+   "anchor_overlap": 0.9636800960041882
+  },
+  {
+   "frame": 53,
+   "root": 1,
+   "energy_cm": 25093.25405318904,
+   "anchor_overlap": 0.962778901197024
+  },
+  {
+   "frame": 54,
+   "root": 2,
+   "energy_cm": 25843.33060464635,
+   "anchor_overlap": 0.970666546934964
+  },
+  {
+   "frame": 55,
+   "root": 2,
+   "energy_cm": 26327.954780603508,
+   "anchor_overlap": 0.9742587453503722
+  },
+  {
+   "frame": 56,
+   "root": 1,
+   "energy_cm": 26268.80329120114,
+   "anchor_overlap": 0.9638441499148722
+  },
+  {
+   "frame": 57,
+   "root": 1,
+   "energy_cm": 25226.951413084567,
+   "anchor_overlap": 0.8890447365453865
+  },
+  {
+   "frame": 58,
+   "root": 1,
+   "energy_cm": 25160.046354984686,
+   "anchor_overlap": 0.8747551214576754
+  },
+  {
+   "frame": 59,
+   "root": 2,
+   "energy_cm": 26008.176772604817,
+   "anchor_overlap": 0.8605187507800561
+  },
+  {
+   "frame": 60,
+   "root": 2,
+   "energy_cm": 26703.65660863186,
+   "anchor_overlap": 0.7709058934157581
+  },
+  {
+   "frame": 61,
+   "root": 2,
+   "energy_cm": 28111.57803893002,
+   "anchor_overlap": 0.56430868444679
+  },
+  {
+   "frame": 62,
+   "root": 2,
+   "energy_cm": 26835.350971346077,
+   "anchor_overlap": 0.7010406079740004
+  },
+  {
+   "frame": 63,
+   "root": 3,
+   "energy_cm": 25980.315883527797,
+   "anchor_overlap": 0.932856906722308
+  },
+  {
+   "frame": 64,
+   "root": 3,
+   "energy_cm": 26313.208062690854,
+   "anchor_overlap": 0.9355763600176519
+  },
+  {
+   "frame": 65,
+   "root": 2,
+   "energy_cm": 25830.84425542204,
+   "anchor_overlap": 0.8783959506560151
+  },
+  {
+   "frame": 66,
+   "root": 1,
+   "energy_cm": 24779.388653484242,
+   "anchor_overlap": 0.8785949531267006
+  },
+  {
+   "frame": 67,
+   "root": 1,
+   "energy_cm": 25667.42455956427,
+   "anchor_overlap": 0.8462263697697016
+  },
+  {
+   "frame": 68,
+   "root": 2,
+   "energy_cm": 26955.909882789987,
+   "anchor_overlap": 0.8560405834922855
+  },
+  {
+   "frame": 69,
+   "root": 2,
+   "energy_cm": 27968.873482842846,
+   "anchor_overlap": 0.8508167554554421
+  },
+  {
+   "frame": 70,
+   "root": 2,
+   "energy_cm": 27663.02474987879,
+   "anchor_overlap": 0.8675739520651747
+  },
+  {
+   "frame": 71,
+   "root": 2,
+   "energy_cm": 27057.597437807304,
+   "anchor_overlap": 0.8849691994716741
+  },
+  {
+   "frame": 72,
+   "root": 2,
+   "energy_cm": 27064.234251291306,
+   "anchor_overlap": 0.8794840746882119
+  },
+  {
+   "frame": 73,
+   "root": 3,
+   "energy_cm": 27698.60888120812,
+   "anchor_overlap": 0.8633143151229642
+  },
+  {
+   "frame": 74,
+   "root": 3,
+   "energy_cm": 27968.08168839455,
+   "anchor_overlap": 0.8646192005071027
+  },
+  {
+   "frame": 75,
+   "root": 2,
+   "energy_cm": 27527.07678060308,
+   "anchor_overlap": 0.8726655497574625
+  },
+  {
+   "frame": 76,
+   "root": 2,
+   "energy_cm": 27228.289995943946,
+   "anchor_overlap": 0.881866493033902
+  },
+  {
+   "frame": 77,
+   "root": 1,
+   "energy_cm": 25761.657535597817,
+   "anchor_overlap": 0.9207635428557951
+  },
+  {
+   "frame": 78,
+   "root": 2,
+   "energy_cm": 26027.614491526667,
+   "anchor_overlap": 0.9077076756970159
+  },
+  {
+   "frame": 79,
+   "root": 2,
+   "energy_cm": 26483.69874026275,
+   "anchor_overlap": 0.9080502808771964
+  },
+  {
+   "frame": 80,
+   "root": 3,
+   "energy_cm": 26732.0397416788,
+   "anchor_overlap": 0.9446043750719392
+  },
+  {
+   "frame": 81,
+   "root": 2,
+   "energy_cm": 26622.189775541796,
+   "anchor_overlap": 0.951660635983438
+  },
+  {
+   "frame": 82,
+   "root": 2,
+   "energy_cm": 26331.897783067987,
+   "anchor_overlap": 0.9494319916630265
+  },
+  {
+   "frame": 83,
+   "root": 3,
+   "energy_cm": 26346.06878245442,
+   "anchor_overlap": 0.9357159043874357
+  },
+  {
+   "frame": 84,
+   "root": 3,
+   "energy_cm": 26806.239600337063,
+   "anchor_overlap": 0.9578055588536117
+  },
+  {
+   "frame": 85,
+   "root": 2,
+   "energy_cm": 26945.531463473613,
+   "anchor_overlap": 0.9230255558757581
+  },
+  {
+   "frame": 86,
+   "root": 1,
+   "energy_cm": 26218.879509961655,
+   "anchor_overlap": 0.9733305741808225
+  },
+  {
+   "frame": 87,
+   "root": 1,
+   "energy_cm": 25967.716294066613,
+   "anchor_overlap": 0.9810113855999535
+  },
+  {
+   "frame": 88,
+   "root": 1,
+   "energy_cm": 26281.790672014817,
+   "anchor_overlap": 0.9791911740144454
+  },
+  {
+   "frame": 89,
+   "root": 2,
+   "energy_cm": 26478.65971103267,
+   "anchor_overlap": 0.970099923655841
+  },
+  {
+   "frame": 90,
+   "root": 2,
+   "energy_cm": 25982.560443750022,
+   "anchor_overlap": 0.9788939551747539
+  },
+  {
+   "frame": 91,
+   "root": 3,
+   "energy_cm": 26292.199256465516,
+   "anchor_overlap": 0.9679985230513966
+  },
+  {
+   "frame": 92,
+   "root": 3,
+   "energy_cm": 25652.761320031364,
+   "anchor_overlap": 0.9563767342346225
+  },
+  {
+   "frame": 93,
+   "root": 3,
+   "energy_cm": 25790.829478841795,
+   "anchor_overlap": 0.9446534971055486
+  },
+  {
+   "frame": 94,
+   "root": 2,
+   "energy_cm": 25324.39399167241,
+   "anchor_overlap": 0.9455134944494538
+  },
+  {
+   "frame": 95,
+   "root": 3,
+   "energy_cm": 25768.714483265496,
+   "anchor_overlap": 0.9500280711753516
+  },
+  {
+   "frame": 96,
+   "root": 3,
+   "energy_cm": 26135.865060300963,
+   "anchor_overlap": 0.950550759077978
+  },
+  {
+   "frame": 97,
+   "root": 3,
+   "energy_cm": 26384.491823938697,
+   "anchor_overlap": 0.9493731029298222
+  },
+  {
+   "frame": 98,
+   "root": 3,
+   "energy_cm": 27267.75179883187,
+   "anchor_overlap": 0.9670747014753975
+  },
+  {
+   "frame": 99,
+   "root": 3,
+   "energy_cm": 26588.03009992718,
+   "anchor_overlap": 0.9734302719062714
+  },
+  {
+   "frame": 100,
+   "root": 3,
+   "energy_cm": 26622.603295979447,
+   "anchor_overlap": 0.9682514697737452
+  },
+  {
+   "frame": 101,
+   "root": 3,
+   "energy_cm": 26589.8323457199,
+   "anchor_overlap": 0.9740790928668137
+  },
+  {
+   "frame": 102,
+   "root": 3,
+   "energy_cm": 26289.8354875039,
+   "anchor_overlap": 0.9879649042845343
+  },
+  {
+   "frame": 103,
+   "root": 4,
+   "energy_cm": 26034.81419932203,
+   "anchor_overlap": 0.9937882640407872
+  },
+  {
+   "frame": 104,
+   "root": 3,
+   "energy_cm": 26319.819711677774,
+   "anchor_overlap": 0.9896340686817006
+  },
+  {
+   "frame": 105,
+   "root": 3,
+   "energy_cm": 27696.68347455948,
+   "anchor_overlap": 0.9677177290765278
+  },
+  {
+   "frame": 106,
+   "root": 3,
+   "energy_cm": 27230.237663493852,
+   "anchor_overlap": 0.9168620596214234
+  },
+  {
+   "frame": 107,
+   "root": 3,
+   "energy_cm": 26788.35748287434,
+   "anchor_overlap": 0.9455370020814882
+  },
+  {
+   "frame": 108,
+   "root": 4,
+   "energy_cm": 26264.653326879237,
+   "anchor_overlap": 0.9655644044671405
+  },
+  {
+   "frame": 109,
+   "root": 4,
+   "energy_cm": 26748.401342798516,
+   "anchor_overlap": 0.9510262114194152
+  },
+  {
+   "frame": 110,
+   "root": 2,
+   "energy_cm": 26262.813818273524,
+   "anchor_overlap": 0.8635551509313474
+  },
+  {
+   "frame": 111,
+   "root": 2,
+   "energy_cm": 26858.207029099307,
+   "anchor_overlap": 0.8672250091631799
+  },
+  {
+   "frame": 112,
+   "root": 3,
+   "energy_cm": 27775.11379166814,
+   "anchor_overlap": 0.8638362827252369
+  },
+  {
+   "frame": 113,
+   "root": 2,
+   "energy_cm": 26613.5274620089,
+   "anchor_overlap": 0.9192102570765774
+  },
+  {
+   "frame": 115,
+   "root": 1,
+   "energy_cm": 25778.891425294325,
+   "anchor_overlap": 0.9118821063353634
+  },
+  {
+   "frame": 117,
+   "root": 2,
+   "energy_cm": 25926.15632057892,
+   "anchor_overlap": 0.9379248582442996
+  },
+  {
+   "frame": 118,
+   "root": 3,
+   "energy_cm": 25725.77022047189,
+   "anchor_overlap": 0.918915464879477
+  },
+  {
+   "frame": 119,
+   "root": 1,
+   "energy_cm": 24902.183817640132,
+   "anchor_overlap": 0.9047900759776043
+  },
+  {
+   "frame": 120,
+   "root": 1,
+   "energy_cm": 24757.258575340784,
+   "anchor_overlap": 0.9211119079566452
+  },
+  {
+   "frame": 121,
+   "root": 1,
+   "energy_cm": 25115.37969528334,
+   "anchor_overlap": 0.9421885996412993
+  },
+  {
+   "frame": 122,
+   "root": 3,
+   "energy_cm": 25723.82819880274,
+   "anchor_overlap": 0.9471864068801877
+  },
+  {
+   "frame": 123,
+   "root": 3,
+   "energy_cm": 26925.711921701783,
+   "anchor_overlap": 0.8874116981148285
+  },
+  {
+   "frame": 124,
+   "root": 2,
+   "energy_cm": 26905.635008422923,
+   "anchor_overlap": 0.8784296983339462
+  },
+  {
+   "frame": 125,
+   "root": 2,
+   "energy_cm": 26818.862983152863,
+   "anchor_overlap": 0.860198577152758
+  },
+  {
+   "frame": 126,
+   "root": 2,
+   "energy_cm": 26647.368709948885,
+   "anchor_overlap": 0.8820196384807092
+  },
+  {
+   "frame": 127,
+   "root": 3,
+   "energy_cm": 27354.699733615198,
+   "anchor_overlap": 0.8770414433947643
+  },
+  {
+   "frame": 128,
+   "root": 3,
+   "energy_cm": 28044.82727468565,
+   "anchor_overlap": 0.8769495657882036
+  },
+  {
+   "frame": 129,
+   "root": 3,
+   "energy_cm": 27838.41185786396,
+   "anchor_overlap": 0.8915715729499109
+  },
+  {
+   "frame": 130,
+   "root": 3,
+   "energy_cm": 26892.026338759784,
+   "anchor_overlap": 0.8907442347250855
+  },
+  {
+   "frame": 131,
+   "root": 3,
+   "energy_cm": 26071.748260740096,
+   "anchor_overlap": 0.9554151761737747
+  },
+  {
+   "frame": 132,
+   "root": 3,
+   "energy_cm": 26242.538008681182,
+   "anchor_overlap": 0.9642478328017984
+  },
+  {
+   "frame": 133,
+   "root": 3,
+   "energy_cm": 26250.600568366925,
+   "anchor_overlap": 0.9708545966626504
+  },
+  {
+   "frame": 134,
+   "root": 3,
+   "energy_cm": 25745.208100704625,
+   "anchor_overlap": 0.9592957035393291
+  },
+  {
+   "frame": 135,
+   "root": 3,
+   "energy_cm": 25321.72671629244,
+   "anchor_overlap": 0.9643143579497161
+  },
+  {
+   "frame": 136,
+   "root": 3,
+   "energy_cm": 25770.867902841237,
+   "anchor_overlap": 0.9710418206584802
+  },
+  {
+   "frame": 137,
+   "root": 3,
+   "energy_cm": 26441.846794084537,
+   "anchor_overlap": 0.9570932025929593
+  },
+  {
+   "frame": 138,
+   "root": 3,
+   "energy_cm": 26747.522117853947,
+   "anchor_overlap": 0.9764320785837718
+  },
+  {
+   "frame": 139,
+   "root": 3,
+   "energy_cm": 26937.113213300247,
+   "anchor_overlap": 0.9830191616748335
+  },
+  {
+   "frame": 140,
+   "root": 2,
+   "energy_cm": 24658.688191744237,
+   "anchor_overlap": 0.9577889202032278
+  },
+  {
+   "frame": 141,
+   "root": 3,
+   "energy_cm": 24722.040055118116,
+   "anchor_overlap": 0.9691911163675194
+  },
+  {
+   "frame": 142,
+   "root": 3,
+   "energy_cm": 27335.103365444105,
+   "anchor_overlap": 0.9707269023666504
+  },
+  {
+   "frame": 143,
+   "root": 3,
+   "energy_cm": 28054.799755175674,
+   "anchor_overlap": 0.9669427452491437
+  },
+  {
+   "frame": 144,
+   "root": 3,
+   "energy_cm": 28547.72273060049,
+   "anchor_overlap": 0.9385246580645031
+  },
+  {
+   "frame": 145,
+   "root": 3,
+   "energy_cm": 28420.403280228584,
+   "anchor_overlap": 0.8880245353755215
+  },
+  {
+   "frame": 146,
+   "root": 3,
+   "energy_cm": 27888.607770555882,
+   "anchor_overlap": 0.8986833605294183
+  },
+  {
+   "frame": 147,
+   "root": 5,
+   "energy_cm": 30215.238935114554,
+   "anchor_overlap": 0.7885009714302124
+  },
+  {
+   "frame": 148,
+   "root": 3,
+   "energy_cm": 29946.939099982887,
+   "anchor_overlap": 0.8618882654898382
+  },
+  {
+   "frame": 149,
+   "root": 4,
+   "energy_cm": 31927.35388745002,
+   "anchor_overlap": 0.7018644419284017
+  },
+  {
+   "frame": 150,
+   "root": 4,
+   "energy_cm": 30294.079385132412,
+   "anchor_overlap": 0.8528182091631462
+  },
+  {
+   "frame": 151,
+   "root": 4,
+   "energy_cm": 31145.908903168365,
+   "anchor_overlap": 0.6748096027403013
+  },
+  {
+   "frame": 152,
+   "root": 4,
+   "energy_cm": 30255.198301407952,
+   "anchor_overlap": 0.7724967554540472
+  },
+  {
+   "frame": 153,
+   "root": 5,
+   "energy_cm": 32019.245516734092,
+   "anchor_overlap": 0.5949977253317921
+  },
+  {
+   "frame": 154,
+   "root": 4,
+   "energy_cm": 30792.027839673494,
+   "anchor_overlap": 0.5201672472894527
+  },
+  {
+   "frame": 155,
+   "root": 5,
+   "energy_cm": 31504.912474273067,
+   "anchor_overlap": 0.21109965835516756
+  },
+  {
+   "frame": 156,
+   "root": 5,
+   "energy_cm": 31147.02267413063,
+   "anchor_overlap": 0.66492741464949
+  },
+  {
+   "frame": 157,
+   "root": 3,
+   "energy_cm": 29405.60600394924,
+   "anchor_overlap": 0.8994403321816863
+  },
+  {
+   "frame": 158,
+   "root": 4,
+   "energy_cm": 30053.465255463452,
+   "anchor_overlap": 0.8695296615636964
+  },
+  {
+   "frame": 159,
+   "root": 3,
+   "energy_cm": 31454.963689847376,
+   "anchor_overlap": 0.6788997501265697
+  },
+  {
+   "frame": 160,
+   "root": 3,
+   "energy_cm": 27308.857278918716,
+   "anchor_overlap": 0.9109154799407759
+  },
+  {
+   "frame": 161,
+   "root": 3,
+   "energy_cm": 27169.95320713465,
+   "anchor_overlap": 0.9436119881947217
+  },
+  {
+   "frame": 162,
+   "root": 2,
+   "energy_cm": 25896.841778518134,
+   "anchor_overlap": 0.9656765582474885
+  },
+  {
+   "frame": 163,
+   "root": 3,
+   "energy_cm": 27144.811858162313,
+   "anchor_overlap": 0.9780579280683818
+  },
+  {
+   "frame": 164,
+   "root": 3,
+   "energy_cm": 25905.597813671582,
+   "anchor_overlap": 0.9682705520450716
+  },
+  {
+   "frame": 165,
+   "root": 2,
+   "energy_cm": 25705.708712381955,
+   "anchor_overlap": 0.954147064770698
+  },
+  {
+   "frame": 166,
+   "root": 2,
+   "energy_cm": 26003.740562128587,
+   "anchor_overlap": 0.9427270703354669
+  },
+  {
+   "frame": 167,
+   "root": 3,
+   "energy_cm": 28187.924058174478,
+   "anchor_overlap": 0.9785092973611209
+  },
+  {
+   "frame": 168,
+   "root": 3,
+   "energy_cm": 27963.966002634377,
+   "anchor_overlap": 0.9739222158791281
+  },
+  {
+   "frame": 169,
+   "root": 3,
+   "energy_cm": 26806.430431106615,
+   "anchor_overlap": 0.961823691185259
+  },
+  {
+   "frame": 170,
+   "root": 3,
+   "energy_cm": 26184.32091254391,
+   "anchor_overlap": 0.9665655593133129
+  },
+  {
+   "frame": 171,
+   "root": 3,
+   "energy_cm": 25846.14193064103,
+   "anchor_overlap": 0.9747270540680557
+  },
+  {
+   "frame": 172,
+   "root": 3,
+   "energy_cm": 26136.237285153653,
+   "anchor_overlap": 0.9851596255711457
+  },
+  {
+   "frame": 173,
+   "root": 3,
+   "energy_cm": 26938.515811390895,
+   "anchor_overlap": 0.9820155138615203
+  },
+  {
+   "frame": 174,
+   "root": 3,
+   "energy_cm": 26708.825331808446,
+   "anchor_overlap": 0.9635847325465998
+  },
+  {
+   "frame": 175,
+   "root": 3,
+   "energy_cm": 27242.051588320133,
+   "anchor_overlap": 0.9520976843721021
+  },
+  {
+   "frame": 176,
+   "root": 2,
+   "energy_cm": 25380.70511912192,
+   "anchor_overlap": 0.9749408422833535
+  },
+  {
+   "frame": 179,
+   "root": 2,
+   "energy_cm": 26006.260399365383,
+   "anchor_overlap": 0.9745263830075973
+  },
+  {
+   "frame": 180,
+   "root": 2,
+   "energy_cm": 25971.072608865114,
+   "anchor_overlap": 0.9802262741747106
+  },
+  {
+   "frame": 181,
+   "root": 2,
+   "energy_cm": 26123.173442983454,
+   "anchor_overlap": 0.97862241803476
+  },
+  {
+   "frame": 182,
+   "root": 2,
+   "energy_cm": 25955.308503240252,
+   "anchor_overlap": 0.970970332981035
+  },
+  {
+   "frame": 183,
+   "root": 2,
+   "energy_cm": 25370.23757554504,
+   "anchor_overlap": 0.9632195449128302
+  },
+  {
+   "frame": 184,
+   "root": 2,
+   "energy_cm": 24866.05913355614,
+   "anchor_overlap": 0.9578206869479794
+  },
+  {
+   "frame": 185,
+   "root": 2,
+   "energy_cm": 25809.23650190394,
+   "anchor_overlap": 0.9273220497985917
+  },
+  {
+   "frame": 186,
+   "root": 2,
+   "energy_cm": 26459.35354113243,
+   "anchor_overlap": 0.9353030282151849
+  },
+  {
+   "frame": 187,
+   "root": 2,
+   "energy_cm": 26873.494057800297,
+   "anchor_overlap": 0.9494822256546196
+  },
+  {
+   "frame": 188,
+   "root": 2,
+   "energy_cm": 26042.70157539346,
+   "anchor_overlap": 0.9722784416497813
+  },
+  {
+   "frame": 189,
+   "root": 2,
+   "energy_cm": 25175.441300663555,
+   "anchor_overlap": 0.9694474868985636
+  },
+  {
+   "frame": 190,
+   "root": 3,
+   "energy_cm": 25585.51420221311,
+   "anchor_overlap": 0.9109865378204445
+  },
+  {
+   "frame": 191,
+   "root": 3,
+   "energy_cm": 25771.82383110865,
+   "anchor_overlap": 0.9228233754119598
+  },
+  {
+   "frame": 192,
+   "root": 3,
+   "energy_cm": 26485.591723424764,
+   "anchor_overlap": 0.9296791730675588
+  },
+  {
+   "frame": 193,
+   "root": 3,
+   "energy_cm": 26316.718590689434,
+   "anchor_overlap": 0.9588852567529893
+  },
+  {
+   "frame": 194,
+   "root": 3,
+   "energy_cm": 26249.37936435942,
+   "anchor_overlap": 0.9504676335514209
+  },
+  {
+   "frame": 195,
+   "root": 3,
+   "energy_cm": 26160.426899941427,
+   "anchor_overlap": 0.9695518367192832
+  },
+  {
+   "frame": 196,
+   "root": 3,
+   "energy_cm": 26310.354069968747,
+   "anchor_overlap": 0.9458752772595841
+  }
+ ]
+}

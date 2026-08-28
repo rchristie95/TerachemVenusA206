@@ -1,5 +1,7 @@
 # Resolving the CD couplet: is the separation the exciton gap?
 
+> **Superseded in part, 2026-08-27.** <|Delta|> = 576 is the INSTANTANEOUS detuning; the exciton sees the 81 fs-averaged value, 189-324. See `CORRECTIONS_2026-08-27.md`.
+
 Lineshape from the published Table-S3 reconstruction: HWHM 293.51/439.25 cm^-1 about 19322 cm^-1, with the fitted peak-amplitude ratio 1.581.
 
 ## Model validation

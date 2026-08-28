@@ -1,0 +1,125 @@
+{
+  "status": "numerical_identifiability_study_complete_no_electronic_structure_launched",
+  "scope": {
+    "manuscripts_modified": false,
+    "terachem_jobs_launched": 0,
+    "TDDFT_J_frame_join_performed": false,
+    "absolute_molar_CD_claimed": false
+  },
+  "corrected_coupling_ensemble": {
+    "frames": 1000,
+    "J_mean_cm-1": 32.81648511581466,
+    "J_sample_sd_cm-1": 1.5540342222009822,
+    "triple_product_sign_positive_frames": 0,
+    "triple_product_sign_negative_frames": 1000,
+    "archive": "coupling_nvt_production_cr2_1000_20260721/coupling_geometry.npz",
+    "archive_sha256": "ce1cdefb9ebae3245b62ccf0eb445c0e53f3502c52cc466b822f791b41910133"
+  },
+  "published_constrained_fit_reconstruction": {
+    "center_cm-1": 19322.0,
+    "latent_component_full_separation_cm-1": 261.58,
+    "low_center_cm-1": 19191.21,
+    "high_center_cm-1": 19452.79,
+    "low_hwhm_cm-1": 293.51,
+    "high_hwhm_cm-1": 439.25,
+    "low_to_high_absolute_peak_amplitude_ratio": 1.581497797356828,
+    "low_to_high_absolute_integrated_area_ratio": 1.0567681696122995,
+    "full_profile_extrema": {
+      "maximum_cm-1": 19150.0,
+      "minimum_cm-1": 19655.0,
+      "extrema_separation_cm-1": 505.0,
+      "maximum_nm": 522.1932114882507,
+      "minimum_nm": 508.7763927753752
+    },
+    "couplet_only_extrema": {
+      "maximum_cm-1": 19150.0,
+      "minimum_cm-1": 19650.0,
+      "extrema_separation_cm-1": 500.0,
+      "maximum_nm": 522.1932114882507,
+      "minimum_nm": 508.9058524173028
+    },
+    "note": "Table-S3 reconstruction; raw observations and fitted baseline/slope unavailable."
+  },
+  "detuning_required_with_corrected_J": {
+    "constrained_gap_cm-1": 261.58,
+    "detuning_mean_cm-1": 253.19184046944306,
+    "detuning_sample_sd_cm-1": 0.8073169545925302,
+    "detuning_mean_eV": 0.03139178712712796,
+    "mixing_mean": 0.2509097416913729,
+    "minor_site_weight_mean": 0.016033640818405286,
+    "unconstrained_gap_cm-1": 370.7781014408465,
+    "unconstrained_required_detuning_mean_cm-1": 364.90923522591754,
+    "unconstrained_required_detuning_mean_eV": 0.0452429786508762,
+    "zero_mean_normal_disorder_alternative": {
+      "detuning_signed_mean_cm-1": 0.0,
+      "detuning_sd_needed_for_target_mean_gap_cm-1": 308.0423738057852,
+      "gap_mean_cm-1": 261.58,
+      "gap_sd_cm-1": 175.4518306279382,
+      "single_branch_sd_cm-1": 87.7259153139691,
+      "mixing_mean": 0.39010150602752175
+    }
+  },
+  "profile_fit_with_corrected_J": {
+    "J_scale": 1.0,
+    "J_mean_cm-1": 32.81648511581466,
+    "best_detuning_cm-1": 229.93732515241877,
+    "best_gap_mean_cm-1": 239.1396702088033,
+    "best_gap_sample_sd_cm-1": 0.8541493057738254,
+    "best_mean_mixing": 0.27441171748377885,
+    "best_mean_participation_ratio": 1.0392140123895586,
+    "normalized_rms_profile_residual": 0.009933099968878825,
+    "profile_scale": -0.006090578927481958,
+    "third_band_amplitude": -0.416186646435363,
+    "baseline_constant": 0.07610463199095036,
+    "baseline_slope_per_1000cm-1": 0.004250953288571724,
+    "maximum_cm-1": 19157.5,
+    "minimum_cm-1": 19642.5,
+    "extrema_separation_cm-1": 485.0,
+    "maximum_nm": 521.9887772412893,
+    "minimum_nm": 509.10016545755377
+  },
+  "STEOM_shift": {
+    "TDDFT_reference_eV": 3.43441587,
+    "STEOM_reference_eV": 2.366633,
+    "common_additive_shift_eV": -1.0677828699999998,
+    "common_additive_shift_cm-1": -8612.249725770193,
+    "gap_effect_cm-1": 0.0,
+    "common_shift_needed_to_align_STEOM_origin_to_fit_center_cm-1": 233.79999999999927,
+    "interpretation": "A one-point common additive correction changes only spectral origin. Site-dependent or affine calibration requires additional matched STEOM points."
+  },
+  "linewidth_context": {
+    "T2_60fs_hwhm_cm-1": 88.48062431460241,
+    "T2_128fs_hwhm_cm-1": 41.47529264746988,
+    "effective_T2_from_low_fitted_hwhm_fs": 18.087415961555465,
+    "effective_T2_from_high_fitted_hwhm_fs": 12.086141056064076,
+    "caution": "Fitted widths include inhomogeneous/multiband effects and must not be interpreted directly as pure-dephasing times."
+  },
+  "existing_100fs_TDDFT_diagnostic_not_joined": {
+    "mean_gap_eV": 0.1830506208,
+    "sample_sd_gap_eV": 0.1109196636,
+    "mean_gap_cm-1": 1476.4028372049684,
+    "sample_sd_gap_cm-1": 894.6274277855966,
+    "common_shift_gap_invariance_max_abs_eV": 4.440892098500626e-16,
+    "limitations": [
+      "100-fs nonequilibrium window, not the 1-ns NVT ensemble",
+      "opposite CR2 RESP charge not represented by the corrected production convention",
+      "different basis and non-joinable frames"
+    ]
+  },
+  "conclusions": [
+    "The constrained component centers determine sqrt(Delta^2+4J^2), not J alone.",
+    "Corrected J can reproduce the center separation if a roughly 0.0314-eV detuning is persistent.",
+    "That solution is weakly mixed and approximately 98.4% localized per exciton eigenstate.",
+    "A common TDDFT-to-STEOM additive shift cannot create or remove site detuning.",
+    "Normalized profile fitting has a J/Delta/amplitude ridge; absolute CD and matched framewise site energies are required to break it.",
+    "The third experimental band is outside an S1-only two-state model."
+  ],
+  "outputs": {
+    "scenario_csv": "scenario_sensitivity.csv",
+    "profile_ridge_csv": "profile_fit_ridge.csv",
+    "center_ridge_csv": "component_center_identifiability_ridge.csv",
+    "disorder_csv": "detuning_disorder_sensitivity.csv",
+    "profile_csv": "profile_comparison.csv",
+    "figure": "splitting_profile_investigation.pdf"
+  }
+}

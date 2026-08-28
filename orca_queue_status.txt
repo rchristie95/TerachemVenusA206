@@ -1,0 +1,8 @@
+[2026-08-27 19:33:29] ===== queue start =====
+[2026-08-27 19:33:29] START steom_gas_svpd (free 58 GB)
+[2026-08-28 06:07:23] OK    steom_gas_svpd
+[2026-08-28 06:07:23] START tddft_44 (free 58 GB)
+[2026-08-28 06:20:20] OK    tddft_44
+[2026-08-28 06:20:21] START tddft_47 (free 57 GB)
+[2026-08-28 06:42:36] OK    tddft_47
+[2026-08-28 06:42:36] ===== queue complete =====

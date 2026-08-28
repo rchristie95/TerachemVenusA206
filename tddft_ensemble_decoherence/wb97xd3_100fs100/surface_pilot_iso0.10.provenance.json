@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "output": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/surface_pilot_iso0.10.mp4",
+  "output_sha256": "671472a8f009536b775e269c8c877acc5192c3ff6aedfa1592cf30413a9427dd",
+  "frames": 1,
+  "fps": 2.0,
+  "duration_seconds": 0.5,
+  "resolution": [
+    1000,
+    750
+  ],
+  "orbit_degrees": 0.0,
+  "density_representation": "surface",
+  "density_points_per_site": null,
+  "density_radius_A": null,
+  "density_transparency": 0.3,
+  "surface_grid_spacing_A": 0.3,
+  "surface_gaussian_smear_A": 0.4,
+  "surface_padding_A": 1.0,
+  "surface_normalized_iso_level": 0.1,
+  "surface_triangle_counts_by_site": {
+    "A": {
+      "mean": 8474.0,
+      "minimum": 8474,
+      "maximum": 8474
+    },
+    "B": {
+      "mean": 8440.0,
+      "minimum": 8440,
+      "maximum": 8440
+    }
+  },
+  "cartoon_transparency": 0.9,
+  "transparency_mode": 2,
+  "trajectory": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/tandem_nvt_100fs_100frames.dcd",
+  "trajectory_sha256": "95f92cca4e307b425f989a09fe1828e7f49d4e3f79175447924660a0722e256e",
+  "topology": "/home/robson/PetaChem/tc_tandem_nvt_100fs_100frames_20260724/solvated_protonated.pdb",
+  "topology_sha256": "a88ca179bd5fe00455205a4eb7698a696ba0e14970f22bf375b89c738ab06bca",
+  "tracking": "/home/robson/PetaChem/tddft_ensemble_decoherence/wb97xd3_100fs100/global_state_tracking.json",
+  "tracking_sha256": "28c537eec2a89431781fad0de1216f5625c2d6f4782a4d600c06ead82a21d2be",
+  "density_phase": "Every compact density is phase-aligned to the retained reference; red is positive and blue is negative.",
+  "link_atoms": "Excluded upstream from every displayed compact density.",
+  "placement_rmsd_by_site_A": {
+    "A": {
+      "mean": 4.544002751583087e-06,
+      "maximum": 4.544002751583087e-06
+    },
+    "B": {
+      "mean": 5.430196420214146e-06,
+      "maximum": 5.430196420214146e-06
+    }
+  },
+  "camera": {
+    "reference_state": 1,
+    "protein_alignment": "traj and resi 1-229 and name CA",
+    "alignment_method": "PyMOL intra_fit to state 1",
+    "fixed": true,
+    "applied_y_orbit_degrees": 0.0
+  },
+  "render_style": "Existing paper transition-density movie: black background, dim high-transparency rainbow cartoon, gray/white CR2 ball-and-stick, slightly transparent red/blue volumetric isosurfaces visible through the beta-barrel ribbon, barrel-A stabilization, fixed reference-state camera."
+}

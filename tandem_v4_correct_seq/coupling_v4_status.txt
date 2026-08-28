@@ -1,0 +1,8 @@
+[2026-08-27 19:40:02] start
+[2026-08-27 19:40:02] new transforms
+[2026-08-27 19:40:07] new coupling
+  new OK
+[2026-08-27 19:40:16] old transforms
+[2026-08-27 19:40:22] old coupling
+  old OK
+[2026-08-27 19:40:31] done

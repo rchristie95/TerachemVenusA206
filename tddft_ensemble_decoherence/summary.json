@@ -1,0 +1,80 @@
+{
+  "status": "blocked_missing_exact_coordinate_trajectories",
+  "repository_commit": "34775aa82847f654d77f8720182ddc36782095c7",
+  "requested_frames": {
+    "short": 2000,
+    "long": 1000,
+    "site_calculations": 6000
+  },
+  "classified_frames": {
+    "short_complete": 0,
+    "short_blocked_missing_source": 2000,
+    "long_complete": 0,
+    "long_blocked_missing_source": 1000,
+    "interpolated": 0,
+    "substituted": 0
+  },
+  "reference_pilot": {
+    "status": "complete",
+    "runtime_seconds": 48,
+    "gpu": 0,
+    "roots": 5,
+    "selected_root": 2,
+    "energy_eV": 3.43441587,
+    "oscillator_strength": 1.0228,
+    "scf_converged": true,
+    "excited_state_converged": true
+  },
+  "constant_steom_calibration": {
+    "steom_reference_eV": 2.366633,
+    "tddft_reference_eV": 3.43441587,
+    "Delta_eV": -1.06778287,
+    "t2_invariant_expected": true,
+    "coupling_correction_applied": false
+  },
+  "static_tdc_validation": {
+    "status": "complete_diagnostic_not_ensemble_result",
+    "method": "cap-masked, sign-wise neutralized TeraChem root-2 transition density on retained reference dimer placement",
+    "J_vacuum_cm-1": 217.78977979008067,
+    "J_screened_cm-1": 123.0450733277292,
+    "J_pda_vacuum_cm-1": 51.78845405877031,
+    "J_pda_screened_cm-1": 29.2590135925256,
+    "epsilon_opt": 1.77,
+    "symmetry_relative_error": 1.6517562535902209e-15,
+    "cpu_gpu_subset_relative_error": 0.0,
+    "runtime_seconds": 9.541054010391235
+  },
+  "analysis_products": {
+    "short_long_histograms": "not_generated_no_frame_energies",
+    "short_cumulant_T2": "not_generated_no_geometry_dependent_short_gap_trace",
+    "direct_stochastic_propagation": "not_generated_no_EA_EB_J_timeseries",
+    "long_inhomogeneous_disorder": "not_generated_no_geometry_dependent_long_site_energies"
+  },
+  "reduced_surrogate_pilot": {
+    "status": "complete_valid_initial_static_diagnostic_not_production",
+    "source": "geometrically valid pre-minimization structure; corrupted old NVT frames rejected",
+    "site_A": {"selected_root": 3, "energy_eV": 3.13677405, "oscillator_strength": 0.9722, "assignment_score": 0.9393791808743714},
+    "site_B": {"selected_root": 3, "energy_eV": 2.9734549, "oscillator_strength": 0.8058, "assignment_score": 0.945449431866351},
+    "differential_gap_eV": 0.16331914999999997,
+    "J_vacuum_cm-1": 179.42369554352086,
+    "J_screened_cm-1": 101.36931951611348,
+    "periodic_separation_A": 23.394525351770824,
+    "static_environment_decomposition_cm-1": {
+      "gas_assignment_status": "ambiguous_overlap_margin_at_both_sites",
+      "gas_gap": -1979.0632609549448,
+      "protein_only_gap": 1271.4905069713427,
+      "full_gap": 1317.2577911841954,
+      "water_increment": 45.76728421285265
+    },
+    "limitation": "Single obsolete pre-minimization structure; cannot determine T2 or production statistics."
+  },
+  "previous_fixed_charge_comparison_fs": {
+    "minimum_image": 21.8,
+    "PME": 24.0,
+    "block_median": 24.5,
+    "block_sd": 3.7,
+    "manuscript_sensitivity": 60.0,
+    "new_tddft_T2": null
+  },
+  "blocking_condition": "The raw short DCD pair and exact July 21 long full-system trajectory/topology are external and absent. Compact traces do not encode the coordinates needed for new TDDFT calculations."
+}

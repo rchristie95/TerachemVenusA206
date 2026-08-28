@@ -1,0 +1,16 @@
+! CAM-B3LYP def2-TZVPD AutoAux RIJCOSX TightSCF
+# Gauge diagnostic for the transition dipole.
+# STEOM at def2-SVPD gives f(length) 0.849 vs f(velocity) 1.283 -- a 1.51x
+# disagreement that GREW from 1.34x at def2-SVP. Length and velocity must agree
+# for an exact wavefunction in a complete basis, so either the basis is
+# inadequate for the transition moment or the STEOM moment itself is unreliable.
+# TDDFT at the same geometry and bases separates those: if TDDFT's gauges agree
+# where STEOM's do not, the method is implicated, not the basis.
+%maxcore 4000
+%pal nprocs 6 end
+%pointcharges "field.pc"
+%tddft
+  NRoots 5
+  TDA false
+end
+* xyzfile -1 1 geom_cthrp.xyz

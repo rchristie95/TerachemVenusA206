@@ -1,5 +1,7 @@
 # Cusick et al. 2026 comparison — derived parameters, no 2PA required
 
+> **Superseded in part, 2026-08-27.** |mu| = 9.81 D fails a gauge consistency test; the gauge-consistent value is 8.68 D, so the 1.6x discrepancy with Cusick is largely ours. See `CORRECTIONS_2026-08-27.md`.
+
 We never ran two-photon absorption. Omega is Cusick's instrument, not their
 result: their analysis outputs ordinary molecular parameters, and this pipeline
 produces all of them natively. The comparison therefore happens at the level of

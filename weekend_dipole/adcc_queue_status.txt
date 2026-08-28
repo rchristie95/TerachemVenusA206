@@ -1,0 +1,4 @@
+[2026-08-22 19:06:54] ===== adcc ADC(2) dipole queue start (pid 54305) =====
+[2026-08-22 19:06:54] disk 468 GB free (libxm pagefiles land in adcc_scratch/)
+[2026-08-22 19:06:54] RAM 57 GB available
+[2026-08-22 19:06:54] START   def2-svp (frozen_core=26 frozen_virtual=187 nstates=3, 12h cap)

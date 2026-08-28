@@ -1,0 +1,19 @@
+! CAM-B3LYP def2-SVP def2/J OPT FREQ TightSCF RIJCOSX
+# Stage 1 of 2: ground-state minimum and normal modes of the chromophore.
+#
+# GAS PHASE, DELIBERATELY. The first attempt optimised inside field.pc and
+# DIVERGED: bare MM point charges carry no Pauli repulsion, so after 11 cycles
+# H42 had collapsed to 0.09 A from a -0.568 e charge (from 1.45 A), N1 to 1.18 A
+# and O23 to 1.42 A, with RMS gradients of 0.3-0.9 Eh/bohr and ~1 Eh energy
+# swings per cycle. That run is kept in failed_qmmm_opt/. field.pc is a
+# single-point embedding and must never be used for geometry optimisation.
+#
+# The quantities wanted here -- omega_vib and the Huang-Rhys factor S -- are
+# INTRAMOLECULAR. S is set by the excited-state gradient along the mode, an
+# intrinsic electronic property; the protein shifts mode frequencies by tens of
+# cm^-1 but does not control S. Computing them gas-phase is therefore both
+# defensible and the only way to reach a physical stationary point with the
+# embedding available. This is still a computed parameter, not an imported one.
+%maxcore 8000
+%pal nprocs 4 end
+* xyzfile -1 1 geom_cthrp.xyz

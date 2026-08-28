@@ -1,0 +1,23 @@
+{
+  "status": "complete",
+  "opencl_device": "NVIDIA GeForce RTX 4080",
+  "site_A_points": 107342,
+  "site_B_points": 107342,
+  "J_vacuum_cm-1": 209.68426116902694,
+  "J_screened_cm-1": 117.80014672417244,
+  "epsilon_opt": 1.78,
+  "J_pda_vacuum_cm-1": 47.143095530863526,
+  "J_pda_screened_cm-1": 26.48488512969861,
+  "separation_A": 23.525539190025142,
+  "dipole_angle_deg": 116.8511380583191,
+  "symmetry_AB_raw": 0.000505571563273084,
+  "symmetry_BA_raw": 0.0005055715632730854,
+  "symmetry_absolute_error": 1.4094628242311558e-18,
+  "symmetry_relative_error": 2.787860169797232e-15,
+  "cpu_subset_points": 1000,
+  "cpu_subset_raw": 4.6900305650748934e-05,
+  "gpu_subset_raw": 4.690030565074893e-05,
+  "cpu_gpu_absolute_error": 6.776263578034403e-21,
+  "cpu_gpu_relative_error": 1.4448229033932096e-16,
+  "runtime_seconds": 1.6517670154571533
+}

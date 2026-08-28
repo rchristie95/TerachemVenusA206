@@ -309,3 +309,69 @@ overnight_linker_release/**/*.dcd
 overnight_linker_release/**/*.chk
 overnight_linker_release/*.npy
 !exciton_observables/*.npz
+
+# Corrected site energies from the 4 fs window (bright-moment estimator);
+# a compact extract, see tddft_ensemble_decoherence/audit/SITE_B_DIAGNOSIS.md
+!tddft_ensemble_decoherence/audit/*.npz
+
+# ---------------------------------------------------------------------------
+# 2026-08-28. Per-frame QM/MM campaign output and QM scratch: ~20 GB, all
+# regenerable from the trajectory plus scripts/run_ensemble.py. The manifests,
+# audit notes and summary JSON are the results and ARE tracked (negations below).
+tddft_ensemble_decoherence/frames/
+tddft_ensemble_decoherence/pilot/
+tddft_ensemble_decoherence/cache/
+!tddft_ensemble_decoherence/manifests/
+!tddft_ensemble_decoherence/audit/
+
+# ORCA / TeraChem scratch and binary wavefunction output
+**/scr_*/
+**/scr.*/
+*.gbw
+*.densities
+*.densitiesinfo
+*.cis
+*.nto
+*.ges
+*.tmp
+*.tmp.[0-9]*
+*.carthess
+*.property.txt
+*.cube
+*.dx
+*.dx.gz
+*.bas[0-9]*
+*.hostnames
+
+# Large ORCA/TeraChem logs from single long runs (regenerable; keep the inputs)
+weekend_dipole/*.out
+gasphase_steam/*.out
+gasphase_steom/*.out
+emission_dipole/*.out
+neo_model/orca_steom/**/*.out
+
+# Trajectories, videos, rendered frames
+*.dcd
+*.mp4
+**/render_frames/
+tandem_v4_correct_seq/*_traj_*.pdb
+tc_tandem_v4_*/
+videos/
+
+# AlphaFold server archives
+AF_runs/*.zip
+alphafold_tandem/af3_seed_sweep/
+
+# AlphaFold bulk output: PAE matrices and full_data JSONs are MB-scale per model
+# and regenerable from the deposited sequence. The summary confidences, the
+# ranked models and the analysis notes ARE tracked.
+alphafold_tandem/**/*_full_data_*.json
+alphafold_tandem/**/*predicted_aligned_error*.json
+alphafold_tandem/**/*.a3m
+alphafold_tandem/colabfold/out_*/
+*.cube.bak
+*.npy
+*.pickle
+terachem_site_energy_cd/results/cand2_*frame_*/
+terachem_site_energy_cd/results/tdx_*frame_*/
+terachem_site_energy_cd/results/*_frame_[0-9]*/

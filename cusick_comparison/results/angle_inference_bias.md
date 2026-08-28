@@ -1,5 +1,7 @@
 # Does multipolar neglect explain the angle discrepancy?
 
+> **Superseded in part, 2026-08-27.** AlphaFold's delta = 15 is not structural evidence -- no AlphaFold variant determines this register. See `CORRECTIONS_2026-08-27.md`.
+
 Measured multipolar enhancement over the same 1000 frames: **f = J_TDC/J_PDA = 1.1872 ± 0.0114**. Prefactor self-check against our own unscreened point-dipole coupling: max relative error 7.1e-09.
 
 ## The mechanism

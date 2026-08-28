@@ -1,0 +1,19 @@
+coordinates geometry.xyz
+run energy
+cis yes
+basis 6-31g*
+method b3lyp
+charge -1
+spinmult 1
+pointcharges mm_charges.dat
+scrdir scr_density
+cisnumstates 4
+cismaxiter 240
+cismax 500
+cistransdensity yes
+cisdiffdensity no
+cistarget 4
+scf diis+a
+threall 1.0e-12
+gpus 1
+end

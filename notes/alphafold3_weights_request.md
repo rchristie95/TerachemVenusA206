@@ -1,5 +1,12 @@
 # AlphaFold 3 model-parameters request — prepared draft
 
+> **RESOLVED 2026-08-27 -- every blocker below is gone.** The weights are a
+> direct download (no request), AF3 accepts precomputed MSAs so the ~650 GB of
+> genetic databases are NOT needed, and a JAX/CUDA stack is installed
+> (`/home/robson/localcolabfold`, `jax.devices() -> CudaDevice(id=0)`). The
+> register question was revisited and answered: see
+> `alphafold_tandem/ALPHAFOLD_REGISTER.md`. Kept as a record of why it stalled.
+
 > **Status 2026-08-17: NOT PURSUED.** The weights were downloaded and then
 > deleted unused. This machine cannot run the standard pipeline — the genetic
 > databases need ~650 GB against 310 GB free, and neither the AlphaFold 3 source

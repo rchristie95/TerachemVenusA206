@@ -1,0 +1,81 @@
+! STEOM-DLPNO-CCSD def2-TZVPD AutoAux RIJCOSX TightSCF TightPNO
+# Diffuse-augmented TZVP, attempt 6 -- SERIAL.
+#
+# Attempt history. Every parallel configuration has now failed, and the two
+# failure modes are opposites, which is what forces the serial run:
+#
+#   1, 2 (8 ranks x  5000 MB): ORCA's own check failed in 2-4 index pair PNO
+#        integral generation -- not enough memory per rank.
+#   3    (4 ranks x 12000 MB): cleared the pair PNOs (6146.9 s), ORCA's check
+#        then failed at the SINGLES step:
+#          MemPerIJPair 14970.8 MB > MemAvailable 11311.4 MB
+#   4    (2 ranks x 24000 MB): OOM-killed by the KERNEL at 4h19m, IBatch 38/76.
+#        Not a sizing fault -- llama-server.service came up mid-run holding
+#        20.5 GB, taking the box to 60.4 GB of 62. Environmental.
+#   5    (2 ranks x 24000 MB, llama-server stopped): ORCA's check PASSED for the
+#        first time (22623 MB available vs 14970.8 MB needed) and it entered the
+#        singles transformation -- then the KERNEL OOM-killed it at 10h22m with
+#        nothing else competing. The ranks reached 31.72 and 28.48 GB, i.e. a
+#        1.32x overshoot of their 24000 MB budget, for 58.73 GB of 62.
+#
+# So maxcore must be >= ~16000 MB to satisfy ORCA's per-rank IJ-pair check, but
+# two ranks at any such value overshoot physical RAM. The window for a parallel
+# run is too narrow to aim at blind when each test costs ~10 h to reach singles.
+#
+# One rank removes the conflict entirely: the IJ-pair check sees 37700 MB
+# against the 14970.8 MB it needs, and there is no second rank to double the
+# footprint. Projected resident set 43-53 GB of the ~59 GB free.
+#
+# Cost: no MPI parallelism. The pair-PNO batch loop took 6.29 h on 2 ranks, so
+# expect ~12 h; PNO transformation 2.20 h -> ~4.4 h; singles after that. Roughly
+# 18-20 h to reach the singles step, with the CCSD iterations and STEOM dressing
+# for 5 roots still to follow. run_steom_tzvpd.sh therefore allows 96 h.
+#
+# TCutPNOSingles stays at 1e-12: it drives the singles memory demand (19290
+# singles PNOs, avg 287/pair vs 36 for the pair PNOs) but it is what makes the
+# EOM converge. Loosening it to 1e-11 is the fallback if serial also fails.
+#
+# The converged SCF is reused automatically from steom_def2_tzvpd.gbw (ORCA
+# autostart, E = -1193.47941197 Eh), which cuts the SCF to 2 cycles. That .gbw
+# is the ONLY restart point -- there is no DLPNO or PNO checkpoint, so
+# everything after the SCF is recomputed each launch.
+#
+# ATTEMPT 7 (2026-08-27). Attempt 6 SOLVED the memory problem -- serial cleared the
+# pair PNOs, the singles and the full CCSD -- and then died somewhere new:
+#     Making SEA amplitudes for STEOM-CCSD ... done (53.0)
+#     Dressing integrals for STEOM-CCSD ...
+#     Dressing of Occ / Occ block ... Error, failed to get amplitude Sij
+# That is an ACTIVE-SPACE failure, not memory. The occupied space is the one that
+# shrank at the larger basis:
+#     def2-SVPD  (works): IP active roots 11, EA 15
+#     def2-TZVPD (fails): IP active roots  8, EA 14
+# The failing block is Occ/Occ and the missing amplitude is S_ij with i,j occupied,
+# so the 8-root IP space is too small to dress the occupied block.
+#
+# OThresh is therefore lowered 1e-3 -> 5e-4 to enlarge the OCCUPIED space only.
+# This does NOT contradict the 2026-06-30 warning in neo_model/orca_steom/gas_robust:
+# that warning is about REPRODUCIBILITY of a run whose active space already worked,
+# whereas here the dressing cannot complete at all, and the change moves TZVPD
+# toward the SVPD configuration that does work. VThresh is left alone -- the EA
+# space (14 vs 15) is not what failed.
+# If 5e-4 still yields fewer than ~11 IP roots, go to 3e-4.
+%maxcore 40000
+%pal nprocs 1 end
+%pointcharges "field.pc"
+%mdci
+  NRoots 5
+  DoRootWise true
+  FollowCIS true
+  RootHoming true
+  CheckEachRoot true
+  DTol 1e-5
+  DoStoreSTEOM true
+  AddL2Term True
+  DoDbFilter true
+  NRootsCISNAT 10
+  OThresh 5e-4
+  TCutPNOSingles 1e-12
+  NDav 400
+  MaxIter 400
+end
+* xyzfile -1 1 geom_cthrp.xyz

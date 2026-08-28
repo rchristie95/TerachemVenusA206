@@ -1,5 +1,7 @@
 # Screening reconciliation: this work vs Cusick et al. 2026
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1 -- the STEOM transition moment fails a length/velocity gauge check. See `CORRECTIONS_2026-08-27.md`.
+
 All couplings in cm^-1. `epsilon = 1.77` is the optical dielectric used
 throughout this repo; Cusick apply no screening at all.
 

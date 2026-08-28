@@ -1,0 +1,6 @@
+[2026-08-27 15:20:43] ===== TDDFT gauge diagnostic =====
+[2026-08-27 15:20:43] def2-SVPD running
+[2026-08-27 15:30:07] def2-SVPD rc=0 terminated_normally=1
+[2026-08-27 15:30:07] def2-TZVPD running
+[2026-08-27 15:56:58] def2-TZVPD rc=0 terminated_normally=1
+[2026-08-27 15:56:58] ===== done =====

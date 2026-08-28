@@ -1,0 +1,1 @@
+[2026-08-27 18:22:46] ACF extension start, frames 149->1000

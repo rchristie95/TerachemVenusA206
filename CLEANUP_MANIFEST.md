@@ -1,5 +1,7 @@
 # Cleanup manifest — 2026-08-11
 
+> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1. See `CORRECTIONS_2026-08-27.md`.
+
 Produced by a four-way read-only inventory of the 429 GB tree. Every size below
 was measured directly, not estimated. Nothing in the FLAGGED section has been
 deleted.

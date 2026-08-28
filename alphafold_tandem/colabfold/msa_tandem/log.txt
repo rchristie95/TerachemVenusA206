@@ -1,0 +1,16 @@
+2026-08-27 14:27:06,440 Running colabfold 1.6.2 (0c788a0e8dca909f2c669784f9dd38e8c9682ff0)
+2026-08-27 14:27:06,642 Running on GPU
+2026-08-27 14:27:06,683 Found 4 citations for tools or databases
+2026-08-27 14:27:06,684 Query 1/1: tandem511 (length 511)
+2026-08-27 14:27:07,483 Sleeping for 8s. Reason: PENDING
+2026-08-27 14:27:16,079 Sleeping for 6s. Reason: RUNNING
+2026-08-27 14:27:22,697 Sleeping for 9s. Reason: RUNNING
+2026-08-27 14:27:32,303 Sleeping for 7s. Reason: RUNNING
+2026-08-27 14:27:39,939 Sleeping for 7s. Reason: RUNNING
+2026-08-27 14:27:47,590 Sleeping for 8s. Reason: RUNNING
+2026-08-27 14:27:56,370 Sleeping for 7s. Reason: RUNNING
+2026-08-27 14:28:04,126 Sleeping for 6s. Reason: RUNNING
+2026-08-27 14:28:10,880 Sleeping for 7s. Reason: RUNNING
+2026-08-27 14:28:18,565 Sleeping for 7s. Reason: RUNNING
+2026-08-27 14:28:27,385 Saved msa_tandem/tandem511.pickle
+2026-08-27 14:28:27,789 Done

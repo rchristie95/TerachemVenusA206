@@ -1,0 +1,26 @@
+[2026-08-17 14:28:48] ===== steom_def2_tzvpd start (pid 924043) =====
+[2026-08-17 14:28:48] disk 560 GB, RAM 57 GB
+[2026-08-17 21:2x] STOPPED  steom_def2_tzvpd at PNO integrals 6/9 (~6h47m elapsed)
+                   Reason: user reboot after a Linux/kernel update.
+                   ORCA has no restart point for the DLPNO/PNO stage, so that
+                   work is lost. The converged SCF IS preserved in
+                   steom_def2_tzvpd.gbw (22 cycles); ORCA autostarts from it, so
+                   a relaunch skips the SCF and resumes at the correlated stage.
+                   299 GB of PNO/PAO scratch was swept; densities kept.
+                   Relaunch: ./launch_steom_tzvpd.sh  (or systemd-run as before)
+[2026-08-17 21:30:20] ===== steom_def2_tzvpd start (pid 7542) =====
+[2026-08-17 21:30:20] disk 561 GB, RAM 58 GB
+[2026-08-18 04:49:44] FAIL    steom_def2_tzvpd (rc=0) -- see steom_def2_tzvpd.out
+[2026-08-18 04:49:46] ===== steom_def2_tzvpd complete =====
+[2026-08-18 07:06:43] ===== steom_def2_tzvpd start (pid 52600) =====
+[2026-08-18 07:06:43] disk 557 GB, RAM 58 GB
+[2026-08-18 14:09:20] FAIL    steom_def2_tzvpd (rc=0) -- see steom_def2_tzvpd.out
+[2026-08-18 14:09:22] ===== steom_def2_tzvpd complete =====
+[2026-08-18 15:28:21] ===== steom_def2_tzvpd start (pid 13747) =====
+[2026-08-18 15:28:21] disk 556 GB, RAM 57 GB
+[2026-08-19 00:06:20] ===== steom_def2_tzvpd start (pid 75081) =====
+[2026-08-19 00:06:20] disk 523 GB, RAM 58 GB
+[2026-08-19 10:39:07] ===== steom_def2_tzvpd start (pid 115125) =====
+[2026-08-19 10:39:07] disk 523 GB, RAM 59 GB
+[2026-08-22 02:34:49] FAIL    steom_def2_tzvpd (rc=0) -- see steom_def2_tzvpd.out
+[2026-08-22 02:34:50] ===== steom_def2_tzvpd complete =====

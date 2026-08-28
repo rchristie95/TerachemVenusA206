@@ -1,0 +1,4687 @@
+{
+  "status": "complete",
+  "method": "reference-anchored Viterbi/parallel transport with exact all-root spatial-density transition matrices at ambiguous edges",
+  "canonical_weights": {
+    "adjacent_atomic_transition_density_cosine": 2.0,
+    "adjacent_transition_dipole_absolute_cosine": 0.3,
+    "adjacent_energy_change_per_0.2_eV": -0.5,
+    "static_reference_spatial_overlap": 0.6,
+    "sqrt_oscillator_strength": 0.3,
+    "dominant_occupied_orbital_93": 0.15
+  },
+  "phase_convention": "all compact densities phase-aligned to the retained reference",
+  "link_atoms_excluded": [
+    42,
+    43,
+    44
+  ],
+  "exact_spatial_transition_edges": {
+    "A": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "B": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ]
+  },
+  "sensitivity": {
+    "A": [
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.25,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 106.73847489968396,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.25,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 155.3373726828801,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.25,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 252.53516824927254,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.5,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 105.61415334968387,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.5,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 154.2130511328802,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.5,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 251.4108466992727,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 1.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 103.36551024968394,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 1.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 151.96440803288013,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 1.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 249.16220359927252,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 2.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 98.8682240496839,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 2.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 147.46712183288014,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 2.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 244.6649173992726,
+        "roots": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.04806100000000013
+      }
+    ],
+    "B": [
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.25,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 97.07201085103151,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          5,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          5,
+          5,
+          5,
+          6,
+          7,
+          7,
+          7,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.14789900000000022
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.25,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 141.9672221450249,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.37439292999999996
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.25,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 234.3293597056787,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.21104681000000003
+      },
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.5,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 94.92547629629178,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          5,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.5,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 139.6593619568402,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 0.5,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 231.47009555539745,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.21104681000000003
+      },
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 1.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 90.95450787129177,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          5,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 1.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 135.68839353184023,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 1.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 226.6190331735685,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.20094974
+      },
+      {
+        "density_weight": 1.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 2.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 83.01257102129173,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          5,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      },
+      {
+        "density_weight": 2.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 2.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 127.80118033320697,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      },
+      {
+        "density_weight": 4.0,
+        "dipole_weight": 0.3,
+        "energy_weight": 2.0,
+        "reference_weight": 0.6,
+        "oscillator_weight": 0.3,
+        "occupied_93_weight": 0.15,
+        "energy_scale_eV": 0.2,
+        "path_score": 218.1848205397905,
+        "roots": [
+          5,
+          5,
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          4,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          6,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "maximum_adjacent_energy_jump_eV": 0.13279788999999997
+      }
+    ]
+  },
+  "sites": {
+    "A": {
+      "static_roots": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "global_roots": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "changed_frames": [],
+      "selected_adjacent_full_spatial_overlap": [
+        1.0,
+        0.9800051372537957,
+        0.9812418493753643,
+        0.9810103606706506,
+        0.9819032662077278,
+        0.9777723654169925,
+        0.9759776284610002,
+        0.9719090892145,
+        0.9807181067170647,
+        0.9828498126396592,
+        0.9793205497992983,
+        0.9766825710644587,
+        0.9837406583745973,
+        0.9844355366159463,
+        0.9824191172843983,
+        0.9793679054252891,
+        0.98421106991984,
+        0.9836400919093764,
+        0.9805886752580923,
+        0.9819471282673082,
+        0.982999582699984,
+        0.9839895387452064,
+        0.9825785665977014,
+        0.9819871091250141,
+        0.9810228304811839,
+        0.9834779624891417,
+        0.9823446559436162,
+        0.9802654287041344,
+        0.9820940816299373,
+        0.9826277681653572,
+        0.9805399184291996,
+        0.9804152204181253,
+        0.9822408555217257,
+        0.9834153444144618,
+        0.9838773292363803,
+        0.9812570206553467,
+        0.9824758903211399,
+        0.9817069825368829,
+        0.9852878358058029,
+        0.9836096655273302,
+        0.9868969867514594,
+        0.9864821319127222,
+        0.9844003059250948,
+        0.978917978805469,
+        0.9810178890800485,
+        0.9825798320895383,
+        0.9849303664061924,
+        0.9831792149493488,
+        0.9800963728298129,
+        0.9794179459686156
+      ],
+      "minimum_adjacent_full_spatial_overlap": 0.9719090892145,
+      "median_adjacent_full_spatial_overlap": 0.9820940816299373,
+      "maximum_adjacent_energy_jump_eV": 0.04806100000000013,
+      "frames": [
+        {
+          "root": 3,
+          "energy_eV": 3.23415688,
+          "energy_cm-1": 26085.234634713503,
+          "wavelength_nm": 383.358640289583,
+          "oscillator_strength": 0.9628,
+          "transition_dipole_au": [
+            1.7639,
+            -1.5177,
+            2.5954
+          ],
+          "transition_dipole_magnitude_au": 3.4858,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8084024373046614,
+          "grid_normalization_error": 0.023681616632160007,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0000/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24405889,
+          "energy_cm-1": 26165.099732106453,
+          "wavelength_nm": 382.18849473475495,
+          "oscillator_strength": 0.9593,
+          "transition_dipole_au": [
+            1.7276,
+            -1.5614,
+            2.5783
+          ],
+          "transition_dipole_magnitude_au": 3.4742,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8101956585428665,
+          "grid_normalization_error": 0.023063018324890022,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0001/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24382168,
+          "energy_cm-1": 26163.186504413028,
+          "wavelength_nm": 382.2164429211164,
+          "oscillator_strength": 0.9549,
+          "transition_dipole_au": [
+            -1.7153,
+            1.5889,
+            -2.559
+          ],
+          "transition_dipole_magnitude_au": 3.4663,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8055226187730955,
+          "grid_normalization_error": 0.02287098264034998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0002/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24699842,
+          "energy_cm-1": 26188.808640675474,
+          "wavelength_nm": 381.84249686207113,
+          "oscillator_strength": 0.9728,
+          "transition_dipole_au": [
+            -1.7552,
+            1.585,
+            -2.5761
+          ],
+          "transition_dipole_magnitude_au": 3.497,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8038092355363557,
+          "grid_normalization_error": 0.023661020854530007,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0003/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.25182195,
+          "energy_cm-1": 26227.71303414991,
+          "wavelength_nm": 381.27609785031433,
+          "oscillator_strength": 1.0088,
+          "transition_dipole_au": [
+            1.8349,
+            -1.539,
+            2.632
+          ],
+          "transition_dipole_magnitude_au": 3.5585,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8064680035897269,
+          "grid_normalization_error": 0.02527911034364,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0004/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.23774296,
+          "energy_cm-1": 26114.158320758954,
+          "wavelength_nm": 382.93403748146824,
+          "oscillator_strength": 0.9881,
+          "transition_dipole_au": [
+            -1.8782,
+            1.4306,
+            -2.6234
+          ],
+          "transition_dipole_magnitude_au": 3.5293,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8058455337913963,
+          "grid_normalization_error": 0.026702655198600017,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0005/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.20434021,
+          "energy_cm-1": 25844.74697074594,
+          "wavelength_nm": 386.92582645586185,
+          "oscillator_strength": 0.9082,
+          "transition_dipole_au": [
+            -1.8572,
+            1.2996,
+            -2.5358
+          ],
+          "transition_dipole_magnitude_au": 3.4012,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.8031661633816536,
+          "grid_normalization_error": 0.026962476039170014,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0006/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.17497191,
+          "energy_cm-1": 25607.875654743897,
+          "wavelength_nm": 390.50486717534454,
+          "oscillator_strength": 0.8079,
+          "transition_dipole_au": [
+            1.7844,
+            -1.1783,
+            2.4112
+          ],
+          "transition_dipole_magnitude_au": 3.2228,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7974475093369413,
+          "grid_normalization_error": 0.026533779607139985,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0007/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.17511811,
+          "energy_cm-1": 25609.054837277432,
+          "wavelength_nm": 390.486886171299,
+          "oscillator_strength": 0.7496,
+          "transition_dipole_au": [
+            -1.7104,
+            1.1224,
+            -2.3347
+          ],
+          "transition_dipole_magnitude_au": 3.1042,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7903801942530069,
+          "grid_normalization_error": 0.02607110603885998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0008/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.20403312,
+          "energy_cm-1": 25842.270122837446,
+          "wavelength_nm": 386.96291129474963,
+          "oscillator_strength": 0.7626,
+          "transition_dipole_au": [
+            1.6742,
+            -1.1637,
+            2.3575
+          ],
+          "transition_dipole_magnitude_au": 3.1169,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7871506921497715,
+          "grid_normalization_error": 0.025821022492880014,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0009/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.23930282,
+          "energy_cm-1": 26126.73944023059,
+          "wavelength_nm": 382.74963870157717,
+          "oscillator_strength": 0.8232,
+          "transition_dipole_au": [
+            -1.6694,
+            1.2694,
+            -2.4442
+          ],
+          "transition_dipole_magnitude_au": 3.2207,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7886355165559391,
+          "grid_normalization_error": 0.025503849420470015,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0010/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.26078347,
+          "energy_cm-1": 26299.992568061596,
+          "wavelength_nm": 380.22824741564335,
+          "oscillator_strength": 0.8903,
+          "transition_dipole_au": [
+            -1.683,
+            1.3795,
+            -2.5315
+          ],
+          "transition_dipole_magnitude_au": 3.3382,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7888712021362363,
+          "grid_normalization_error": 0.024863093581679985,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0011/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.26102799,
+          "energy_cm-1": 26301.9647548817,
+          "wavelength_nm": 380.1997369547263,
+          "oscillator_strength": 0.9375,
+          "transition_dipole_au": [
+            -1.7171,
+            1.4467,
+            -2.5871
+          ],
+          "transition_dipole_magnitude_au": 3.4255,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7883400580676021,
+          "grid_normalization_error": 0.024517749885360013,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0012/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24178804,
+          "energy_cm-1": 26146.784091502697,
+          "wavelength_nm": 382.45621512009774,
+          "oscillator_strength": 0.9669,
+          "transition_dipole_au": [
+            -1.772,
+            1.4687,
+            -2.6223
+          ],
+          "transition_dipole_magnitude_au": 3.4891,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7853801623490289,
+          "grid_normalization_error": 0.024745397406959996,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0013/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.20810475,
+          "energy_cm-1": 25875.110033774523,
+          "wavelength_nm": 386.47178961347817,
+          "oscillator_strength": 0.9725,
+          "transition_dipole_au": [
+            1.824,
+            -1.4508,
+            2.6345
+          ],
+          "transition_dipole_magnitude_au": 3.5175,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7836662184196566,
+          "grid_normalization_error": 0.02511343540083999,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0014/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.17433383,
+          "energy_cm-1": 25602.729192425188,
+          "wavelength_nm": 390.5833634391251,
+          "oscillator_strength": 0.9625,
+          "transition_dipole_au": [
+            1.8589,
+            -1.3984,
+            2.6391
+          ],
+          "transition_dipole_magnitude_au": 3.5179,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7798256290982721,
+          "grid_normalization_error": 0.025576681939359996,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0015/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.15799906,
+          "energy_cm-1": 25470.980386178635,
+          "wavelength_nm": 392.60365834307754,
+          "oscillator_strength": 0.9566,
+          "transition_dipole_au": [
+            -1.8725,
+            1.3605,
+            -2.6471
+          ],
+          "transition_dipole_magnitude_au": 3.5163,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7773121447688877,
+          "grid_normalization_error": 0.02488124340246997,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0016/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.16567069,
+          "energy_cm-1": 25532.856255533712,
+          "wavelength_nm": 391.6522296259438,
+          "oscillator_strength": 0.9664,
+          "transition_dipole_au": [
+            1.8666,
+            -1.376,
+            2.6613
+          ],
+          "transition_dipole_magnitude_au": 3.53,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7746543507374262,
+          "grid_normalization_error": 0.024082761514679973,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0017/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.18833587,
+          "energy_cm-1": 25715.66326220496,
+          "wavelength_nm": 388.868059876013,
+          "oscillator_strength": 0.9843,
+          "transition_dipole_au": [
+            1.8387,
+            -1.426,
+            2.6807
+          ],
+          "transition_dipole_magnitude_au": 3.5497,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7687450378093135,
+          "grid_normalization_error": 0.023444315057450038,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0018/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.21122759,
+          "energy_cm-1": 25900.297437215097,
+          "wavelength_nm": 386.09595528543645,
+          "oscillator_strength": 0.9885,
+          "transition_dipole_au": [
+            -1.7919,
+            1.4666,
+            -2.6838
+          ],
+          "transition_dipole_magnitude_au": 3.5447,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7551066234276466,
+          "grid_normalization_error": 0.022962819471780027,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0019/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.23015721,
+          "energy_cm-1": 26052.975120323023,
+          "wavelength_nm": 383.8333255612658,
+          "oscillator_strength": 0.9848,
+          "transition_dipole_au": [
+            1.7553,
+            -1.478,
+            2.6792
+          ],
+          "transition_dipole_magnitude_au": 3.5276,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7449554872621142,
+          "grid_normalization_error": 0.023016313218619994,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0020/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24950297,
+          "energy_cm-1": 26209.009198913194,
+          "wavelength_nm": 381.54819227630986,
+          "oscillator_strength": 0.9972,
+          "transition_dipole_au": [
+            -1.7612,
+            1.4665,
+            -2.697
+          ],
+          "transition_dipole_magnitude_au": 3.5392,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7394462609007679,
+          "grid_normalization_error": 0.02388464155947001,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0021/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.26000374,
+          "energy_cm-1": 26293.70362143458,
+          "wavelength_nm": 380.31919067675665,
+          "oscillator_strength": 1.0062,
+          "transition_dipole_au": [
+            1.7912,
+            -1.4286,
+            2.7109
+          ],
+          "transition_dipole_magnitude_au": 3.5494,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7300747228137511,
+          "grid_normalization_error": 0.025014107987099993,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0022/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.25085666,
+          "energy_cm-1": 26219.927445177324,
+          "wavelength_nm": 381.3893117022268,
+          "oscillator_strength": 0.9818,
+          "transition_dipole_au": [
+            1.8128,
+            -1.3593,
+            2.6822
+          ],
+          "transition_dipole_magnitude_au": 3.5111,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7243748651010564,
+          "grid_normalization_error": 0.025947844838330014,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0023/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.22988581,
+          "energy_cm-1": 26050.786131680066,
+          "wavelength_nm": 383.8655782075466,
+          "oscillator_strength": 0.9418,
+          "transition_dipole_au": [
+            1.824,
+            -1.2841,
+            2.6316
+          ],
+          "transition_dipole_magnitude_au": 3.4498,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7208325377757399,
+          "grid_normalization_error": 0.026665061011160007,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0024/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.21375506,
+          "energy_cm-1": 25920.682857721415,
+          "wavelength_nm": 385.7923086397256,
+          "oscillator_strength": 0.9115,
+          "transition_dipole_au": [
+            1.8294,
+            -1.2339,
+            2.5898
+          ],
+          "transition_dipole_magnitude_au": 3.4024,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7238102144842962,
+          "grid_normalization_error": 0.02703525758771999,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0025/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.21340309,
+          "energy_cm-1": 25917.844028197975,
+          "wavelength_nm": 385.8345651867783,
+          "oscillator_strength": 0.9022,
+          "transition_dipole_au": [
+            1.8277,
+            -1.2238,
+            2.5732
+          ],
+          "transition_dipole_magnitude_au": 3.3852,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.728523378055483,
+          "grid_normalization_error": 0.027154179932139977,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0026/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.22693176,
+          "energy_cm-1": 26026.960111412096,
+          "wavelength_nm": 384.2169826361621,
+          "oscillator_strength": 0.9166,
+          "transition_dipole_au": [
+            -1.8225,
+            1.2542,
+            -2.5882
+          ],
+          "transition_dipole_magnitude_au": 3.4049,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7320034077559661,
+          "grid_normalization_error": 0.02717002218233,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0027/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24586117,
+          "energy_cm-1": 26179.636100755786,
+          "wavelength_nm": 381.9762827379336,
+          "oscillator_strength": 0.9487,
+          "transition_dipole_au": [
+            1.8184,
+            -1.3098,
+            2.6284
+          ],
+          "transition_dipole_magnitude_au": 3.4541,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7335426606000025,
+          "grid_normalization_error": 0.02666892820333,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0028/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.25946024,
+          "energy_cm-1": 26289.31999826786,
+          "wavelength_nm": 380.38260715215836,
+          "oscillator_strength": 0.9804,
+          "transition_dipole_au": [
+            1.817,
+            -1.3549,
+            2.672
+          ],
+          "transition_dipole_magnitude_au": 3.5038,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7342396916491466,
+          "grid_normalization_error": 0.026058489122749995,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0029/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.26082412,
+          "energy_cm-1": 26300.3204324254,
+          "wavelength_nm": 380.223507424252,
+          "oscillator_strength": 1.004,
+          "transition_dipole_au": [
+            -1.825,
+            1.3596,
+            -2.7181
+          ],
+          "transition_dipole_magnitude_au": 3.545,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7372480499035541,
+          "grid_normalization_error": 0.025653877145359993,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0030/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24407252,
+          "energy_cm-1": 26165.20966547124,
+          "wavelength_nm": 382.1868889663416,
+          "oscillator_strength": 0.9888,
+          "transition_dipole_au": [
+            -1.8105,
+            1.2981,
+            -2.7347
+          ],
+          "transition_dipole_magnitude_au": 3.5272,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7389902360242033,
+          "grid_normalization_error": 0.02495819345364997,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0031/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.21674292,
+          "energy_cm-1": 25944.781574032197,
+          "wavelength_nm": 385.43396685240856,
+          "oscillator_strength": 0.9623,
+          "transition_dipole_au": [
+            -1.802,
+            1.2537,
+            -2.7187
+          ],
+          "transition_dipole_magnitude_au": 3.4943,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.739179615792501,
+          "grid_normalization_error": 0.024682391903970008,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0032/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.19277973,
+          "energy_cm-1": 25751.505410587015,
+          "wavelength_nm": 388.32681514173856,
+          "oscillator_strength": 0.957,
+          "transition_dipole_au": [
+            -1.8172,
+            1.2557,
+            -2.7121
+          ],
+          "transition_dipole_magnitude_au": 3.4977,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7389561288003814,
+          "grid_normalization_error": 0.025134215657009962,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0033/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.18126757,
+          "energy_cm-1": 25658.65357751442,
+          "wavelength_nm": 389.73206645425296,
+          "oscillator_strength": 0.9487,
+          "transition_dipole_au": [
+            1.8175,
+            -1.2601,
+            2.6983
+          ],
+          "transition_dipole_magnitude_au": 3.4888,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7383684065152394,
+          "grid_normalization_error": 0.025342308124690016,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0034/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.18690772,
+          "energy_cm-1": 25704.14445553422,
+          "wavelength_nm": 389.0423234470058,
+          "oscillator_strength": 0.9453,
+          "transition_dipole_au": [
+            1.8027,
+            -1.2738,
+            2.6896
+          ],
+          "transition_dipole_magnitude_au": 3.4794,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7337029710604919,
+          "grid_normalization_error": 0.025017638205469955,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0035/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.20578039,
+          "energy_cm-1": 25856.362805911063,
+          "wavelength_nm": 386.75200206087726,
+          "oscillator_strength": 0.956,
+          "transition_dipole_au": [
+            1.7826,
+            -1.3069,
+            2.6993
+          ],
+          "transition_dipole_magnitude_au": 3.4888,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7309408402519441,
+          "grid_normalization_error": 0.024623330015049988,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0036/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.22943397,
+          "energy_cm-1": 26047.14179627685,
+          "wavelength_nm": 383.9192860165523,
+          "oscillator_strength": 0.9777,
+          "transition_dipole_au": [
+            1.7624,
+            -1.3538,
+            2.7236
+          ],
+          "transition_dipole_magnitude_au": 3.5152,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.725339732016032,
+          "grid_normalization_error": 0.024026586183549997,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0037/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24801686,
+          "energy_cm-1": 26197.02291331192,
+          "wavelength_nm": 381.72276728883725,
+          "oscillator_strength": 0.9957,
+          "transition_dipole_au": [
+            1.7432,
+            -1.3916,
+            2.7455
+          ],
+          "transition_dipole_magnitude_au": 3.5374,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7188368810955589,
+          "grid_normalization_error": 0.023485159552769974,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0038/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.25214339,
+          "energy_cm-1": 26230.305622614876,
+          "wavelength_nm": 381.23841273800656,
+          "oscillator_strength": 0.9946,
+          "transition_dipole_au": [
+            1.7243,
+            -1.3899,
+            2.7528
+          ],
+          "transition_dipole_magnitude_au": 3.5331,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.718012275280346,
+          "grid_normalization_error": 0.023089609431379998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0039/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.23105973,
+          "energy_cm-1": 26060.254435098417,
+          "wavelength_nm": 383.7261108138041,
+          "oscillator_strength": 0.9061,
+          "transition_dipole_au": [
+            1.6456,
+            -1.2766,
+            2.6661
+          ],
+          "transition_dipole_magnitude_au": 3.3832,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7151280692383487,
+          "grid_normalization_error": 0.02169796823098999,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0040/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.18304476,
+          "energy_cm-1": 25672.987581664664,
+          "wavelength_nm": 389.51446727378095,
+          "oscillator_strength": 0.7138,
+          "transition_dipole_au": [
+            -1.4674,
+            1.0459,
+            -2.4302
+          ],
+          "transition_dipole_magnitude_au": 3.0254,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7101453348931928,
+          "grid_normalization_error": 0.019126612047319996,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0041/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.13498376,
+          "energy_cm-1": 25285.34947124036,
+          "wavelength_nm": 395.4859351488315,
+          "oscillator_strength": 0.593,
+          "transition_dipole_au": [
+            1.349,
+            -0.8858,
+            2.2618
+          ],
+          "transition_dipole_magnitude_au": 2.7785,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7060713057083415,
+          "grid_normalization_error": 0.017527747585260017,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0042/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.12379266,
+          "energy_cm-1": 25195.087161726,
+          "wavelength_nm": 396.90277779191655,
+          "oscillator_strength": 0.6446,
+          "transition_dipole_au": [
+            -1.4258,
+            0.9314,
+            -2.3499
+          ],
+          "transition_dipole_magnitude_au": 2.9021,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7112185481767839,
+          "grid_normalization_error": 0.018839625756270018,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0043/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.14763641,
+          "energy_cm-1": 25387.39997659522,
+          "wavelength_nm": 393.8961882830679,
+          "oscillator_strength": 0.8081,
+          "transition_dipole_au": [
+            1.6151,
+            -1.1092,
+            2.5769
+          ],
+          "transition_dipole_magnitude_au": 3.2372,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7191052282744613,
+          "grid_normalization_error": 0.021842719774719993,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0044/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.18176223,
+          "energy_cm-1": 25662.64327951193,
+          "wavelength_nm": 389.67147586009276,
+          "oscillator_strength": 0.9333,
+          "transition_dipole_au": [
+            -1.7401,
+            1.2466,
+            -2.7186
+          ],
+          "transition_dipole_magnitude_au": 3.4601,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7292986632299776,
+          "grid_normalization_error": 0.024117928193070015,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0045/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.21757132,
+          "energy_cm-1": 25951.463070685935,
+          "wavelength_nm": 385.3347325336055,
+          "oscillator_strength": 0.9949,
+          "transition_dipole_au": [
+            1.788,
+            -1.3183,
+            2.7725
+          ],
+          "transition_dipole_magnitude_au": 3.5527,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7361568195914876,
+          "grid_normalization_error": 0.024784929830589997,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0046/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.24632111,
+          "energy_cm-1": 26183.345767065442,
+          "wavelength_nm": 381.92216419404053,
+          "oscillator_strength": 1.0185,
+          "transition_dipole_au": [
+            1.7966,
+            -1.3537,
+            2.7831
+          ],
+          "transition_dipole_magnitude_au": 3.5786,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7429640409584481,
+          "grid_normalization_error": 0.025004851843440007,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0047/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.26084727,
+          "energy_cm-1": 26300.507149769117,
+          "wavelength_nm": 380.2208080723756,
+          "oscillator_strength": 1.0132,
+          "transition_dipole_au": [
+            1.7883,
+            -1.3594,
+            2.7634
+          ],
+          "transition_dipole_magnitude_au": 3.5613,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.750301051068504,
+          "grid_normalization_error": 0.02524886020710998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0048/site_A/root3_density.npz"
+        },
+        {
+          "root": 3,
+          "energy_eV": 3.25732864,
+          "energy_cm-1": 26272.127484666802,
+          "wavelength_nm": 380.6315300135021,
+          "oscillator_strength": 0.9795,
+          "transition_dipole_au": [
+            1.7802,
+            -1.3239,
+            2.7115
+          ],
+          "transition_dipole_magnitude_au": 3.5034,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7590363903785213,
+          "grid_normalization_error": 0.026010900011899984,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0049/site_A/root3_density.npz"
+        }
+      ]
+    },
+    "B": {
+      "static_roots": [
+        5,
+        5,
+        6,
+        5,
+        5,
+        5,
+        4,
+        4,
+        4,
+        3,
+        6,
+        6,
+        6,
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        7,
+        5,
+        5,
+        4,
+        4,
+        5,
+        5,
+        5,
+        6,
+        7,
+        7,
+        7,
+        4,
+        5,
+        5,
+        6,
+        6
+      ],
+      "global_roots": [
+        5,
+        5,
+        6,
+        5,
+        5,
+        5,
+        4,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        7,
+        5,
+        5,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6
+      ],
+      "changed_frames": [
+        9,
+        13,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "selected_adjacent_full_spatial_overlap": [
+        1.0,
+        0.9822786114249539,
+        0.9672289780614839,
+        0.9733809821822748,
+        0.9757443526263803,
+        0.9736049936788632,
+        0.984566967379225,
+        0.98198674931797,
+        0.9798746358403083,
+        0.8050246641242622,
+        0.8780095103032937,
+        0.981393970279862,
+        0.9701752579436805,
+        0.7423152746614726,
+        0.8979378724837046,
+        0.9694055144234984,
+        0.9740694359796966,
+        0.980841528734376,
+        0.9803647511879294,
+        0.959922360624403,
+        0.46442168864342787,
+        0.9265844305205733,
+        0.9723783311415779,
+        0.9592731852792444,
+        0.9706251103973822,
+        0.6226167401406071,
+        0.9343202440178207,
+        0.9806008441559413,
+        0.9544831993281686,
+        0.6742854466534525,
+        0.9548329146316227,
+        0.9300547267661222,
+        0.9704529771823929,
+        0.9684307764232247,
+        0.8185609411773045,
+        0.9234851130629618,
+        0.8232280585236014,
+        0.980080415328544,
+        0.9414788695748867,
+        0.9441460733298842,
+        0.9416206272577498,
+        0.9771679439173859,
+        0.9837718325581928,
+        0.9738323761755248,
+        0.9668255072750407,
+        0.966987682264064,
+        0.9066100589674084,
+        0.980874190240993,
+        0.5150308030825589,
+        0.8946055991561968
+      ],
+      "minimum_adjacent_full_spatial_overlap": 0.46442168864342787,
+      "median_adjacent_full_spatial_overlap": 0.966987682264064,
+      "maximum_adjacent_energy_jump_eV": 0.13279788999999997,
+      "frames": [
+        {
+          "root": 5,
+          "energy_eV": 3.42967809,
+          "energy_cm-1": 27662.219557879347,
+          "wavelength_nm": 361.503893795467,
+          "oscillator_strength": 0.8726,
+          "transition_dipole_au": [
+            -2.4596,
+            0.4225,
+            2.0389
+          ],
+          "transition_dipole_magnitude_au": 3.2226,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7690208354458463,
+          "grid_normalization_error": 0.016456449246309984,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0000/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.44479294,
+          "energy_cm-1": 27784.129045683327,
+          "wavelength_nm": 359.9177093064989,
+          "oscillator_strength": 1.0512,
+          "transition_dipole_au": [
+            -2.734,
+            0.4486,
+            2.1862
+          ],
+          "transition_dipole_magnitude_au": 3.5293,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.763070887995462,
+          "grid_normalization_error": 0.018746674737649988,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0001/site_B/root5_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.44173445,
+          "energy_cm-1": 27759.46065999947,
+          "wavelength_nm": 360.2375494134941,
+          "oscillator_strength": 1.2244,
+          "transition_dipole_au": [
+            -2.9423,
+            0.6261,
+            2.3391
+          ],
+          "transition_dipole_magnitude_au": 3.8106,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7711967018362336,
+          "grid_normalization_error": 0.022649189704869954,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "6": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0002/site_B/root6_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.40525897,
+          "energy_cm-1": 27465.266070955975,
+          "wavelength_nm": 364.0962390593159,
+          "oscillator_strength": 1.2527,
+          "transition_dipole_au": [
+            3.0126,
+            -0.6877,
+            -2.338
+          ],
+          "transition_dipole_magnitude_au": 3.875,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7532401494628542,
+          "grid_normalization_error": 0.02449702999844,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0003/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.35102088,
+          "energy_cm-1": 27027.806369313825,
+          "wavelength_nm": 369.98933411599626,
+          "oscillator_strength": 1.2177,
+          "transition_dipole_au": [
+            3.0041,
+            -0.7344,
+            -2.2952
+          ],
+          "transition_dipole_magnitude_au": 3.8512,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7359451698104252,
+          "grid_normalization_error": 0.025442093358719997,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0004/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.30144176,
+          "energy_cm-1": 26627.923795224648,
+          "wavelength_nm": 375.54561737899627,
+          "oscillator_strength": 1.1879,
+          "transition_dipole_au": [
+            -2.9878,
+            0.7596,
+            2.2767
+          ],
+          "transition_dipole_magnitude_au": 3.8324,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7323384007081314,
+          "grid_normalization_error": 0.02525591603140004,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0005/site_B/root5_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.27071977,
+          "energy_cm-1": 26380.134232958477,
+          "wavelength_nm": 379.0731310496833,
+          "oscillator_strength": 1.1818,
+          "transition_dipole_au": [
+            2.9694,
+            -0.7893,
+            -2.3039
+          ],
+          "transition_dipole_magnitude_au": 3.8404,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7355234360711502,
+          "grid_normalization_error": 0.025394718467789956,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0006/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.26725949,
+          "energy_cm-1": 26352.225192348855,
+          "wavelength_nm": 379.4745987561582,
+          "oscillator_strength": 1.2029,
+          "transition_dipole_au": [
+            2.9881,
+            -0.7263,
+            -2.3605
+          ],
+          "transition_dipole_magnitude_au": 3.8766,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 95,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7399256890587623,
+          "grid_normalization_error": 0.02384659706602993,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0007/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.29031609,
+          "energy_cm-1": 26538.18921425454,
+          "wavelength_nm": 376.81546395136763,
+          "oscillator_strength": 1.1995,
+          "transition_dipole_au": [
+            -2.9635,
+            0.6367,
+            2.3859
+          ],
+          "transition_dipole_magnitude_au": 3.8575,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7285024910876341,
+          "grid_normalization_error": 0.022392743485170064,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0008/site_B/root4_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.357944,
+          "energy_cm-1": 27083.645098325716,
+          "wavelength_nm": 369.226521943189,
+          "oscillator_strength": 0.2108,
+          "transition_dipole_au": [
+            1.12,
+            -0.4788,
+            -1.0385
+          ],
+          "transition_dipole_magnitude_au": 1.6007,
+          "largest_excitation": {
+            "occupied": 91,
+            "virtual": 94,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7352733043816652,
+          "grid_normalization_error": 0.010681143659869982,
+          "sensitivity_consensus_count": 7,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 1,
+            "5": 4,
+            "6": 7
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0009/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.39626286,
+          "energy_cm-1": 27392.707549877156,
+          "wavelength_nm": 365.06066671176325,
+          "oscillator_strength": 1.181,
+          "transition_dipole_au": [
+            -2.8637,
+            0.5703,
+            2.3805
+          ],
+          "transition_dipole_magnitude_au": 3.7674,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7480706168691562,
+          "grid_normalization_error": 0.021754655447700055,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 1,
+            "6": 11
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0010/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.44851138,
+          "energy_cm-1": 27814.120287133275,
+          "wavelength_nm": 359.529619415088,
+          "oscillator_strength": 1.1973,
+          "transition_dipole_au": [
+            -2.872,
+            0.5619,
+            2.368
+          ],
+          "transition_dipole_magnitude_au": 3.7645,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7246163599625406,
+          "grid_normalization_error": 0.02284680745771006,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 1,
+            "6": 11
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0011/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.4796423,
+          "energy_cm-1": 28065.20809230941,
+          "wavelength_nm": 356.31305666102514,
+          "oscillator_strength": 1.1073,
+          "transition_dipole_au": [
+            -2.7666,
+            0.5707,
+            2.238
+          ],
+          "transition_dipole_magnitude_au": 3.6039,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6898736695276317,
+          "grid_normalization_error": 0.02399805873795008,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 1,
+            "6": 11
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0012/site_B/root6_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.48473067,
+          "energy_cm-1": 28106.248564458132,
+          "wavelength_nm": 355.7927717839956,
+          "oscillator_strength": 0.8919,
+          "transition_dipole_au": [
+            2.4991,
+            -0.5599,
+            -1.9718
+          ],
+          "transition_dipole_magnitude_au": 3.2322,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.4734644560415975,
+          "grid_normalization_error": 0.02292521217947005,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 1,
+            "5": 11
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0013/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.48564516,
+          "energy_cm-1": 28113.624423795263,
+          "wavelength_nm": 355.6994263868213,
+          "oscillator_strength": 0.8515,
+          "transition_dipole_au": [
+            2.464,
+            -0.608,
+            -1.8789
+          ],
+          "transition_dipole_magnitude_au": 3.1577,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6102686119584078,
+          "grid_normalization_error": 0.022559283266939983,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 1,
+            "5": 11
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0014/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.47421195,
+          "energy_cm-1": 28021.40936542186,
+          "wavelength_nm": 356.8699900419144,
+          "oscillator_strength": 0.758,
+          "transition_dipole_au": [
+            -2.3508,
+            0.6255,
+            1.7286
+          ],
+          "transition_dipole_magnitude_au": 2.9842,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6493715857811899,
+          "grid_normalization_error": 0.02040564402850001,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0015/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.43395643,
+          "energy_cm-1": 27696.7266974177,
+          "wavelength_nm": 361.05349886457356,
+          "oscillator_strength": 0.7759,
+          "transition_dipole_au": [
+            2.3956,
+            -0.6455,
+            -1.7512
+          ],
+          "transition_dipole_magnitude_au": 3.0368,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6835078285240013,
+          "grid_normalization_error": 0.01956018421491998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0016/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.38279147,
+          "energy_cm-1": 27284.053461023635,
+          "wavelength_nm": 366.51445854568146,
+          "oscillator_strength": 0.8534,
+          "transition_dipole_au": [
+            -2.5047,
+            0.6385,
+            1.9017
+          ],
+          "transition_dipole_magnitude_au": 3.209,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.7010419483265315,
+          "grid_normalization_error": 0.01931905809136003,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0017/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.35548103,
+          "energy_cm-1": 27063.779905407726,
+          "wavelength_nm": 369.4975393736617,
+          "oscillator_strength": 0.8451,
+          "transition_dipole_au": [
+            -2.4862,
+            0.5679,
+            1.9433
+          ],
+          "transition_dipole_magnitude_au": 3.2062,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6978788755464937,
+          "grid_normalization_error": 0.01856543887612,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0018/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.34227139,
+          "energy_cm-1": 26957.236972697516,
+          "wavelength_nm": 370.95790237428923,
+          "oscillator_strength": 0.7839,
+          "transition_dipole_au": [
+            -2.4114,
+            0.4756,
+            1.8793
+          ],
+          "transition_dipole_magnitude_au": 3.094,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6471013734051129,
+          "grid_normalization_error": 0.018126220373320012,
+          "sensitivity_consensus_count": 9,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 3,
+            "5": 9
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0019/site_B/root5_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.40693008,
+          "energy_cm-1": 27478.74448219817,
+          "wavelength_nm": 363.917648700322,
+          "oscillator_strength": 0.5905,
+          "transition_dipole_au": [
+            1.9919,
+            -0.5241,
+            -1.6828
+          ],
+          "transition_dipole_magnitude_au": 2.6598,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6032403385016893,
+          "grid_normalization_error": 0.012406149670389971,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 4,
+            "6": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0020/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.40776535,
+          "energy_cm-1": 27485.481389139226,
+          "wavelength_nm": 363.828449631956,
+          "oscillator_strength": 0.813,
+          "transition_dipole_au": [
+            2.3677,
+            -0.5906,
+            -1.945
+          ],
+          "transition_dipole_magnitude_au": 3.1205,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.661236171036003,
+          "grid_normalization_error": 0.015404156632460003,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 4,
+            "6": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0021/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.40949063,
+          "energy_cm-1": 27499.39671090017,
+          "wavelength_nm": 363.64434414063777,
+          "oscillator_strength": 0.8406,
+          "transition_dipole_au": [
+            2.4236,
+            -0.6202,
+            -1.9506
+          ],
+          "transition_dipole_magnitude_au": 3.1722,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6749078297665997,
+          "grid_normalization_error": 0.01704813471824998,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 4,
+            "6": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0022/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.40618644,
+          "energy_cm-1": 27472.74662105429,
+          "wavelength_nm": 363.99709934844316,
+          "oscillator_strength": 0.9205,
+          "transition_dipole_au": [
+            2.5411,
+            -0.6827,
+            -2.0266
+          ],
+          "transition_dipole_magnitude_au": 3.3212,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.701198624110454,
+          "grid_normalization_error": 0.018418682010909987,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 4,
+            "6": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0023/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.39627947,
+          "energy_cm-1": 27392.841518563077,
+          "wavelength_nm": 365.0588813293389,
+          "oscillator_strength": 0.823,
+          "transition_dipole_au": [
+            2.3917,
+            -0.6869,
+            -1.9233
+          ],
+          "transition_dipole_magnitude_au": 3.145,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6828683944592313,
+          "grid_normalization_error": 0.016869604300909974,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 4,
+            "6": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0024/site_B/root6_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.3506467,
+          "energy_cm-1": 27024.788404058032,
+          "wavelength_nm": 370.0306522916904,
+          "oscillator_strength": 0.7327,
+          "transition_dipole_au": [
+            -2.3432,
+            0.5032,
+            1.7839
+          ],
+          "transition_dipole_magnitude_au": 2.9876,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6133284106014951,
+          "grid_normalization_error": 0.02038405595671,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 4,
+            "5": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0025/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.36303239,
+          "energy_cm-1": 27124.68573178532,
+          "wavelength_nm": 368.6678688218046,
+          "oscillator_strength": 0.9074,
+          "transition_dipole_au": [
+            2.5795,
+            -0.591,
+            -2.0025
+          ],
+          "transition_dipole_magnitude_au": 3.3186,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6957782609103947,
+          "grid_normalization_error": 0.021442801176319998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0026/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.37994665,
+          "energy_cm-1": 27261.108440127333,
+          "wavelength_nm": 366.8229449716314,
+          "oscillator_strength": 1.0046,
+          "transition_dipole_au": [
+            -2.7258,
+            0.5691,
+            2.0925
+          ],
+          "transition_dipole_magnitude_au": 3.4832,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6940549121438759,
+          "grid_normalization_error": 0.02268683634241997,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0027/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.40597616,
+          "energy_cm-1": 27471.05059846092,
+          "wavelength_nm": 364.01957199841354,
+          "oscillator_strength": 0.9431,
+          "transition_dipole_au": [
+            -2.6812,
+            0.4585,
+            1.9756
+          ],
+          "transition_dipole_magnitude_au": 3.3618,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6361460165995947,
+          "grid_normalization_error": 0.023753284584060008,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0028/site_B/root5_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.4861301,
+          "energy_cm-1": 28117.53572870505,
+          "wavelength_nm": 355.6499466270636,
+          "oscillator_strength": 0.7825,
+          "transition_dipole_au": [
+            2.3527,
+            -0.5197,
+            -1.8321
+          ],
+          "transition_dipole_magnitude_au": 3.0269,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6449453438415547,
+          "grid_normalization_error": 0.013867812830080012,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "6": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0029/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.49643071,
+          "energy_cm-1": 28200.615751938392,
+          "wavelength_nm": 354.6021891564955,
+          "oscillator_strength": 0.8271,
+          "transition_dipole_au": [
+            -2.4767,
+            0.5063,
+            1.807
+          ],
+          "transition_dipole_magnitude_au": 3.1073,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.663811787235883,
+          "grid_normalization_error": 0.016908635059240035,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "6": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0030/site_B/root6_density.npz"
+        },
+        {
+          "root": 7,
+          "energy_eV": 3.48555665,
+          "energy_cm-1": 28112.91054249538,
+          "wavelength_nm": 355.70845879093656,
+          "oscillator_strength": 0.7197,
+          "transition_dipole_au": [
+            -2.3374,
+            0.4848,
+            1.6522
+          ],
+          "transition_dipole_magnitude_au": 2.9032,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6176369857564741,
+          "grid_normalization_error": 0.01637902609609998,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "7": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0031/site_B/root7_density.npz"
+        },
+        {
+          "root": 7,
+          "energy_eV": 3.43760213,
+          "energy_cm-1": 27726.13125119673,
+          "wavelength_nm": 360.67058871644343,
+          "oscillator_strength": 0.6021,
+          "transition_dipole_au": [
+            2.1614,
+            -0.4676,
+            -1.5029
+          ],
+          "transition_dipole_magnitude_au": 2.6738,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.573690812677676,
+          "grid_normalization_error": 0.015577587697220008,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "7": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0032/site_B/root7_density.npz"
+        },
+        {
+          "root": 7,
+          "energy_eV": 3.4144862,
+          "energy_cm-1": 27539.688700565228,
+          "wavelength_nm": 363.112313647658,
+          "oscillator_strength": 0.5061,
+          "transition_dipole_au": [
+            1.9493,
+            -0.4265,
+            -1.4382
+          ],
+          "transition_dipole_magnitude_au": 2.4598,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5595182019437808,
+          "grid_normalization_error": 0.012717095592799987,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "7": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0033/site_B/root7_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.29964452,
+          "energy_cm-1": 26613.428076917102,
+          "wavelength_nm": 375.75016838480525,
+          "oscillator_strength": 0.8635,
+          "transition_dipole_au": [
+            -2.5134,
+            0.6298,
+            1.9918
+          ],
+          "transition_dipole_magnitude_au": 3.2682,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.603492260826521,
+          "grid_normalization_error": 0.01735311556100999,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0034/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.31167727,
+          "energy_cm-1": 26710.478751543265,
+          "wavelength_nm": 374.38490617172965,
+          "oscillator_strength": 0.6213,
+          "transition_dipole_au": [
+            2.0523,
+            -0.5875,
+            -1.761
+          ],
+          "transition_dipole_magnitude_au": 2.7673,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5569673295981309,
+          "grid_normalization_error": 0.011167343837969995,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "5": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0035/site_B/root5_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.29223909,
+          "energy_cm-1": 26553.699255376152,
+          "wavelength_nm": 376.59536567862085,
+          "oscillator_strength": 1.0583,
+          "transition_dipole_au": [
+            2.7865,
+            -0.5862,
+            -2.2388
+          ],
+          "transition_dipole_magnitude_au": 3.6222,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6070340730575017,
+          "grid_normalization_error": 0.02190042763444,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0036/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.32895005,
+          "energy_cm-1": 26849.79311872195,
+          "wavelength_nm": 372.4423513053312,
+          "oscillator_strength": 0.9823,
+          "transition_dipole_au": [
+            -2.6612,
+            0.5224,
+            2.1655
+          ],
+          "transition_dipole_magnitude_au": 3.4705,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6032836707203035,
+          "grid_normalization_error": 0.020691345908250003,
+          "sensitivity_consensus_count": 12,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 12
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0037/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.29988713,
+          "energy_cm-1": 26615.384858548157,
+          "wavelength_nm": 375.7225429707348,
+          "oscillator_strength": 0.2284,
+          "transition_dipole_au": [
+            1.2834,
+            -0.2456,
+            -1.0569
+          ],
+          "transition_dipole_magnitude_au": 1.6807,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.557144292314201,
+          "grid_normalization_error": 0.01110568338376998,
+          "sensitivity_consensus_count": 10,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 10,
+            "5": 2
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0038/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.16708924,
+          "energy_cm-1": 25544.297632982005,
+          "wavelength_nm": 391.4768072654624,
+          "oscillator_strength": 0.0599,
+          "transition_dipole_au": [
+            0.6352,
+            -0.1311,
+            -0.5929
+          ],
+          "transition_dipole_magnitude_au": 0.8787,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.47363058510102185,
+          "grid_normalization_error": 0.006951679348849993,
+          "sensitivity_consensus_count": 10,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 10,
+            "5": 2
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0039/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.10402355,
+          "energy_cm-1": 25035.638535081318,
+          "wavelength_nm": 399.4305983922061,
+          "oscillator_strength": 0.1552,
+          "transition_dipole_au": [
+            -0.8854,
+            0.1796,
+            1.107
+          ],
+          "transition_dipole_magnitude_au": 1.4288,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.543692289730334,
+          "grid_normalization_error": 0.009029639260380015,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 11,
+            "5": 1
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0040/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.11500668,
+          "energy_cm-1": 25124.22345340895,
+          "wavelength_nm": 398.0222552845376,
+          "oscillator_strength": 0.249,
+          "transition_dipole_au": [
+            -1.119,
+            0.212,
+            1.4021
+          ],
+          "transition_dipole_magnitude_au": 1.8064,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5636523767616604,
+          "grid_normalization_error": 0.01070705340599,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 11,
+            "6": 1
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0041/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.1178082,
+          "energy_cm-1": 25146.819236249838,
+          "wavelength_nm": 397.6646106710477,
+          "oscillator_strength": 0.1959,
+          "transition_dipole_au": [
+            -1.0685,
+            0.208,
+            1.1745
+          ],
+          "transition_dipole_magnitude_au": 1.6014,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5535239660783153,
+          "grid_normalization_error": 0.010914411130670001,
+          "sensitivity_consensus_count": 11,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "4": 11,
+            "7": 1
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0042/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.14366027,
+          "energy_cm-1": 25355.330244455177,
+          "wavelength_nm": 394.3943930048141,
+          "oscillator_strength": 0.1284,
+          "transition_dipole_au": [
+            -0.9468,
+            0.1929,
+            0.8565
+          ],
+          "transition_dipole_magnitude_au": 1.2912,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5262858349266399,
+          "grid_normalization_error": 0.01025751836793,
+          "sensitivity_consensus_count": 9,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "3": 2,
+            "4": 9,
+            "7": 1
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0043/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.18469492,
+          "energy_cm-1": 25686.297019759953,
+          "wavelength_nm": 389.312639089461,
+          "oscillator_strength": 0.1711,
+          "transition_dipole_au": [
+            1.139,
+            -0.2215,
+            -0.9201
+          ],
+          "transition_dipole_magnitude_au": 1.4808,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.51277991769563,
+          "grid_normalization_error": 0.012020113372010005,
+          "sensitivity_consensus_count": 9,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "2": 2,
+            "4": 9,
+            "7": 1
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0044/site_B/root4_density.npz"
+        },
+        {
+          "root": 4,
+          "energy_eV": 3.20320627,
+          "energy_cm-1": 25835.60112777691,
+          "wavelength_nm": 387.06279880002853,
+          "oscillator_strength": 0.1877,
+          "transition_dipole_au": [
+            -1.1867,
+            0.2484,
+            0.9599
+          ],
+          "transition_dipole_magnitude_au": 1.5464,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 97,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5521551361270169,
+          "grid_normalization_error": 0.011403969730359995,
+          "sensitivity_consensus_count": 10,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "2": 2,
+            "4": 10
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0045/site_B/root4_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.27176094,
+          "energy_cm-1": 26388.531835410166,
+          "wavelength_nm": 378.9524988949834,
+          "oscillator_strength": 0.9209,
+          "transition_dipole_au": [
+            2.6017,
+            -0.4132,
+            -2.1329
+          ],
+          "transition_dipole_magnitude_au": 3.3895,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.574756437361978,
+          "grid_normalization_error": 0.021350885486140003,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "2": 2,
+            "4": 2,
+            "5": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0046/site_B/root5_density.npz"
+        },
+        {
+          "root": 5,
+          "energy_eV": 3.28602009,
+          "energy_cm-1": 26503.53963720906,
+          "wavelength_nm": 377.30809612913833,
+          "oscillator_strength": 0.9764,
+          "transition_dipole_au": [
+            2.6763,
+            -0.4081,
+            -2.1905
+          ],
+          "transition_dipole_magnitude_au": 3.4825,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.5832781014417605,
+          "grid_normalization_error": 0.021872121306720005,
+          "sensitivity_consensus_count": 8,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "2": 2,
+            "4": 2,
+            "5": 8
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0047/site_B/root5_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.36256509,
+          "energy_cm-1": 27120.916703071784,
+          "wavelength_nm": 368.71910307021,
+          "oscillator_strength": 0.5403,
+          "transition_dipole_au": [
+            1.8998,
+            -0.364,
+            -1.6785
+          ],
+          "transition_dipole_magnitude_au": 2.5611,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.4959668859868316,
+          "grid_normalization_error": 0.011187091251410014,
+          "sensitivity_consensus_count": 7,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "2": 2,
+            "4": 2,
+            "5": 1,
+            "6": 7
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0048/site_B/root6_density.npz"
+        },
+        {
+          "root": 6,
+          "energy_eV": 3.37626142,
+          "energy_cm-1": 27231.38505539379,
+          "wavelength_nm": 367.2233366336899,
+          "oscillator_strength": 0.969,
+          "transition_dipole_au": [
+            2.5934,
+            -0.434,
+            -2.191
+          ],
+          "transition_dipole_magnitude_au": 3.4226,
+          "largest_excitation": {
+            "occupied": 93,
+            "virtual": 96,
+            "occupied_type": "D",
+            "virtual_type": "V"
+          },
+          "reference_spatial_overlap": 0.6142869531818018,
+          "grid_normalization_error": 0.018913611269180036,
+          "sensitivity_consensus_count": 7,
+          "sensitivity_path_count": 12,
+          "alternative_roots": {
+            "2": 2,
+            "4": 2,
+            "5": 1,
+            "6": 7
+          },
+          "compact_path": "/home/robson/PetaChem/tddft_ensemble_decoherence/frames/short100fs50_fixedmm/frame_0049/site_B/root6_density.npz"
+        }
+      ]
+    }
+  },
+  "manifest": "/home/robson/PetaChem/tddft_ensemble_decoherence/manifests/short100fs50_fixedmm_frames.csv",
+  "retained_static_manifest": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/frame_manifest_static_reference_assignments.csv"
+}

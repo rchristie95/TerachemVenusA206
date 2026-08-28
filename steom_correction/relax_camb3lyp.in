@@ -1,0 +1,26 @@
+# Basis-consistent STEOM correction, 2026-08-28.
+# IDENTICAL to tddft_ensemble_decoherence/reference_pilot/reference_current.in
+# (which produced the calibration value 3.43441587 eV) except basis:
+#   6-311g**  ->  def2-svpd
+# Same geometry (sha256 86287ad551f28029..., 44 atoms), same 2352 point charges,
+# same functional, charge, multiplicity and CIS settings.
+# Purpose: the existing Delta_STEOM mixes TDDFT/6-311G** with STEOM/def2-SVPD, so
+# it conflates the method difference with a basis change. Matching the basis
+# isolates the pure method (DFT vs STEOM-CCSD) difference.
+coordinates /home/robson/PetaChem/tc_tddft_44/geometry.xyz
+run gradient
+cis yes
+basis def2-svpd
+method camb3lyp
+charge -1
+spinmult 1
+pointcharges /home/robson/PetaChem/tc_tddft_44/mm_charges.dat
+scrdir scr_relax_camb3lyp
+cisnumstates 5
+cistarget 3
+cismaxiter 200
+cismax 500
+scf diis+a
+threall 1.0e-13
+gpus 1
+end

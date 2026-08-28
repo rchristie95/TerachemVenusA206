@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "output": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/tddft_density_100fs_50s.mp4",
+  "output_sha256": "569f81fbc94823a5e3b51e30c05bf6e75e3a803794ca0e534a497a73970d1953",
+  "source_video": "/home/robson/PetaChem/tddft_ensemble_decoherence/rapid_100fs50_fixedmm/tddft_density_100fs.mp4",
+  "source_video_sha256": "6888481d68c7274aa715f39d7b9cf7768f0c94a0b020b38d6621bf07cab8e675",
+  "duration_seconds": 50.0,
+  "encoded_frames": 500,
+  "fps": 10.0,
+  "resolution": [
+    1600,
+    1200
+  ],
+  "timing_policy": "Each of the 50 measured TDDFT frames is held for one second. No optical-flow or scientific-data interpolation is used.",
+  "encoding": "H.264, yuv420p, libx264 CRF 18 slow, faststart"
+}

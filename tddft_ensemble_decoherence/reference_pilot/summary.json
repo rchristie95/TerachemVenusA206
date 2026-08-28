@@ -1,0 +1,24 @@
+{
+  "status": "complete",
+  "gpu": 0,
+  "gpu_model": "NVIDIA GeForce RTX 4080",
+  "terachem_version": "1.97B-beta-251105",
+  "terachem_git_version": "3fcf25291f21a40754a20c9c6450f71e006a2729",
+  "wall_runtime_seconds": 48,
+  "terachem_processing_seconds": 45.79,
+  "gpu_memory_available_megawords": 1734.15,
+  "scf_converged": true,
+  "davidson_converged": true,
+  "davidson_iterations": 15,
+  "roots": [
+    {"root": 1, "energy_eV": 3.08312196, "oscillator_strength": 0.0065, "transition_dipole_au": [-0.1404, -0.2337, 0.1087], "transition_dipole_magnitude_au": 0.2935, "dominant_configuration": "93 -> 94", "max_ci_coefficient": 0.915221},
+    {"root": 2, "energy_eV": 3.43441587, "oscillator_strength": 1.0228, "transition_dipole_au": [-1.0539, 1.8749, -2.7439], "transition_dipole_magnitude_au": 3.4864, "dominant_configuration": "93 -> 95", "max_ci_coefficient": 0.842108},
+    {"root": 3, "energy_eV": 3.45608312, "oscillator_strength": 0.2634, "transition_dipole_au": [-0.7623, 0.6701, -1.4424], "transition_dipole_magnitude_au": 1.7637, "dominant_configuration": "92 -> 94", "max_ci_coefficient": 0.819876},
+    {"root": 4, "energy_eV": 4.02299611, "oscillator_strength": 0.0037, "transition_dipole_au": [-0.0335, -0.1528, 0.1157], "transition_dipole_magnitude_au": 0.1946, "dominant_configuration": "85 -> 94", "max_ci_coefficient": -0.563729},
+    {"root": 5, "energy_eV": 4.14137713, "oscillator_strength": 0.0682, "transition_dipole_au": [0.2745, 0.6648, -0.3934], "transition_dipole_magnitude_au": 0.8198, "dominant_configuration": "92 -> 95", "max_ci_coefficient": -0.921239}
+  ],
+  "selected_root": 2,
+  "selection_basis": "reproduces retained bright pi-pi* reference: highest oscillator strength, reference transition-dipole direction and 93->95 dominant configuration",
+  "output_sha256": "3727aecc4b61a3f0563a3cde7c50029e70bf63052408cfede15754170c0f4dbe",
+  "reproducibility": "energies and oscillator strengths reproduce the retained tc_tddft_44 run to printed precision"
+}

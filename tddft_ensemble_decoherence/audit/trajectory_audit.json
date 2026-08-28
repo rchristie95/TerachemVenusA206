@@ -1,0 +1,73 @@
+{
+  "audit_date": "2026-07-22",
+  "repository": {
+    "path": "/home/robson/PetaChem",
+    "branch_before_update": "agent/recover-orca-paper-pipeline",
+    "commit_before_update": "dced07dbf2d403b7aadcf6105cac51e090539dce",
+    "branch_after_update": "main",
+    "commit_after_update": "34775aa82847f654d77f8720182ddc36782095c7",
+    "update": "git fetch origin; git switch main; git pull --ff-only origin main",
+    "untracked_work_preserved": "neo_model/ untracked files"
+  },
+  "required_inputs": {
+    "short_0to4ps": {
+      "recorded_name": "full_highres_0to4ps_4fs.dcd",
+      "frames": 1000,
+      "dt_fs": 4.0,
+      "time_first_fs": 0.0,
+      "time_last_fs": 3996.0,
+      "expected_atoms": 69471,
+      "periodic_box_required": true,
+      "local_status": "missing"
+    },
+    "short_4to8ps": {
+      "recorded_name": "full_highres_4to8ps_4fs.dcd",
+      "frames": 1000,
+      "dt_fs": 4.0,
+      "time_first_fs": 4000.0,
+      "time_last_fs": 7996.0,
+      "expected_atoms": 69471,
+      "periodic_box_required": true,
+      "local_status": "missing"
+    },
+    "long_production": {
+      "recorded_raw_sha256": "5DA1F8B2CE814DD04467B4D121C3BA70CCC8619852D045120D2E73086DF53E5E",
+      "recorded_pbc_whole_sha256": "C8285024076091EB14BCEB2C25A93CD73BAB7FB5675CBA41BF42E7C064425C93",
+      "frames": 1000,
+      "dt_ps": 1.0,
+      "time_first_ps": 1.0,
+      "time_last_ps": 1000.0,
+      "cr2_atoms_per_site": 29,
+      "local_status": "raw_full_system_coordinates_missing",
+      "compact_coupling_status": "present"
+    }
+  },
+  "validated_mapping": {
+    "cr2_site_A": ["A", "66", "CR2"],
+    "cr2_site_B": ["A", "328", "CR2"],
+    "stacked_tyr_A": ["A", "202", "TYR"],
+    "stacked_tyr_B": ["A", "464", "TYR"],
+    "qm_atoms_total": 44,
+    "physical_qm_atoms": 41,
+    "link_hydrogens": 3,
+    "physical_region": "29-atom CR2 plus 12-atom Tyr phenol group",
+    "transition_density_link_exclusion": true
+  },
+  "rejected_local_candidate": {
+    "path": "/home/robson/PetaChem/tc_tandem_nvt_1000/tandem_nvt_1000.pdb",
+    "sha256": "a8c1626d578110e671cd71d38add6c9f229d21a346acbc8cc6deae5bc83905e8",
+    "frames": 1000,
+    "atoms_per_frame": 69418,
+    "box_A": [90.183, 90.183, 90.183],
+    "cr2_atoms_per_site": 31,
+    "water_atoms_per_frame": 61524,
+    "ion_atoms_per_frame": 123,
+    "reason_rejected": "atom inventory and CR2 topology do not match the exact-AMBER-CR2 production inputs; substitution would silently change the trajectory and charge model"
+  },
+  "alignment": {
+    "long_compact_geometry": "periodic imaging removed by whole-residue translations; no coordinate fit or deformation",
+    "short_raw": "cannot verify without the missing DCD headers and topology",
+    "qm_density_placement": "19 shared CR2 heavy-atom Kabsch fit; link/cap density masked"
+  },
+  "blocking_condition": "Exact coordinate trajectories needed for instantaneous QM geometry and MM embedding are absent. Compact energy/coupling traces are not coordinate-complete and will not be inverted or interpolated."
+}

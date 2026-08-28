@@ -1,0 +1,201 @@
+{
+  "orca_correct_cap_tddft": {
+    "bright": {
+      "root": 2,
+      "energy_eV": 3.435623,
+      "energy_cm1": 27710.2,
+      "wavelength_nm_printed": 360.9,
+      "wavelength_nm_from_energy": 360.87835723884797,
+      "oscillator_strength": 1.032982996,
+      "dipole_au": [
+        1.06125,
+        -1.88217,
+        2.75746
+      ]
+    },
+    "roots": [
+      {
+        "root": 1,
+        "energy_eV": 3.084623,
+        "energy_cm1": 24879.2,
+        "wavelength_nm_printed": 401.9,
+        "wavelength_nm_from_energy": 401.9427931166961,
+        "oscillator_strength": 0.006554601,
+        "dipole_au": [
+          -0.1399,
+          -0.23464,
+          0.11004
+        ]
+      },
+      {
+        "root": 2,
+        "energy_eV": 3.435623,
+        "energy_cm1": 27710.2,
+        "wavelength_nm_printed": 360.9,
+        "wavelength_nm_from_energy": 360.87835723884797,
+        "oscillator_strength": 1.032982996,
+        "dipole_au": [
+          1.06125,
+          -1.88217,
+          2.75746
+        ]
+      },
+      {
+        "root": 3,
+        "energy_eV": 3.457431,
+        "energy_cm1": 27886.1,
+        "wavelength_nm_printed": 358.6,
+        "wavelength_nm_from_energy": 358.60209049204525,
+        "oscillator_strength": 0.253483546,
+        "dipole_au": [
+          -0.75109,
+          0.65236,
+          -1.41521
+        ]
+      },
+      {
+        "root": 4,
+        "energy_eV": 4.026674,
+        "energy_cm1": 32477.3,
+        "wavelength_nm_printed": 307.9,
+        "wavelength_nm_from_energy": 307.9072168077184,
+        "oscillator_strength": 0.003854038,
+        "dipole_au": [
+          -0.03316,
+          -0.15508,
+          0.11798
+        ]
+      },
+      {
+        "root": 5,
+        "energy_eV": 4.142722,
+        "energy_cm1": 33413.3,
+        "wavelength_nm_printed": 299.3,
+        "wavelength_nm_from_energy": 299.2819658987503,
+        "oscillator_strength": 0.06824154,
+        "dipole_au": [
+          0.27491,
+          0.66519,
+          -0.39282
+        ]
+      }
+    ],
+    "output_sha256": "1a694c37a5b1f16582d6caa6afa4a7b2c7ec1037daae9fcb2a1051b2f610f17b",
+    "terminated_normally": true,
+    "roots_2_3_strength_weighted": {
+      "energy_eV": 3.4399200174432787,
+      "wavelength_nm": 360.42756170055236,
+      "oscillator_strength_sum": 1.286466542
+    }
+  },
+  "orca_reversed_tyr_cap_tddft": {
+    "bright": {
+      "root": 2,
+      "energy_eV": 3.41929,
+      "energy_cm1": 27578.4,
+      "wavelength_nm_printed": 362.6,
+      "wavelength_nm_from_energy": 362.60217306282954,
+      "oscillator_strength": 0.728895324,
+      "dipole_au": [
+        -0.81711,
+        1.65223,
+        -2.30294
+      ]
+    },
+    "roots": [
+      {
+        "root": 1,
+        "energy_eV": 3.048476,
+        "energy_cm1": 24587.6,
+        "wavelength_nm_printed": 406.7,
+        "wavelength_nm_from_energy": 406.7087896811399,
+        "oscillator_strength": 0.006296041,
+        "dipole_au": [
+          -0.13879,
+          -0.2305,
+          0.10911
+        ]
+      },
+      {
+        "root": 2,
+        "energy_eV": 3.41929,
+        "energy_cm1": 27578.4,
+        "wavelength_nm_printed": 362.6,
+        "wavelength_nm_from_energy": 362.60217306282954,
+        "oscillator_strength": 0.728895324,
+        "dipole_au": [
+          -0.81711,
+          1.65223,
+          -2.30294
+        ]
+      },
+      {
+        "root": 3,
+        "energy_eV": 3.437819,
+        "energy_cm1": 27727.9,
+        "wavelength_nm_printed": 360.6,
+        "wavelength_nm_from_energy": 360.64783641372696,
+        "oscillator_strength": 0.572857575,
+        "dipole_au": [
+          -1.00749,
+          1.13593,
+          -2.12041
+        ]
+      },
+      {
+        "root": 4,
+        "energy_eV": 4.020221,
+        "energy_cm1": 32425.3,
+        "wavelength_nm_printed": 308.4,
+        "wavelength_nm_from_energy": 308.401449654634,
+        "oscillator_strength": 0.003759635,
+        "dipole_au": [
+          -0.0314,
+          -0.15338,
+          0.11687
+        ]
+      },
+      {
+        "root": 5,
+        "energy_eV": 4.142041,
+        "energy_cm1": 33407.8,
+        "wavelength_nm_printed": 299.3,
+        "wavelength_nm_from_energy": 299.33117135537833,
+        "oscillator_strength": 0.068158096,
+        "dipole_au": [
+          0.27878,
+          0.66236,
+          -0.39397
+        ]
+      }
+    ],
+    "output_sha256": "c44cf6c31f026d3209022fadce80e45c9c4d1d809c076349d520e1e885731cfc",
+    "terminated_normally": true,
+    "roots_2_3_strength_weighted": {
+      "energy_eV": 3.4274439883762344,
+      "wavelength_nm": 361.7395320060016,
+      "oscillator_strength_sum": 1.301752899
+    }
+  },
+  "difference_reversed_minus_correct": {
+    "energy_eV": -0.01633299999999993,
+    "energy_cm1": -131.79999999999927,
+    "wavelength_nm_from_energy": 1.7238158239815675,
+    "oscillator_strength": -0.3040876720000001
+  },
+  "manuscript": {
+    "TDDFT_wavelength_nm": 360.42,
+    "TDDFT_oscillator_strength": 1.03,
+    "STEOM_wavelength_nm": 523.9,
+    "STEOM_energy_eV": 2.366633,
+    "STEOM_oscillator_strength": 0.885045
+  },
+  "correct_minus_manuscript": {
+    "wavelength_nm": 0.45835723884795243,
+    "oscillator_strength": 0.002982996000000071
+  },
+  "reversed_minus_manuscript": {
+    "wavelength_nm": 2.18217306282952,
+    "oscillator_strength": -0.301104676
+  }
+}

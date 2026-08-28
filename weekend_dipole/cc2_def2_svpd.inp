@@ -1,0 +1,24 @@
+! CC2 def2-SVPD AutoAux RIJCOSX TightSCF
+# Independent transition dipole on the SAME geometry + field as the STEOM and
+# TDDFT runs here. The dipole is the critical path: J scales as |mu|^2 and
+# (9.80/7.84)^2 = 1.56x is essentially the whole 1.61x Cusick discrepancy.
+# STEOM says 9.80 D and is basis-converged (SVP 9.797 -> SVPD 9.744, -0.54%);
+# TDDFT says 7.84 D and is not (SVP 8.707 -> TZVPD 7.839, -10%). CC2 is the
+# tie-breaker: CC-family like STEOM, but cheap and RI-based.
+#
+# NB PySCF/adcc was tried first and is NOT viable here -- adcc builds the full
+# MO ERI tensor on import (39.6 GB at 454 orbitals, 8-fold symmetry), before
+# ADC starts and independent of frozen_core/frozen_virtual. Four attempts were
+# OOM-killed. ORCA's CC2 is RI throughout and avoids that entirely.
+# maxcore 5000 x 4 ranks died at iteration 0 in KCcor_MO2 (296.9M amplitudes).
+# The constraint is PER-RANK, as with the STEOM saga: halve the ranks, raise
+# maxcore 3.6x. 2 x 18000 = 36 GB nominal; ORCA overshoots ~1.32x on this box,
+# so expect ~48 GB actual against 62 GB with nothing else running.
+%maxcore 18000
+%pal nprocs 2 end
+%mdci
+  NRoots 4
+  MaxIter 200
+end
+%pointcharges "field.pc"
+* xyzfile -1 1 geom_cthrp.xyz

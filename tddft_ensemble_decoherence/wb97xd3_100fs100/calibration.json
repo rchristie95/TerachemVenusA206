@@ -1,0 +1,27 @@
+{
+  "status": "retained_same_geometry_calibration",
+  "profile": "validated",
+  "production_profile": "validated",
+  "roots": 7,
+  "production_roots": 7,
+  "method": "wB97X-D3",
+  "basis": "6-311G**",
+  "charge": -1,
+  "multiplicity": 1,
+  "state_tracking_reference": "/home/robson/PetaChem/tddft_ensemble_decoherence/calibration/reference_tddft_root2_density_neutral.npz",
+  "reference_tddft_root": 2,
+  "reference_tddft_energy_eV": 3.43441587,
+  "steom_reference_energy_eV": 2.366633,
+  "steom_reference_wavelength_nm": 523.90,
+  "steom_reference_oscillator_strength": 0.885045,
+  "steom_constant_shift_eV": -1.06778287,
+  "affine_calibration": {
+    "status": "not_fitted",
+    "reason": "Only one matched final STEOM/TDDFT reference geometry is retained."
+  },
+  "coupling_scaling": {
+    "applied": false,
+    "reason": "An additive site-energy correction does not alter a transition density."
+  },
+  "constant_shift_T2_invariant_expected": true
+}

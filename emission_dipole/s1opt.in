@@ -1,0 +1,34 @@
+# beta: the angle between the ABSORPTION transition dipole (at the S0 minimum)
+# and the EMISSION transition dipole (at the relaxed S1 minimum).
+#
+# WHY THIS PARAMETER. The anisotropy and superradiance measurements are treated
+# as constraining the same inter-chromophore angle, which makes them
+# contradictory for ANY geometry (cos^2 x <= |cos x|, and the anisotropy needs
+# <cos^2> = 0.436 while superradiance allows <|cos|> <= 0.287). But they do not
+# measure the same angle: superradiance uses the angle between the two
+# TRANSITION dipoles, while depolarisation compares the dipole that ABSORBED on
+# one chromophore with the one that EMITTED on the other. If emission is rotated
+# by beta from absorption within a chromophore, the anisotropy angle is a + beta
+# and the inequality no longer binds a. beta ~ 20 deg reconciles the crystal /
+# converged-MD geometry with both experiments; beta ~ 12 deg does it for the
+# AlphaFold3 register.
+#
+# Same level as the vibronic parameters (CAM-B3LYP/6-31G*, charge -1) so beta is
+# consistent with the S and omega already in use. Gas phase, 41-atom QM region
+# plus 3 link H, exactly as the frequency chain.
+coordinates s0_geom.xyz
+run minimize
+cis yes
+cisnumstates 5
+cistarget 1
+cismaxiter 300
+method camb3lyp
+basis 6-31gs
+charge -1
+spinmult 1
+scf diis+a
+threall 1.0e-13
+new_minimizer yes
+nstep 300
+gpus 1
+end

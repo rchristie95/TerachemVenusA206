@@ -1,0 +1,5 @@
+[2026-08-24 20:32:22] ===== vibronic parameter run start (pid 202688) =====
+[2026-08-24 20:32:22] START   stage 1: GS opt + freq
+[2026-08-26 16:10:17] ===== vibronic parameter run start (pid 20352) =====
+[2026-08-26 16:10:17] RAM 56 GB free; gas-phase optimisation (field.pc deliberately absent)
+[2026-08-26 16:10:17] START   stage 1: gas-phase GS opt + freq

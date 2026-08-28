@@ -1,0 +1,43 @@
+{
+  "reference_geometry_sha256": "86287ad551f28029d5ec344b29bca0455a1cb06e92c5c0bca395a188fef90f86",
+  "terachem_point_charges_sha256": "6f8d73bfcd83a8b09eed42f2511ab501e3879e3675087710a1c5b33ba2980ec3",
+  "orca_point_charges_sha256": "70dac26654c0b22574b9bf60633c531b493780cc94c04cb098916435d3097597",
+  "point_charge_numeric_rows_identical": true,
+  "qm_atoms": 44,
+  "physical_qm_atoms": 41,
+  "link_atoms": 3,
+  "tddft": {
+    "program": "TeraChem 1.97B-beta-251105",
+    "method": "wB97X-D3",
+    "basis": "6-311G**",
+    "charge": -1,
+    "multiplicity": 1,
+    "selected_root": 2,
+    "energy_eV": 3.43441587,
+    "energy_cm-1": 27700.432331,
+    "wavelength_nm": 361.00526377,
+    "oscillator_strength": 1.0228,
+    "transition_dipole_au": [-1.0539, 1.8749, -2.7439],
+    "transition_dipole_magnitude_au": 3.4864
+  },
+  "steom": {
+    "program": "ORCA 6.1.1",
+    "method": "DLPNO-STEOM-CCSD/def2-SVPD",
+    "energy_eV": 2.366633,
+    "energy_cm-1": 19088.2,
+    "wavelength_nm": 523.90,
+    "oscillator_strength": 0.885045444
+  },
+  "constant_calibration": {
+    "formula": "E_corrected = E_TDDFT + Delta",
+    "Delta_eV": -1.06778287,
+    "Delta_cm-1": -8612.249726,
+    "coupling_scaled": false,
+    "t2_invariant_expected": true,
+    "note": "A common additive shift cancels from E_A-E_B and therefore cannot change differential-gap fluctuations, the cumulant coherence, or T2*."
+  },
+  "affine_calibration": {
+    "status": "not_fitted",
+    "reason": "Only one matched final STEOM/TDDFT reference geometry is currently retained; a slope is not identifiable from one point."
+  }
+}

@@ -1,0 +1,38 @@
+# BASIS CHOICE. Everything here is 6-31G*, not the 6-311+G** of the QM/MM site
+# energies. A mixed-basis attempt (opt at 6-311+G**, Hessian at 6-31G*) FAILED:
+# TeraChem refused the Hessian with "maximum component of gradient is too large"
+# because a geometry stationary in one basis is not stationary in another
+# (Grad-Max 2.20e-4 at 6-311+G** vs 6.45e-3 at 6-31G*). A Hessian requires a
+# stationary point IN ITS OWN BASIS, so the whole chain must share one.
+# 6-31G* is chosen for speed; omega and the Huang-Rhys factor S are far less
+# basis sensitive than excitation energies. This must be stated wherever the
+# resulting S and omega are used.
+# Stage 1: finish the ground-state optimisation on GPU.
+# Same functional/basis as the QM/MM site energies (camb3lyp/6-311+gss), so the
+# vibronic parameters are consistent with the rest of the pipeline rather than
+# coming from a second code at a smaller basis.
+# GAS PHASE: pointcharges are deliberately absent. Optimising inside field.pc
+# collapses nuclei onto bare MM charges (H42 reached 0.09 A from a -0.568 e
+# charge in the first ORCA attempt) -- that file is single-point only.
+coordinates geom.xyz
+run minimize
+new_minimizer yes
+method camb3lyp
+basis 6-31gs
+charge -1
+spinmult 1
+scrdir scr_opt
+scf diis+a
+threall 1.0e-13
+convthre 1.0e-6
+# SPEED: gradient criteria kept at default -- they define the stationary point
+# the Hessian needs. Displacement/energy criteria loosened 10x: the residual
+# motion is a soft torsion taking 0.05-radius steps, and chasing it to 1.2e-3
+# displacement adds cycles without improving the stiff modes we actually use.
+min_converge_gmax 4.5e-4
+min_converge_grms 3.0e-4
+min_converge_dmax 1.8e-2
+min_converge_drms 1.2e-2
+min_converge_e 1.0e-5
+gpus 1
+end

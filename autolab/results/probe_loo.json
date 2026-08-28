@@ -1,0 +1,45 @@
+{
+  "all_four": {
+    "abs_cos_alpha": 0.3191666666666667,
+    "abs_delta_cm": 362.0,
+    "chi2": 45.951333130680624,
+    "dof": 2
+  },
+  "leave_one_out": {
+    "superradiance": {
+      "abs_cos_alpha": 0.6483333333333334,
+      "abs_delta_cm": 253.0,
+      "chi2": 0.1852098125940358,
+      "dof": 1,
+      "alpha_deg": 130.4160598975895
+    },
+    "anisotropy": {
+      "abs_cos_alpha": 0.25,
+      "abs_delta_cm": 268.0,
+      "chi2": 8.141115923446351,
+      "dof": 1,
+      "alpha_deg": 104.47751218592994
+    },
+    "CD splitting": {
+      "abs_cos_alpha": 0.6483333333333334,
+      "abs_delta_cm": 1281.0,
+      "chi2": 0.1852091418601316,
+      "dof": 1,
+      "alpha_deg": 130.4160598975895
+    },
+    "red shift": {
+      "abs_cos_alpha": 0.3041666666666667,
+      "abs_delta_cm": 341.0,
+      "chi2": 40.63431534319914,
+      "dof": 1,
+      "alpha_deg": 107.70803561032226
+    }
+  },
+  "largest_culprit": "CD splitting",
+  "exonerating_removals": [
+    "CD splitting",
+    "superradiance"
+  ],
+  "chi2_drop": 45.76612398882049,
+  "single_observable_explains": true
+}

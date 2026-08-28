@@ -1,0 +1,10 @@
+[2026-08-27 14:30:24] ===== register probe start (pid 413852) =====
+[2026-08-27 14:30:24] GPU NVIDIA GeForce RTX 4080, 508 MiB
+[2026-08-27 14:30:24] --- A: AF2-multimer docking of two Venus barrels, no linker ---
+[2026-08-27 14:35:55] A done rc=0  15 pdb
+[2026-08-27 14:35:55] --- B: tandem511 monomer, MSA-depth ladder ---
+[2026-08-27 14:39:33] B max-msa 512:1024 done rc=0  10 pdb
+[2026-08-27 14:42:05] B max-msa 64:128 done rc=0  10 pdb
+[2026-08-27 14:44:32] B max-msa 32:64 done rc=0  10 pdb
+[2026-08-27 14:46:54] B max-msa 16:32 done rc=0  10 pdb
+[2026-08-27 14:46:54] ===== register probe end =====

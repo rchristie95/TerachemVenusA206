@@ -66,6 +66,15 @@ COS_ALPHA_EXPERIMENTAL = 0.660  # from their complete-transfer anisotropy analys
 # point-dipole value by this factor of the ensemble means (production README).
 TDC_OVER_PDA = 1.1872
 
+# Rigid STEOM density Kabsch-placed on the 19 shared CR2 heavy atoms
+# (exciton_observables/README.md, Result 3). alpha, cos alpha, J.
+GEOMETRIES = [
+    ("release arm 36.6 ns", 90.2, -0.003, 28.70),
+    ("production MD 1 ns", 100.8, -0.187, 32.82),
+    ("control arm 36.6 ns", 102.3, -0.213, 29.51),
+    ("1MYW crystal dimer", 110.4, -0.349, 30.82),
+]
+
 
 def point_dipole_coupling_cm(mu_a, mu_b, r_a_ang, r_b_ang, epsilon):
     """Signed point-dipole coupling, distances converted to bohr correctly.
@@ -102,6 +111,19 @@ def main():
         Path("terachem_site_energy_cd/results/ensembles/ens_final.npz"),
     ])
     ap.add_argument("--epsilon", type=float, default=1.77)
+    ap.add_argument(
+        "--delta-sd-cm", type=float, default=None,
+        help="Rescale the per-frame detuning to this standard deviation, keeping the "
+             "shape of its distribution. The ensemble's native sd (686.5 for ens_v2_all) "
+             "is the INSTANTANEOUS detuning, but its correlation time is 8.5 fs against "
+             "hbar/2J = 81 fs, so the exciton mixing angle is set by the 81 fs-averaged "
+             "value instead: sd 225-406 (sigma_site 159-287). Use 225 or 406 here. "
+             "See tddft_ensemble_decoherence/audit/REPRODUCIBILITY_AND_TIMESCALE.md.")
+    ap.add_argument(
+        "--geometry-table", action="store_true",
+        help="Also evaluate fixed (alpha, J) geometries -- MD, control arm, crystal -- "
+             "against the SAME rescaled detuning distribution, so the convexity of "
+             "sin(2 theta) in Delta is handled frame by frame rather than at the mean.")
     ap.add_argument("--out", type=Path, default=Path("exciton_observables/superradiance_prediction.json"))
     args = ap.parse_args()
 
@@ -124,6 +146,11 @@ def main():
             continue
         d = np.load(path)
         delta = d["e_a_cm"] - d["e_b_cm"]
+        native_sd = float(delta.std(ddof=1))
+        if args.delta_sd_cm is not None:
+            delta = delta * (args.delta_sd_cm / native_sd)
+            print(f"[rescaled] {path.stem}: sd(Delta) {native_sd:.1f} -> "
+                  f"{delta.std(ddof=1):.1f} cm^-1 (static, 81 fs-averaged)")
         mu_a, mu_b = d["mu_a_au"], d["mu_b_au"]
         cos_alpha = np.sum(mu_a * mu_b, axis=1) / (
             np.linalg.norm(mu_a, axis=1) * np.linalg.norm(mu_b, axis=1))
@@ -176,6 +203,20 @@ def main():
         implied_mean_abs_delta = float(np.abs(delta * scales[idx]).mean()) if preds.min() <= target/PHI_VENUS <= preds.max() else float("nan")
         print(f"    detuning scale reproducing the measurement: x{scales[idx]:.3f} "
               f"=> <|Delta|> = {implied_mean_abs_delta:.1f} cm^-1")
+
+        if args.geometry_table:
+            print(f"    fixed-geometry rows against this SAME detuning distribution:")
+            print(f"      {'geometry':>22} {'alpha':>7} {'cos a':>8} {'J':>7} {'Dtau ps':>9} {'sigma':>7}")
+            for label, alpha_deg, cos_a, j_fixed in GEOMETRIES:
+                enh_g, _, _, _ = observable(np.full_like(delta, j_fixed), delta,
+                                            np.full_like(delta, cos_a))
+                dt = PHI_VENUS * enh_g.mean() * TAU_TDX_NS * 1000.0
+                print(f"      {label:>22} {alpha_deg:>7.1f} {cos_a:>+8.3f} {j_fixed:>7.2f} "
+                      f"{dt:>9.1f} {(dt - DTAU_PS)/DTAU_SD_PS:>+7.1f}")
+                results.setdefault("geometry_rows", {}).setdefault(name, {})[label] = {
+                    "alpha_deg": alpha_deg, "cos_alpha": cos_a, "J_cm": j_fixed,
+                    "predicted_dtau_ps": float(dt),
+                    "sigma_from_measurement": float((dt - DTAU_PS) / DTAU_SD_PS)}
 
         results["ensembles"][name] = {
             "n": int(n),

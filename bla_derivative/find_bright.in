@@ -1,0 +1,13 @@
+coordinates ref_q0.xyz
+run energy
+cis yes
+cisnumstates 5
+cismaxiter 300
+method camb3lyp
+basis 6-31gs
+charge -1
+spinmult 1
+scf diis+a
+threall 1.0e-13
+gpus 1
+end

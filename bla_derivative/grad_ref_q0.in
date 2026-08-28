@@ -1,0 +1,15 @@
+coordinates ref_q0.xyz
+run gradient
+cis yes
+cisnumstates 5
+cistarget 1
+cismaxiter 300
+method camb3lyp
+basis 6-31gs
+charge -1
+spinmult 1
+scf diis+a
+threall 1.0e-13
+scrdir scr_ref_q0
+gpus 1
+end

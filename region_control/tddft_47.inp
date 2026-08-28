@@ -1,0 +1,15 @@
+! CAM-B3LYP def2-TZVPD AutoAux RIJCOSX TightSCF
+# Item 8: QM-region sensitivity of the near-field correction TDC/PDA.
+# GAS PHASE, matching the condition of the reviewer's own Q-Chem calculation
+# (and avoiding the double-counting that would arise if CB/HB2/HB3 became QM
+# while still carrying MM point charges).
+# 44 = CR2(29) + Tyr202 phenol(12) + 3 link H, cut at CG-CB.
+# 47 = the same, cut one bond further out at CB-CA, retaining CB + 2 HB.
+# Same functional/basis/TDA setting as the gauge-verified dipole_gauge run.
+%maxcore 3000
+%pal nprocs 8 end
+%tddft
+  NRoots 5
+  TDA false
+end
+* xyzfile -1 1 geom_47.xyz

@@ -1,5 +1,7 @@
 # Superradiance as an independent test of the dimer geometry
 
+> **Superseded in part, 2026-08-27.** Result 4 is WITHDRAWN (the 1 ns MD was unconverged; 67.7 ns reaches the crystal interface). The 57 ps crystal match used the INSTANTANEOUS detuning and fails at the static value. The MD cannot test the register at all. See `CORRECTIONS_2026-08-27.md`.
+
 Round-2 status, 2026-08-12. This directory makes contact with an experimental
 observable the manuscript quotes but never inverts against our own geometry:
 the **57 ± 4 ps** faster fluorescence decay of dVenus-TD relative to the

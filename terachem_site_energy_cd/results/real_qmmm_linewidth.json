@@ -1,0 +1,21 @@
+{
+  "n_frames": 114,
+  "dt_fs": 4.0,
+  "channels": {
+    "site A": {
+      "sigma_cm": 887.8146017950272,
+      "fwhm_cm": 1316.0
+    },
+    "site B": {
+      "sigma_cm": 835.5161536976266,
+      "fwhm_cm": 1128.0
+    },
+    "gap": {
+      "sigma_cm": 1255.8032588080252,
+      "fwhm_cm": 2390.0
+    }
+  },
+  "real_site_hwhm_cm": 611.0,
+  "proxy_hwhm_cm": 300.5,
+  "nguyen_T2_hwhm_cm": 41.5
+}

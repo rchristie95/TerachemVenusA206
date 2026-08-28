@@ -1,0 +1,28 @@
+[2026-08-26 18:21:10] ===== TeraChem vibronic run start (pid 53341) =====
+[2026-08-26 18:21:10] GPU NVIDIA GeForce RTX 4080, 379 MiB
+[2026-08-26 18:21:10] START   stage 1: GPU optimisation (from ORCA cycle-69 geometry)
+[2026-08-26 19:12:52] ===== TeraChem vibronic run start (pid 58821) =====
+[2026-08-26 19:12:52] GPU NVIDIA GeForce RTX 4080, 418 MiB
+[2026-08-26 19:12:53] FAIL: no optimised geometry found
+[2026-08-26 19:14:17] ===== TeraChem vibronic run start (pid 58993) =====
+[2026-08-26 19:14:17] GPU NVIDIA GeForce RTX 4080, 411 MiB
+[2026-08-26 19:14:17] START   stage 1: GPU optimisation (from ORCA cycle-69 geometry)
+[2026-08-26 19:14:18] FAIL    stage 1
+[2026-08-26 19:16:22] ===== TeraChem vibronic run start (pid 59354) =====
+[2026-08-26 19:16:22] GPU NVIDIA GeForce RTX 4080, 418 MiB
+[2026-08-26 19:16:22] START   stage 1: GPU optimisation (from ORCA cycle-69 geometry)
+[2026-08-26 19:16:50] OK      stage 1
+[2026-08-26 19:16:50] optimised geometry <- scr_opt/optim_geom.xyz (last frame)
+[2026-08-26 19:16:50] START   stage 2: numerical Hessian (264 displacements)
+[2026-08-26 19:17:01] FAIL    stage 2
+[2026-08-26 19:17:01] START   stage 3: excited-state gradient at the FC point
+[2026-08-26 19:18:23] ===== TeraChem vibronic run start (pid 59679) =====
+[2026-08-26 19:18:23] GPU NVIDIA GeForce RTX 4080, 418 MiB
+[2026-08-26 19:18:23] START   stage 1: GPU optimisation (from ORCA cycle-69 geometry)
+[2026-08-26 19:21:38] OK      stage 1
+[2026-08-26 19:21:39] optimised geometry <- scr_opt/optim_geom.xyz (last frame)
+[2026-08-26 19:21:39] START   stage 2: numerical Hessian (264 displacements)
+[2026-08-26 19:50:32] OK      stage 2
+[2026-08-26 19:50:32] START   stage 3: excited-state gradient at the FC point
+[2026-08-26 19:51:50] OK      stage 3
+[2026-08-26 19:51:50] ===== complete -- run huang_rhys.py to extract S_i, omega_i =====
