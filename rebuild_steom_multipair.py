@@ -79,4 +79,4 @@ pB=np.ascontiguousarray(cc.apply_pymol_matrix(pk,mB),np.float64)
 J=K(pA,qk,pB,qk)*BOHR/EPS*HC
 print(f"\n=== STEOM coupling, RIGOROUS multipair density ===")
 print(f"  J_TDC(STEOM,multipair) = {J:.2f} cm^-1   2|J| = {2*abs(J):.1f}")
-print(f"  (definitive cap-masked references: STEOM TDC/PDA = 30.5/24.8; TDDFT TDC/PDA = 22.1/18.0 cm^-1)")
+print(f"  (definitive cap-masked references: STEOM TDC/PDA = 30.5/24.8; TDDFT TDC/PDA = 22.1/19.5 cm^-1)")

@@ -189,6 +189,12 @@ def main() -> None:
             "short100fs50",
             "short100fs50_fixedmm",
             "short100fs100_wb97xd3",
+            # 2026-08-31 T2 campaign: 1 fs cadence on the corrected 511-aa
+            # construct with full-system embedding. Everything above predates
+            # both fixes and runs at 2-4 fs.
+            "v6t2a",
+            "v6t2b",
+            "v6t2c",
         ),
         default="short100fs50",
     )
@@ -204,12 +210,18 @@ def main() -> None:
             if args.window == "short100fs50_fixedmm"
             else "wb97xd3_100fs100"
             if args.window == "short100fs100_wb97xd3"
+            else f"t2_{args.window}"
+            if args.window.startswith("v6t2")
             else "rapid_100fs50"
         )
     )
     with MANIFEST.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
-    expected_frames = 100 if args.window == "short100fs100_wb97xd3" else 50
+    expected_frames = (
+        100
+        if args.window == "short100fs100_wb97xd3" or args.window.startswith("v6t2")
+        else 50
+    )
     if len(rows) != expected_frames:
         raise RuntimeError(
             f"Expected {expected_frames} manifest rows, found {len(rows)}"

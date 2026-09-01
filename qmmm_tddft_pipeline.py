@@ -2488,6 +2488,22 @@ from coupling_core import (
 )
 
 
+RENORM_SCALE_WINDOW = (0.5, 2.0)
+
+
+def renorm_scale_ok(scale: float) -> bool:
+    """Is the transition-density renormalisation factor physically plausible?
+
+    The grid transition dipole should already match the oscillator-strength
+    target, so the factor should sit near 1. A large factor means the density
+    file is not the selected bright state (e.g. a dark/CT root was plotted) and
+    the coupling that follows would be meaningless. Exposed as a function so
+    tests exercise THESE bounds rather than a copy of them.
+    """
+    low, high = RENORM_SCALE_WINDOW
+    return low <= float(scale) <= high
+
+
 def stage3_main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--workdir", type=Path, default=Path("tc_tddft_old_current"))
@@ -2626,7 +2642,7 @@ def stage3_main(argv=None):
         # oscillator-strength target (scale ~ 1). A large factor means the
         # density file is not the selected bright state (e.g. a dark/CT root was
         # plotted) -- the coupling that follows would be meaningless.
-        if not (0.5 <= scale <= 2.0):
+        if not renorm_scale_ok(scale):
             msg = (f"renormalization factor {scale:.2f} is far from 1.0: the plotted transition "
                    f"density (grid |mu|={dip_mag:.4f} a.u.) does not match the target bright state "
                    f"(|mu|={mu_target:.4f} a.u.). Likely a wrong density root / QM-region problem.")

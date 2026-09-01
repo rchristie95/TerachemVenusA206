@@ -10,20 +10,20 @@ figures, and adds the associated sensitivity sweeps:
   * default            : regenerate the manuscript figures and standalone coupling trace
                          (Fig_Coupling, Fig_SSE_Site, Fig_ME_Site,
                           Fig_SSE_Adiabatic, Fig_ME_Adiabatic, Fig_Bloch_Grid).
-  * --sweep-t2         : sweep the pure-dephasing time T2* (the illustrative
-                         60 fs value is borrowed from photosynthetic systems) and show
+  * --sweep-t2         : sweep the pure-dephasing time T2* (the default 25 fs is
+                         measured for this system, not borrowed) and show
                          the timescale-separation conclusion holds across a range
                          -> Fig_T2_Sweep.pdf.
   * --sweep-eps        : vary the static (protein) dielectric rather than treating
                          bulk-water eps=78 as a protein-interior value, and show the central
-                         t=0 optical-limit coupling J(0)=32.82 cm^-1 is invariant
+                         t=0 optical-limit coupling J(0)=27.06 cm^-1 is invariant
                          to it -> Fig_Dielectric_Sweep.pdf.
   * --all              : everything.
 
 Model (energies in cm^-1, time in ps), from Combined.m:
   hbar = 5.308837 cm^-1*ps ; E1=E2=19088.2 ; eps_inf=1.77, eps_s=78, tau_D=8.3 ps
   1/eps(t) = 1/eps_s + (1/eps_inf - 1/eps_s) exp(-t/tau_D)
-  J(t)     = J_pref / eps factors  with  J_pref = J_opt * eps_inf,  J_opt=32.82
+  J(t)     = J_pref / eps factors  with  J_pref = J_opt * eps_inf,  J_opt=27.06
   H(t)     = [[E1, J(t)], [J(t), E2]] ;  U=(1/sqrt2)[[1,1],[1,-1]]
   ME (Lindblad pure dephasing, rate gamma=1/T2*):
       drho/dt = -(i/hbar)[H,rho] + dephasing(off-diagonals * -gamma)
@@ -42,15 +42,29 @@ from scipy.integrate import solve_ivp
 
 # ----- default physical parameters (Combined.m) -----------------------------
 HBAR = 5.308837      # cm^-1 * ps
-E1 = E2 = 19088.2    # cm^-1 (embedded STEOM bright-state energy; common shift cancels)
+E1_MEAN = 19088.2    # cm^-1 (embedded STEOM bright-state energy; common shift cancels)
+E1 = E2 = E1_MEAN    # overridden by --detuning, which splits them symmetrically
 EPS_INF = 1.77
 EPS_S = 78.0
 TAU_D = 8.3          # ps
-# Thermally averaged STEOM transition-density coupling from the VenusA206 tandem
-# NVT ensemble. Figure 1 uses this ensemble-mean optical-limit coupling so that
-# the open-system dynamics are consistent with the reported definitive J value.
-J_OPT = 32.8165      # cm^-1  (unit-corrected tandem thermal mean, 1000 frames)
-T2_STAR = 0.060      # ps
+# Thermally averaged transition-density coupling from the VenusA206 tandem NVT
+# ensemble. Figure 1 uses this ensemble-mean optical-limit coupling so that the
+# open-system dynamics are consistent with the reported definitive J value.
+#
+# 2026-08-31: 27.0571 replaces 32.8165. The old value came from rigidly fitting
+# ONE static STEOM transition density onto 1000 MD frames, which forces identical
+# transition dipoles onto two sites whose energies differ by <|Delta|> ~ 609
+# cm^-1. The v5 campaign recomputes the density per frame, per site, over 500
+# frames of a fresh 1 ns trajectory with full-system 75,035-charge embedding
+# (500/500 complete, zero failures), and gives 27.057 +/- 0.113 cm^-1 -- within
+# 0.4 cm^-1 of the independently recalculated v4full ensemble on a different
+# trajectory. See tddft_ensemble_decoherence/V5_CAMPAIGN_RUNBOOK.md.
+J_OPT = 27.0571      # cm^-1  (per-frame tandem thermal mean, 500 frames)
+T2_STAR = 0.025      # ps  (v6t2 campaign: 19.7/30.7 fs in the two windows
+                     #      that reach 1/e; the near-degenerate window does
+                     #      not, so this is representative, not an ensemble
+                     #      constant. Was 0.060, borrowed from photosynthetic
+                     #      systems and never measured for this system.)
 TF = 1.0             # ps
 DT = 1e-4            # ps
 
@@ -404,14 +418,32 @@ def main(argv=None):
                    help="T2* values (fs) for the sweep.")
     p.add_argument("--eps-list", type=float, nargs="+", default=[4, 10, 20, 40, 78],
                    help="Static dielectric values for the sweep.")
+    # Detuning and coupling, so the per-frame panels (frame_deloc/, frame_loc/)
+    # are reproducible from the command line. Before 2026-08-31 they could only
+    # be made by editing the module constants, which is why FIGURE_DATA_AUDIT.md
+    # could not trace them to a generator invocation.
+    p.add_argument("--detuning", type=float, default=0.0,
+                   help="Site-energy detuning Delta = E1 - E2 in cm^-1, applied "
+                        "symmetrically about the mean site energy.")
+    p.add_argument("--j-opt", type=float, default=J_OPT,
+                   help="Optical-limit coupling in cm^-1 (default: the 500-frame "
+                        "per-frame ensemble mean).")
+    p.add_argument("--t2", type=float, default=T2_STAR * 1000.0,
+                   help="Pure-dephasing time T2* in fs. Must be passed into "
+                        "make_params explicitly: make_params binds its defaults at "
+                        "def time, so rebinding the module constant T2_STAR has no "
+                        "effect on it.")
     p.add_argument("--all", action="store_true", help="Base figures + both sweeps.")
     p.add_argument("--no-base", action="store_true", help="Skip the six base figures.")
     args = p.parse_args(argv)
     args.out.mkdir(parents=True, exist_ok=True)
 
-    params = make_params()
-    print(f"[*] OQS dynamics: J_opt={J_OPT} cm^-1, T2*={T2_STAR*1000:.0f} fs, "
-          f"tau_D={TAU_D} ps, out={args.out}")
+    params = make_params(j_opt=args.j_opt,
+                         t2_star=args.t2 / 1000.0,
+                         e1=E1_MEAN + args.detuning / 2.0,
+                         e2=E1_MEAN - args.detuning / 2.0)
+    print(f"[*] OQS dynamics: J_opt={args.j_opt} cm^-1, Delta={args.detuning} cm^-1, "
+          f"T2*={args.t2:.1f} fs, tau_D={TAU_D} ps, out={args.out}")
 
     if not args.no_base:
         print("[*] Regenerating manuscript figures ...")

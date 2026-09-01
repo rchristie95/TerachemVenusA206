@@ -112,7 +112,10 @@ SUMMARY = "paper_data_summary.json"
 LOG_DIR = REPO / "pipeline_logs"
 
 # Reference numbers (for provenance/labels only; never overwrite a freshly parsed value)
-CORRECTED_LEGACY_TDDFT_STATIC_J = 20.8285213577  # superseded 74.38 value times the exact unit-correction factor
+CORRECTED_LEGACY_TDDFT_STATIC_J = 39.3602009470  # 74.38 * CORRECT_RECIPROCAL_DISTANCE_FACTOR, applied ONCE.
+# The v1 bug was a MISSING conversion, not the production 3.5711 over-conversion, so the
+# repair is a single multiplication by 0.529177210903. Dividing 74.38 by 3.5711 (the old
+# 20.8285 value) applied the factor twice and was 1.8897x too small.
 CORRECT_RECIPROCAL_DISTANCE_FACTOR = 0.529177210903  # 1/Angstrom -> 1/bohr
 REFERENCE_TERACHEM_44_NM = 361.0      # tc_tddft_44 bright state (wb97xd3/6-311g**, TDA) — the
                                       # like-for-like TeraChem number the ORCA TDDFT reproduces
@@ -488,7 +491,7 @@ def stage_static_J(args):
             "two_J": 2 * CORRECTED_LEGACY_TDDFT_STATIC_J,
             "note": "Legacy single-minimum TDDFT value after the exact reciprocal-distance "
                     "unit correction; the revised same-44-atom result reported in the manuscript "
-                    "is J_TDC=22.1 cm^-1 and J_PDA=18.0 cm^-1.",
+                    "is J_TDC=22.1 cm^-1 and J_PDA=19.5 cm^-1 (|q|-weighted centroids).",
         },
     }
 

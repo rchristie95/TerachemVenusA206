@@ -27,14 +27,26 @@ def main() -> None:
     assert np.isclose(inv_1, 0.5022987804944742, rtol=0.0, atol=1.0e-15)
     assert np.isclose(drop_percent, 11.093115852478075, rtol=0.0, atol=1.0e-12)
 
-    evolving_result = oqd.solve_me(time_dependent, tf=1.0, dt=1.0e-3)
-    frozen_result = oqd.solve_me(frozen, tf=1.0, dt=1.0e-3)
+    # A LOCALISED initial state is required for this comparison to mean
+    # anything. With the default symmetric psi0 = (1,1)/sqrt(2) and E1 == E2,
+    # rho0 commutes with H(t) for every value of J, so -(i/hbar)[H,rho]
+    # vanishes identically at every timestep and the evolving and frozen runs
+    # are bit-identical no matter what J_of_t returns -- the old
+    # `max(differences) < 1e-12` assertion passed even with J_of_t
+    # deliberately corrupted, providing zero regression protection.
+    localised = np.array([1.0, 0.0])
+    evolving_result = oqd.solve_me(time_dependent, tf=1.0, dt=1.0e-3, psi0=localised)
+    frozen_result = oqd.solve_me(frozen, tf=1.0, dt=1.0e-3, psi0=localised)
     keys = ("P1", "P2", "coh", "PB", "PD", "bloch", "purity")
     differences = {
         key: float(np.max(np.abs(evolving_result[key] - frozen_result[key])))
         for key in keys
     }
-    assert max(differences.values()) < 1.0e-12, differences
+    # J drops 11.1% over the first ps, so a site-localised population MUST
+    # transfer differently under evolving and frozen screening. Observed
+    # separation is ~1.3e-2 in the Bloch vector and ~6.5e-3 in P1.
+    assert max(differences.values()) > 1.0e-3, differences
+    assert differences["P1"] > 1.0e-3, differences
     print(
         f"PASS: 1/eps 0->1 ps = {inv_0:.10f}->{inv_1:.10f}; "
         f"J drop = {drop_percent:.6f}%; max ME difference = "

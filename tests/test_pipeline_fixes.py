@@ -55,11 +55,15 @@ def test_frozen_selection_is_coordinate_independent():
 
 
 def test_renorm_guard_logic():
-    # mirror the stage-3 guard window [0.5, 2.0]
-    def in_range(scale): return 0.5 <= scale <= 2.0
+    # Call the PRODUCTION guard, not a local copy of its bounds. The previous
+    # version re-implemented `0.5 <= scale <= 2.0` inside the test, so it would
+    # have kept passing even if the real window in qmmm_tddft_pipeline.py had
+    # been changed or removed.
+    in_range = P.renorm_scale_ok
     assert in_range(0.84)        # healthy anionic run
     assert not in_range(16.86)   # the garbage CT-root case
     assert not in_range(0.18)
+    assert P.RENORM_SCALE_WINDOW == (0.5, 2.0)
     print("[ok] renorm guard flags 16.86/0.18 and passes 0.84")
 
 

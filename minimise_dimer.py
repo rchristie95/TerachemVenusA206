@@ -98,10 +98,12 @@ import pdbfixer
 import openmm
 from openmm import Platform, unit
 from openmm.app import (
+    AmberPrmtopFile,
     CutoffNonPeriodic,
     ForceField,
     HBonds,
     Modeller,
+    NoCutoff,
     PDBFile,
     PDBReporter,
     PME,
@@ -109,6 +111,13 @@ from openmm.app import (
 )
 
 WATER_RESIDUE_NAMES = {"HOH", "WAT", "SOL"}
+# Chromophore-type residues are covalently embedded IN the backbone. They are
+# protein for continuity purposes, and because each collapses several source
+# residues into ONE resSeq the numbering legitimately jumps across them
+# (LEU64 - CR2(65) - LEU68). Treating either as a chain break inserts TER on
+# both sides of the chromophore and severs the polypeptide right at it.
+BACKBONE_NONSTANDARD_RESIDUES = {"CR2", "CRO", "CSY", "GYS", "NRQ", "CH6"}
+MAX_COLLAPSED_RESIDUE_SPAN = 4
 STANDARD_PROTEIN_RESIDUES = {
     "ALA",
     "ARG",
@@ -296,8 +305,33 @@ def residue_names_in_forcefield_xml(xml_path: Path) -> set:
     return set(re.findall(r"<Residue\s+name=\"([^\"]+)\"", text))
 
 
-def write_generic_forcefield_xml(topology, positions, residue_names: List[str], xml_path: Path) -> None:
+def read_reference_residue_charges(prmtop_path: Path) -> Dict[str, Dict[str, float]]:
+    """Per-atom charges for each nonstandard residue in a reference AMBER prmtop.
+
+    Ported from run_nvt.py. Without it the generic template gives every atom of
+    a nonstandard residue 0.0 e, which silently deletes CR2's formal -1 e from
+    the classical electrostatics for the whole minimisation, and makes
+    ``addSolvent(neutralize=True)`` neutralise a system it believes is neutral.
+    """
+    reference = AmberPrmtopFile(str(prmtop_path))
+    ref_system = reference.createSystem(nonbondedMethod=NoCutoff)
+    nonbonded = next(f for f in ref_system.getForces()
+                     if isinstance(f, openmm.NonbondedForce))
+    charges: Dict[str, Dict[str, float]] = {}
+    for residue in reference.topology.residues():
+        table = {}
+        for atom in residue.atoms():
+            q, _, _ = nonbonded.getParticleParameters(atom.index)
+            table[atom.name] = q.value_in_unit(unit.elementary_charge)
+        if table:
+            charges.setdefault(residue.name, table)
+    return charges
+
+
+def write_generic_forcefield_xml(topology, positions, residue_names: List[str], xml_path: Path,
+                                 reference_charges: Dict[str, Dict[str, float]] | None = None) -> None:
     residue_names = sorted(set(residue_names))
+    reference_charges = reference_charges or {}
     residues_by_name: Dict[str, object] = {}
     for residue in topology.residues():
         residues_by_name.setdefault(residue.name, residue)
@@ -325,7 +359,9 @@ def write_generic_forcefield_xml(topology, positions, residue_names: List[str], 
             type_by_atom_name[atom.name] = type_name
             atom_type_data.append((type_name, class_name, symbol, atom_mass_dalton(atom, symbol)))
             sigma, epsilon = LJ_BY_ELEMENT.get(symbol, (0.340, 0.2000))
-            nonbonded_params.append((type_name, 0.0, sigma, epsilon))
+            # Charge must be right BEFORE addSolvent(neutralize=True) counts ions.
+            charge = reference_charges.get(residue_name, {}).get(atom.name, 0.0)
+            nonbonded_params.append((type_name, charge, sigma, epsilon))
 
         bonds_local = []
         neighbors = {atom.name: set() for atom in atoms}
@@ -446,7 +482,9 @@ def preprocess_pdb_for_solvation(pdb_path: Path, workdir: Path) -> Path:
     prev_is_protein = None
 
     def is_protein_residue(resn: str) -> bool:
-        return resn in STANDARD_PROTEIN_RESIDUES
+        # Chromophores are covalently in the backbone; classifying them as
+        # non-protein trips the boundary test on BOTH sides of CR2.
+        return resn in STANDARD_PROTEIN_RESIDUES or resn in BACKBONE_NONSTANDARD_RESIDUES
 
     with pdb_path.open("r", encoding="utf-8", errors="replace") as handle, output_path.open(
         "w", encoding="utf-8"
@@ -470,6 +508,15 @@ def preprocess_pdb_for_solvation(pdb_path: Path, workdir: Path) -> Path:
                         gap = False
                         if prev_resi and resi and prev_resi.isdigit() and resi.isdigit():
                             gap = int(resi) != int(prev_resi) + 1
+                            # A chromophore collapses several source residues into
+                            # one resSeq, so the numbering jumps across it
+                            # (CR2 65 -> LEU 68). That is not a chain break.
+                            if (
+                                gap
+                                and prev_resn in BACKBONE_NONSTANDARD_RESIDUES
+                                and 0 < int(resi) - int(prev_resi) <= MAX_COLLAPSED_RESIDUE_SPAN
+                            ):
+                                gap = False
                         boundary = (prev_is_protein != is_protein)
                         if gap or boundary:
                             out_handle.write("TER\n")
@@ -1138,6 +1185,19 @@ def parse_args(argv=None):
         action="store_false",
         help="Enable addSolvent step (periodic box + ions) (default: enabled)",
     )
+    parser.add_argument(
+        "--amber-cr2-prmtop",
+        type=Path,
+        default=None,
+        help="Retained AMBER prmtop supplying exact CR2 RESP charges for the generic "
+             "nonstandard-residue template. Without it CR2 enters the classical "
+             "system at 0.0 e per atom instead of its formal -1 e.",
+    )
+    parser.add_argument(
+        "--max-net-charge-e", type=float, default=1.0e-4,
+        help="Abort if |total system charge| exceeds this after system construction. "
+             "Guards the defect that produced a net -2 e box.",
+    )
     parser.add_argument("--ionic-strength-m", type=float, default=0.15, help="Ionic strength (M)")
     parser.add_argument("--temperature-k", type=float, default=300.0, help="NVT temperature (K)")
     parser.add_argument("--friction-ps", type=float, default=1.0, help="Langevin friction (1/ps)")
@@ -1331,11 +1391,28 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path, List[CycleTrajectory]
     fallback_nonstandard_xml = None
     if nonstandard_names:
         fallback_nonstandard_xml = workdir / "nonstandard_residues_generic.xml"
-        write_generic_forcefield_xml(base_topology, base_positions, nonstandard_names, fallback_nonstandard_xml)
-        print(
-            f"    - Warning: using generic fallback FF for {nonstandard_names}; "
-            "this is approximate and may reduce physical accuracy"
-        )
+        reference_charges = None
+        if args.amber_cr2_prmtop is not None:
+            reference_charges = read_reference_residue_charges(args.amber_cr2_prmtop)
+            for name in nonstandard_names:
+                table = reference_charges.get(name)
+                if table:
+                    print(f"    - Template charge for {name} from reference prmtop: "
+                          f"net {sum(table.values()):+.6f} e "
+                          f"(ensures addSolvent neutralises correctly)")
+        write_generic_forcefield_xml(base_topology, base_positions, nonstandard_names,
+                                     fallback_nonstandard_xml, reference_charges)
+        if args.amber_cr2_prmtop is None:
+            print(
+                f"    - Warning: using generic fallback FF for {nonstandard_names} with "
+                "ZERO partial charges; pass --amber-cr2-prmtop to give CR2 its real "
+                "-1 e, otherwise the chromophore is electrostatically invisible"
+            )
+        else:
+            print(
+                f"    - Generic template used only to construct {nonstandard_names}; "
+                "charges taken from the reference prmtop"
+            )
         print(f"    - Wrote fallback nonstandard FF: {fallback_nonstandard_xml}")
 
     ff_inputs = ["amber14-all.xml", "amber14/tip3pfb.xml"]
@@ -1371,6 +1448,23 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path, List[CycleTrajectory]
         constraints=HBonds,
         ignoreExternalBonds=args.ignore_external_bonds,
     )
+
+    # A net-charged periodic system is compensated by PME's uniform background
+    # rather than by local counterions, which corrupts the electrostatics at
+    # precisely the chromophores. Verify AFTER the template charges are in.
+    _nb = next(f for f in system.getForces()
+               if isinstance(f, openmm.NonbondedForce))
+    _net = sum(_nb.getParticleParameters(i)[0].value_in_unit(unit.elementary_charge)
+               for i in range(system.getNumParticles()))
+    print(f"    - Total system charge: {_net:+.6f} e")
+    if abs(_net) > args.max_net_charge_e:
+        raise RuntimeError(
+            f"System net charge {_net:+.6f} e exceeds tolerance "
+            f"{args.max_net_charge_e:g} e. Solvation neutralisation ran against "
+            f"the wrong template charges -- pass --amber-cr2-prmtop so the "
+            f"nonstandard-residue template carries its true net charge before "
+            f"addSolvent, or relax --max-net-charge-e deliberately."
+        )
 
     platform = pick_platform(args.platform, strict=args.strict_gpu)
     properties: Dict[str, str] = {}

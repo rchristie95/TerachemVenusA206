@@ -1,6 +1,6 @@
 # Frame-resolved TeraChem site energies and nondegenerate CD
 
-> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1; the homogeneous HWHM is 346 cm^-1 from the measured C(t). See `CORRECTIONS_2026-08-27.md`.
+> **Note, 2026-08-29.** An earlier banner here demoted J = 32.82 to a range 21-26 cm^-1 because the STEOM dipole failed a length/velocity gauge test. **That is withdrawn: the gauge test was a double-zeta artefact and J = 32.82 +/- 1.55 cm^-1 stands.** See `gauge_calibration/RESULT.md`. The HWHM = 346 cm^-1 statement in the original banner is unaffected.
 
 This directory is a restartable, fail-closed workflow for two equivalent
 44-atom site calculations per MD frame. It does not edit either manuscript and

@@ -136,7 +136,12 @@ if __name__ == "__main__":
     
     # FFT to frequency domain
     freqs_au = fftfreq(len(t_fs), d=dt*41.341)
-    freqs_cm = freqs_au * 219474.6
+    # fftfreq returns ORDINARY frequency (cycles per a.u. of time), but the
+    # phase above was built with the ANGULAR omega_au = en/219474.6, so the
+    # bin frequency must be multiplied by 2*pi before the Hartree->cm^-1
+    # constant. The sign is negative because fft's kernel is exp(-i w t),
+    # the same convention as the phase, which puts the band at -omega.
+    freqs_cm = -2.0 * np.pi * freqs_au * 219474.6
     
     spec_abs = np.real(fft(C_abs))
     spec_cd  = np.real(fft(C_cd)) * R_scale

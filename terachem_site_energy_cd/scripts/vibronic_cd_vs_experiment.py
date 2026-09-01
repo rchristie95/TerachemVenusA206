@@ -72,13 +72,25 @@ def robust_fit(nu, y):
     return best
 
 
+def _cos_alpha(mu_a, mu_b):
+    """Cosine of the inter-site transition-dipole angle, per frame.
+
+    Required by vibronic_spectra's interference term; without it the dark
+    exciton is handed intensity it does not have.
+    """
+    mu_a = np.asarray(mu_a, float); mu_b = np.asarray(mu_b, float)
+    return np.einsum("ij,ij->i", mu_a, mu_b) / (
+        np.linalg.norm(mu_a, axis=1) * np.linalg.norm(mu_b, axis=1))
+
+
 def main():
     d = np.load(ENSEMBLE)
     ea, eb = d["e_a_cm"], d["e_b_cm"]
     T = np.einsum("ij,ij->i", d["r_b_ang"] - d["r_a_ang"],
                   np.cross(d["mu_a_au"], d["mu_b_au"]))
     shift = CENTRE - 0.5 * (ea + eb).mean()
-    frames = list(zip(ea + shift, eb + shift, np.full(len(ea), J_CM), T))
+    cos_alpha = _cos_alpha(d["mu_a_au"], d["mu_b_au"])
+    frames = list(zip(ea + shift, eb + shift, np.full(len(ea), J_CM), T, cos_alpha))
     m = (GRID >= FITW[0]) & (GRID <= FITW[1])
 
     print(f"ensemble n={len(frames)}  <|D|>={np.abs(ea-eb).mean():.1f}  J={J_CM:.2f}")

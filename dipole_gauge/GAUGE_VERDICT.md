@@ -1,9 +1,13 @@
-# The STEOM transition moment fails its own consistency check
+# The STEOM gauge "failure" was not a defect -- CORRECTED 2026-08-29
 
-2026-08-27. Same geometry (`geom_cthrp.xyz`), same point-charge embedding
-(`field.pc`), ORCA 6.1.1. Length and velocity gauges must agree for an exact
-wavefunction in a complete basis, so their ratio is an internal check that needs
-no experimental input.
+> **This file previously concluded that the STEOM transition moment fails an
+> internal check "that worsens with basis", and on that basis requoted
+> `J` as 21-26 cm^-1 instead of 32.82. That conclusion is WITHDRAWN.**
+> The measurements below are correct; the interpretation was not.
+> See `gauge_calibration/RESULT.md` for the calibration that settles it.
+
+2026-08-27 measurements. Same geometry (`geom_cthrp.xyz`), same point-charge
+embedding (`field.pc`), ORCA 6.1.1.
 
 | method | basis | E (eV) | f (length) | f (velocity) | vel/len | \|mu\| length |
 |---|---|---|---|---|---|---|
@@ -12,42 +16,59 @@ no experimental input.
 | TDDFT CAM-B3LYP | def2-SVPD | 3.0681 | 0.8795 | 0.8568 | 0.97 | 8.694 D |
 | TDDFT CAM-B3LYP | def2-TZVPD | 3.0574 | 0.8729 | 0.8690 | **1.00** | 8.677 D |
 
-**The basis is exonerated.** TDDFT reaches gauge agreement (0.97 -> 1.00,
-improving toward exact) in the same bases where STEOM disagrees by 1.34 -> 1.51
-and *worsens*. The earlier reading -- that the STEOM dipole was
-"basis-converged to -0.54%" -- was measuring the stability of the length-gauge
-number while the underlying transition moment was not converged at all.
+## Why the old reading was wrong
 
-So the defect is in the STEOM transition moment, not the basis and not (as
-tested earlier) the left/right normalisation, which accounts for only 1.3%.
+**1. "Worsens with basis" was a misreading.** `def2-SVP -> def2-SVPD` adds
+diffuse functions at *fixed double-zeta*. It is not a basis-convergence series.
+The real series is SVPD -> TZVPD -> QZVPD, and on formaldehyde the STEOM ratio
+improves monotonically along it: **0.6886 -> 0.9278 -> 0.9558**, converging to 1
+exactly as a correct implementation must.
 
-## What |mu| to use
+**2. TDDFT was never a valid control.** Linear-response methods satisfy sum
+rules that equation-of-motion methods do not, so TDDFT's ~1.00 is structural and
+automatic at *any* basis -- confirmed across three (1.0065 / 0.9882 / 1.0129,
+no trend). EOM-class methods, including STEOM, are documented as *not*
+gauge-invariant by construction. Demanding that STEOM match TDDFT on this test
+was a category error.
 
-TDDFT gives **8.68 D**, gauge-consistent and basis-converged (8.694 -> 8.677,
--0.2%). Propagating through `J ~ |mu|^2`:
+**3. The velocity form is not even the right object here.** Only the length form
+is strictly valid for a nonlocal Hamiltonian, and STEOM's doubly
+similarity-transformed `G` is non-Hermitian and effectively nonlocal.
 
-    J = 32.82 x (8.677/9.807)^2 = 25.7 cm^-1
+The gauge ratio at def2-SVPD therefore carries **no information** about whether
+the length-gauge dipole is accurate. Supporting evidence: on butadiene, STEOM's
+length-gauge \|mu\| (5.78 D) agrees with TDDFT's (5.64 D) to 2.6% while STEOM's
+ratio is 0.75.
 
-against 32.82 from the STEOM dipole. Superradiance at the corrected static
-detuning wanted J = 21-26, so 25.7 lands at the top of that range -- a large
-improvement on 32.82, which was excluded at 5.6-8.2 sigma.
+## What \|mu\| to use
 
-## The honest limit
+**Use the STEOM length-gauge value, 9.807 D, and therefore J = 32.82 cm^-1.**
+The rescaling to TDDFT's 8.68 D (which gave J = 25.7, and the quoted range
+21-26, later widened to 17.7-28.6) rested entirely on the withdrawn gauge
+argument and has no justification. It also amounted to importing a 0.7 eV energy
+error to partly cancel a ~1.5x intensity error.
 
-Gauge agreement is necessary, not sufficient. TDDFT places the excitation at
-3.06 eV (405 nm) against STEOM's 2.33 eV (532 nm) and experiment's ~515 nm: it
-gets the DIPOLE self-consistently and the ENERGY badly wrong, while STEOM does
-the reverse. A method that is wrong by 0.7 eV on the energy can be consistently
-wrong on the moment too.
+## The honest limits, which remain
 
-**Neither |mu| is trustworthy on its own.** What the test does establish:
+1. **9.807 D is a def2-SVPD number of unknown convergence.** The same
+   calibration shows the *length* dipole is not converged at double-zeta:
+   formaldehyde STEOM \|mu\| moves 1.295 -> 1.626 -> 1.592 D (+23% from SVPD to
+   TZVPD). STEOM and TDDFT also converge toward each other with basis -- 39%
+   apart at SVPD, 6.6% at QZVPD -- so our 13% chromophore gap may be largely a
+   basis artefact. A triple-zeta chromophore STEOM run would settle it, but
+   costs >64 h (attempt 6 needed that just to reach the dressing) and is out of
+   reach under a 16 h limit. **State this as a limitation rather than fixing it.**
+2. **9.807 D sits above the defensible experimental band, 7.20-9.15 D**
+   (`LOCAL_FIELD_CONVENTION.md`). That objection is untouched by any of this.
+3. **Both methods overshoot the experimental oscillator strength by 1.1-1.5x**
+   under every local-field convention, while agreeing with each other to 2.8%.
+   This is the cleanest remaining discrepancy about the dipole. It is common to
+   both methods, so it is not a STEOM defect and not a gauge artefact.
 
-1. the STEOM value fails an internal check that worsens with basis, so it should
-   not be quoted as the converged number it was taken for;
-2. the true value is very unlikely to be as high as 9.81 D -- three independent
-   experimental lines (7.5-7.9 D) and the one gauge-consistent calculation
-   (8.68 D) all sit below it;
-3. J should be quoted as a range, **21-26 cm^-1**, not as 32.82.
+## Superseded advice, do not act on it
 
-Resolving it properly needs a method that gets both the energy and the moment
-right -- EOM-CCSD with explicit left/right moments, or CC2 -- not a bigger basis.
+- "Resolving it needs EOM-CCSD or CC2, not a bigger basis" -- the premise is
+  gone. A bigger basis is in fact the relevant axis for the *dipole*; the gauge
+  needs nothing.
+- `AddDDTerm` and other density options: tested and dead
+  (`ADDDDTERM_RESULT.md`), and moot now.

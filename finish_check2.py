@@ -33,5 +33,5 @@ for d, lbl in [("tc_tddft_44", "TDDFT 6-311G** (no diffuse)"),
     J = cc.calculate_coupling(ptsA, q, ptsB, q) / EPS * HARTREE_CM
     mu = np.linalg.norm(cc.transition_dipole_au(pts, q))
     print(f"{lbl:<32}{1239.84/ev:>8.0f}nm{f:>6.2f}{mu:>7.2f}{J:>9.1f}")
-print("--- revised references: definitive STEOM 44-atom J=30.5; legacy TDDFT J=20.8 cm^-1 ---")
+print("--- revised references: definitive STEOM 44-atom J=30.5; legacy TDDFT J=39.4 cm^-1 ---")
 print("CHECK2 DONE")

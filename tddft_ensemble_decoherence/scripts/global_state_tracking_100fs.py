@@ -31,6 +31,15 @@ from run_ensemble import (
 from select_state_by_overlap import overlap as full_spatial_overlap
 
 
+# Bright anionic-chromophore pi-pi* reference configuration.  audit/
+# SITE_B_DIAGNOSIS.md records site A as (93,95) in 149/149 frames but site B
+# cycling through (93,95)/(93,96)/(93,97).  BRIGHT_VIRTUALS records the observed
+# site-B manifold for reference only -- see the note in emission() for why the
+# tracker deliberately does NOT accept it.
+BRIGHT_OCCUPIED = 93
+BRIGHT_VIRTUALS = (95, 96, 97)
+REFERENCE_VIRTUAL = 95
+
 WINDOW = "short100fs50"
 MANIFEST = ROOT / "manifests/short100fs50_frames.csv"
 OUTDIR = ROOT / "rapid_100fs50"
@@ -164,14 +173,34 @@ def viterbi(
 ) -> tuple[list[dict], float]:
     def emission(state: dict) -> float:
         # The retained bright anionic chromophore pi-pi* reference is the
-        # dominant 93 -> 95 configuration.  Every frame in both sites contains
-        # exactly one such candidate.  Treating all occupied-93 excitations as
-        # equivalent allowed intensity borrowing from the distinct 93 -> 96
+        # dominant 93 -> 95 configuration.  Treating all occupied-93 excitations
+        # as equivalent allowed intensity borrowing from the distinct 93 -> 96
         # state to create unphysical 0.15--0.28 eV one-fs jumps.
+        #
+        # 2026-08-30, TESTED AND REJECTED -- do not try this again.  The premise
+        # stated here previously ("every frame in both sites contains exactly one
+        # such candidate") is factually wrong, and audit/SITE_B_DIAGNOSIS.md says
+        # so: at site B the BRIGHTEST root is not 93 -> 95 in 49/56 frames of
+        # short100fs50_fixedmm (and 53/100 of short100fs100_wb97xd3), 11/56 frames
+        # contain no 93 -> 95 candidate at all, and on the mismatched frames this
+        # veto forces a mean 4819 cm^-1 (max 7474) shift away from the brightest
+        # state.  That looked like a strong candidate for the unexplained site-B
+        # spread.  It is not.  Relaxing the veto to the observed bright manifold
+        # (93 -> 95/96/97, reference bonus on 95 only) and re-running the full
+        # Viterbi made site B substantially WORSE, not better:
+        #     site B sd  847.0 -> 1886.1 cm^-1,  sd_B/sd_A  2.90 -> 6.46
+        # because the widened manifold lets the path walk onto 93 -> 96/97 and
+        # stay there (frames 43-49 collapse to J ~ 8 cm^-1).  The hard veto is
+        # crude but it pins the path, and the underlying problem is the one
+        # SITE_B_DIAGNOSIS already identified: when the bright pi-pi* character
+        # splits across near-degenerate roots, NO single-root pick is well
+        # defined.  The mixing-robust answer is the f-weighted first moment
+        # (`bright_moment_energy_eV` in run_ensemble.resolve_assignment), not a
+        # better filter here.
         excitation = state["largest_excitation"]
         if not (
-            excitation["occupied"] == 93
-            and excitation["virtual"] == 95
+            excitation["occupied"] == BRIGHT_OCCUPIED
+            and excitation["virtual"] == REFERENCE_VIRTUAL
         ):
             return -1.0e6
         return (

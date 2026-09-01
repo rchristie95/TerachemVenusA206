@@ -8,8 +8,18 @@ runs use the byte-identical 44-atom geometry md5 `6d55e271...`.
 | density | \|mu\| D | gauge v/l | J_TDC | J_PDA | TDC/PDA |
 |---|---:|---:|---:|---:|---:|
 | STEOM-DLPNO-CCSD / def2-SVPD | 9.81 | 1.512 | 30.45 | 24.81 | 1.227 |
-| wB97X-D3 / 6-311G** (TDA) | 8.90 | -- | 22.06 | 18.12 | 1.217 |
-| **CAM-B3LYP / def2-TZVPD (TDA false)** | **8.68** | **0.995** | **21.50** | 16.48 | **1.305** |
+| wB97X-D3 / 6-311G** (TDA) | 8.90 | -- | 22.06 | 19.53 | 1.130 |
+| **CAM-B3LYP / def2-TZVPD (TDA false)** | **8.68** | **0.995** | **21.50** | 18.35 | **1.172** |
+
+> **2026-08-30, J_PDA corrected.** The two TDDFT rows previously read 18.12 /
+> 1.217 and 16.48 / 1.305. `build_tddft_coupling.py` and
+> `build_tzvpd_coupling.py` placed the point-dipole site centroids at the
+> *unweighted* mean of the threshold-retained voxels, while the STEOM row (and
+> `compute_steom_coupling.py`) used the |q|-weighted centroid for the same
+> quantity. The unweighted mean moves 0.13 A over a 100x threshold change; the
+> weighted centroid moves <0.001 A. All three rows are now |q|-weighted and
+> directly comparable. **J_TDC is unchanged in every row** -- the Coulomb
+> double sum never used a centroid -- so the headline coupling is unaffected.
 
 The third row is the one to quote: it is computed from a density whose
 length/velocity gauges agree to 0.5%, with **no |mu|^2 rescaling anywhere**.

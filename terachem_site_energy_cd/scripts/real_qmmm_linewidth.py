@@ -63,7 +63,7 @@ def main():
     eb = np.array([float(r["site_B_energy_cm-1"]) for r in sel])
     gap = ea - eb
     print(f"REAL QM/MM TDDFT, {len(sel)} contiguous frames from index {start}"
-          f"  ({len(sel)*DT_FS:.0f} fs at {DT_FS:.0f} fs)\n")
+          f"  ({(len(sel)-1)*DT_FS:.0f} fs at {DT_FS:.0f} fs)\n")
     print(f"  site A  {ea.mean():9.1f} +- {ea.std(ddof=1):6.1f} cm^-1")
     print(f"  site B  {eb.mean():9.1f} +- {eb.std(ddof=1):6.1f} cm^-1")
     print(f"  gap     {gap.mean():+9.1f} +- {gap.std(ddof=1):6.1f} cm^-1"

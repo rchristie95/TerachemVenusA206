@@ -1,0 +1,16 @@
+{
+  "window_fs": 100.0,
+  "resolution_cm": 333.5640951981521,
+  "kT_cm": 208.5,
+  "sigma_gap_cm": 586.2438312525045,
+  "sigma_site_cm": 414.53698850742796,
+  "lambda_gap_cm": 824.1770495961989,
+  "lambda_site_cm": 412.08852479809946,
+  "S_if_all_in_one_mode": 0.30086042549324626,
+  "S_repo": 0.253,
+  "omega_repo_cm": 1369.7,
+  "spectral_peak_cm": 1667.8204759907603,
+  "weight_below_kT": 0.0,
+  "weight_above_kT": 1.0,
+  "caveat": "100 fs resolves to 334 cm-1, coarser than kT = 208 cm-1; the classically-valid part of the spectral density is unresolved here"
+}

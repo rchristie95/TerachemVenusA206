@@ -74,11 +74,16 @@ def vibronic_hamiltonian(e_a_cm, e_b_cm, j_cm, omega_cm, fc):
 
 
 def frame_vibronic_observables(e_a_cm, e_b_cm, j_cm, triple_product,
-                               omega_cm=1450.0, huang_rhys=0.35, n_max=5):
+                               omega_cm=1450.0, huang_rhys=0.35, n_max=5,
+                               cos_alpha=1.0):
     """Vibronic eigenstates with dipole and exciton-chirality strengths.
 
     `triple_product` is R_AB . (mu_A x mu_B); the electric dipoles are taken as
     equal in magnitude (homodimer), so absorption strengths are relative.
+
+    `cos_alpha` is the cosine of the angle between the two site transition
+    dipoles. It enters the interference term of |mu_k|^2 and must be supplied
+    for a non-parallel dimer; the 1.0 default is the in-phase (parallel) limit.
     """
     fc = franck_condon_overlaps(huang_rhys, n_max)
     H = vibronic_hamiltonian(e_a_cm, e_b_cm, j_cm, omega_cm, fc)
@@ -87,12 +92,14 @@ def frame_vibronic_observables(e_a_cm, e_b_cm, j_cm, triple_product,
 
     ca, cb = vectors[:n_states, :], vectors[n_states:, :]
     # electric dipole: sum over vibronic amplitudes weighted by FC overlap.
-    # equal-|mu| homodimer, so |mu_k|^2 = (a_k)^2 + (b_k)^2 + 2 a_k b_k cos(theta);
-    # the interference term is folded into the chirality factor below, and the
-    # relative dipole strength uses the in-phase convention a_k + b_k.
+    # equal-|mu| homodimer, so |mu_k|^2 = (a_k)^2 + (b_k)^2 + 2 a_k b_k cos(alpha).
+    # The interference term is REQUIRED here -- dropping it gave the degenerate
+    # S=0 pair [1,1] instead of the correct dark/bright [0,2], i.e. it handed the
+    # dark state full intensity. It is separate from the chirality factor below,
+    # which carries the R.(mu_A x mu_B) pseudoscalar, not the scalar overlap.
     a_k = fc @ ca
     b_k = fc @ cb
-    dipole_strength = a_k**2 + b_k**2
+    dipole_strength = a_k**2 + b_k**2 + 2.0 * a_k * b_k * cos_alpha
     chirality = np.einsum("n,nk,m,mk->k", fc, ca, fc, cb)
     rotational = -np.pi * energies * chirality * triple_product
     return {
@@ -109,15 +116,23 @@ def vibronic_spectra(grid_cm, frames, hwhm_cm, omega_cm=1450.0,
                      huang_rhys=0.35, n_max=5):
     """Ensemble-averaged absorption and interaction-induced CD.
 
-    `frames` is an iterable of (e_a_cm, e_b_cm, j_cm, triple_product).
+    `frames` is an iterable of (e_a_cm, e_b_cm, j_cm, triple_product) or
+    (e_a_cm, e_b_cm, j_cm, triple_product, cos_alpha). Without the fifth
+    element the parallel-dipole limit cos_alpha = 1 is assumed.
     """
     grid = np.asarray(grid_cm, float)
     absorption = np.zeros_like(grid)
     cd = np.zeros_like(grid)
     count = 0
-    for e_a, e_b, j_cm, triple in frames:
+    for frame in frames:
+        if len(frame) == 5:
+            e_a, e_b, j_cm, triple, cos_alpha = frame
+        else:
+            e_a, e_b, j_cm, triple = frame
+            cos_alpha = 1.0
         obs = frame_vibronic_observables(e_a, e_b, j_cm, triple,
-                                         omega_cm, huang_rhys, n_max)
+                                         omega_cm, huang_rhys, n_max,
+                                         cos_alpha=cos_alpha)
         for energy, strength, rotation in zip(obs["energies_cm"],
                                               obs["dipole_strengths"],
                                               obs["rotational_strengths_relative"]):

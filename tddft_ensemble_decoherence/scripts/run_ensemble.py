@@ -75,6 +75,87 @@ WINDOWS = {
     },
     # symmetric union embedding: same atom set for both sites, ~10x cheaper
     # than full-system. union_radius is the tunable.
+    "v5camp": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v5_campaign/tandem_v5_1250ps_500fs.dcd",
+        "frames": 2500,
+    },
+    # 2026-08-31. T2 campaign: three 100 fs windows at 1 fs cadence, each seeded
+    # from the v5 frame whose STEOM reference already exists (steom_v5/frame_NNNN).
+    # Chosen to span the detuning at near-constant coupling, so T2 can be tested
+    # for configuration dependence: |Delta| = 826.6 / 58.6 / 514.2 cm^-1 (71st /
+    # 4th / 51st ensemble percentile) at J = 28.84 / 28.85 / 27.67 cm^-1.
+    # v5's frame 2400 is deliberately unused: its |Delta| duplicates 1400 and its
+    # J = 19.23 is a -3.1 sigma coupling outlier.
+    # Topology is the v5 run's OWN solvated_protonated.pdb -- identical atoms and
+    # ordering (verified atom-for-atom), so cache/embedding_charges_v5.npz applies
+    # unchanged.
+    "v6t2a": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_t2_w900/tandem_v6_w900_100fs_1fs.dcd",
+        "frames": 100,
+        "seed_frame": 900,
+    },
+    "v6t2b": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_t2_w1400/tandem_v6_w1400_100fs_1fs.dcd",
+        "frames": 100,
+        "seed_frame": 1400,
+    },
+    "v6t2c": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_t2_w1900/tandem_v6_w1900_100fs_1fs.dcd",
+        "frames": 100,
+        "seed_frame": 1900,
+    },
+    # 2026-09-01. Low-frequency extension of the T2 campaign: the SAME three seed
+    # geometries carried to 500 fs at 4 fs cadence. The v6t2 windows resolve only
+    # to 1/(c*100fs) = 334 cm^-1, coarser than kT = 208 cm^-1, so they cannot see
+    # the part of the spectral density that is entitled to a classical treatment
+    # (hbar*w < kT). 500 fs gives 67 cm^-1 and crosses that boundary.
+    # Only frames beyond 100 fs are in the manifests; the first 100 fs is already
+    # covered at 1 fs by v6t2a/b/c.
+    "v6lfa": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_lf_w900/tandem_v6_w900_500fs_4fs.dcd",
+        "frames": 125,
+        "seed_frame": 900,
+    },
+    "v6lfb": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_lf_w1400/tandem_v6_w1400_500fs_4fs.dcd",
+        "frames": 125,
+        "seed_frame": 1400,
+    },
+    "v6lfc": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_lf_w1900/tandem_v6_w1900_500fs_4fs.dcd",
+        "frames": 125,
+        "seed_frame": 1900,
+    },
+    # 2026-09-01. The minimum-detuning configuration in the whole 500-frame v5
+    # ensemble: frame 1832, |Delta| = 0.170 cm^-1 against 2|J| = 49.1, i.e. an
+    # essentially perfectly degenerate dimer. It is the configuration the
+    # manuscript already features as its extreme delocalised case (labelled
+    # 466 ps there, which is time since the start of the production window;
+    # 916 ps absolute). Same protocol as v6lf -- 500 fs at 4 fs -- but this seed
+    # has NO existing STEOM reference, so two new ORCA jobs are run on it.
+    "v6min": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v6_min_w1832/tandem_v6_w1832_500fs_4fs.dcd",
+        "frames": 125,
+        "seed_frame": 1832,
+    },
+    "v4bnd_rc": {
+        "topology": REPO / "tc_tandem_v4_highcadence/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v4_highcadence/tandem_v4_8ps_4fs.dcd",
+        "frames": 2000,
+    },
+    "v4bnd_excl": {
+        "topology": REPO / "tc_tandem_v4_highcadence/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v4_highcadence/tandem_v4_8ps_4fs.dcd",
+        "frames": 2000,
+    },
     "v4union": {
         "topology": REPO / "tc_tandem_v4_highcadence/solvated_protonated.pdb",
         "trajectory": REPO / "tc_tandem_v4_highcadence/tandem_v4_8ps_4fs.dcd",
@@ -153,14 +234,15 @@ def prepare(window: str, frame: int, frame_dir: Path) -> dict:
             "--trajectory", str(WINDOWS[window]["trajectory"]),
             "--frame-index", str(frame),
             # v4short's barrel-1 LGMDELYK tail shifts site B by 8 residues.
-            *(["--site-b-offset", "8"] if window in {"v4short", "v4full", "v4union"} else []),
+            *(["--site-b-offset", "8"] if window in {"v4short", "v4full", "v4union", "v4bnd_rc", "v4bnd_excl", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"} else []),
             "--output-dir", str(frame_dir),
             # The cache is keyed to a topology descriptor. v4short's topology has
             # 16 more residues and 5439 more atoms than the others, so it needs its
             # own cache; sharing one raises "topology descriptor mismatch".
             # load_or_build_charges() builds this on first use.
             "--embedding-cache", str(
-                ROOT / ("cache/embedding_charges_v4.npz" if window in {"v4short", "v4full", "v4union"}
+                ROOT / ("cache/embedding_charges_v5.npz" if window in {"v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"}
+                        else "cache/embedding_charges_v4.npz" if window in {"v4short", "v4full", "v4union", "v4bnd_rc", "v4bnd_excl"}
                         else "cache/embedding_charges.npz")
             ),
         ]
@@ -170,13 +252,41 @@ def prepare(window: str, frame: int, frame_dir: Path) -> dict:
         # cm^-1 and root switches from 13/49 to 0/49. It gets a fixed selection
         # too, built from its own frame 0 (the topology differs per window, so
         # the other windows' selection files cannot be reused).
+        # Windows whose embedding field reaches the OTHER site must carry the
+        # partner chromophore at its physical -1 e, not the 0.0 e that
+        # load_or_build_charges leaves behind when it deletes CR2 by name.
+        # v5camp was omitted here until 2026-08-30 even though it is a
+        # --full-system-embedding window. Measured on frame 900: the field summed
+        # to +1.849200 e with 29 charges pinned at exactly 0.0 (the partner CR2),
+        # and to +0.849200 e with none once retained -- a missing -1 e sitting
+        # ~24 A from the QM region. The five calibration frames run before the fix
+        # are kept as a control under frames/v5camp_nopartner/.
+        if window in {"v4union", "v4full", "v4bnd_rc", "v4bnd_excl", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"}:
+            command.extend([
+                "--retain-partner-cr2-charges",
+                "--amber-cr2-prmtop", str(REPO / "anionic_build/monomer_solv.prmtop"),
+            ])
         if window == "v4union":
             command.extend([
                 "--union-embedding-radius", str(WINDOWS[window]["union_radius"]),
                 "--link-only-exclusion",
             ])
-        elif window == "v4full":
+        elif window in {"v4full", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"}:
             command.extend(["--full-system-embedding", "--link-only-exclusion"])
+        elif window == "v4bnd_rc":
+            # BOUNDARY TEST variant 1: 1.8 A geometric exclusion (the script default)
+            # instead of link-only. Removes the severed partners (~1.35 A) but NOT
+            # the orphaned carbonyl O (~2.4 A), so it is the intermediate point.
+            command.extend(["--full-system-embedding", "--boundary-exclusion", "1.8"])
+        elif window == "v4bnd_excl":
+            # BOUNDARY TEST variant 2: geometric 3.0 A boundary exclusion instead of
+            # link-only. Removes the whole orphaned backbone amide (the carbonyl O
+            # sits ~2.4 A from the cut and survives link-only exclusion).
+            # NOTE: charge is deleted, not redistributed -- prepare_production_frame.py
+            # has no --conserve-boundary-residue-charge (that flag is only in
+            # prepare_candidate2_frame.py). The removed charge is identical at both
+            # sites, so it should still cancel in Delta.
+            command.extend(["--full-system-embedding", "--boundary-exclusion", "3.0"])
         elif window in {"short", "short100fs50_fixedmm", "short100fs100_wb97xd3", "v4short"}:
             command.extend(
                 [
@@ -247,7 +357,13 @@ def resolve_assignment(
     if physical_all and selected not in physical_all:
         selected = max(physical_all, key=lambda item: item["spatial_overlap_absolute"])
         basis = "overlap_restricted_to_physical_bright_state"
-    if assignment["status"] != "selected" and physical:
+    # `physical_all` (f >= 0.50 over ALL candidates) is the stronger test and is
+    # applied first.  This tie-breaker must not then override it from the weaker
+    # f >= 0.10 pool restricted to the 0.10 overlap window -- that reintroduced
+    # exactly the dark-state pick the block above exists to prevent (frame 9 site
+    # B: root 5 f=0.7788 replaced by root 3 f=0.1305, a 1794 cm^-1 shift).  Only
+    # run it when no candidate cleared the strong bright test.
+    if assignment["status"] != "selected" and physical and selected not in physical_all:
         selected = max(physical, key=lambda item: item["oscillator_strength"])
         basis = "overlap_tie_resolved_by_configuration_and_oscillator_strength"
         if window == "short" and previous_dipole is not None and len(physical) > 1:
@@ -343,7 +459,12 @@ def process_site(
 ) -> dict:
     output = site_dir / "td_density.out"
     runtime_path = site_dir / "runtime_seconds.txt"
-    if profile == "rapid_cam_retry":
+    if profile == "svp":
+        # def2-SVP campaign profile: same functional and root count as
+        # "validated", smaller basis, and pointcharges_self_interaction off
+        # (an O(N^2) MM-MM constant that cancels in every energy difference).
+        template_stem = f"tddft_density_svp_{roots_count}roots.in"
+    elif profile == "rapid_cam_retry":
         template_stem = f"tddft_density_rapid_cam_retry_{roots_count}roots.in"
     elif profile == "rapid_cam":
         template_stem = f"tddft_density_rapid_cam_{roots_count}roots.in"
@@ -564,6 +685,16 @@ def main() -> None:
             "v4short",
             "v4full",
             "v4union",
+            "v5camp",
+            "v6t2a",
+            "v6t2b",
+            "v6t2c",
+            "v6lfa",
+            "v6lfb",
+            "v6lfc",
+            "v6min",
+            "v4bnd_rc",
+            "v4bnd_excl",
             "both",
         ),
         default="both",
@@ -571,10 +702,21 @@ def main() -> None:
     parser.add_argument("--start", type=int, default=0)
     parser.add_argument("--stop", type=int)
     parser.add_argument("--gpu", default="0")
+    parser.add_argument(
+        "--manifest-suffix",
+        default="",
+        help=(
+            "Read/write manifests/<window><suffix>_frames.csv instead of the "
+            "plain one. save_manifest() rewrites the WHOLE csv on every frame, "
+            "so concurrent workers sharing a manifest would clobber each other. "
+            "Each worker gets a disjoint slice under its own suffix; the frame "
+            "directories are keyed by frame number and stay shared."
+        ),
+    )
     parser.add_argument("--roots", type=int, choices=(4, 7, 9), default=7)
     parser.add_argument(
         "--profile",
-        choices=("validated", "rapid", "rapid_retry", "rapid_cam", "rapid_cam_retry"),
+        choices=("validated", "rapid", "rapid_retry", "rapid_cam", "rapid_cam_retry", "svp"),
         default="validated",
     )
     parser.add_argument("--delta-steom-ev", type=float, default=DELTA_STEOM_EV)
@@ -587,7 +729,7 @@ def main() -> None:
     args = parser.parse_args()
     windows = ["short", "long"] if args.window == "both" else [args.window]
     for window in windows:
-        manifest = ROOT / "manifests" / f"{window}_frames.csv"
+        manifest = ROOT / "manifests" / f"{window}{args.manifest_suffix}_frames.csv"
         columns, rows = load_manifest(manifest)
         stop = min(len(rows), args.stop if args.stop is not None else len(rows))
         previous: dict[str, np.ndarray] = {}
@@ -598,13 +740,19 @@ def main() -> None:
             if row["convergence_status"] == "complete":
                 print(f"[skip] {window} frame={frame} complete", flush=True)
                 continue
-            print(f"[start] {window} frame={frame} time={row['time_ps']} ps", flush=True)
+            # --start/--stop are MANIFEST ROW indices. The DCD frame to read is
+            # the row's own frame_index, which is only the same number when the
+            # manifest covers the trajectory contiguously from 0. It does for
+            # every window before v5camp; v5camp is strided (production frames
+            # 900-2896 step 4), so the two must not be conflated.
+            dcd_frame = int(row.get("frame_index") or frame)
+            print(f"[start] {window} row={frame} frame={dcd_frame} time={row['time_ps']} ps", flush=True)
             try:
                 if args.retry_failed_only:
                     row["retry_count"] = str(int(row.get("retry_count") or 0) + 1)
                 result = process_frame(
                     window,
-                    frame,
+                    dcd_frame,
                     row,
                     args.gpu,
                     previous,
@@ -614,7 +762,7 @@ def main() -> None:
                     args.state_reference,
                 )
                 print(
-                    f"[done] {window} frame={frame} roots="
+                    f"[done] {window} frame={dcd_frame} roots="
                     f"{result['site_A']['root']}/{result['site_B']['root']} "
                     f"EA={result['site_A']['energy_eV']:.6f} "
                     f"EB={result['site_B']['energy_eV']:.6f} "
@@ -626,12 +774,12 @@ def main() -> None:
                 row["failure_class"] = error.failure_class
                 row["retry_count"] = str(int(row.get("retry_count") or 0))
                 row["notes"] = str(error)
-                print(f"[failed] {window} frame={frame} class={error.failure_class}: {error}", flush=True)
+                print(f"[failed] {window} frame={dcd_frame} class={error.failure_class}: {error}", flush=True)
             except Exception as error:
                 row["convergence_status"] = "failed"
                 row["failure_class"] = "gpu_memory_or_numerical_failure"
                 row["notes"] = repr(error)
-                print(f"[failed] {window} frame={frame} unexpected: {error!r}", flush=True)
+                print(f"[failed] {window} frame={dcd_frame} unexpected: {error!r}", flush=True)
             finally:
                 save_manifest(manifest, columns, rows)
 

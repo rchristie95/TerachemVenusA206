@@ -138,7 +138,7 @@ def main() -> None:
         for label, p in r["delta_from_structural_proxy"].items():
             A(f"| {label} (structural proxy) | {p['theta_ab_deg']:.2f} "
               f"| **{p['delta_cusick_frame_deg']:.2f}** "
-              f"| −{p['offset_vs_transition_dipole_deg']:.2f}° |")
+              f"| {p['offset_vs_transition_dipole_deg']:+.2f}° |")
         if r["cusick_published_delta_deg"] is not None:
             A(f"| *Cusick published* | — | *{r['cusick_published_delta_deg']:.0f}* | — |")
         A("")

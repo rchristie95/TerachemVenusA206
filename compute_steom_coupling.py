@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Excitonic coupling J from the STEOM-CCSD bright-state transition density.
 Reuses the unit-corrected coupling_core pipeline (44-atom TDDFT reference:
-J_TDC=22.1 and J_PDA=18.0 cm^-1):
+J_TDC=22.1 and J_PDA=19.5 cm^-1):
 align the monomer (in the STEOM density frame) onto dimer chains A/B, transform the density,
 Coulomb double-sum. Optical-limit screening eps=1.77 (t=0), as in the numerical model."""
 import numpy as np, sys
@@ -36,7 +36,7 @@ print("")
 print(f"=== EXCITONIC COUPLING from STEOM-CCSD transition density ===")
 print(f"  J_TDC(STEOM) = {J_cm:.2f} cm^-1   (eps_opt={EPS})")
 print(f"  2|J|         = {2*abs(J_cm):.1f} cm^-1  (Davydov splitting)")
-print(f"  -- revised 44-atom TDDFT reference: J_TDC=22.1 cm^-1, J_PDA=18.0 cm^-1 --")
+print(f"  -- revised 44-atom TDDFT reference: J_TDC=22.1 cm^-1, J_PDA=19.5 cm^-1 --")
 
 # point-dipole estimate from the transformed site dipoles
 muA = cc.transition_dipole_au(pts_A, q); muB = cc.transition_dipole_au(pts_B, q)

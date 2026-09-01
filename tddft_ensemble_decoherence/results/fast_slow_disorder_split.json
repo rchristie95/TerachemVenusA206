@@ -1,0 +1,57 @@
+{
+  "fast_within_100fs": {
+    "sigma_site_A_cm": 397.0402273560795,
+    "sigma_site_B_cm": 453.7899747361791,
+    "sigma_site_rms_cm": 426.3603424980033,
+    "site_site_r": 0.06156123327446101,
+    "sigma_gap_measured_cm": 584.2798597989558,
+    "sigma_gap_sqrt2_construction_cm": 602.9645788187142,
+    "n": 300
+  },
+  "total_1ns": {
+    "sigma_site_A_cm": 557.5512757898712,
+    "sigma_site_B_cm": 528.9678520250627,
+    "sigma_site_rms_cm": 543.4475198263958,
+    "site_site_r": 0.015662506070770126,
+    "sigma_gap_measured_cm": 762.5167743263839,
+    "sigma_gap_sqrt2_construction_cm": 768.5508529765104,
+    "n": 500
+  },
+  "slow_gap_cm": 489.94783044975924,
+  "slow_site_cm": 336.9748731737222,
+  "per_window_fast": {
+    "v6t2a": {
+      "sigma_site_A_cm": 282.4138882566055,
+      "sigma_site_B_cm": 579.9238569124408,
+      "sigma_site_rms_cm": 456.1081473161905,
+      "site_site_r": -0.2522404839987323,
+      "sigma_gap_measured_cm": 706.1815957707138,
+      "sigma_gap_sqrt2_construction_cm": 645.0343278434223,
+      "n": 100
+    },
+    "v6t2b": {
+      "sigma_site_A_cm": 504.6064903903551,
+      "sigma_site_B_cm": 270.4503385753096,
+      "sigma_site_rms_cm": 404.8278002926498,
+      "site_site_r": 0.005293178274507328,
+      "sigma_gap_measured_cm": 571.2498272695411,
+      "sigma_gap_sqrt2_construction_cm": 572.5129655995322,
+      "n": 100
+    },
+    "v6t2c": {
+      "sigma_site_A_cm": 376.4600609498608,
+      "sigma_site_B_cm": 460.9566855615949,
+      "sigma_site_rms_cm": 420.83443505391995,
+      "site_site_r": 0.42694359532347625,
+      "sigma_gap_measured_cm": 453.9016167454041,
+      "sigma_gap_sqrt2_construction_cm": 595.149765566873,
+      "n": 100
+    }
+  },
+  "supersedes": {
+    "file": "terachem_site_energy_cd/scripts/cd_width_with_computed_disorder.py",
+    "constant": "SIGMA_SITE_SLOW = 159.0",
+    "why": "that value differences a 1 ns run against a 592 fs run from a different trajectory; both halves here share one lineage"
+  },
+  "not_a_dephasing_time": "hbar*w < kT implies period > 160 fs (quasi-static over any plausible coherence); modes fast enough to dephase lie above 834 cm^-1 where they are quantum-frozen and produce vibronic structure, not homogeneous broadening"
+}

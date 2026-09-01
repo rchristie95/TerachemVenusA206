@@ -13,7 +13,7 @@ import struct
 import numpy as np
 from scipy.spatial import cKDTree
 from openmm import NonbondedForce, unit
-from openmm.app import ForceField, Modeller, NoCutoff, PDBFile
+from openmm.app import AmberPrmtopFile, ForceField, Modeller, NoCutoff, PDBFile
 
 from prepare_surrogate_pilot import (
     PHENOL,
@@ -98,6 +98,35 @@ def read_dcd_frame(path: Path, frame_index: int) -> tuple[np.ndarray, np.ndarray
         "atom_count": int(atom_count),
     }
     return xyz, box, metadata
+
+
+def load_cr2_resp_charges(prmtop_path: Path) -> dict[str, float]:
+    """Read the configured CR2 RESP charges using exact atom-name identity."""
+
+    prmtop = AmberPrmtopFile(str(prmtop_path))
+    residues = [r for r in prmtop.topology.residues() if r.name == "CR2"]
+    if len(residues) != 1:
+        raise RuntimeError(
+            f"Expected exactly one CR2 template in {prmtop_path}; found {len(residues)}"
+        )
+    atoms = list(residues[0].atoms())
+    names = [atom.name for atom in atoms]
+    if len(names) != len(set(names)):
+        raise RuntimeError(f"CR2 atom names are not unique in {prmtop_path}: {names}")
+    system = prmtop.createSystem(nonbondedMethod=NoCutoff)
+    nonbonded = next(f for f in system.getForces() if isinstance(f, NonbondedForce))
+    charges = {
+        atom.name: float(
+            nonbonded.getParticleParameters(atom.index)[0].value_in_unit(
+                unit.elementary_charge
+            )
+        )
+        for atom in atoms
+    }
+    values = np.asarray(list(charges.values()), dtype=float)
+    if not np.isfinite(values).all():
+        raise RuntimeError(f"Nonfinite CR2 RESP charge in {prmtop_path}")
+    return charges
 
 
 def load_or_build_charges(pdb: PDBFile, cache: Path) -> np.ndarray:
@@ -274,6 +303,27 @@ def parse_args() -> argparse.Namespace:
             "H-bond length, injecting site- and frame-dependent noise."
         ),
     )
+    parser.add_argument(
+        "--retain-partner-cr2-charges",
+        action="store_true",
+        help=(
+            "Restore the RESP charges of every CR2 residue that is NOT in this "
+            "site's QM region. load_or_build_charges() deletes BOTH chromophores "
+            "by residue name, so without this the partner chromophore enters the "
+            "embedding field at 0.0 e instead of its physical -1 e. That monopole "
+            "is worth 15.6 +/- 4.0 cm^-1 of the measured TD-TDX red shift, so it "
+            "matters wherever the field reaches the other site "
+            "(--full-system-embedding, --union-embedding-radius). Requires "
+            "--amber-cr2-prmtop. The embedding cache is unaffected: it still "
+            "stores the CR2-deleted field and the restore is applied after."
+        ),
+    )
+    parser.add_argument(
+        "--amber-cr2-prmtop",
+        type=Path,
+        default=None,
+        help="AMBER prmtop supplying the CR2 RESP charges for --retain-partner-cr2-charges",
+    )
     parser.add_argument("--radius", type=float, default=12.0)
     parser.add_argument("--boundary-exclusion", type=float, default=1.8)
     return parser.parse_args()
@@ -292,6 +342,17 @@ def main() -> None:
     if not np.isfinite(positions).all():
         raise RuntimeError("Nonfinite coordinates")
     charges = load_or_build_charges(pdb, args.embedding_cache)
+    cr2_resp = None
+    if args.retain_partner_cr2_charges:
+        if args.amber_cr2_prmtop is None:
+            raise SystemExit(
+                "--retain-partner-cr2-charges requires --amber-cr2-prmtop"
+            )
+        cr2_resp = load_cr2_resp_charges(args.amber_cr2_prmtop)
+        print(
+            f"[partner-cr2] RESP table loaded from {args.amber_cr2_prmtop} "
+            f"({len(cr2_resp)} atoms, net {sum(cr2_resp.values()):+.6f} e)"
+        )
     fixed_selection = None
     if args.fixed_embedding_selection is not None and args.fixed_embedding_selection.exists():
         fixed_selection = json.loads(args.fixed_embedding_selection.read_text())
@@ -452,7 +513,33 @@ def main() -> None:
                 f"missing={missing[:10]} extra={extra[:10]}"
             )
         field_coords_array = np.asarray(field_coords, dtype=float)
-        field_charges = charges[np.asarray(field_indices, dtype=int)]
+        # This site's chromophore is QM and must stay at zero in the MM field.
+        # Every OTHER CR2 is a real anionic residue of the environment and was
+        # zeroed only because load_or_build_charges deletes CR2 by NAME.
+        site_charges = charges
+        partner_cr2_restored = 0
+        partner_cr2_net_e = 0.0
+        if cr2_resp is not None:
+            site_charges = charges.copy()
+            for residue in pdb.topology.residues():
+                if residue.name != "CR2":
+                    continue
+                if any(atom.index in qm_indices for atom in residue.atoms()):
+                    continue
+                for atom in residue.atoms():
+                    if atom.name not in cr2_resp:
+                        raise RuntimeError(
+                            f"CR2 atom {atom.name} is absent from the reference "
+                            f"RESP table; refusing to guess a charge"
+                        )
+                    site_charges[atom.index] = cr2_resp[atom.name]
+                    partner_cr2_net_e += cr2_resp[atom.name]
+                partner_cr2_restored += 1
+            print(
+                f"[partner-cr2] site {site}: restored {partner_cr2_restored} "
+                f"non-QM CR2 residue(s), net {partner_cr2_net_e:+.6f} e"
+            )
+        field_charges = site_charges[np.asarray(field_indices, dtype=int)]
         write_field(site_dir / "mm_charges.dat", field_charges, field_coords_array)
         shutil.copy2(
             Path(__file__).resolve().parents[1] / "input_templates/tddft_energy.in",
@@ -469,6 +556,9 @@ def main() -> None:
             "mm_point_charges": len(field_charges),
             "mm_net_charge_e": float(field_charges.sum()),
             "mm_component_atom_counts": component_counts,
+            "partner_cr2_charges_retained": bool(cr2_resp is not None),
+            "partner_cr2_residues_restored": partner_cr2_restored,
+            "partner_cr2_restored_net_charge_e": float(partner_cr2_net_e),
             "mm_atom_indices": field_indices,
         }
 

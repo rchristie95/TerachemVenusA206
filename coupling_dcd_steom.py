@@ -179,7 +179,14 @@ def main() -> None:
     density = np.load(args.density)
     points_full = np.asarray(density["pts_ang"], dtype=np.float64)
     charges_full = np.asarray(density["q"], dtype=np.float64)
-    density_origin = points_full.mean(axis=0)
+    # |q|-weighted centroid, matching compute_steom_coupling.py:43-44. This is
+    # the SITE ORIGIN: it sets r_vec_a = origin_b - origin_a, so it enters the
+    # PDA as 1/r^3 and is also what gets reported as the chromophore separation.
+    # The unweighted mean of the threshold-retained voxel set sits 0.6-0.7 A away
+    # and is threshold-dependent, so it biased both. The transition dipole itself
+    # is unaffected (the density is neutral, so mu is origin-independent).
+    _w = np.abs(charges_full)
+    density_origin = (points_full * _w[:, None]).sum(axis=0) / _w.sum()
     mu_local = np.sum(charges_full[:, None] * (points_full - density_origin), axis=0) * ANGSTROM_TO_BOHR
 
     points, charges = aggregate_density(points_full, charges_full, args.bin_width)

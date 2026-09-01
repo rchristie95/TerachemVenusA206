@@ -81,6 +81,16 @@ def main(argv=None):
     if atoms_bohr.shape[0] != 44:
         raise ValueError(f"Expected 44 QM atoms, found {atoms_bohr.shape[0]}")
 
+    # Every dipole below must be taken about a LOCAL origin. The Voronoi cap mask
+    # removes charge, so the masked distribution is not exactly neutral, and the
+    # dipole of a non-neutral distribution is origin-dependent: about the absolute
+    # lab-frame origin the residual monopole adds ~0.09 a.u. (2.4%) of spurious
+    # |mu|, which then propagates through `scale` into every retained charge and
+    # roughly doubles in J (J ~ |mu|^2). points_bohr itself stays in the lab frame
+    # because the saved coordinates are used for the dimer alignment.
+    dipole_origin_bohr = atoms_bohr[:41].mean(axis=0)
+    points_local = points_bohr - dipole_origin_bohr
+
     rho_total = np.zeros(points_bohr.shape[0], dtype=float)
     pair_rows = []
     for hole, particle, occupation in PAIRS:
@@ -93,14 +103,14 @@ def main(argv=None):
                 raise ValueError("NTO cube origins/axes do not match")
         rho_pair = (hole_cube["values"] * particle_cube["values"]).reshape(-1)
         q_pair = rho_pair * dvol
-        mu_pair = -(points_bohr * q_pair[:, None]).sum(axis=0)
+        mu_pair = -(points_local * q_pair[:, None]).sum(axis=0)
         sign = 1.0 if float(np.dot(mu_pair, MU_RIGHT_AU)) >= 0.0 else -1.0
         coefficient = sign * np.sqrt(occupation)
         rho_total += coefficient * rho_pair
         pair_rows.append((hole, particle, occupation, coefficient, *mu_pair))
 
     q_unmasked = rho_total * dvol
-    mu_unmasked = -(points_bohr * q_unmasked[:, None]).sum(axis=0)
+    mu_unmasked = -(points_local * q_unmasked[:, None]).sum(axis=0)
 
     # Voronoi assignment of every voxel to its nearest QM atom.  Removing the
     # cells assigned to atoms 42--44 excludes cap-associated density without an
@@ -116,11 +126,11 @@ def main(argv=None):
     physical_mask = min_physical_d2 <= min_link_d2
     q_masked = q_unmasked.copy()
     q_masked[~physical_mask] = 0.0
-    mu_masked = -(points_bohr * q_masked[:, None]).sum(axis=0)
+    mu_masked = -(points_local * q_masked[:, None]).sum(axis=0)
 
     scale = float(np.dot(MU_RIGHT_AU, mu_masked) / np.dot(mu_masked, mu_masked))
     q_scaled = q_masked * scale
-    mu_scaled = -(points_bohr * q_scaled[:, None]).sum(axis=0)
+    mu_scaled = -(points_local * q_scaled[:, None]).sum(axis=0)
     nonzero = np.abs(q_scaled) > args.threshold * np.max(np.abs(q_scaled))
     points_ang = points_bohr[nonzero] * BOHR_A
     charges = q_scaled[nonzero]

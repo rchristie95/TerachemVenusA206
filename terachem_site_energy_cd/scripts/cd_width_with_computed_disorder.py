@@ -94,6 +94,17 @@ def robust_fit(nu, y):
     return best
 
 
+def _cos_alpha(mu_a, mu_b):
+    """Cosine of the inter-site transition-dipole angle, per frame.
+
+    Required by vibronic_spectra's interference term; without it the dark
+    exciton is handed intensity it does not have.
+    """
+    mu_a = np.asarray(mu_a, float); mu_b = np.asarray(mu_b, float)
+    return np.einsum("ij,ij->i", mu_a, mu_b) / (
+        np.linalg.norm(mu_a, axis=1) * np.linalg.norm(mu_b, axis=1))
+
+
 def build_frames(data: dict, sigma_gap_cm: float) -> list:
     """Ensemble with the detuning rescaled to a target static spread.
 
@@ -107,8 +118,9 @@ def build_frames(data: dict, sigma_gap_cm: float) -> list:
                        np.cross(data["mu_a_au"], data["mu_b_au"]))
     gap = e_a - e_b
     scaled = gap * (sigma_gap_cm / gap.std())
+    cos_alpha = _cos_alpha(data["mu_a_au"], data["mu_b_au"])
     return list(zip(CENTRE + 0.5 * scaled, CENTRE - 0.5 * scaled,
-                    np.full(len(gap), J_CM), triple)), scaled
+                    np.full(len(gap), J_CM), triple, cos_alpha)), scaled
 
 
 def run(frames, hwhm, S, omega):

@@ -18,7 +18,7 @@ Three quantities are computed here, all from geometry that is already on disk:
           nu_bar = mu^2 (1 + cos^2 delta)/(h c R^3), only follows if R_hat is
           parallel to x_hat -- an assumption of their quasi-2D model, not a
           measurement. We have the real 3D structure, so we can test it: compare
-          the true kappa against -(1 + cos^2 delta) evaluated at the SAME delta.
+          the true kappa against (1 + cos^2 delta) evaluated at the SAME delta.
 
   d(nu)   the 1PA absorption shift, Kasha:
           delta_nu = J (tan^2 delta - 1)/(tan^2 delta + 1) = -J cos(2 delta)
@@ -119,7 +119,7 @@ def derived(mu_a, mu_b, r_a, r_b, epsilon):
 
     # Their quasi-2D form, evaluated at OUR delta. This is the self-consistency
     # test of eq 13: does the real 3D kappa match the 2D one at the same angle?
-    kappa_2d = -(1.0 + np.cos(np.radians(delta)) ** 2)
+    kappa_2d = 1.0 + np.cos(np.radians(delta)) ** 2
 
     return {
         "theta_ab_deg": theta,
@@ -256,7 +256,7 @@ def main() -> None:
     print(f"  delta      {d['delta_deg']['mean']:8.3f} +/- {d['delta_deg']['std']:.3f} deg"
           f"      Cusick tandem {lo}-{hi} deg")
     print(f"  kappa      {d['kappa']['mean']:8.4f} +/- {d['kappa']['std']:.4f}")
-    print(f"  kappa_2d   {d['kappa_2d']['mean']:8.4f}   (their -(1+cos^2 delta) at our delta)")
+    print(f"  kappa_2d   {d['kappa_2d']['mean']:8.4f}   (their (1+cos^2 delta) at our delta)")
     print(f"  |ratio|    {d['kappa_ratio_abs']['mean']:8.4f} +/- {d['kappa_ratio_abs']['std']:.4f}"
           f"   -> 2D assumption off by {abs(1-d['kappa_ratio_abs']['mean'])*100:.1f}%")
     print(f"  R          {d['separation_A']['mean']:8.3f} +/- {d['separation_A']['std']:.3f} A")

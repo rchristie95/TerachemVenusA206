@@ -181,8 +181,14 @@ def analyse(path):
     d_ex = np.array(states[bright]["D_au"])
     delta_mu = d_ex - d_gs
 
+    # FINAL is NOT an independent convention: its fosc/D2 are the LEFT-RIGHT
+    # geometric mean but its printed DX/DY/DZ -- the only thing gamma_0 uses --
+    # are the RIGHT vector (see module docstring). Including it double-counts
+    # RIGHT and understates the L/R spread we report as the error bar. It is
+    # still used above to pick the bright root.
+    conventions = {k: v for k, v in steom.items() if k != "FINAL"} or steom
     per_convention = {}
-    for label, roots in sorted(steom.items()):
+    for label, roots in sorted(conventions.items()):
         if bright not in roots:
             continue
         mu = np.array(roots[bright]["mu_au"])

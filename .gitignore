@@ -375,3 +375,6 @@ alphafold_tandem/colabfold/out_*/
 terachem_site_energy_cd/results/cand2_*frame_*/
 terachem_site_energy_cd/results/tdx_*frame_*/
 terachem_site_energy_cd/results/*_frame_[0-9]*/
+
+# Local safety net for the consolidated manuscript/ folder (superseded content)
+manuscript_archive/

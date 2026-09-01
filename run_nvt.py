@@ -572,7 +572,8 @@ def write_generic_forcefield_xml(topology, positions, residue_names: List[str], 
         handle.write("</ForceField>\n")
 
 
-def apply_amber_cr2_parameters(system, topology, prmtop_path: Path) -> dict:
+def apply_amber_cr2_parameters(system, topology, prmtop_path: Path,
+                               constraints=HBonds) -> dict:
     """Replace placeholder CR2 terms with those from a retained AMBER prmtop.
 
     The target residue must have the same atom names and local connectivity as
@@ -584,7 +585,7 @@ def apply_amber_cr2_parameters(system, topology, prmtop_path: Path) -> dict:
     reference = AmberPrmtopFile(str(prmtop_path))
     reference_system = reference.createSystem(
         nonbondedMethod=NoCutoff,
-        constraints=HBonds,
+        constraints=constraints,
     )
     reference_atoms = list(reference.topology.atoms())
     reference_residues = list(reference.topology.residues())
@@ -1655,6 +1656,48 @@ def parse_args(argv=None):
         help="Resume an interrupted NVT run from this checkpoint and append to a DCD trajectory",
     )
     parser.add_argument(
+        "--no-hbond-constraints",
+        action="store_true",
+        default=False,
+        help="Build the system with constraints=None instead of HBonds, freeing "
+             "the X-H stretches. CONTROL ONLY: at 3000 cm-1 and 300 K these modes "
+             "are quantum-mechanically frozen (hbar*w/kT = 14.4), so a classical "
+             "trajectory misrepresents them either way. Requires a timestep of "
+             "~0.25 fs.",
+    )
+    parser.add_argument(
+        "--initial-dcd",
+        type=Path,
+        default=None,
+        help="Seed positions AND periodic box from one frame of this DCD instead of "
+             "the input PDB. For high-cadence continuations that must start at a "
+             "geometry already sampled by a longer run. Implies no initial "
+             "minimization: the frame is already thermally equilibrated and "
+             "minimizing it would destroy the configuration being continued.",
+    )
+    parser.add_argument(
+        "--initial-dcd-frame",
+        type=int,
+        default=None,
+        help="0-based frame index within --initial-dcd",
+    )
+    parser.add_argument(
+        "--expect-initial-potential-kj",
+        type=float,
+        default=None,
+        help="Potential energy the source run logged for --initial-dcd-frame. When "
+             "given, the seeded context must reproduce it (see "
+             "--initial-potential-tol-kj) or the run aborts. This is the check that "
+             "the System was rebuilt with identical atoms, ordering, parameters and "
+             "box; nothing else catches a silently different water placement.",
+    )
+    parser.add_argument(
+        "--initial-potential-tol-kj",
+        type=float,
+        default=5.0,
+        help="Absolute tolerance for --expect-initial-potential-kj (kJ/mol)",
+    )
+    parser.add_argument(
         "--ignore-external-bonds",
         action="store_true",
         default=True,
@@ -1923,16 +1966,29 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     nonbonded_cutoff = choose_cutoff_from_box(modeller.topology, default_nm=1.0)
     has_periodic_box = get_periodic_box_lengths_ang(modeller.topology) is not None
     nonbonded_method = PME if has_periodic_box else CutoffNonPeriodic
+    # X-H stretches sit at ~3000 cm^-1, inside the band a ~12 fs T2 is sensitive
+    # to, so whether they are constrained is a physical choice and not a
+    # numerical convenience. At 300 K these modes are quantum-mechanically frozen
+    # (hbar*omega/kT = 14.4), and a classical trajectory gets their amplitude
+    # wrong in BOTH directions: <q^2>_quantum/<q^2>_classical = (x/2)coth(x/2)
+    # = 7.2, so classical misses zero-point motion, while a ground-state mode
+    # does not dephase stochastically at all -- it makes vibronic structure.
+    # Constraining them is the cleaner choice because it removes a channel the
+    # classical model cannot represent, rather than because classical
+    # over-populates it. --no-hbond-constraints exists to MEASURE the effect.
+    md_constraints = None if args.no_hbond_constraints else HBonds
+    if args.no_hbond_constraints:
+        print("    - X-H constraints DISABLED (control run, not production)")
     system = forcefield.createSystem(
         modeller.topology,
         nonbondedMethod=nonbonded_method,
         nonbondedCutoff=nonbonded_cutoff,
-        constraints=HBonds,
+        constraints=md_constraints,
         ignoreExternalBonds=args.ignore_external_bonds,
     )
     if args.amber_cr2_prmtop is not None:
         cr2_parameter_summary = apply_amber_cr2_parameters(
-            system, modeller.topology, args.amber_cr2_prmtop
+            system, modeller.topology, args.amber_cr2_prmtop, md_constraints
         )
         parameter_summary_path = workdir / "cr2_amber_parameter_transplant.json"
         parameter_summary_path.write_text(json.dumps(cr2_parameter_summary, indent=2) + "\n")
@@ -2021,6 +2077,54 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
             ) from exc
         raise
     simulation.context.setPositions(modeller.positions)
+
+    # Seed one geometry out of an existing trajectory. Positions AND cell come
+    # from the DCD together: the workdir PDB carries the pre-NPT box, so taking
+    # the cell from it silently runs production at the wrong density (the v3
+    # lineage lost a campaign to exactly this). read_dcd_frame is the same
+    # reader the QM/MM pipeline uses, so the MD starts from coordinates
+    # bit-identical to those the reference calculation saw.
+    seeded_from_dcd = False
+    if args.initial_dcd is not None:
+        if args.resume_checkpoint is not None:
+            raise RuntimeError(
+                "--initial-dcd and --resume-checkpoint are mutually exclusive: a "
+                "checkpoint carries its own positions, box and velocities."
+            )
+        if args.initial_dcd_frame is None:
+            raise RuntimeError("--initial-dcd requires --initial-dcd-frame")
+        sys.path.insert(
+            0, str(Path(__file__).resolve().parent / "tddft_ensemble_decoherence/scripts")
+        )
+        from prepare_production_frame import read_dcd_frame
+
+        initial_dcd = resolve_path(args.initial_dcd)
+        if not initial_dcd.exists():
+            raise FileNotFoundError(f"--initial-dcd not found: {initial_dcd}")
+        seed_xyz, seed_box, seed_meta = read_dcd_frame(initial_dcd, args.initial_dcd_frame)
+        n_particles = simulation.system.getNumParticles()
+        if seed_xyz.shape[0] != n_particles:
+            raise RuntimeError(
+                f"--initial-dcd frame has {seed_xyz.shape[0]} atoms but the built "
+                f"System has {n_particles}. The System was not rebuilt identically; "
+                f"addSolvent is unseeded, so it must not be re-run for a continuation."
+            )
+        simulation.context.setPeriodicBoxVectors(
+            openmm.Vec3(seed_box[0], 0.0, 0.0) * unit.angstrom,
+            openmm.Vec3(0.0, seed_box[1], 0.0) * unit.angstrom,
+            openmm.Vec3(0.0, 0.0, seed_box[2]) * unit.angstrom,
+        )
+        simulation.context.setPositions(seed_xyz * unit.angstrom)
+        seeded_from_dcd = True
+        print(
+            f"    - Seeded from {initial_dcd.name} frame {args.initial_dcd_frame} "
+            f"of {seed_meta['frame_count']} ({n_particles} atoms)"
+        )
+        print(
+            f"    - Box from DCD frame: {seed_box[0]:.4f} x {seed_box[1]:.4f} x "
+            f"{seed_box[2]:.4f} A (NOT the PDB's)"
+        )
+
     resumed = False
     if args.resume_checkpoint is not None:
         resume_checkpoint = resolve_path(args.resume_checkpoint)
@@ -2136,8 +2240,36 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
         return state.getPotentialEnergy().value_in_unit(unit.kilojoule_per_mole)
 
     e_before_min1 = potential_kj_per_mol()
-    if resumed:
-        print("    - Initial minimization skipped after checkpoint resume")
+
+    # The decisive check that the System was rebuilt identically. Water
+    # placement is unseeded, so a re-solvated box would differ in atom identity
+    # and ordering while still having a plausible energy; only agreement with
+    # the value the source run logged for this exact frame proves atoms,
+    # ordering, parameters and cell all match.
+    if args.expect_initial_potential_kj is not None:
+        if not seeded_from_dcd:
+            raise RuntimeError(
+                "--expect-initial-potential-kj is only meaningful with --initial-dcd"
+            )
+        deviation = abs(e_before_min1 - args.expect_initial_potential_kj)
+        print(
+            f"    - Seeded potential energy: {e_before_min1:.6f} kJ/mol "
+            f"(expected {args.expect_initial_potential_kj:.6f}, "
+            f"deviation {deviation:.6f})"
+        )
+        if deviation > args.initial_potential_tol_kj:
+            raise RuntimeError(
+                f"Seeded potential energy {e_before_min1:.6f} kJ/mol deviates from the "
+                f"source run's logged {args.expect_initial_potential_kj:.6f} kJ/mol by "
+                f"{deviation:.6f} kJ/mol, above the {args.initial_potential_tol_kj} "
+                f"kJ/mol tolerance. The rebuilt System is NOT the one that produced "
+                f"this frame -- check that --skip-solvation is set and that the "
+                f"topology PDB is the source run's own solvated_protonated.pdb."
+            )
+
+    if resumed or seeded_from_dcd:
+        why = "checkpoint resume" if resumed else "--initial-dcd seeding"
+        print(f"    - Initial minimization skipped after {why}")
         e_after_min1 = e_before_min1
     else:
         if can_stream_minimization and _MinimizationProgressReporter is not None:
@@ -2155,13 +2287,20 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
     # context starts at zero velocity and the thermostat heats the system inside
     # what is reported as production, with no warm-up discarded.
     if not resumed:
+        # Explicitly seeded: positions and momenta factorise in the canonical
+        # ensemble, so (trajectory positions, fresh Maxwell-Boltzmann momenta) is
+        # a valid microstate -- but only a seeded draw makes the window
+        # reproducible.
         simulation.context.setVelocitiesToTemperature(
-            args.temperature_k * unit.kelvin
+            args.temperature_k * unit.kelvin, int(args.seed)
         )
-        print(f"    - Seeded velocities at {args.temperature_k:g} K")
+        print(
+            f"    - Seeded velocities at {args.temperature_k:g} K "
+            f"(seed {int(args.seed)})"
+        )
 
     # NPT equilibration to relax the solvent density before NVT production.
-    if args.npt_steps > 0 and not resumed:
+    if args.npt_steps > 0 and not resumed and not seeded_from_dcd:
         if not has_periodic_box:
             raise RuntimeError("--npt-steps requires a periodic box")
         barostat = openmm.MonteCarloBarostat(

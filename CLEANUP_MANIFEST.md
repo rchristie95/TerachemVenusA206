@@ -1,6 +1,6 @@
 # Cleanup manifest — 2026-08-11
 
-> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1. See `CORRECTIONS_2026-08-27.md`.
+> **Note, 2026-08-29.** An earlier banner here demoted J = 32.82 to a range 21-26 cm^-1 on the grounds that the STEOM dipole failed a length/velocity gauge test. **That is withdrawn: the gauge test was a double-zeta artefact and J = 32.82 +/- 1.55 cm^-1 stands.** See `gauge_calibration/RESULT.md` and `dipole_gauge/GAUGE_VERDICT.md`.
 
 Produced by a four-way read-only inventory of the 429 GB tree. Every size below
 was measured directly, not estimated. Nothing in the FLAGGED section has been

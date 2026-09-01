@@ -5,9 +5,10 @@ spectroscopic-normalisation step as the STEOM build), reframe into the
 dimer-chain frame, and compute J_TDC / J_PDA
 on the identical dimer geometry used for the STEOM coupling. This is the
 single-excitation cross-check of the near-field correction (revised values:
-J_TDC=22.1 and J_PDA=18.0 cm^-1, 1.23x; the definitive STEOM density couples ~1.38x more
+J_TDC=21.5 and J_PDA=18.4 cm^-1, 1.17x; the definitive STEOM density couples ~1.42x more
 strongly). The revised TDC value uses the reciprocal-length conversion
 1 Angstrom^-1 = 0.529177 bohr^-1.
+J_PDA corrected 2026-08-30: the site centroids are now |q|-weighted, matching compute_steom_coupling.py. The unweighted mean of the thresholded voxel set gave 18.12 (SVPD) / 16.48 (TZVPD) and was threshold-dependent. J_TDC is unaffected.
 
 Regenerate the S2 transition-density cube from the ORCA TDDFT run (neo_model/orca_dft,
 wB97X-D3/6-311G** TDA, DoNTO) with:
@@ -68,7 +69,13 @@ mA,mB,aA,aB,e = cc.get_super_matrices_with_pymol("tc_simple_old/classical_relaxe
 pA=cc.apply_pymol_matrix(pts,mA); pB=cc.apply_pymol_matrix(pts,mB)
 J = cc.calculate_coupling(pA,qq,pB,qq,backend="opencl")*H/EPS
 muA=cc.transition_dipole_au(pA,qq); muB=cc.transition_dipole_au(pB,qq)
-cA=pA.mean(0)*cc.ANGSTROM_TO_BOHR; cB=pB.mean(0)*cc.ANGSTROM_TO_BOHR; R=cB-cA; Rn=np.linalg.norm(R); Rh=R/Rn
+# |q|-weighted centroid, matching compute_steom_coupling.py:43-44 and
+# steom_coupling_numba.py:52-53. The unweighted mean of the thresholded voxel
+# set is threshold-dependent (moves 0.13 A over a 100x threshold change, vs
+# <0.001 A for the weighted centroid) and is not a physical dipole location.
+w=np.abs(qq); cA=(pA*w[:,None]).sum(0)/w.sum()*cc.ANGSTROM_TO_BOHR
+cB=(pB*w[:,None]).sum(0)/w.sum()*cc.ANGSTROM_TO_BOHR
+R=cB-cA; Rn=np.linalg.norm(R); Rh=R/Rn
 pda=(np.dot(muA,muB)-3*np.dot(muA,Rh)*np.dot(muB,Rh))/Rn**3*H/EPS
 print("")
 print(f"=== 44-ATOM CAM-B3LYP/def2-TZVPD (root 3, GAUGE-VERIFIED) TRANSITION-DENSITY COUPLING (eps={EPS}) ===")

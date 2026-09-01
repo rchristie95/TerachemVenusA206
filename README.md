@@ -1,6 +1,6 @@
 # TerachemVenusA206
 
-> **Superseded in part, 2026-08-27.** J = 32.82 is now quoted as a range 21-26 cm^-1; |mu| = 9.81 D fails a gauge consistency test. See `CORRECTIONS_2026-08-27.md`.
+> **Note, 2026-08-29.** An earlier banner here demoted J = 32.82 to a range 21-26 cm^-1 on the grounds that the STEOM dipole failed a length/velocity gauge test. **That is withdrawn: the gauge test was a double-zeta artefact and J = 32.82 +/- 1.55 cm^-1 stands.** See `gauge_calibration/RESULT.md` and `dipole_gauge/GAUGE_VERDICT.md`.
 
 > **ORCA-only reconstruction:** The recovered original source, templates,
 > scientific inputs, exact execution order, manuscript-result map, validation

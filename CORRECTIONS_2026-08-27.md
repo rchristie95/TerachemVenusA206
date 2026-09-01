@@ -8,7 +8,7 @@ failed consistency check found on this date.
 | superseded | replacement | established in |
 |---|---|---|
 | `<\|Delta\|>` = 576 cm^-1 treated as STATIC detuning | 576 is the INSTANTANEOUS value; tau_c = 8.5 fs against hbar/2J = 81 fs, so the exciton sees **189-324** | `tddft_ensemble_decoherence/audit/REPRODUCIBILITY_AND_TIMESCALE.md` |
-| `J = 32.82 +/- 1.55` cm^-1 as settled | **21-26 cm^-1**, a range not a point | `dipole_gauge/GAUGE_VERDICT.md` |
+| ~~`J = 32.82 +/- 1.55` cm^-1 as settled~~ | ~~**21-26 cm^-1**, a range not a point~~ **REVERSED 2026-08-29: 32.82 stands, the gauge objection was a double-zeta artefact** | `gauge_calibration/RESULT.md` |
 | `\|mu\| = 9.81 D` from the STEOM density | STEOM's length/velocity gauges disagree 1.51x and **worsen** with basis; TDDFT is gauge-consistent at **8.68 D** | `dipole_gauge/GAUGE_VERDICT.md` |
 | STEOM dipole "basis-converged to -0.54%" | that measured the stability of the length-gauge number, not the moment | same |
 | homogeneous linewidth unresolved (300 / 611 / 41.5) | **HWHM 346 cm^-1** from the measured C(t), no fast/slow cut | `terachem_site_energy_cd/results/spectral_density_lineshape.json` |

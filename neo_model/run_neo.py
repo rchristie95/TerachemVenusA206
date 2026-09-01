@@ -59,7 +59,9 @@ try:
         if isinstance(dm, np.ndarray) and dm.ndim == 3: dm = dm.sum(0)
         S = cmol.intor("int1e_ovlp"); norm = float(np.einsum("ij,ji->", dm, S))
         r = cmol.intor("int1e_r")    # lab-frame, origin 0
-        pos = np.einsum("xij,ji->x", r, dm).real / norm
+        # int1e_r is in BOHR (pyscf internal units); xyz[] is in ANGSTROM.
+        BOHR_TO_ANGSTROM = 0.5291772109
+        pos = np.einsum("xij,ji->x", r, dm).real / norm * BOHR_TO_ANGSTROM
         print(f"  quantum-proton norm={norm:.3f}  <r>=[{pos[0]:.3f} {pos[1]:.3f} {pos[2]:.3f}]")
         print(f"    classical HD1=[{xyz[HD1][0]:.3f} {xyz[HD1][1]:.3f} {xyz[HD1][2]:.3f}]"
               f"  shift={np.linalg.norm(pos-xyz[HD1]):.3f} A toward "

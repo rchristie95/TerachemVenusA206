@@ -1,6 +1,6 @@
 # Tandem-Venus solvation and decoherence numerical test
 
-> **Superseded in part, 2026-08-27.** J = 32.82 is now a range 21-26 cm^-1. See `CORRECTIONS_2026-08-27.md`.
+> **Note, 2026-08-29.** An earlier banner here demoted J = 32.82 to a range 21-26 cm^-1 because the STEOM dipole failed a length/velocity gauge test. **That is withdrawn: the gauge test was a double-zeta artefact and J = 32.82 +/- 1.55 cm^-1 stands.** See `gauge_calibration/RESULT.md`.
 
 > **Coupling correction (8 August 2026):** The shared-scale spectral sensitivity
 > values in this report have been regenerated with the corrected production

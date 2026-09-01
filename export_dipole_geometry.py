@@ -58,8 +58,13 @@ def export_geometry(density_npz, monomer_pdb, dimer_pdb):
 
     pts_A = apply_pymol_matrix(pts, matrix_A)
     pts_B = apply_pymol_matrix(pts, matrix_B)
-    r_A = pts_A.mean(axis=0)
-    r_B = pts_B.mean(axis=0)
+    # |q|-weighted site centroids, matching compute_steom_coupling.py:43-44 and
+    # coupling_dcd_steom.py. The unweighted mean of a thresholded voxel cloud is
+    # threshold-dependent and is not a physical dipole location; here it sets the
+    # exported separation.
+    _w = np.abs(q)
+    r_A = (pts_A * _w[:, None]).sum(axis=0) / _w.sum()
+    r_B = (pts_B * _w[:, None]).sum(axis=0) / _w.sum()
 
     mu_A = transition_dipole_au(pts_A, q, origin_angstrom=r_A)
     mu_B = transition_dipole_au(pts_B, q, origin_angstrom=r_B)
