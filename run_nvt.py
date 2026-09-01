@@ -597,8 +597,8 @@ def apply_amber_cr2_parameters(system, topology, prmtop_path: Path,
     target_atoms = list(topology.atoms())
     target_residues = list(topology.residues())
     target_cr2 = [residue for residue in target_residues if residue.name == "CR2"]
-    if len(target_cr2) != 2:
-        raise RuntimeError(f"Target topology needs exactly two CR2 residues; found {len(target_cr2)}")
+    if not target_cr2:
+        raise RuntimeError("Target topology has no CR2 residue")
 
     def atom_dict(residue):
         result = {atom.name: atom for atom in residue.atoms()}
@@ -820,8 +820,8 @@ def ensure_amber_cr2_topology(topology, prmtop_path: Path) -> dict:
 
     target_residues = list(topology.residues())
     target_cr2 = [residue for residue in target_residues if residue.name == "CR2"]
-    if len(target_cr2) != 2:
-        raise RuntimeError(f"Target topology needs exactly two CR2 residues; found {len(target_cr2)}")
+    if not target_cr2:
+        raise RuntimeError("Target topology has no CR2 residue")
     existing_pairs = {
         frozenset((atom1.index, atom2.index)) for atom1, atom2 in topology.bonds()
     }
@@ -2030,7 +2030,10 @@ def run_openmm_nvt(args) -> tuple[Path | None, Path, Path]:
                 cr2_groups.append([atom.index for atom in residue.atoms()])
         if len(cr2_groups) != 2:
             raise RuntimeError(
-                f"Interface restraint needs exactly 2 CR2 residues; found {len(cr2_groups)}.")
+                f"Interface restraint needs exactly 2 CR2 residues; found {len(cr2_groups)}. "
+                "A single-chromophore construct such as dVenus-TDX has one, and its dark "
+                "barrel carries no CR2 to tether to; restrain that interface on residues, "
+                "not chromophores, or run it unrestrained.")
         pos_nm = np.array(modeller.positions.value_in_unit(unit.nanometer))
         c0 = pos_nm[cr2_groups[0]].mean(axis=0)
         c1 = pos_nm[cr2_groups[1]].mean(axis=0)

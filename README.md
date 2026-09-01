@@ -40,6 +40,9 @@ This repository contains scripts to:
 | `venus_dimer.pdb` | Pre-built dimer output (chains A and B) |
 | `minimise_dimer.py` | OpenMM classical minimisation of the dimer with trajectory rendering |
 | `run_nvt.py` | OpenMM NVT MD simulation of the dimer with trajectory rendering |
+| `alphafold_tandem/make_tdx_sequence.py` | Derives the single-chromophore dVenus-TDX sequence from the Addgene #250938 TD deposit (one residue: the chromophore tyrosine of one barrel becomes the Amber Y67C cysteine) and writes an AlphaFold Server job request |
+| `tandem_tdx_build/build_tdx_structure.py` | Builds the TDX starting structure: the v4 TD barrels, linker and A206 crystal register, with the dark barrel's mature CR2 replaced by the unreacted Gly-Cys-Gly triad grafted from an AlphaFold model |
+| `tandem_tdx_build/run_md_tdx.sh` | TDX production NVT: 1 fs x 2000 steps per frame x 500 frames = 1 ns. See `alphafold_tandem/TDX_CONSTRUCT.md` |
 | `qmmm_tddft_pipeline.py` | Full standalone QM/MM pipeline: protonation → solvation → QM boundary → TDDFT → Davydov coupling |
 | `reproduce_paper.py` | Reuse-aware orchestrator for the electronic-structure/static stages and validator/aggregator for the audited 1000-frame production ensemble. It rejects coupling caches without corrected reciprocal-distance metadata and writes `paper_data_summary.json`. |
 | `align_steom_density.py` | Places the STEOM transition density into the dimer-chain coordinate frame (rigid CR2 Kabsch fit) so the STEOM and TDDFT couplings are evaluated at identical geometry |
