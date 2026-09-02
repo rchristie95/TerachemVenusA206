@@ -13,14 +13,24 @@
 # thinned by two).  Set DT=2.0 STEPS_PER_FRAME=1000 for a 2 fs run with the
 # same 500 frames and the same 1 ns.
 #
-# Structure: tandem_dimer_tdx_dark2.pdb, from
-#   python3 tandem_tdx_build/build_tdx_structure.py --from-af3 <TDX model_0.cif>
+# Structure: tandem_dimer_tdx_dark2.pdb, 508 residues, from
+#   python3 tandem_tdx_build/build_tdx_structure.py \
+#       --from-af3 alphafold_tandem/af3_tdx_server_run/fold_dvenus_tdx_dark2_model_0.cif
 # which keeps tandem_dimer_v4_af3tails.pdb's barrels, linker and A206 crystal
-# register and replaces barrel 2's mature CR2 with the unreacted Gly-Cys-Gly
-# triad of the Amber (Y67C) mutation, taken from an AlphaFold model of the TDX
-# sequence.  The surviving chromophore is untouched to 0.000 A, so a TD-vs-TDX
-# difference is attributable to the missing chromophore and not to a different
-# starting geometry.  See alphafold_tandem/TDX_CONSTRUCT.md.
+# register and replaces barrel 2's mature CR2 with the Gly-Gly that Addgene
+# #250939's deleted chromophore tyrosine (Y339del) leaves behind, taken from an
+# AlphaFold model of the 510-aa TDX sequence.  NOT Gly-Cys-Gly: the deposit
+# deletes the tyrosine, it does not mutate it to cysteine -- see
+# alphafold_tandem/TDX_CONSTRUCT.md, which records the check against the deposit.
+# The surviving chromophore and every atom outside the grafted pair are untouched
+# to 0.000 A, so a TD-vs-TDX difference is attributable to the missing
+# chromophore and not to a different starting geometry.
+#
+# The two junction bonds either side of the grafted pair come out at 1.48 and
+# 1.58 A against an ideal 1.33 A: the crystal leaves a slot a three-residue
+# triad occupied and the shortened strand spans 0.4 A more than it.  That strain
+# is local and is what the 200 ps NPT equilibration below is there to take out;
+# check the first frames rather than assuming it did.
 #
 # Seed and force field are deliberately those of the v4 TD run (amber14-all /
 # tip3pfb, seed 20260618): TD and TDX are meant to differ in the construct only.
