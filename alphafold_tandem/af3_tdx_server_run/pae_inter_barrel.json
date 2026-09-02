@@ -1,0 +1,8 @@
+{
+ "0": 21.556,
+ "1": 21.96,
+ "2": 21.354,
+ "3": 21.603,
+ "4": 22.67,
+ "_note": "mean PAE between the two structured barrel cores, from *_full_data_*.json, which .gitignore excludes"
+}

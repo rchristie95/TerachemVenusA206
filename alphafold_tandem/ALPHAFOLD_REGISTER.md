@@ -31,6 +31,40 @@ Contact counts do NOT discriminate: the crystal dimer interface is itself small
 (35 CA pairs within 8 A, centroids 29.6 A) and AF3's is comparable (18-44,
 30.0-30.5 A). Venus is a weak dimer; do not cite interface size as evidence.
 
+### 1b. TDX behaves the same, and its five models disagree by 17 A
+
+2026-09-02. `af3_tdx_server_run/` is the 510-aa dVenus-TDX construct (Addgene
+#250939, chromophore tyrosine Y339 deleted -- see `TDX_CONSTRUCT.md`), run at the
+TD seed `425000176` with `useStructureTemplate: true` so it differs from the TD
+job by the construct and nothing else.
+
+| quantity | TD, `af3_server_run/` | TDX, `af3_tdx_server_run/` |
+|---|---|---|
+| barrel fold RMSD vs crystal | 0.70 A | **0.69 A** (0.66-0.74) |
+| pLDDT, barrel 1 / barrel 2 | 82.2 / 81.7 | 81.1 / **84.7** |
+| pLDDT, linker | 25.9 | **24.6** |
+| PAE between barrels | 18.7-21.8 A | **21.4-22.7 A** |
+| register RMSD vs crystal | 12.8 A (12.1-13.6) | **16.7 A (11.3-28.2)** |
+
+The barrels are as good as TD's -- deleting the chromophore tyrosine costs the
+dark barrel nothing, and it in fact scores slightly *higher* pLDDT than the live
+one, which is what you would expect of a barrel with one less thing to get
+right. Everything else is the same verdict as TD: a linker below 30 pLDDT and an
+inter-barrel PAE at 21-23 A, which is saturation.
+
+The register number is worth dwelling on. Section 3 shows the seed cannot probe
+it (F = 0.30, p = 0.93 over 7 seeds). Here the **five models of a single seed**
+span 11.3, 12.0, 15.9, 15.9 and 28.2 A -- a 17 A spread with the seed, the
+template flag and the sequence all held fixed. That is a cleaner demonstration
+than the seed sweep was: it is not that different seeds find different registers,
+it is that one AF3 call does not have a register to report. The mean, 16.7 A,
+is not an estimate of anything.
+
+The fold RMSD and pLDDT here are measured over the 228 CA atoms of each barrel
+that match the crystal core (residues 0-230) by `analyse_af.py`; the 90.2 in the
+table above is over a different residue set and the two are not directly
+comparable. Both say the same thing about the barrels.
+
 ## 2. We DO reproduce Cusick's delta -- their formula is not the inter-dipole angle
 
 Note S4 defines delta as the angle between `r_a` and `r_a - r_b` (r = OH->CB of
@@ -72,6 +106,7 @@ Also established: **the construct truncation is irrelevant to the register.**
 | AF2 tandem, MSA 32:64 | 129.1 +/- 9.4 | 19.8 |
 | AF2 tandem, MSA 16:32 | 128.7 +/- 20.3 | 24.5 |
 | AF2-multimer, free dimer | 134.3 +/- 18.2 | 21.4 (ipTM 0.21-0.46, failed) |
+| AF3 TDX, 1 seed x 5 models | n/a (one chromophore) | 16.7, spanning 11.3-28.2 |
 
 **alpha spans 55 degrees** while each method reproduces itself to a few degrees.
 Internal reproducibility is not accuracy. All are genuinely DOCKED (centroid
@@ -96,6 +131,13 @@ exactly why none of them settles it.
 ## Reproduce
 
 ```bash
-python3 alphafold_tandem/analyse_af.py                     # server runs
+python3 alphafold_tandem/analyse_af.py                     # both server runs, TD and TDX
+python3 alphafold_tandem/analyse_af.py af3_tdx_server_run  # TDX alone
 bash    alphafold_tandem/colabfold/run_probe.sh            # local AF2 probe
 ```
+
+`analyse_af.py` reads each run's own job request to find the barrel starts and
+the surviving chromophore triads, so it handles the 511-aa TD chain and the
+510-aa TDX chain without being told which is which; the one-residue deletion
+shifts the crystal mapping downstream of the dark triad and it accounts for
+that. Angles that need two chromophores are reported as n/a for TDX.
