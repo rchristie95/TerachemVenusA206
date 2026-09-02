@@ -172,7 +172,15 @@ generalisation the MD driver just got. The existing TDX site-energy control
 CR2's charges in a completed TD frame, which isolates the electrostatic part of
 the shift; a structural TDX trajectory is the other half of that comparison.
 
-## 5. Tests
+## 5. Handing the browser steps to a local session
+
+`TDX_LOCAL_AGENT_BRIEF.md` is the standalone task brief for a Claude Code
+session on a machine with a browser: verify the sequence against Addgene
+#250939, submit the AlphaFold job, graft, build and run. It repeats the two
+constraints that matter -- the register is never imported, and the in-place
+un-maturation is refused rather than forced.
+
+## 6. Tests
 
 `tests/test_tdx_build.py` guards both halves: that the sequence differs from
 the deposit by exactly the one chromophore tyrosine, that the AlphaFold job
