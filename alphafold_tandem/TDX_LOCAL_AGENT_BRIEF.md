@@ -9,6 +9,13 @@ hold. Everything that does not need a browser is already done and pushed.
     branch   claude/venus-tandem-tdx-structure-qk4pck
     context  alphafold_tandem/TDX_CONSTRUCT.md  <- read this first
 
+> **Status 2026-09-02: step 1 done, steps 2-4 not started.** Addgene #250939
+> deletes the barrel-2 chromophore tyrosine rather than mutating it to cysteine,
+> so the derived 511-aa FASTAs and the job requests built from them are the wrong
+> construct. Step 1's stop condition ("say so rather than working around it")
+> applies; the AlphaFold job was not submitted. Details and the two ways forward
+> are in `TDX_CONSTRUCT.md`.
+
 There are two browser steps and one build. Do them in order; step 3 depends on
 step 2, and step 1 can change what step 2 submits.
 

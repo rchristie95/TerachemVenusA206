@@ -3,6 +3,14 @@
 2026-09-01. Companion to `ALPHAFOLD_REGISTER.md`, which is about the TD
 register and applies here unchanged.
 
+> **2026-09-02, blocked.** The Addgene check in section 1 was done and the
+> deposit does not match the sequence this note describes: #250939 **deletes**
+> the barrel-2 chromophore tyrosine (510 aa insert), it does not mutate it to
+> cysteine (511 aa). Sections 1-4 below still describe the 511-aa Y339C
+> derivation. Read "What is derived and what is verified" before using any of
+> it; `python3 alphafold_tandem/verify_tdx_against_addgene.py` reruns the check
+> offline. No AlphaFold job was submitted and no structure was built.
+
 TDX is the single-chromophore control of Nguyen et al., *Biophys. J.* **124**,
 4293-4309 (2025): the same tandem dimer as TD, with one barrel's chromophore
 extinguished. Their published signal is the difference
@@ -41,23 +49,74 @@ Barrel 2 is the default dark barrel so the surviving chromophore keeps the
 residue numbering it has in every TD artefact (CR2 at PDB residue 66, sequence
 Tyr67).
 
-### What is derived and what is verified
+### What is derived and what is verified -- CHECKED 2026-09-02, THEY DISAGREE
+
+**The derivation on this branch does not match the deposit. Do not submit the
+AlphaFold job or build a structure from `pdVenus-TDX_derived_511aa_dark{1,2}.fasta`
+until this is resolved.**
 
 `pdVenus-TD_Addgene250938_511aa.fasta` is the deposited TD sequence and is
-verified. The TDX sequence here is **derived from it**, not read off Addgene:
-this container's network policy blocks `addgene.org` (and everything else
-outside GitHub and the package registries), so neither a browser nor a fetch
-can reach the deposit page from inside the session. The two facts that need
-five seconds of eyeballing against **https://www.addgene.org/250939/** when you
-are at a machine that can open it:
+verified. The TDX sequence in this directory is **derived from it** -- TD with
+the chromophore tyrosine of barrel 2 mutated to cysteine (Amber, Y339C), 511 aa.
+On 2026-09-02 that derivation was checked against the deposit at
+**https://www.addgene.org/250939/**, whose only sequence is an Addgene-verified
+Addgene NGS Result for the whole 4450 bp plasmid. What the deposit actually
+says:
 
-1. the insert is 511 aa and identical to #250938 except at the chromophore;
-2. the mutated residue is the chromophore tyrosine and it becomes **C**
-   (if the deposit instead deletes the tyrosine, or uses a different
-   substitution, rerun the generator -- it is one character);
+| | derived here | Addgene #250939 |
+|---|---|---|
+| insert protein length | 511 aa | **510 aa** |
+| barrel 2 chromophore triad | `G-C-G` (Y339C) | **`G-G`, tyrosine absent** |
+| difference from #250938 | 1 substitution | **1 deletion** |
+| dark barrel | 2 (C-terminal) | 2 (C-terminal) -- agrees |
 
-and one that decides nothing physically but should be recorded: **which**
-barrel is dark, N-terminal or C-terminal. Both variants are generated.
+The tyrosine is **deleted, not substituted**. The evidence, all from the
+deposited NGS sequence rather than by eye:
+
+* The single 559-aa ORF of the plasmid is the pRSETb 6His leader
+  (`MRGSHHHHHH...MELLPVAT`, 49 aa) followed by a 510-aa insert. Aligned against
+  the 511-aa #250938 insert, `difflib` reports exactly one opcode:
+  `delete ref[338:339]='Y'` -- residue **Y339**, the barrel-2 chromophore
+  tyrosine, and nothing else anywhere in the 510 residues.
+* At the codon level barrel 1 reads `CTC GGC TAC GGC CTG CAG` = L-G-**Y**-G-L-Q,
+  an intact triad; barrel 2 reads `CTG GGC GGG CTG CAG` = L-G-G-L-Q. There is no
+  tyrosine codon and no cysteine codon in its place -- the codon is simply gone,
+  in frame.
+* Addgene's own metadata agrees: insert 1549 bp and total vector 4450 bp for
+  #250939 against 1552 bp and 4453 bp for #250938. Exactly 3 bp shorter, which a
+  Y->C point substitution cannot produce.
+* The deposit's purpose line, "The second dVenus lacks a chromophore", confirms
+  the C-terminal barrel is the dark one. That much the derivation had right, so
+  `--dead-barrel 2` stays the default; the barrel choice is not what is wrong.
+
+So dVenus-TDX as deposited is **dVenus-TD DeltaY339**, not the Amber Y67C variant
+this note assumed. Amber (Koushik et al. 2006, Addgene #27798) is a different
+non-fluorescent Venus and is not what #250939 contains. The citation in section 1
+above describes Amber, not this plasmid.
+
+Both changes abolish the chromophore, so the electrostatic argument of section 1
+survives -- the barrel folds, docks, holds no chromophore and no -1 e. What does
+not survive is the structural claim. `build_tdx_structure.py` grafts a
+**three-residue** dead triad (Gly-Cys-Gly) taken from an AlphaFold model of a
+511-aa chain; the real construct has a **two-residue** Gly-Gly at that position
+in a 510-aa chain, which is a different local backbone and a different beta-strand
+register inside the dead barrel, not a side-chain swap. The AlphaFold job, the
+graft, the 509-residue output and `tests/test_tdx_build.py` all encode the 511-aa
+Y339C assumption.
+
+Resolving this is a decision about the construct, not a one-character rerun, so
+it is left open deliberately:
+
+* if the intent is to model **the deposited plasmid**, `make_tdx_sequence.py`
+  needs to delete the tyrosine rather than substitute it, the AF job request has
+  to be regenerated from the 510-aa chain, and the builder and its tests need to
+  graft two residues where they now graft three;
+* if the intent is to model **Amber-type TDX** as the published TD/TDX difference
+  was interpreted, the 511-aa Y339C chain is self-consistent and the note should
+  say plainly that it is a model of an Amber-like control and not of #250939.
+
+Nothing here was regenerated or hand-edited pending that decision. The FASTAs,
+the job requests and the builder are exactly as the previous session left them.
 
 ## 2. The structure
 
