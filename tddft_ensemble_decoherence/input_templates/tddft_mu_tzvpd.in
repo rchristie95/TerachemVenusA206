@@ -1,0 +1,25 @@
+coordinates geometry.xyz
+run energy
+cis yes
+basis def2-tzvpd
+method wb97xd3
+charge -1
+spinmult 1
+pointcharges mm_charges.dat
+pointcharges_self_interaction no
+scrdir scr_mu_tzvpd
+# Transition dipoles only: no cistransdensity, so no cubes. The couplet
+# amplitude goes as |mu|^4, so this ladder is what sets every absolute CD
+# intensity; the densities are not needed and would be enormous at QZVPD.
+cisnumstates 7
+cismaxiter 300
+cismax 800
+cistarget 1
+# TeraChem's default 'generate' guess dies at this basis size with
+# "Too many electrons for guess generation code" (guess.cpp:58). SAD clears it.
+guess sad
+scf diis+a
+threall 1.0e-14
+convthre 1.0e-6
+gpus 1
+end

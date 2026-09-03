@@ -1,0 +1,90 @@
+{
+  "inputs": {
+    "n_frames": 500,
+    "hwhm_cm": 340.0,
+    "sigma_site_slow_cm": 159.0,
+    "huang_rhys": 0.253,
+    "omega_vib_cm": 1369.7,
+    "steom_shift_eV": -0.9745050587499999,
+    "j_mean_cm": 27.0570848534,
+    "j_sd_cm": 2.517836147090055,
+    "triple_mean_cgs": -7.20201564944249e-42,
+    "cos_alpha_mean": -0.08940056104320161,
+    "mu_a_D": 9.118488789150936,
+    "mu_b_D": 9.688931727797744,
+    "sd_delta_raw_cm": 762.516774336424,
+    "sd_mean_raw_cm": 387.26896210927544,
+    "rescale_delta": 0.2948918161348061,
+    "rescale_mean": 0.29031497281968277
+  },
+  "origin": {
+    "tddft_centre_cm": 26179.844810254,
+    "abinitio_centre_cm": 18319.931442077108,
+    "experimental_centre_cm": 19322.0,
+    "residual_cm": -1002.0685579228921
+  },
+  "cases": {
+    "primary_slow": {
+      "peak_to_peak": 549195.2420114551,
+      "nu_max": 19596.0,
+      "nu_min": 19078.0,
+      "separation_cm": 518.0,
+      "lobe_ratio": 0.8084744205004916,
+      "first_moment": 15327336.927361723,
+      "area": 33225050.699140504,
+      "eps_max": 236159.7790388059,
+      "eps_max_ratio_to_experiment": 1.2806929448959106,
+      "g_abs_peak": 0.00038988046424177187,
+      "eps_fwhm_cm": 878.0,
+      "dipole_strength_integral": 17986.124945051157,
+      "mean_suppression": 0.4243446965629269,
+      "median_suppression": 0.34221647527762955,
+      "mean_abs_delta": 179.4721000953631
+    },
+    "raw_detuning": {
+      "peak_to_peak": 222784.33782294125,
+      "nu_max": 20016.0,
+      "nu_min": 18856.0,
+      "separation_cm": 1160.0,
+      "lobe_ratio": 0.8489202833682481,
+      "first_moment": 15228906.499764012,
+      "area": 33167634.657904074,
+      "eps_max": 146371.32164850345,
+      "eps_max_ratio_to_experiment": 0.7937707247749645,
+      "g_abs_peak": 0.0002495936242673483,
+      "eps_fwhm_cm": 1998.0,
+      "dipole_strength_integral": 17941.82221431924,
+      "mean_suppression": 0.1883093815507289,
+      "median_suppression": 0.10678755504657754,
+      "mean_abs_delta": 608.6031903079999
+    },
+    "degenerate": {
+      "peak_to_peak": 709678.7873576235,
+      "nu_max": 19528.0,
+      "nu_min": 19132.0,
+      "separation_cm": 396.0,
+      "lobe_ratio": 0.8125200926405324,
+      "first_moment": 15335155.075249074,
+      "area": 33233308.903359428,
+      "eps_max": 273778.06746154145,
+      "eps_max_ratio_to_experiment": 1.4846966782079254,
+      "g_abs_peak": 0.0004336140577753612,
+      "eps_fwhm_cm": 696.0,
+      "dipole_strength_integral": 17989.88611824809,
+      "mean_suppression": 1.0,
+      "median_suppression": 1.0,
+      "mean_abs_delta": 0.0
+    },
+    "experiment": {
+      "peak_to_peak": 282839.7027410923,
+      "nu_max": 19650.0,
+      "nu_min": 19150.0,
+      "separation_cm": 500.0,
+      "lobe_ratio": 0.4271832539888323,
+      "first_moment": 3854405.3868895154,
+      "area": -24675217.95609673,
+      "eps_max": 184400.0,
+      "g_abs_peak": 0.00032585375264783574
+    }
+  }
+}

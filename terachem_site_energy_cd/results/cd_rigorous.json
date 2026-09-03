@@ -1,0 +1,137 @@
+{
+  "disorder": {
+    "sigma_site_total_cm": 539.1807819017778,
+    "sigma_site_fast_cm": 427.7934905445378,
+    "sigma_site_slow_cm": 328.18995264927423,
+    "sigma_site_quasi_static_cm": 213.48611292320263,
+    "sigma_site_static_cm": 391.51623903867807,
+    "lambda_site_fast_cm": 438.8663562404786,
+    "spectral_peak_cm": 1334.2563807926083,
+    "resolution_cm": 333.5640951981521,
+    "bands": [
+      {
+        "band": [
+          0.0,
+          400.0
+        ],
+        "omega_cm": 269.5653636942337,
+        "var_fraction": 0.23667926685405102,
+        "treatment": "quasi-static"
+      },
+      {
+        "band": [
+          400.0,
+          900.0
+        ],
+        "omega_cm": 667.1281903963041,
+        "var_fraction": 0.12442013387804966,
+        "lambda_cm": 54.603810798012184,
+        "huang_rhys": 0.08184905327651507,
+        "treatment": "Franck-Condon"
+      },
+      {
+        "band": [
+          900.0,
+          1500.0
+        ],
+        "omega_cm": 1219.9048980559123,
+        "var_fraction": 0.35092080458898434,
+        "lambda_cm": 154.00733483894456,
+        "huang_rhys": 0.1262453614903724,
+        "treatment": "Franck-Condon"
+      },
+      {
+        "band": [
+          1500.0,
+          2100.0
+        ],
+        "omega_cm": 1731.2272390613086,
+        "var_fraction": 0.27561802467405794,
+        "lambda_cm": 120.95947820290213,
+        "huang_rhys": 0.06986920923707725,
+        "treatment": "Franck-Condon"
+      },
+      {
+        "band": [
+          2100.0,
+          3000.0
+        ],
+        "omega_cm": 2392.67018954961,
+        "var_fraction": 0.009208412564347682,
+        "huang_rhys": 0.0016890177704078078,
+        "treatment": "negligible"
+      },
+      {
+        "band": [
+          3000.0,
+          16679.204759907603
+        ],
+        "omega_cm": 5251.554503513822,
+        "var_fraction": 0.003153357440509412,
+        "huang_rhys": 0.0002635224463374029,
+        "treatment": "negligible"
+      }
+    ]
+  },
+  "modes": [
+    {
+      "omega_cm": 667.1281903963041,
+      "huang_rhys": 0.08184905327651507
+    },
+    {
+      "omega_cm": 1219.9048980559123,
+      "huang_rhys": 0.1262453614903724
+    },
+    {
+      "omega_cm": 1731.2272390613086,
+      "huang_rhys": 0.06986920923707725
+    }
+  ],
+  "quadrature": {
+    "hermite_nodes": 24,
+    "quanta": 3,
+    "basis_states_per_site": 27,
+    "sigma_gap_static_cm": 553.6875751378052,
+    "sigma_mean_static_cm": 276.84378756890254
+  },
+  "origin": {
+    "abinitio_centre_cm": 18319.931442077108,
+    "experimental_centre_cm": 19322.0
+  },
+  "cases": {
+    "rigorous": {
+      "peak_to_peak": 922308.3055490004,
+      "separation_cm": 632.0,
+      "lobe_ratio": 0.7664376148498787,
+      "first_moment": 17591443.92137733,
+      "nu_pos_cm": 19668.0,
+      "nu_neg_cm": 19036.0,
+      "eps_max": 293826.76658012473,
+      "eps_fwhm_cm": 984.0,
+      "lambda_max_nm": 517.170045510964,
+      "g_abs_peak": 0.0005387775265408501
+    },
+    "degenerate_control": {
+      "peak_to_peak": 1212895.7420108193,
+      "separation_cm": 562.0,
+      "lobe_ratio": 0.8009625125226333,
+      "first_moment": 17591500.86881862,
+      "nu_pos_cm": 19624.0,
+      "nu_neg_cm": 19062.0,
+      "eps_max": 408680.91205830604,
+      "eps_fwhm_cm": 672.0,
+      "lambda_max_nm": 517.5447676223994,
+      "g_abs_peak": 0.0004996402962327267
+    },
+    "experiment": {
+      "peak_to_peak": 282839.7027410923,
+      "separation_cm": 500.0,
+      "lobe_ratio": 0.4271832539888323,
+      "first_moment": 3877856.7307691965,
+      "nu_pos_cm": 19650.0,
+      "nu_neg_cm": 19150.0,
+      "eps_max": 184400.0,
+      "g_abs_peak": 0.00032585375264783574
+    }
+  }
+}

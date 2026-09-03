@@ -1,0 +1,93 @@
+{
+  "measured_width90_cm": 252.0,
+  "measured_peak_nm": 516.82,
+  "sigma_site_static_cm": 391.51623903867807,
+  "decomposition": [
+    {
+      "tag": "vibronic only",
+      "width90_cm": 2.0,
+      "fwhm_cm": 44.0,
+      "separation_cm": 42.0,
+      "peak_to_peak": 1839098751.597136
+    },
+    {
+      "tag": "+ ensemble mean spread",
+      "width90_cm": 0.0,
+      "fwhm_cm": 726.0,
+      "separation_cm": 232.0,
+      "peak_to_peak": 29612223.026936136
+    },
+    {
+      "tag": "+ static disorder (full model)",
+      "width90_cm": 534.0,
+      "fwhm_cm": 1434.0,
+      "separation_cm": 1040.0,
+      "peak_to_peak": 423089.2447423056
+    },
+    {
+      "tag": "static disorder only, no vibronic",
+      "width90_cm": 498.0,
+      "fwhm_cm": 1282.0,
+      "separation_cm": 982.0,
+      "peak_to_peak": 661221.2099700212
+    }
+  ],
+  "disorder_scan": [
+    {
+      "tag": "sigma=0",
+      "width90_cm": 0.0,
+      "fwhm_cm": 726.0,
+      "separation_cm": 232.0,
+      "peak_to_peak": 29612223.026936136,
+      "sigma_site": 0.0
+    },
+    {
+      "tag": "sigma=100",
+      "width90_cm": 456.0,
+      "fwhm_cm": 1004.0,
+      "separation_cm": 1036.0,
+      "peak_to_peak": 825815.0025141868,
+      "sigma_site": 100.0
+    },
+    {
+      "tag": "sigma=150",
+      "width90_cm": 426.0,
+      "fwhm_cm": 1030.0,
+      "separation_cm": 944.0,
+      "peak_to_peak": 665720.3878755239,
+      "sigma_site": 150.0
+    },
+    {
+      "tag": "sigma=200",
+      "width90_cm": 428.0,
+      "fwhm_cm": 1084.0,
+      "separation_cm": 908.0,
+      "peak_to_peak": 610046.2217588434,
+      "sigma_site": 200.0
+    },
+    {
+      "tag": "sigma=250",
+      "width90_cm": 444.0,
+      "fwhm_cm": 1156.0,
+      "separation_cm": 920.0,
+      "peak_to_peak": 556240.4719966669,
+      "sigma_site": 250.0
+    },
+    {
+      "tag": "sigma=300",
+      "width90_cm": 472.0,
+      "fwhm_cm": 1244.0,
+      "separation_cm": 952.0,
+      "peak_to_peak": 505033.69590381207,
+      "sigma_site": 300.0
+    },
+    {
+      "tag": "sigma=392",
+      "width90_cm": 534.0,
+      "fwhm_cm": 1434.0,
+      "separation_cm": 1040.0,
+      "peak_to_peak": 423089.2447423056,
+      "sigma_site": 391.51623903867807
+    }
+  ]
+}

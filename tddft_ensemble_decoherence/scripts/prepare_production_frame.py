@@ -26,10 +26,25 @@ from prepare_surrogate_pilot import (
 )
 
 
+# A site is a CORE plus the pi-stacked tyrosine that Venus wraps around it.
+# "kind" selects the core: a mature CR2 chromophore, or the un-matured Gly-Gly
+# that stands in its place when the chromophore tyrosine has been deleted.
 SITE_KEYS = {
-    "A": {"cr2": ("A", "66"), "tyr": ("A", "202")},
-    "B": {"cr2": ("A", "328"), "tyr": ("A", "464")},
+    "A": {"kind": "cr2", "cr2": ("A", "66"), "tyr": ("A", "202")},
+    "B": {"kind": "cr2", "cr2": ("A", "328"), "tyr": ("A", "464")},
+    # dVenus-TDX barrel 2. Addgene #250939 deletes the chromophore tyrosine, so
+    # the mature CR2 is the un-matured Gly-Gly it would have been had maturation
+    # never happened -- and the stacked tyrosine is still there, at 473 rather
+    # than 464 because collapsing CR2 (one PDB residue standing for three amino
+    # acids) into two glycines shifts everything downstream by one. This is the
+    # SAME physical slot as site A, asymmetric only in content:
+    #     site A      CR2(29) + phenol(12) + 3 link H = 44 atoms at -1 e
+    #     site Bdark  GlyGly(14) + phenol(12) + 3 link H = 29 atoms at  0 e
+    "Bdark": {"kind": "glygly", "gly": (("A", "336"), ("A", "337")),
+              "tyr": ("A", "473")},
 }
+GLY_NAMES = ["N", "H", "CA", "HA2", "HA3", "C", "O"]
+GLY_SYMBOLS = ["N", "H", "C", "H", "H", "C", "O"]
 
 
 def topology_descriptor(topology) -> str:
@@ -326,6 +341,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--radius", type=float, default=12.0)
     parser.add_argument("--boundary-exclusion", type=float, default=1.8)
+    parser.add_argument(
+        "--sites",
+        default="A,B",
+        help=(
+            "Comma-separated sites to prepare. The default A,B is the tandem "
+            "dimer. dVenus-TDX has one chromophore (the deposited Addgene "
+            "#250939 deletes the barrel-2 tyrosine), so it is prepared with "
+            "--sites A: barrel 2 carries no CR2, and with no partner "
+            "chromophore there is no partner RESP charge to retain and no "
+            "coupling to evaluate."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -366,15 +393,32 @@ def main() -> None:
     reference_cr2 = reference[:29]
     reference_heavy = [i for i, symbol in enumerate(cr2_symbols) if symbol != "H"]
 
+    selected_sites = tuple(s.strip() for s in args.sites.split(",") if s.strip())
+    unknown = [s for s in selected_sites if s not in SITE_KEYS]
+    if unknown:
+        raise SystemExit(f"unknown site(s) {unknown}; known: {sorted(SITE_KEYS)}")
+    if not selected_sites:
+        raise SystemExit("--sites selected nothing")
+
+    def _shift(site, role, value):
+        """Apply --site-b-offset to residue keys only; leave 'kind' alone."""
+        if role == "kind":
+            return value
+        offset = args.site_b_offset if site == "B" else 0
+        if role == "gly":          # tuple of (chain, num) pairs
+            return tuple((c, str(int(n) + offset)) for c, n in value)
+        chain, num = value
+        return (chain, str(int(num) + offset))
+
     site_keys = {
-        site: {
-            role: (chain, str(int(num) + (args.site_b_offset if site == "B" else 0)))
-            for role, (chain, num) in keys.items()
-        }
+        site: {role: _shift(site, role, value) for role, value in keys.items()}
         for site, keys in SITE_KEYS.items()
+        if site in selected_sites
     }
-    if args.site_b_offset:
+    if args.site_b_offset and "B" in site_keys:
         print(f"[site-keys] site B offset {args.site_b_offset:+d}: {site_keys['B']}")
+    if selected_sites != ("A", "B"):
+        print(f"[site-keys] preparing sites {list(selected_sites)} only")
 
     union_indices = None
     if args.union_embedding_radius is not None:
@@ -400,15 +444,46 @@ def main() -> None:
     for site, keys in site_keys.items():
         site_dir = args.output_dir / f"site_{site}"
         site_dir.mkdir()
-        cr2_residue = residue_by_key(pdb.topology, keys["cr2"], "CR2")
+        kind = keys.get("kind", "cr2")
         tyr_residue = residue_by_key(pdb.topology, keys["tyr"], "TYR")
-        cr2_by_name = {atom.name: atom for atom in cr2_residue.atoms()}
-        if set(cr2_by_name) != set(cr2_names):
-            raise RuntimeError(f"Exact CR2 atom inventory mismatch at site {site}")
-        cr2_coords = unwrap(
-            np.asarray([positions[cr2_by_name[name].index] for name in cr2_names]), box
-        )
-        rotation, _, fit_rmsd = kabsch(reference_cr2[reference_heavy], cr2_coords[reference_heavy])
+        if kind == "cr2":
+            core_residues = [residue_by_key(pdb.topology, keys["cr2"], "CR2")]
+            cr2_residue = core_residues[0]
+            cr2_by_name = {atom.name: atom for atom in cr2_residue.atoms()}
+            if set(cr2_by_name) != set(cr2_names):
+                raise RuntimeError(f"Exact CR2 atom inventory mismatch at site {site}")
+            core_names, core_symbols = cr2_names, cr2_symbols
+            cr2_coords = unwrap(
+                np.asarray([positions[cr2_by_name[name].index] for name in cr2_names]), box
+            )
+            rotation, _, fit_rmsd = kabsch(
+                reference_cr2[reference_heavy], cr2_coords[reference_heavy])
+            core_charge = -1
+        elif kind == "glygly":
+            # Un-matured core: the two glycines that flank the deleted
+            # chromophore tyrosine. There is no CR2 reference geometry to fit
+            # against, so fit_rmsd is None rather than a fabricated number.
+            core_residues = [residue_by_key(pdb.topology, k, "GLY") for k in keys["gly"]]
+            for residue in core_residues:
+                names = {atom.name for atom in residue.atoms()}
+                if not set(GLY_NAMES) <= names:
+                    raise RuntimeError(
+                        f"Gly inventory mismatch at site {site} residue "
+                        f"{residue.id}: missing {sorted(set(GLY_NAMES) - names)}")
+            core_names = [(r.id, n) for r in core_residues for n in GLY_NAMES]
+            core_symbols = GLY_SYMBOLS * len(core_residues)
+            by_index = {}
+            for residue in core_residues:
+                by_name = {atom.name: atom for atom in residue.atoms()}
+                for name in GLY_NAMES:
+                    by_index[(residue.id, name)] = by_name[name].index
+            cr2_coords = unwrap(
+                np.asarray([positions[by_index[k]] for k in core_names]), box)
+            cr2_residue = core_residues[0]
+            fit_rmsd = None
+            core_charge = 0
+        else:
+            raise RuntimeError(f"unknown site kind {kind!r} at site {site}")
 
         tyr_by_name = {atom.name: atom for atom in tyr_residue.atoms()}
         if any(name not in tyr_by_name for name in tyr_names + ["CB"]):
@@ -420,19 +495,32 @@ def main() -> None:
         tyr_coord_by_name = dict(zip((atom.name for atom in tyr_all_atoms), tyr_all_coords))
         tyr_coords = np.asarray([tyr_coord_by_name[name] for name in tyr_names])
 
-        cr2_qm_indices = {atom.index for atom in cr2_residue.atoms()}
+        cr2_qm_indices = {atom.index for r in core_residues for atom in r.atoms()}
         phenol_qm_indices = {tyr_by_name[name].index for name in tyr_names}
         qm_indices = cr2_qm_indices | phenol_qm_indices
-        n1_cut = severed_bond(pdb.topology, qm_indices, "N1", cr2_residue)
-        c3_cut = severed_bond(pdb.topology, qm_indices, "C3", cr2_residue)
         tyr_cut = severed_bond(pdb.topology, qm_indices, "CG", tyr_residue)
+        if kind == "cr2":
+            n1_cut = severed_bond(pdb.topology, qm_indices, "N1", cr2_residue)
+            c3_cut = severed_bond(pdb.topology, qm_indices, "C3", cr2_residue)
+            cap_specs = (
+                (n1_cut, 1.01, cr2_coords[core_names.index("N1")]),
+                (c3_cut, 1.09, cr2_coords[core_names.index("C3")]),
+                (tyr_cut, 1.09, tyr_coord_by_name["CG"]),
+            )
+        else:
+            # The Gly-Gly core is severed at the two flanking peptide bonds,
+            # the same two backbone cuts CR2 takes (its N1 and C3 ARE the
+            # triad's terminal backbone N and C), so the boundary is in the
+            # identical place at both sites.
+            n1_cut = severed_bond(pdb.topology, qm_indices, "N", core_residues[0])
+            c3_cut = severed_bond(pdb.topology, qm_indices, "C", core_residues[-1])
+            cap_specs = (
+                (n1_cut, 1.01, cr2_coords[core_names.index((core_residues[0].id, "N"))]),
+                (c3_cut, 1.09, cr2_coords[core_names.index((core_residues[-1].id, "C"))]),
+                (tyr_cut, 1.09, tyr_coord_by_name["CG"]),
+            )
         link_coords = []
         link_diagnostics = []
-        cap_specs = (
-            (n1_cut, 1.01, cr2_coords[cr2_names.index("N1")]),
-            (c3_cut, 1.09, cr2_coords[cr2_names.index("C3")]),
-            (tyr_cut, 1.09, tyr_coord_by_name["CG"]),
-        )
         for cut, length, parent_coord in cap_specs:
             cap, diagnostic = cap_along_severed_bond(
                 *cut, positions, box, length, parent_coord
@@ -441,10 +529,13 @@ def main() -> None:
             link_diagnostics.append(diagnostic)
         physical_coords = np.vstack([cr2_coords, tyr_coords])
         qm_coords = np.vstack([physical_coords, np.asarray(link_coords)])
-        qm_symbols = cr2_symbols + tyr_symbols + ["H", "H", "H"]
+        qm_symbols = list(core_symbols) + list(tyr_symbols) + ["H", "H", "H"]
+        n_qm = len(qm_symbols)
+        n_physical = n_qm - 3
         with (site_dir / "geometry.xyz").open("w") as handle:
-            handle.write("44\n")
-            handle.write(f"Production frame {args.frame_index} site {site}; link atoms 42-44\n")
+            handle.write(f"{n_qm}\n")
+            handle.write(f"Production frame {args.frame_index} site {site} "
+                         f"({kind}); link atoms {n_physical + 1}-{n_qm}\n")
             for symbol, coord in zip(qm_symbols, qm_coords):
                 handle.write(f"{symbol:<2s} {coord[0]: .10f} {coord[1]: .10f} {coord[2]: .10f}\n")
 
@@ -546,12 +637,15 @@ def main() -> None:
             site_dir / "tddft.in",
         )
         site_summaries[site] = {
-            "cr2_key": list(keys["cr2"]),
+            "site_kind": kind,
+            "qm_net_charge_e": core_charge,
+            "cr2_key": list(keys["cr2"]) if "cr2" in keys else None,
+            "core_residue_keys": [list(k) for k in keys.get("gly", ())] or None,
             "stacked_tyr_key": list(keys["tyr"]),
             "cr2_reference_heavy_fit_rmsd_A": fit_rmsd,
-            "qm_atoms": 44,
-            "physical_qm_atoms": 41,
-            "excluded_link_atom_indices_one_based": [42, 43, 44],
+            "qm_atoms": n_qm,
+            "physical_qm_atoms": n_physical,
+            "excluded_link_atom_indices_one_based": [n_physical + 1, n_physical + 2, n_qm],
             "link_caps": link_diagnostics,
             "mm_point_charges": len(field_charges),
             "mm_net_charge_e": float(field_charges.sum()),
@@ -580,7 +674,7 @@ def main() -> None:
                     "atom_count": site_summaries[site]["mm_point_charges"],
                     "net_charge_e": site_summaries[site]["mm_net_charge_e"],
                 }
-                for site in ("A", "B")
+                for site in selected_sites
             },
         }
         args.fixed_embedding_selection.parent.mkdir(parents=True, exist_ok=True)
@@ -588,7 +682,7 @@ def main() -> None:
         temporary.write_text(json.dumps(selection_payload, indent=2) + "\n")
         temporary.replace(args.fixed_embedding_selection)
 
-    for site in ("A", "B"):
+    for site in selected_sites:
         # The atom list is retained in the shared provenance file, not repeated
         # in every frame-level summary.
         del site_summaries[site]["mm_atom_indices"]

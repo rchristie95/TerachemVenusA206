@@ -1,0 +1,57 @@
+{
+  "measured": {
+    "fwhm": 963.0,
+    "width90": 252.0,
+    "eps_max": 184400.0,
+    "separation": 500.0,
+    "peak_to_peak": 282900.0,
+    "lam_max": 516.82
+  },
+  "variants": {
+    "baseline (anchored, TDDFT mu)": {
+      "lam_max": 517.170045510964,
+      "fwhm": 984.0,
+      "width90": 374.0,
+      "eps_max": 293853.1882699401,
+      "separation": 632.0,
+      "peak_to_peak": 922492.3327358807,
+      "g_abs": 0.000538810710873639
+    },
+    "STEOM origin": {
+      "lam_max": 545.3752181500872,
+      "fwhm": 984.0,
+      "width90": 374.0,
+      "eps_max": 278623.8971136094,
+      "separation": 632.0,
+      "peak_to_peak": 829219.7506498323,
+      "g_abs": 0.0005100109260915768
+    },
+    "STEOM dipole 8.92 D": {
+      "lam_max": 517.170045510964,
+      "fwhm": 984.0,
+      "width90": 374.0,
+      "eps_max": 265172.7736910128,
+      "separation": 632.0,
+      "peak_to_peak": 832456.0030145159,
+      "g_abs": 0.0005388107108736395
+    },
+    "STEOM detuning slope 1.523": {
+      "lam_max": 515.8893933140735,
+      "fwhm": 1600.0,
+      "width90": 594.0,
+      "eps_max": 201894.68456590525,
+      "separation": 1014.0,
+      "peak_to_peak": 434656.8485154614,
+      "g_abs": 0.00036079223452374675
+    },
+    "all three STEOM corrections": {
+      "lam_max": 544.010445000544,
+      "fwhm": 1600.0,
+      "width90": 594.0,
+      "eps_max": 172768.6269748732,
+      "separation": 1016.0,
+      "peak_to_peak": 352654.8978136473,
+      "g_abs": 0.00034120541717100534
+    }
+  }
+}

@@ -60,8 +60,17 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     symbols, atoms = read_xyz(args.xyz)
-    if len(atoms) != 44 or args.physical_atoms != 41:
-        raise ValueError(f"Validated mapping requires 44 total/41 physical atoms; got {len(atoms)}/{args.physical_atoms}")
+    # The 44/41 CR2 region is the validated mapping and stays the default. A
+    # site whose core is not a CR2 has a different atom count (dVenus-TDX's
+    # barrel 2 is 29/26), and everything below is already written in terms of
+    # args.physical_atoms, so the requirement is the structural one: three link
+    # atoms, appended last.
+    if len(atoms) != args.physical_atoms + 3:
+        raise ValueError(
+            f"Expected {args.physical_atoms} physical + 3 link atoms, "
+            f"got {len(atoms)} total for physical_atoms={args.physical_atoms}")
+    if args.physical_atoms == 41 and len(atoms) != 44:
+        raise ValueError(f"Validated CR2 mapping requires 44 total atoms; got {len(atoms)}")
 
     points, charges = cc.read_dx(args.dx, threshold=args.absolute_threshold, stride=1)
     if not len(charges):

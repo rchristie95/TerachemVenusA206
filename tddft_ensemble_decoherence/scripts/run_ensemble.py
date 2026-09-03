@@ -80,6 +80,45 @@ WINDOWS = {
         "trajectory": REPO / "tc_tandem_v5_campaign/tandem_v5_1250ps_500fs.dcd",
         "frames": 2500,
     },
+    # 2026-09-03. Dense segment for the cumulant lineshape: 1 ps at 2 fs, seeded
+    # from v5camp frame 1756 (the ensemble MEDIAN |Delta| = 491.7 cm^-1, so a
+    # typical configuration rather than the near-degenerate tail the T2 windows
+    # used). The three v6t2 windows are 100 fs and resolve only to 334 cm^-1,
+    # coarser than kT = 208; 1 ps resolves to 33 cm^-1, which is what the
+    # second-order cumulant needs to separate the fast lineshape from the static
+    # disorder without the two being fitted against each other.
+    "v8dense": {
+        "topology": REPO / "tc_tandem_v5_campaign/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_v8_dense/tandem_v8_1ps_2fs.dcd",
+        "frames": 500,
+    },
+    # 2026-09-02. dVenus-TDX: the same protocol as v5camp -- 1 ns, 2000 MD steps
+    # between frames, 500 frames, full-system embedding, link-only exclusion --
+    # on the construct with ONE chromophore. The deposited Addgene #250939
+    # deletes the barrel-2 chromophore tyrosine, so barrel 2 carries no CR2.
+    # Consequences, all of them deliberate:
+    #   * "sites": ("A",). There is no site B, so no detuning and no coupling.
+    #     What this window measures is the single-chromophore site-energy
+    #     trajectory: the monomer band position, its static disorder and its
+    #     reorganisation energy, against Nguyen's own dVenus-TDX absorption.
+    #   * no --site-b-offset and no --retain-partner-cr2-charges: there is no
+    #     partner chromophore whose RESP charge could be restored. Removing that
+    #     -1 e from the embedding field is the physical content of TDX, not an
+    #     omission.
+    #   * its own embedding cache. The topology has 508 residues against the
+    #     tandem's 511, so the cached descriptor cannot be shared.
+    #   * the box is neutral at exactly 0.000000 e -- and so is v5's (checked in
+    #     tandem_v5_campaign/md_v5.log, two CR2 at -1 e each and the same
+    #     "+0.000000 e" line). The net -2 e defect belongs to the earlier
+    #     tandem lineage, NOT to v5, so a TD-vs-TDX site-energy comparison is
+    #     not confounded by box charge. Both site-A embeddings also carry the
+    #     same MM net charge, +0.8492 e.
+    "v7tdx": {
+        "topology": REPO / "tc_tandem_tdx_dark2/solvated_protonated.pdb",
+        "trajectory": REPO / "tc_tandem_tdx_dark2/tandem_tdx_dark2_1ns.dcd",
+        "frames": 500,
+        "sites": ("A",),
+    },
     # 2026-08-31. T2 campaign: three 100 fs windows at 1 fs cadence, each seeded
     # from the v5 frame whose STEOM reference already exists (steom_v5/frame_NNNN).
     # Chosen to span the detuning at near-constant coupling, so T2 can be tested
@@ -170,6 +209,11 @@ WINDOWS = {
 }
 
 
+def sites_for(window: str) -> tuple[str, ...]:
+    """Which chromophore sites this window has. Two unless declared otherwise."""
+    return tuple(WINDOWS[window].get("sites", ("A", "B")))
+
+
 class FrameFailure(RuntimeError):
     def __init__(self, failure_class: str, message: str):
         super().__init__(message)
@@ -234,14 +278,17 @@ def prepare(window: str, frame: int, frame_dir: Path) -> dict:
             "--trajectory", str(WINDOWS[window]["trajectory"]),
             "--frame-index", str(frame),
             # v4short's barrel-1 LGMDELYK tail shifts site B by 8 residues.
-            *(["--site-b-offset", "8"] if window in {"v4short", "v4full", "v4union", "v4bnd_rc", "v4bnd_excl", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"} else []),
+            *(["--site-b-offset", "8"] if window in {"v4short", "v4full", "v4union", "v4bnd_rc", "v4bnd_excl", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min", "v8dense"} else []),
             "--output-dir", str(frame_dir),
+            *(["--sites", ",".join(sites_for(window))]
+              if sites_for(window) != ("A", "B") else []),
             # The cache is keyed to a topology descriptor. v4short's topology has
             # 16 more residues and 5439 more atoms than the others, so it needs its
             # own cache; sharing one raises "topology descriptor mismatch".
             # load_or_build_charges() builds this on first use.
             "--embedding-cache", str(
-                ROOT / ("cache/embedding_charges_v5.npz" if window in {"v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"}
+                ROOT / ("cache/embedding_charges_v7tdx.npz" if window == "v7tdx"
+                        else "cache/embedding_charges_v5.npz" if window in {"v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min", "v8dense"}
                         else "cache/embedding_charges_v4.npz" if window in {"v4short", "v4full", "v4union", "v4bnd_rc", "v4bnd_excl"}
                         else "cache/embedding_charges.npz")
             ),
@@ -261,7 +308,14 @@ def prepare(window: str, frame: int, frame_dir: Path) -> dict:
         # and to +0.849200 e with none once retained -- a missing -1 e sitting
         # ~24 A from the QM region. The five calibration frames run before the fix
         # are kept as a control under frames/v5camp_nopartner/.
-        if window in {"v4union", "v4full", "v4bnd_rc", "v4bnd_excl", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"}:
+        # v7tdx joins this set for site Bdark, whose embedding field CONTAINS the
+        # live chromophore: without it the 29 CR2 charges sit at exactly 0.0 and
+        # the dark site is polarised by a field missing -1 e at 26 A. Verified on
+        # frame 100: the field sums to +0.849200 e with the CR2 zeroed. For site A
+        # the flag is a no-op -- TDX has exactly one CR2 and it IS site A's QM
+        # core, so there is no non-QM CR2 to restore, which is why the 500
+        # completed site-A frames are unaffected.
+        if window in {"v4union", "v4full", "v4bnd_rc", "v4bnd_excl", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min", "v7tdx", "v8dense"}:
             command.extend([
                 "--retain-partner-cr2-charges",
                 "--amber-cr2-prmtop", str(REPO / "anionic_build/monomer_solv.prmtop"),
@@ -271,7 +325,7 @@ def prepare(window: str, frame: int, frame_dir: Path) -> dict:
                 "--union-embedding-radius", str(WINDOWS[window]["union_radius"]),
                 "--link-only-exclusion",
             ])
-        elif window in {"v4full", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min"}:
+        elif window in {"v4full", "v5camp", "v6t2a", "v6t2b", "v6t2c", "v6lfa", "v6lfb", "v6lfc", "v6min", "v7tdx", "v8dense"}:
             command.extend(["--full-system-embedding", "--link-only-exclusion"])
         elif window == "v4bnd_rc":
             # BOUNDARY TEST variant 1: 1.8 A geometric exclusion (the script default)
@@ -456,6 +510,8 @@ def process_site(
     roots_count: int,
     profile: str = "validated",
     reference_path: Path = REFERENCE,
+    qm_charge: int | None = None,
+    selection: str = "overlap",
 ) -> dict:
     output = site_dir / "td_density.out"
     runtime_path = site_dir / "runtime_seconds.txt"
@@ -485,6 +541,13 @@ def process_site(
         "state_tracking_reference": str(reference_path.resolve()),
         "state_tracking_reference_sha256": sha256(reference_path),
     }
+    # The templates hard-code "charge -1", the mature anionic chromophore. A
+    # site whose core is the un-matured Gly-Gly is NEUTRAL, so the charge is
+    # taken from the preparation summary rather than assumed. It is recorded in
+    # the profile as well, so a site prepared at one charge and run at another
+    # is refused rather than silently producing a plausible wrong answer.
+    if qm_charge is not None:
+        expected_profile["qm_charge"] = int(qm_charge)
     if profile_path.exists():
         retained_profile = json.loads(profile_path.read_text())
         if retained_profile != expected_profile:
@@ -496,6 +559,15 @@ def process_site(
         profile_path.write_text(json.dumps(expected_profile, indent=2) + "\n")
     if not input_path.exists():
         shutil.copy2(template, input_path)
+        if qm_charge is not None:
+            text = input_path.read_text().splitlines(keepends=True)
+            hits = [i for i, line in enumerate(text) if line.split()[:1] == ["charge"]]
+            if len(hits) != 1:
+                raise FrameFailure(
+                    "malformed_coordinate_or_point_charge_input",
+                    f"{template.name}: expected exactly one 'charge' line, found {len(hits)}")
+            text[hits[0]] = f"charge {int(qm_charge)}\n"
+            input_path.write_text("".join(text))
     if not output.exists() or "Job finished:" not in output.read_text(errors="replace"):
         started = time.time()
         with output.open("w") as handle:
@@ -517,6 +589,7 @@ def process_site(
         raise FrameFailure(classify_tddft(parsed, roots_count), "Incomplete TeraChem output")
 
     scratch = site_dir / "scr_density"
+    physical_atoms = int(open(site_dir / "geometry.xyz").readline().split()[0]) - 3
     for root in parsed["roots"]:
         compact = site_dir / f"root{root['root']}_density.npz"
         if compact.exists():
@@ -531,12 +604,42 @@ def process_site(
                 "--energy-ev", str(root["energy_eV"]),
                 "--oscillator-strength", str(root["oscillator_strength"]),
                 "--target-mu-au", *[str(value) for value in mu],
-                "--reference", str(reference_path),
+                "--physical-atoms", str(physical_atoms),
+                # Atomic-overlap phase alignment is against a CR2 reference
+                # density. For a non-CR2 core the atom sets do not correspond,
+                # so no reference is passed and the per-frame sign of that
+                # site's density is arbitrary. J's MAGNITUDE is unaffected; its
+                # sign must be fixed downstream, as v5_rotational_strength.py
+                # already does for the dipoles.
+                *(["--reference", str(reference_path)]
+                  if selection == "overlap" else []),
             ]
         )
-    assignment = resolve_assignment(
-        site_dir, window, previous_dipole, roots_count, reference_path
-    )
+    if selection == "overlap":
+        assignment = resolve_assignment(
+            site_dir, window, previous_dipole, roots_count, reference_path
+        )
+    elif selection == "brightest":
+        # The un-matured Gly-Gly core has no chromophore, so there is no CR2
+        # transition density to track against and density-overlap assignment is
+        # undefined. The state that could couple to the live chromophore is the
+        # one carrying transition dipole, so the brightest computed root is
+        # selected and the choice is recorded as such -- it is a different
+        # criterion from site A's and must not be reported as the same.
+        best = max(parsed["roots"], key=lambda r: r["oscillator_strength"])
+        assignment = {
+            "selected_root": best["root"],
+            "selection_basis": "largest_oscillator_strength",
+            "selected_assignment_score": float(best["oscillator_strength"]),
+            "final_status": "selected",
+            "all_roots": [
+                {"root": r["root"], "energy_eV": r["energy_eV"],
+                 "oscillator_strength": r["oscillator_strength"]}
+                for r in parsed["roots"]
+            ],
+        }
+    else:
+        raise ValueError(f"unknown selection strategy {selection!r}")
     selected_root = assignment["selected_root"]
     selected_dx = scratch / f"transdens_{selected_root}.dx"
     selected_gzip = site_dir / "selected_transdens.dx.gz"
@@ -596,6 +699,43 @@ def process_frame(
         reference_path,
     )
     previous["A"] = np.asarray(site_a["root"]["transition_dipole_au"], float)
+    if sites_for(window) == ("A",):
+        # Single-chromophore construct (dVenus-TDX). There is no second site, so
+        # no detuning and no transition-density coupling: the manifest's site-B
+        # and J columns stay empty rather than being filled with a placeholder,
+        # which would be indistinguishable downstream from a real measurement.
+        result = {
+            "window": window,
+            "frame_index": frame,
+            "preparation": prep,
+            "site_A": {**site_a["root"], **site_a["assignment"]},
+            "sites": ["A"],
+            "steom_constant_shift_eV": delta_steom_ev,
+            "method_profile": profile,
+        }
+        summary_path = frame_dir / "frame_summary.json"
+        summary_path.write_text(json.dumps(result, indent=2) + "\n")
+        a = site_a["root"]
+        row.update({
+            "site_A_energy_eV": f"{a['energy_eV']:.10f}",
+            "site_A_energy_cm-1": f"{a['energy_cm-1']:.6f}",
+            "site_A_wavelength_nm": f"{a['wavelength_nm']:.6f}",
+            "site_A_corrected_eV": f"{a['energy_eV'] + delta_steom_ev:.10f}",
+            "site_A_oscillator_strength": f"{a['oscillator_strength']:.8f}",
+            "site_A_selected_root": str(a["root"]),
+            "site_A_assignment_score": f"{site_a['assignment']['selected_assignment_score']:.8f}",
+            "grid_normalization_error_A": f"{site_a['grid_normalization_error']:.8e}",
+            "convergence_status": "complete",
+            "failure_class": "",
+            "runtime_seconds": f"{site_a['runtime_seconds']:.6f}",
+            "gpu": gpu,
+            "compact_output_path": str(summary_path.resolve()),
+            "notes": (
+                f"{profile} profile; {roots_count}-root density-overlap tracking; "
+                "single chromophore (dVenus-TDX), no partner site and no TDC"
+            ),
+        })
+        return result
     site_b = process_site(
         frame_dir / "site_B",
         window,
@@ -693,6 +833,8 @@ def main() -> None:
             "v6lfb",
             "v6lfc",
             "v6min",
+            "v7tdx",
+            "v8dense",
             "v4bnd_rc",
             "v4bnd_excl",
             "both",
@@ -761,14 +903,25 @@ def main() -> None:
                     args.delta_steom_ev,
                     args.state_reference,
                 )
-                print(
-                    f"[done] {window} frame={dcd_frame} roots="
-                    f"{result['site_A']['root']}/{result['site_B']['root']} "
-                    f"EA={result['site_A']['energy_eV']:.6f} "
-                    f"EB={result['site_B']['energy_eV']:.6f} "
-                    f"J={result['tdc']['J_screened_cm-1']:.3f} cm-1",
-                    flush=True,
-                )
+                if "site_B" in result:
+                    print(
+                        f"[done] {window} frame={dcd_frame} roots="
+                        f"{result['site_A']['root']}/{result['site_B']['root']} "
+                        f"EA={result['site_A']['energy_eV']:.6f} "
+                        f"EB={result['site_B']['energy_eV']:.6f} "
+                        f"J={result['tdc']['J_screened_cm-1']:.3f} cm-1",
+                        flush=True,
+                    )
+                else:
+                    print(
+                        f"[done] {window} frame={dcd_frame} root="
+                        f"{result['site_A']['root']} "
+                        f"EA={result['site_A']['energy_eV']:.6f} eV "
+                        f"({result['site_A']['wavelength_nm']:.2f} nm, "
+                        f"f={result['site_A']['oscillator_strength']:.3f}) "
+                        "single chromophore",
+                        flush=True,
+                    )
             except FrameFailure as error:
                 row["convergence_status"] = "failed"
                 row["failure_class"] = error.failure_class

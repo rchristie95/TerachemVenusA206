@@ -1,0 +1,249 @@
+{
+  "measured": {
+    "width90_cm": 252.0,
+    "fwhm_cm": 963.0,
+    "separation_cm": 500.0
+  },
+  "scan": [
+    {
+      "sigma": 0.0,
+      "gamma": 0.0,
+      "width90_cm": 2.0,
+      "fwhm_cm": 44.0,
+      "separation_cm": 42.0,
+      "peak_to_peak": 1839159848.2385793,
+      "eps_max": 31146950.04399995,
+      "lobe_ratio": 1.0456422780657966
+    },
+    {
+      "sigma": 0.0,
+      "gamma": 100.0,
+      "width90_cm": 72.0,
+      "fwhm_cm": 212.0,
+      "separation_cm": 122.0,
+      "peak_to_peak": 7680931.050329892,
+      "eps_max": 881325.6056982749,
+      "lobe_ratio": 0.8984832056950025
+    },
+    {
+      "sigma": 0.0,
+      "gamma": 200.0,
+      "width90_cm": 136.0,
+      "fwhm_cm": 412.0,
+      "separation_cm": 234.0,
+      "peak_to_peak": 1990476.5205049291,
+      "eps_max": 462930.30983636057,
+      "lobe_ratio": 0.8180740001049391
+    },
+    {
+      "sigma": 0.0,
+      "gamma": 300.0,
+      "width90_cm": 204.0,
+      "fwhm_cm": 630.0,
+      "separation_cm": 352.0,
+      "peak_to_peak": 907613.1679022599,
+      "eps_max": 318577.2048625275,
+      "lobe_ratio": 0.7622393190955045
+    },
+    {
+      "sigma": 100.0,
+      "gamma": 0.0,
+      "width90_cm": 98.0,
+      "fwhm_cm": 246.0,
+      "separation_cm": 158.0,
+      "peak_to_peak": 13778834.803737674,
+      "eps_max": 1083172.5878904178,
+      "lobe_ratio": 0.9263591199621083
+    },
+    {
+      "sigma": 100.0,
+      "gamma": 100.0,
+      "width90_cm": 136.0,
+      "fwhm_cm": 366.0,
+      "separation_cm": 230.0,
+      "peak_to_peak": 3668042.405292879,
+      "eps_max": 594735.3277749324,
+      "lobe_ratio": 0.859909364200033
+    },
+    {
+      "sigma": 100.0,
+      "gamma": 200.0,
+      "width90_cm": 186.0,
+      "fwhm_cm": 530.0,
+      "separation_cm": 318.0,
+      "peak_to_peak": 1491556.4615778641,
+      "eps_max": 392729.514067198,
+      "lobe_ratio": 0.7974455118842798
+    },
+    {
+      "sigma": 100.0,
+      "gamma": 300.0,
+      "width90_cm": 246.0,
+      "fwhm_cm": 728.0,
+      "separation_cm": 418.0,
+      "peak_to_peak": 785018.6730522758,
+      "eps_max": 292342.0206399664,
+      "lobe_ratio": 0.754441228720344
+    },
+    {
+      "sigma": 150.0,
+      "gamma": 0.0,
+      "width90_cm": 140.0,
+      "fwhm_cm": 360.0,
+      "separation_cm": 236.0,
+      "peak_to_peak": 6175803.916762808,
+      "eps_max": 739081.6805855088,
+      "lobe_ratio": 0.8869864660850044
+    },
+    {
+      "sigma": 150.0,
+      "gamma": 100.0,
+      "width90_cm": 180.0,
+      "fwhm_cm": 482.0,
+      "separation_cm": 304.0,
+      "peak_to_peak": 2406520.0509049376,
+      "eps_max": 481472.2801236294,
+      "lobe_ratio": 0.8273015347442249
+    },
+    {
+      "sigma": 150.0,
+      "gamma": 200.0,
+      "width90_cm": 230.0,
+      "fwhm_cm": 638.0,
+      "separation_cm": 388.0,
+      "peak_to_peak": 1178999.2406121346,
+      "eps_max": 347203.8034253276,
+      "lobe_ratio": 0.7785493090590835
+    },
+    {
+      "sigma": 150.0,
+      "gamma": 300.0,
+      "width90_cm": 284.0,
+      "fwhm_cm": 830.0,
+      "separation_cm": 484.0,
+      "peak_to_peak": 683278.8386418356,
+      "eps_max": 270789.4562751908,
+      "lobe_ratio": 0.7489728913482793
+    },
+    {
+      "sigma": 200.0,
+      "gamma": 0.0,
+      "width90_cm": 186.0,
+      "fwhm_cm": 478.0,
+      "separation_cm": 312.0,
+      "peak_to_peak": 3459277.260842113,
+      "eps_max": 559026.3013330295,
+      "lobe_ratio": 0.8432957428736743
+    },
+    {
+      "sigma": 200.0,
+      "gamma": 100.0,
+      "width90_cm": 228.0,
+      "fwhm_cm": 604.0,
+      "separation_cm": 384.0,
+      "peak_to_peak": 1676857.7223667356,
+      "eps_max": 402618.19399649807,
+      "lobe_ratio": 0.7966953859979337
+    },
+    {
+      "sigma": 200.0,
+      "gamma": 200.0,
+      "width90_cm": 276.0,
+      "fwhm_cm": 760.0,
+      "separation_cm": 466.0,
+      "peak_to_peak": 937708.878661025,
+      "eps_max": 308687.7073887509,
+      "lobe_ratio": 0.7641390310600301
+    },
+    {
+      "sigma": 200.0,
+      "gamma": 300.0,
+      "width90_cm": 330.0,
+      "fwhm_cm": 946.0,
+      "separation_cm": 558.0,
+      "peak_to_peak": 588984.180246935,
+      "eps_max": 249994.29892979935,
+      "lobe_ratio": 0.747673454547567
+    },
+    {
+      "sigma": 275.0,
+      "gamma": 0.0,
+      "width90_cm": 256.0,
+      "fwhm_cm": 668.0,
+      "separation_cm": 434.0,
+      "peak_to_peak": 1827478.4697283604,
+      "eps_max": 410270.5452022282,
+      "lobe_ratio": 0.795338461561634
+    },
+    {
+      "sigma": 275.0,
+      "gamma": 100.0,
+      "width90_cm": 300.0,
+      "fwhm_cm": 800.0,
+      "separation_cm": 508.0,
+      "peak_to_peak": 1078539.1578867717,
+      "eps_max": 323516.5849785087,
+      "lobe_ratio": 0.7705133873158397
+    },
+    {
+      "sigma": 275.0,
+      "gamma": 200.0,
+      "width90_cm": 348.0,
+      "fwhm_cm": 958.0,
+      "separation_cm": 590.0,
+      "peak_to_peak": 689238.7333390479,
+      "eps_max": 263821.8122842716,
+      "lobe_ratio": 0.7563961162505933
+    },
+    {
+      "sigma": 275.0,
+      "gamma": 300.0,
+      "width90_cm": 402.0,
+      "fwhm_cm": 1142.0,
+      "separation_cm": 680.0,
+      "peak_to_peak": 473855.6450186252,
+      "eps_max": 222833.80242245257,
+      "lobe_ratio": 0.7538055278344808
+    },
+    {
+      "sigma": 391.5,
+      "gamma": 0.0,
+      "width90_cm": 374.0,
+      "fwhm_cm": 984.0,
+      "separation_cm": 632.0,
+      "peak_to_peak": 922492.3327358807,
+      "eps_max": 293853.1882699401,
+      "lobe_ratio": 0.7665224065668351
+    },
+    {
+      "sigma": 391.5,
+      "gamma": 100.0,
+      "width90_cm": 418.0,
+      "fwhm_cm": 1130.0,
+      "separation_cm": 708.0,
+      "peak_to_peak": 641809.656235372,
+      "eps_max": 250038.14398087177,
+      "lobe_ratio": 0.7625789834708517
+    },
+    {
+      "sigma": 391.5,
+      "gamma": 200.0,
+      "width90_cm": 468.0,
+      "fwhm_cm": 1296.0,
+      "separation_cm": 792.0,
+      "peak_to_peak": 464483.80093742313,
+      "eps_max": 215858.3065962571,
+      "lobe_ratio": 0.7676717647944458
+    },
+    {
+      "sigma": 391.5,
+      "gamma": 300.0,
+      "width90_cm": 520.0,
+      "fwhm_cm": 1480.0,
+      "separation_cm": 884.0,
+      "peak_to_peak": 350828.2752833215,
+      "eps_max": 190279.37365225493,
+      "lobe_ratio": 0.7819068222917233
+    }
+  ]
+}

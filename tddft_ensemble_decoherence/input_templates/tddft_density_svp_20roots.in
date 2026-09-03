@@ -1,0 +1,20 @@
+coordinates geometry.xyz
+run energy
+cis yes
+basis def2-svp
+method wb97xd3
+charge -1
+spinmult 1
+pointcharges mm_charges.dat
+pointcharges_self_interaction no
+scrdir scr_density
+cisnumstates 20
+cismaxiter 200
+cismax 500
+cistransdensity yes
+cisdiffdensity no
+cistarget 20
+scf diis+a
+threall 1.0e-13
+gpus 1
+end

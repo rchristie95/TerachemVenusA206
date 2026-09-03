@@ -378,3 +378,10 @@ terachem_site_energy_cd/results/*_frame_[0-9]*/
 
 # Local safety net for the consolidated manuscript/ folder (superseded content)
 manuscript_archive/
+
+# CD forward model, 2026-09-02/03. Small extracts the manuscript's Figure 6 and
+# its numbers depend on; the broad *.npz and PDF rules above must not hide them.
+!terachem_site_energy_cd/results/cd_*.npz
+!terachem_site_energy_cd/results/digitised/
+!terachem_site_energy_cd/results/digitised/*.npz
+!terachem_site_energy_cd/results/Fig_CD_*.pdf

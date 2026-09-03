@@ -1,0 +1,32 @@
+coordinates geometry.xyz
+run energy
+cis yes
+basis def2-svpd
+method wb97xd3
+charge -1
+spinmult 1
+pointcharges mm_charges.dat
+pointcharges_self_interaction no
+scrdir scr_super
+# The supermolecular splitting at frame 1832 is 0.006 eV. Mixed
+# precision and the default grid are nowhere near that, so both are
+# forced here; these settings are the reason the test is meaningful.
+precision double
+dftgrid 4
+threall 1.0e-14
+# 1.0e-6, not tighter. The SCF plateaus at a DIIS error of ~1e-6 with diffuse
+# functions on a net -2 system and will otherwise grind to maxit. At the plateau
+# the total energy is stable to ~1e-8 Ha = 2.7e-7 eV, four orders of magnitude
+# below the 0.006 eV splitting being measured, and systematic error largely
+# cancels in the root-to-root difference that is the actual observable.
+convthre 1.0e-6
+cisalgorithm davidson
+cisnumstates 10
+cisguessvecs 20
+cismax 1000
+cismaxiter 500
+cisconvtol 1.0e-7
+cistarget 1
+scf diis+a
+gpus 1
+end
