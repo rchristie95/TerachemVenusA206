@@ -1,0 +1,38 @@
+{
+  "n_frames": 500,
+  "dt_fs": 2.0,
+  "span_ps": 1.0,
+  "resolution_cm": 33.35640951981521,
+  "site_A": {
+    "sd_cm": 565.066007824597,
+    "tau_c_fs": 22.53143455591569,
+    "kubo_sigma_tau": 2.3982176651096228,
+    "cumulant_fwhm_cm": 704.0,
+    "var_fraction_below_kT": 0.08424562109623533,
+    "sd_below_kT_cm": 164.0109525147955,
+    "sd_above_kT_cm": 540.7402339885733
+  },
+  "site_B": {
+    "sd_cm": 504.3352331633886,
+    "tau_c_fs": 19.569318767713053,
+    "kubo_sigma_tau": 1.8590693386292834,
+    "cumulant_fwhm_cm": 544.0,
+    "var_fraction_below_kT": 0.0893927062154633,
+    "sd_below_kT_cm": 150.78923982492685,
+    "sd_above_kT_cm": 481.26565695361035
+  },
+  "gap": {
+    "sd_cm": 802.6274260782916,
+    "tau_c_fs": 36.47937008330693,
+    "kubo_sigma_tau": 5.515208017146634,
+    "cumulant_fwhm_cm": 1292.0,
+    "var_fraction_below_kT": 0.13728775874718824,
+    "sd_below_kT_cm": 297.3924256705157,
+    "sd_above_kT_cm": 745.4988465764854
+  },
+  "comparison": {
+    "cd_rigorous_sigma_static_cm": 391.5,
+    "cd_rigorous_S_total": 0.278,
+    "measured_lambda_site_cm": 628.317306015596
+  }
+}
