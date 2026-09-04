@@ -1,0 +1,66 @@
+{
+  "campaigns": {
+    "TDX single chromophore": {
+      "label": "TDX single chromophore",
+      "n": 500,
+      "mean_cm": 26196.257754358,
+      "se_mean_cm": 23.04698053945396,
+      "sd_cm": 515.3461516233383,
+      "se_sd_cm": 16.31299738737507,
+      "shapiro_p": 0.002741804517916256,
+      "skew": -0.26472118089351,
+      "kurtosis": 0.8095784251706175
+    },
+    "TD site A": {
+      "label": "TD site A",
+      "n": 500,
+      "mean_cm": 26149.564226299997,
+      "se_mean_cm": 24.934451071743045,
+      "sd_cm": 557.5512757805993,
+      "se_sd_cm": 17.64897724856641,
+      "shapiro_p": 0.5823612126372075,
+      "skew": -0.15363736486529558,
+      "kurtosis": 0.2314673087606165
+    },
+    "TD site B": {
+      "label": "TD site B",
+      "n": 500,
+      "mean_cm": 26210.125394208,
+      "se_mean_cm": 23.656161500718135,
+      "sd_cm": 528.9678520231919,
+      "se_sd_cm": 16.744184779256145,
+      "shapiro_p": 0.391519093822823,
+      "skew": -0.16835132108926254,
+      "kurtosis": 0.005662399202118529
+    }
+  },
+  "locality_test": {
+    "delta_sd_cm": -42.205124157261025,
+    "se_cm": 24.033316077497933,
+    "n_sigma": -1.7561090621521476,
+    "levene_p": 0.04539815935986231,
+    "within_trajectory_yardstick_cm": 28.583423757407445,
+    "yardstick_se_cm": 24.32805215882044,
+    "verdict": "not demonstrated; TDX-vs-A is the same size as A-vs-B",
+    "upper_bound_95_cm": 81.61976252435764
+  },
+  "shift": {
+    "td_minus_tdx_cm": -46.69352805800372,
+    "se_cm": 33.95423629291516,
+    "confounded_by": "TDX box neutral vs TD box net -2 e; separate trajectories"
+  },
+  "dark_barrel": {
+    "n": 500,
+    "mean_cm": 41735.565669606,
+    "median_cm": 42461.41960550001,
+    "sd_cm": 2981.0204823360946,
+    "min_cm": 19454.645436,
+    "band_cm": 19341.0,
+    "min_clearance_cm": 113.64543599999888,
+    "n_below_25000": 6,
+    "f_mean_near_band": 0.009533333333333335,
+    "f_chromophore": 1.1618916,
+    "intensity_fraction": 9.846013173690215e-05,
+    "note": "energy separation is not the argument; the tail reaches the band. brightest-root selection over roots 1-7 with no bright state."
+  }
+}
