@@ -385,3 +385,4 @@ manuscript_archive/
 !terachem_site_energy_cd/results/digitised/
 !terachem_site_energy_cd/results/digitised/*.npz
 !terachem_site_energy_cd/results/Fig_CD_*.pdf
+!tddft_ensemble_decoherence/results/v8dense_quantum_cumulant.npz

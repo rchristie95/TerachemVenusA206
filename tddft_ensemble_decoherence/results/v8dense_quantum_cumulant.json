@@ -1,0 +1,367 @@
+{
+  "n_frames": 500,
+  "dt_fs": 2.0,
+  "resolution_cm": 33.35640951981521,
+  "kT_cm": 208.5,
+  "experiment": {
+    "peak_cm": 19341.0,
+    "fwhm_cm": 972.0,
+    "asymmetry_blue_over_red": 1.78,
+    "stokes_shift_cm": 401.60606060606005,
+    "emission_nm": 528.0
+  },
+  "sites": {
+    "site_A": {
+      "sigma_dense_cm": 556.201804172553,
+      "sigma_dense_se_cm": 40.99294409523464,
+      "tau_c_fs": 5.4319208615127845,
+      "tau_c_truncation_fs": 10.0,
+      "n_eff": 92.04846917831394,
+      "kubo_sigma_tau": 0.5690971341088152,
+      "sigma_production_1ns_cm": 557.5512757805992,
+      "sigma_slow_cm": 38.768262274324044,
+      "sigma_slow_upper95_cm": 288.4289059636153,
+      "sigma_static_needed_for_width_cm": 160.73012377105442,
+      "lambda_cm": 725.5194003456105,
+      "lambda_classical_check_cm": 741.8715754551631,
+      "stokes_two_lambda_cm": 1451.038800691221,
+      "stokes_peak_to_peak_predicted_cm": 94.0,
+      "stokes_first_moment_predicted_cm": 1449.0992604096245,
+      "stokes_ratio_peak_over_exp": 0.23406021278201194,
+      "variance_bands": [
+        {
+          "lo_cm": 0.0,
+          "hi_cm": 208.5,
+          "variance_fraction": 0.08150429581406902
+        },
+        {
+          "lo_cm": 208.5,
+          "hi_cm": 417.0,
+          "variance_fraction": 0.08305849919772919
+        },
+        {
+          "lo_cm": 417.0,
+          "hi_cm": 900.0,
+          "variance_fraction": 0.30439159414721634
+        },
+        {
+          "lo_cm": 900.0,
+          "hi_cm": 1500.0,
+          "variance_fraction": 0.11259690903681291
+        },
+        {
+          "lo_cm": 1500.0,
+          "hi_cm": 2200.0,
+          "variance_fraction": 0.3811829509819594
+        },
+        {
+          "lo_cm": 2200.0,
+          "hi_cm": 8339.102379953802,
+          "variance_fraction": 0.0034958147812597725
+        }
+      ],
+      "checks": {
+        "parseval_ratio": 1.0,
+        "lambda_ratio": 0.9779582131859952,
+        "spectral_vs_timedomain_relerr": 0.00527128391298264,
+        "variance_above_2500_cm": 0.0018289360853513345,
+        "white_noise_would_give": 0.700207542
+      },
+      "quantum": {
+        "peak_cm": 18662.0,
+        "fwhm_cm": 554.5377309439209,
+        "red_hwhm_cm": 193.42489551043764,
+        "blue_hwhm_cm": 361.11283543348327,
+        "asymmetry": 1.8669408324121175
+      },
+      "classical": {
+        "peak_cm": 19340.0,
+        "fwhm_cm": 438.75053356052376,
+        "red_hwhm_cm": 218.37526678026188,
+        "blue_hwhm_cm": 220.37526678026188,
+        "asymmetry": 1.0091585463385488
+      },
+      "quantum_plus_measured_static": {
+        "peak_cm": 18666.0,
+        "fwhm_cm": 606.9316204413262,
+        "red_hwhm_cm": 203.7586513656497,
+        "blue_hwhm_cm": 403.1729690756765,
+        "asymmetry": 1.9786790223310475
+      },
+      "quantum_plus_static_upper95": {
+        "peak_cm": 18786.0,
+        "fwhm_cm": 1247.785197641544,
+        "red_hwhm_cm": 480.38176552559526,
+        "blue_hwhm_cm": 767.4034321159488,
+        "asymmetry": 1.5974865975112886
+      },
+      "stokes_calibrated": {
+        "kappa": 0.27677141397924704,
+        "sigma_cm": 292.61259087007926,
+        "peak_cm": 19144.0,
+        "fwhm_cm": 152.49692375291852,
+        "red_hwhm_cm": 72.75984506559325,
+        "blue_hwhm_cm": 79.73707868732527,
+        "asymmetry": 1.0958940142800195
+      },
+      "band_decomposition": [
+        {
+          "part": "full",
+          "sigma_cm": 556.201804172553,
+          "lambda_cm": 725.5194003456105,
+          "fwhm_cm": 554.5377309439209,
+          "asymmetry": 1.8669408324121175
+        },
+        {
+          "part": "omega < 417",
+          "sigma_cm": 229.19603518554737,
+          "lambda_cm": 109.62102044146575,
+          "fwhm_cm": 454.3324785006844,
+          "asymmetry": 1.3891262473353716
+        },
+        {
+          "part": "417-900",
+          "sigma_cm": 311.11501277696124,
+          "lambda_cm": 232.11642967675965,
+          "fwhm_cm": 50.3589667681008,
+          "asymmetry": 1.0747769615003264
+        },
+        {
+          "part": "900-1500",
+          "sigma_cm": 198.4713830785955,
+          "lambda_cm": 94.46256571014534,
+          "fwhm_cm": 50.38963689686716,
+          "asymmetry": 1.0435825419006846
+        },
+        {
+          "part": "1500-2200",
+          "sigma_cm": 345.7044575610782,
+          "lambda_cm": 286.5984939510775,
+          "fwhm_cm": 50.38703340270149,
+          "asymmetry": 1.0332947725045212
+        },
+        {
+          "part": "all except 1500-2200",
+          "sigma_cm": 435.7165075908919,
+          "lambda_cm": 438.92090639453306,
+          "fwhm_cm": 554.2483683555547,
+          "asymmetry": 1.844877114623657
+        }
+      ],
+      "width_matched": {
+        "sigma_static_cm": 160.73012377105442,
+        "permitted_upper95_cm": 288.4289059636153,
+        "inside_permitted": true,
+        "peak_cm": 18708.0,
+        "fwhm_cm": 971.9999999994798,
+        "red_hwhm_cm": 314.3770713028971,
+        "blue_hwhm_cm": 657.6229286965827,
+        "asymmetry": 2.091828535621715
+      },
+      "width_matched_classical": {
+        "sigma_static_cm": 284.13889347807526,
+        "peak_cm": 19340.0,
+        "fwhm_cm": 971.9999999998181,
+        "red_hwhm_cm": 484.99999999990905,
+        "blue_hwhm_cm": 486.99999999990905,
+        "asymmetry": 1.004123711340207
+      },
+      "blue_wing": {
+        "quantum": {
+          "+800": 0.407990271240916,
+          "+1200": 0.26968621280719507,
+          "+1600": 0.2655195576818988,
+          "+2000": 0.15662605675413083
+        },
+        "classical": {
+          "+800": 0.21123074976497258,
+          "+1200": 0.07481487342399737,
+          "+1600": 0.038867909118654544,
+          "+2000": 0.017881395263083997
+        },
+        "experiment": {
+          "+800": 0.42,
+          "+1200": 0.364,
+          "+1600": 0.264,
+          "+2000": 0.143
+        }
+      }
+    },
+    "site_B": {
+      "sigma_dense_cm": 479.74285750017094,
+      "sigma_dense_se_cm": 33.92969904712547,
+      "tau_c_fs": 5.0019918506359735,
+      "tau_c_truncation_fs": 10.0,
+      "n_eff": 99.96017885083678,
+      "kubo_sigma_tau": 0.4520141899625363,
+      "sigma_production_1ns_cm": 528.9678520231919,
+      "sigma_slow_cm": 222.83127956281203,
+      "sigma_slow_upper95_cm": 332.5772535320087,
+      "sigma_static_needed_for_width_cm": 275.8052349573063,
+      "lambda_cm": 544.4995843785523,
+      "lambda_classical_check_cm": 551.9261614446747,
+      "stokes_two_lambda_cm": 1088.9991687571046,
+      "stokes_peak_to_peak_predicted_cm": 22.0,
+      "stokes_first_moment_predicted_cm": 1082.6034807847573,
+      "stokes_ratio_peak_over_exp": 0.05478004980004535,
+      "variance_bands": [
+        {
+          "lo_cm": 0.0,
+          "hi_cm": 208.5,
+          "variance_fraction": 0.08028619378233125
+        },
+        {
+          "lo_cm": 208.5,
+          "hi_cm": 417.0,
+          "variance_fraction": 0.041617797499413134
+        },
+        {
+          "lo_cm": 417.0,
+          "hi_cm": 900.0,
+          "variance_fraction": 0.29288446895672443
+        },
+        {
+          "lo_cm": 900.0,
+          "hi_cm": 1500.0,
+          "variance_fraction": 0.223307106340831
+        },
+        {
+          "lo_cm": 1500.0,
+          "hi_cm": 2200.0,
+          "variance_fraction": 0.31952025883358476
+        },
+        {
+          "lo_cm": 2200.0,
+          "hi_cm": 8339.102379953802,
+          "variance_fraction": 0.019614781952188576
+        }
+      ],
+      "checks": {
+        "parseval_ratio": 1.0000000000000002,
+        "lambda_ratio": 0.9865442561253426,
+        "spectral_vs_timedomain_relerr": 0.0066451657129369774,
+        "variance_above_2500_cm": 0.01721550725762622,
+        "white_noise_would_give": 0.700207542
+      },
+      "quantum": {
+        "peak_cm": 18808.0,
+        "fwhm_cm": 273.2450357306625,
+        "red_hwhm_cm": 111.0820081911661,
+        "blue_hwhm_cm": 162.1630275394964,
+        "asymmetry": 1.45984962083529
+      },
+      "classical": {
+        "peak_cm": 19340.0,
+        "fwhm_cm": 251.6341290618293,
+        "red_hwhm_cm": 124.81706453091465,
+        "blue_hwhm_cm": 126.81706453091465,
+        "asymmetry": 1.016023450058823
+      },
+      "quantum_plus_measured_static": {
+        "peak_cm": 18864.0,
+        "fwhm_cm": 816.2118519763535,
+        "red_hwhm_cm": 335.1905096465125,
+        "blue_hwhm_cm": 481.021342329841,
+        "asymmetry": 1.4350685013042874
+      },
+      "quantum_plus_static_upper95": {
+        "peak_cm": 18912.0,
+        "fwhm_cm": 1128.971475219063,
+        "red_hwhm_cm": 478.72310459146684,
+        "blue_hwhm_cm": 650.2483706275962,
+        "asymmetry": 1.3582974466680602
+      },
+      "stokes_calibrated": {
+        "kappa": 0.3687845428425998,
+        "sigma_cm": 291.33648258281914,
+        "peak_cm": 19142.0,
+        "fwhm_cm": 100.84201271444908,
+        "red_hwhm_cm": 50.040697730295506,
+        "blue_hwhm_cm": 50.80131498415358,
+        "asymmetry": 1.0151999729891372
+      },
+      "band_decomposition": [
+        {
+          "part": "full",
+          "sigma_cm": 479.74285750017094,
+          "lambda_cm": 544.4995843785523,
+          "fwhm_cm": 273.2450357306625,
+          "asymmetry": 1.45984962083529
+        },
+        {
+          "part": "omega < 417",
+          "sigma_cm": 175.23616160062335,
+          "lambda_cm": 66.21302085358921,
+          "fwhm_cm": 269.11566766111355,
+          "asymmetry": 1.4372091782106322
+        },
+        {
+          "part": "417-900",
+          "sigma_cm": 261.68152837945115,
+          "lambda_cm": 164.2139623381427,
+          "fwhm_cm": 50.358358841283916,
+          "asymmetry": 1.0643596639057529
+        },
+        {
+          "part": "900-1500",
+          "sigma_cm": 228.8404602092364,
+          "lambda_cm": 125.58262884598345,
+          "fwhm_cm": 50.37288882526627,
+          "asymmetry": 0.9543229196049363
+        },
+        {
+          "part": "1500-2200",
+          "sigma_cm": 272.10617116601,
+          "lambda_cm": 177.55819756984636,
+          "fwhm_cm": 50.3832087370065,
+          "asymmetry": 0.9563385937354959
+        },
+        {
+          "part": "all except 1500-2200",
+          "sigma_cm": 395.1094037552175,
+          "lambda_cm": 366.94138680870594,
+          "fwhm_cm": 273.2496801541711,
+          "asymmetry": 1.450124825714564
+        }
+      ],
+      "width_matched": {
+        "sigma_static_cm": 275.8052349573063,
+        "permitted_upper95_cm": 332.5772535320087,
+        "inside_permitted": true,
+        "peak_cm": 18886.0,
+        "fwhm_cm": 971.9999999997963,
+        "red_hwhm_cm": 403.64126788594876,
+        "blue_hwhm_cm": 568.3587321138475,
+        "asymmetry": 1.4080788495452865
+      },
+      "width_matched_classical": {
+        "sigma_static_cm": 331.8605195403961,
+        "peak_cm": 19340.0,
+        "fwhm_cm": 972.0000000001164,
+        "red_hwhm_cm": 485.0000000000582,
+        "blue_hwhm_cm": 487.0000000000582,
+        "asymmetry": 1.0041237113402057
+      },
+      "blue_wing": {
+        "quantum": {
+          "+800": 0.3606460859837477,
+          "+1200": 0.23664353627377543,
+          "+1600": 0.1892954640328165,
+          "+2000": 0.11321536697467474
+        },
+        "classical": {
+          "+800": 0.19572204891305778,
+          "+1200": 0.06278086756975697,
+          "+1600": 0.028621869808327167,
+          "+2000": 0.01308595881128012
+        },
+        "experiment": {
+          "+800": 0.42,
+          "+1200": 0.364,
+          "+1600": 0.264,
+          "+2000": 0.143
+        }
+      }
+    }
+  }
+}
