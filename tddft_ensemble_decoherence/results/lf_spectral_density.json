@@ -1,0 +1,28 @@
+{
+  "overlap_cm": [
+    33.0,
+    208.0
+  ],
+  "site_A": {
+    "n_lf": 100,
+    "sd_lf_cm": 529.5187656871421,
+    "sd_dense_cm": 556.201804172553,
+    "overlap_sd_lf_cm": 449.3992991255471,
+    "overlap_sd_dense_cm": 136.31634495484647,
+    "overlap_variance_ratio": 10.868482634959852,
+    "resolution_cm": 4.169551189976901,
+    "sd_below_33_cm": 267.7744741237366,
+    "var_fraction_below_33": 0.25572644346428997
+  },
+  "site_B": {
+    "n_lf": 100,
+    "sd_lf_cm": 547.7189485513355,
+    "sd_dense_cm": 479.74285750017094,
+    "overlap_sd_lf_cm": 513.5555684722648,
+    "overlap_sd_dense_cm": 125.88813049131721,
+    "overlap_variance_ratio": 16.6419923139838,
+    "resolution_cm": 4.169551189976901,
+    "sd_below_33_cm": 179.81491286000968,
+    "var_fraction_below_33": 0.10777942993938729
+  }
+}
