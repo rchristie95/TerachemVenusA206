@@ -8,19 +8,21 @@
 > [`ORCA_ONLY_PIPELINE.md`](ORCA_ONLY_PIPELINE.md). This records the original
 > workflow and is not a Windows port or a Linux installation guide.
 
-QM/MM computational pipeline for studying Davydov (excitonic) coupling in Venus fluorescent protein (YFP A206) dimers using TeraChem and OpenMM.
+QM/MM computational pipeline for studying Davydov (excitonic) coupling in Venus fluorescent protein (YFP A206) dimers using ORCA, TeraChem, and OpenMM.
 
 ## Paper
 
-> **Preprint:** [arXiv:2605.00027](https://arxiv.org/abs/2605.00027)
+> **Published article:** Robson Christie, Cerys Murray, Youngchan Kim, and Jaewoo Joo, "Non-Equilibrium Dynamics of the Time-Dependent Excitonic Coupling in Fluorescent Protein Dimers", *The Journal of Physical Chemistry B* **130**(39), 10233–10243 (2026). [doi:10.1021/acs.jpcb.6c05048](https://doi.org/10.1021/acs.jpcb.6c05048).
+>
+> **Revised preprint:** [arXiv:2605.00027v2](https://arxiv.org/abs/2605.00027v2), updated 24 September 2026.
 
 > **Correction status (8 August 2026):** arXiv v1 and the retained historical
 > source `manuscript/Submit-JPCL-21April2026.tex` contain superseded coupling
 > values produced with an incorrect reciprocal-distance conversion in the TDC
 > kernel. The audited revision reports the corrected 1000-frame result
 > `J = 32.82 +/- 1.55 cm^-1` and TDC/PDA ratio `1.19`; do not use the v1
-> numerical coupling or its near-field interpretation. The preprint record is
-> to be updated in coordination with the journal revision.
+> numerical coupling or its near-field interpretation. The corrected account appears in
+> arXiv v2 (24 September 2026) and the published journal article linked above.
 
 ## Overview
 
@@ -179,15 +181,19 @@ Extra dependencies for these scripts: [SciPy](https://scipy.org/) and [Matplotli
 If you use this code, please cite:
 
 ```
-@misc{christie2026nonequilibrium,
+@article{christie2026nonequilibrium,
   title         = {{Non-Equilibrium Dynamics of the Time-Dependent Excitonic Coupling in Fluorescent Protein Dimers}},
   author        = {Christie, Robson and Murray, Cerys and Kim, Youngchan and Joo, Jaewoo},
   year          = {2026},
+  journal       = {The Journal of Physical Chemistry B},
+  volume        = {130},
+  number        = {39},
+  pages         = {10233--10243},
   eprint        = {2605.00027},
   archivePrefix = {arXiv},
   primaryClass  = {physics.chem-ph},
-  doi           = {10.48550/arXiv.2605.00027},
-  url           = {https://arxiv.org/abs/2605.00027}
+  doi           = {10.1021/acs.jpcb.6c05048},
+  url           = {https://doi.org/10.1021/acs.jpcb.6c05048}
 }
 ```
 
@@ -205,4 +211,4 @@ when you run the pipeline.
 
 ## License
 
-No license file is currently included. Add a `LICENSE` (e.g. MIT) before publishing.
+No repository-wide license file is currently included. Contact the authors about reuse permissions; third-party tools retain their own licenses.
